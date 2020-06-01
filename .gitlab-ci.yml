@@ -1,9 +1,9 @@
 stages:
-    - build
-    - test
+ - build
+ - test
 
 build node:
-    stage: build
-    image: node:12-alpine3.10
-    script:
-        - cd Angular && npm install && node server && npm start
+ stage: build
+ image: node:12-alpine3.10
+ script:
+  - cd Angular && npm install && node server && npm start
