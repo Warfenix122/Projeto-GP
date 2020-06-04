@@ -1,5 +1,11 @@
 <div class="row d-flex justify-content-center">
   <div class="col-md-5 m-auto shadow-sm p-3 mb-5 bg-white rounded">
+    <p *ngIf="!loginAlert.success">
+      <ngb-alert type="danger">{{loginAlert.msg}}</ngb-alert>
+    </p>
+    <p *ngIf="loginAlert.success">
+      <ngb-alert type="success">{{loginAlert.msg}}</ngb-alert>
+    </p>
     <form [formGroup]="formLogin">
       <div class="form-group">
         <label for="email">Email</label>

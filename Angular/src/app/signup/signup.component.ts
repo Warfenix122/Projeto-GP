@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormArray, FormControl, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import statics from '../../assets/statics.json';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -23,6 +23,7 @@ export class SignupComponent implements OnInit {
   concelhos: string[] = statics.Concelhos;
   filteredConcelhos: Observable<string[]>;
   filteredDistritos: Observable<string[]>;
+  registerAlert:any;
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
@@ -46,8 +47,8 @@ export class SignupComponent implements OnInit {
 
   formPreferencias = this._fb.group({
     areas: this.addAreasInteresseControls(),
-    regulamento: new FormControl(false, [Validators.required]),
-    RGPD: new FormControl(false, [Validators.required]),
+    regulamento: new FormControl(false, [Validators.requiredTrue]),
+    RGPD: new FormControl(false, [Validators.requiredTrue]),
   });
   ngOnInit() {
     this.filteredConcelhos = this.formRegisto.get('concelho').valueChanges
@@ -164,27 +165,48 @@ export class SignupComponent implements OnInit {
     console.log(this.selectedAreas);
   }
 
+  // checkPasswords(control){
+  //   if(control.value != null){
+  //     let conPass= control.value;
+  //     let pass = control.root.get('password');
+  //     if(pass){
+  //       let password = pass.value;
+  //       if(conPass1 !== '' & password !==""){
+  //         if(conPass)
+  //       }
+  //     }
+  //   }
+
+  // }
+
+
+
   postData() {
     if (this.formRegisto.valid && this.formPreferencias.valid) {
       const selectedAreas = this.selectedAreas;
       let formbody = { ...this.formRegisto.value, selectedAreas };
       this.userService.register(formbody).subscribe((res) => {
-
+        console.log(res);
         // Send Email
         this.emailService.sendConfirmationEmail(formbody.email).subscribe((responnse) => {
+          console.log(responnse);
         }, (err) => {
           console.log('error during post is ', err);
+          this.registerAlert = {success: err.error.success, msg:err.error.msg};
+
         });
 
         // REDIRECT
         this.router.navigate(['login']);
       }, (err) => {
         console.log('error during post is ', err);
+        this.registerAlert = {success: err.error.success, msg:err.error.msg};
       }, () => {
 
       })
     } else {
       console.log('formulario invalido');
+      this.registerAlert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
     }
   }
 }

@@ -12,7 +12,7 @@ import {Router} from '@angular/router'
 })
 export class AproveUserComponent implements OnInit {
   utilizadores: Array<User>;
-
+  emptyReturnMessage: string;
   constructor(private service: UserService, private router : Router) { }
 
   ngOnInit(): void {
@@ -21,6 +21,9 @@ export class AproveUserComponent implements OnInit {
      }
     this.service.getDisaprovedUsers().subscribe(users=>{
       this.utilizadores = users;
+      if(this.utilizadores.length === 0){
+        this.emptyReturnMessage = "Não existem utilizadores para avaliar";
+      }
     });
   }
 
