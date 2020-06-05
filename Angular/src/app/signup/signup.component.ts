@@ -171,7 +171,7 @@ export class SignupComponent implements OnInit {
       this.userService.register(formbody).subscribe((res) => {
 
         // Send Email
-        this.emailService.sendConfirmationEmail(formbody.email).subscribe((responnse) => {
+        this.emailService.sendConfirmationEmail(formbody).subscribe((responnse) => {
         }, (err) => {
           console.log('error during post is ', err);
         });

@@ -16,7 +16,6 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), (req,
   res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!" });
 });
 
-
 //Register handle
 router.post("/register", (req, res) => {
   const {
@@ -214,8 +213,10 @@ router.post("/sendEmail", (req, res) => {
 })
 
 router.post("/sendConfirmationEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendConfirmationEmail(to);
+  let body = req.body.body;
+  let to = body.email;
+  let nome = body.nome;
+  email.sendConfirmationEmail(to, nome);
 })
 
 router.post("/sendRecoverPasswordEmail", (req, res) => {
