@@ -11,21 +11,35 @@ export class NavComponent implements AfterViewInit {
   @ViewChild('logout') logout: ElementRef;
   @ViewChild('logged') logged: ElementRef;
   constructor(private service: AuthService) {
+    service.eventIsLoggedIn.subscribe(isLoggedIn => {
+      if(isLoggedIn)
+        this.displayLoggedInNav();
+      else
+        this.displayLoggedOutNav();
+    });
+  }
 
+  displayLoggedInNav(): void {
+    this.logged.nativeElement.style.display = 'block';
+    this.logout.nativeElement.style.display = 'none';
+  }
+
+  displayLoggedOutNav(): void {
+    this.logout.nativeElement.style.display = 'block';
+    this.logged.nativeElement.style.display = 'none';
   }
 
   ngAfterViewInit(): void {
 
     if (localStorage.getItem('token')) {
-      this.logged.nativeElement.style.display = 'block';
-      this.logout.nativeElement.style.display = 'none';
+      this.displayLoggedInNav();
     } else {
-      console.log(this.logout);
-      this.logout.nativeElement.style.display = 'block';
-      this.logged.nativeElement.style.display = 'none';
+      this.displayLoggedOutNav();
 
     }
   }
 
-  logOut() { this.service.logout(); }
+  logOut() {
+    this.service.logout(); 
+  }
 }
