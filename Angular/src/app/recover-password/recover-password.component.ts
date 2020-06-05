@@ -32,7 +32,7 @@ export class RecoverPasswordComponent implements OnInit {
       this.service.alterPassword(formbody).subscribe((res) => {
         this.router.navigate(['login']);
         // Send Email
-        this.emailService.sendEmail(formbody.email, "Password", "Password: " + pass).subscribe((responnse) => {
+        this.emailService.sendRecoverPasswordEmail(formbody.email, pass).subscribe((responnse) => {
         }, (err) => {
           console.log('error during post is ', err);
         });

@@ -221,7 +221,8 @@ router.post("/sendConfirmationEmail", (req, res) => {
 
 router.post("/sendRecoverPasswordEmail", (req, res) => {
   let to = req.body.to;
-  email.sendRecoverPasswordEmail(to);
+  let password = req.body.password;
+  email.sendRecoverPasswordEmail(to, password);
 })
 
 router.post("/sendConfirmProjectEmail", (req, res) => {

@@ -36,12 +36,11 @@ module.exports.sendEmail = function send(to, subject, content) {
 };
 
 module.exports.sendConfirmationEmail = function send(email, nome) {
-  console.log("Email: "+ email+"; Nome: "+nome);
   this.sendEmail(email, "Confirmation Email", {nome: nome});
 };
 
-module.exports.sendRecoverPasswordEmail = function send(email) {
-  this.sendEmail(email, "Recover Password", password);
+module.exports.sendRecoverPasswordEmail = function send(email, password) {
+  this.sendEmail(email, "Recover Password", {password: password});
 };
 
 module.exports.sendConfirmProjectEmail = function send(email) {
