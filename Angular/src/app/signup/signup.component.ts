@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit {
   formacoes: Array<String> = statics.fomação;
   distritos: string[] = statics.distritos;
   concelhos: string[] = statics.Concelhos;
+  generos: string[] = statics.generos;
   filteredConcelhos: Observable<string[]>;
   filteredDistritos: Observable<string[]>;
   registerAlert:any;
@@ -31,32 +32,35 @@ export class SignupComponent implements OnInit {
   }
 
   formRegisto = this._fb.group({
-    nome: new FormControl('', [Validators.required]),
-    dataNascimento: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required]),
+  });
+
+  formInformacao = this._fb.group({
+    nome: new FormControl('', [Validators.required]),
+    dataNascimento: new FormControl('', [Validators.required]),
+    genero: new FormControl('',[Validators.required]),
     numeroTelefone: new FormControl(''),
     distrito: new FormControl(''),
     concelho: new FormControl(''),
-    tipoMembro: new FormControl('', [Validators.required]),
-    escola: new FormControl(''),
-    formacao: new FormControl(''),
-    // areas: this.addAreasInteresseControls(),
   });
 
   formPreferencias = this._fb.group({
+    tipoMembro: new FormControl('', [Validators.required]),
+    escola: new FormControl(''),
+    formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
-    regulamento: new FormControl(false, [Validators.requiredTrue]),
     RGPD: new FormControl(false, [Validators.requiredTrue]),
   });
+
   ngOnInit() {
-    this.filteredConcelhos = this.formRegisto.get('concelho').valueChanges
+    this.filteredConcelhos = this.formInformacao.get('concelho').valueChanges
       .pipe(
         startWith(''),
         map(value => this._filterConcelho(value))
       );
-    this.filteredDistritos = this.formRegisto.get('distrito').valueChanges
+    this.filteredDistritos = this.formInformacao.get('distrito').valueChanges
       .pipe(
         startWith(''),
         map(value => this._filterDistrito(value))
@@ -88,6 +92,12 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  generoSelecionado(e){
+    this.genero.setValue(e.target.value, {
+      onlySelf: true,
+    })
+  }
+
   formacaoSelecionada(e) {
     this.escola.setValue(e.target.value, {
       onlySelf: true,
@@ -106,8 +116,21 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  RGPDchecked(e){
+
+    if(e.checked){
+      this.RGPD.setValue(true);
+    }else{
+      this.RGPD.setValue(false);
+    }
+  }
+
+  get genero(){
+    return this.formInformacao.get("genero");
+  }
+
   get dataNascimento() {
-    return this.formRegisto.get("dataNascimento");
+    return this.formInformacao.get("dataNascimento");
   }
 
   get confirmPassword() {
@@ -123,31 +146,27 @@ export class SignupComponent implements OnInit {
   }
 
   get nome() {
-    return this.formRegisto.get('nome');
+    return this.formInformacao.get('nome');
   }
 
   get escola() {
-    return <FormArray>this.formRegisto.get('escola');
+    return <FormArray>this.formPreferencias.get('escola');
   }
 
   get tipoMembro() {
-    return <FormArray>this.formRegisto.get('tipoMembro');
+    return <FormArray>this.formPreferencias.get('tipoMembro');
   }
 
   get formacao() {
-    return <FormArray>this.formRegisto.get('formacao');
+    return <FormArray>this.formPreferencias.get('formacao');
   }
 
   get distrito() {
-    return <FormArray>this.formRegisto.get('distrito');
+    return <FormArray>this.formInformacao.get('distrito');
   }
 
   get areasArray() {
     return <FormArray>this.formPreferencias.get('areas');
-  }
-
-  get regulamento() {
-    return this.formPreferencias.get('regulamento');
   }
 
   get RGPD() {
@@ -165,26 +184,12 @@ export class SignupComponent implements OnInit {
     console.log(this.selectedAreas);
   }
 
-  // checkPasswords(control){
-  //   if(control.value != null){
-  //     let conPass= control.value;
-  //     let pass = control.root.get('password');
-  //     if(pass){
-  //       let password = pass.value;
-  //       if(conPass1 !== '' & password !==""){
-  //         if(conPass)
-  //       }
-  //     }
-  //   }
-
-  // }
-
-
-
   postData() {
-    if (this.formRegisto.valid && this.formPreferencias.valid) {
+    console.log(this.RGPD.value);
+    if (this.formRegisto.valid && this.formInformacao.valid && this.formPreferencias.valid) {
       const selectedAreas = this.selectedAreas;
-      let formbody = { ...this.formRegisto.value, selectedAreas };
+      let formbody = { ...this.formRegisto.value, ...this.formInformacao.value,...this.formPreferencias.value,selectedAreas };
+      console.log(formbody);
       this.userService.register(formbody).subscribe((res) => {
         console.log(res);
         // Send Email
@@ -201,10 +206,9 @@ export class SignupComponent implements OnInit {
       }, (err) => {
         console.log('error during post is ', err);
         this.registerAlert = {success: err.error.success, msg:err.error.msg};
-      }, () => {
-
       })
     } else {
+
       console.log('formulario invalido');
       this.registerAlert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
     }

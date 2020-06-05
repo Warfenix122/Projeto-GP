@@ -2,14 +2,14 @@
   <div class="col-md-10 m-auto">
     <!-- {{ formRegisto.value | json }} -->
     <!-- <form [formGroup]="formRegisto" (ngSubmit)="postData()"> -->
-      <div *ngIf="registerAlert">
-        <p *ngIf="!registerAlert.success">
-          <ngb-alert type="danger">{{registerAlert.msg}}</ngb-alert>
-        </p>
-        <p *ngIf="registerAlert.success">
-          <ngb-alert type="success">{{registerAlert.msg}}</ngb-alert>
-        </p>
-      </div>
+    <div *ngIf="registerAlert">
+      <p *ngIf="!registerAlert.success">
+        <ngb-alert type="danger">{{ registerAlert.msg }}</ngb-alert>
+      </p>
+      <p *ngIf="registerAlert.success">
+        <ngb-alert type="success">{{ registerAlert.msg }}</ngb-alert>
+      </p>
+    </div>
 
     <mat-horizontal-stepper labelPosition="bottom">
       <mat-step label="Registar 1/2" [stepControl]="formRegisto">
@@ -17,31 +17,19 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" required class="form-control"
-                  placeholder="Introduza o seu nome" formControlName="nome" />
-                <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
-                  <div *ngIf="nome.errors.required">
-                    O nome é um campo obrigatorio.
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="dataDeNascimento">Data de Nascimento</label>
-                <input type="date" id="dataDeNascimento" name="dataDeNascimento" class="form-control"
-                  placeholder="Introduza a data de nascimento" formControlName="dataNascimento" />
-                <div *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)"
-                  class="alert alert-danger">
-                  <div *ngIf="dataNascimento.errors.required">
-                    A data de nascimento é um campo obrigatorio.
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
-                  formControlName="email" />
-                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Enter Email"
+                  formControlName="email"
+                />
+                <div
+                  *ngIf="email.invalid && (email.dirty || email.touched)"
+                  class="alert alert-danger"
+                >
                   <div *ngIf="email.errors.required">
                     O Email é um campo obrigatorio.
                   </div>
@@ -49,87 +37,52 @@
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Create Password"
-                  formControlName="password" />
-                  <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
-                    <div *ngIf="password.errors.required">
-                      A password é um campo obrigatorio.
-                    </div>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Create Password"
+                  formControlName="password"
+                />
+                <div
+                  *ngIf="
+                    password.invalid && (password.dirty || password.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="password.errors.required">
+                    A password é um campo obrigatorio.
                   </div>
+                </div>
               </div>
               <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-                  placeholder="Confirm Password" formControlName="confirmPassword" compare="password"/>
-                  <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="alert alert-danger">
-                    <div *ngIf="confirmPassword.errors.required">
-                      A password de confirmação é um campo obrigatorio.
-                    </div>
-                    <div *ngIf="confirmPassword.errors['compare']">
-                      As passwords têm de ser iguais.
-                    </div>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="form-control"
+                  placeholder="Confirm Password"
+                  formControlName="confirmPassword"
+                  compare="password"
+                />
+                <div
+                  *ngIf="
+                    confirmPassword.invalid &&
+                    (confirmPassword.dirty || confirmPassword.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="confirmPassword.errors.required">
+                    A password de confirmação é um campo obrigatorio.
                   </div>
-              </div>
-              <hr />
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <label for="numeroTelefone">Phone Number</label>
-                <input type="number" id="numeroTelefone" name="numeroTelefone" class="form-control"
-                  placeholder="Introduza o Numero de Telefone" formControlName="numeroTelefone" />
-              </div>
-              <!-- <div class="row"> -->
-              <div class="row">
-                <label for="distrito">Distrito</label>
-                <input type="text" placeholder="Escolha um Distrito" class="form-control" id="distrito" name="distrito"
-                  formControlName="distrito" MatInput [matAutocomplete]="autoDistrito">
-                <mat-autocomplete #autoDistrito="matAutocomplete">
-                  <mat-option *ngFor="let distrito of filteredDistritos | async" [value]="distrito">
-                    {{distrito}}
-                  </mat-option>
-                </mat-autocomplete>
-              </div>
-              <div class="row">
-                <label for="concelho">Concelho</label>
-                <input type="text" placeholder="Escolha um Concelho" class="form-control" id="concelho" name="concelho"
-                  formControlName="concelho" MatInput [matAutocomplete]="autoConcelho">
-                <mat-autocomplete #autoConcelho="matAutocomplete">
-                  <mat-option *ngFor="let concelho of filteredConcelhos | async" [value]="concelho">
-                    {{concelho}}
-                  </mat-option>
-                </mat-autocomplete>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col">
-                  <label for="tipoMembro">Tipo de membro:</label>
-                  <select class="form-control" id="tipoMembro" name="tipoMembro" formControlName="tipoMembro">
-                    <option *ngFor="let tipo of tiposMembro; let i = index" [ngValue]="tipo">{{ tipo }}</option>
-                  </select>
-                  <div *ngIf="tipoMembro.invalid && (tipoMembro.dirty || tipoMembro.touched)" class="alert alert-danger">
-                    <div *ngIf="tipoMembro.errors.required">
-                      O tipo membro tem de ser selecionado
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div *ngIf="tipoMembro.value === 'Voluntario Interno'">
-                    <div class="row">
-                      <label for="escola">Escola</label>
-                      <select class="form-control" id="escola" name="escola" formControlName="escola">
-                        <option *ngFor="let escola of escolas; let i = index" [ngValue]="escola">{{ escola }}</option>
-                      </select>
-                    </div>
-                    <div class="row">
-                      <label for="formacao">Formação</label>
-                      <select class="form-control" id="formacao" name="formacao" formControlName="formacao">
-                        <option *ngFor="let formacao of formacoes; let i = index" [ngValue]="formacao">{{formacao}}
-                        </option>
-                      </select>
-                    </div>
+                  <div *ngIf="confirmPassword.errors['compare']">
+                    As passwords têm de ser iguais.
                   </div>
                 </div>
               </div>
+              <hr />
             </div>
           </div>
           <button class="btn btn-primary btn-block" mat-button matStepperNext>
@@ -137,44 +90,245 @@
           </button>
         </form>
       </mat-step>
-      <mat-step label="Registar 2/2" [stepControl]="formRegisto">
+      <mat-step label="Registar 2/3" [stepControl]="formInformacao">
+        <form [formGroup]="formInformacao">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              required
+              class="form-control"
+              placeholder="Introduza o seu nome"
+              formControlName="nome"
+            />
+            <div
+              *ngIf="nome.invalid && (nome.dirty || nome.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="nome.errors.required">
+                O nome é um campo obrigatorio.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="genero">Genero</label>
+            <select
+                class="form-control"
+                id="genero"
+                name="genero"
+                formControlName="genero"
+              >
+                <option
+                  *ngFor="let genero of generos; let i = index"
+                  [ngValue]="genero"
+                  >{{ genero }}</option
+                >
+              </select>
+              <div
+                *ngIf="
+                genero.invalid && (genero.dirty || genero.touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="genero.errors.required">
+                  Tem de selecionar um genero
+                </div>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="dataNascimento">Data de Nascimento</label>
+            <input
+              type="date"
+              id="dataNascimento"
+              name="dataNascimento"
+              class="form-control"
+              placeholder="Introduza a data de nascimento"
+              formControlName="dataNascimento"
+            />
+            <div
+              *ngIf="dataNascimento.invalid &&(dataNascimento.dirty || dataNascimento.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="dataNascimento.errors.required">
+                A data de nascimento é um campo obrigatorio.
+              </div>
+            </div>
+          </div>
+            <div class="form-group">
+              <label for="numeroTelefone">Phone Number</label>
+              <input
+                type="number"
+                id="numeroTelefone"
+                name="numeroTelefone"
+                class="form-control"
+                placeholder="Introduza o Numero de Telefone"
+                formControlName="numeroTelefone"
+              />
+            </div>
+            <div class="form-group">
+            <label for="distrito">Distrito</label>
+            <input
+              type="text"
+              placeholder="Escolha um Distrito"
+              class="form-control"
+              id="distrito"
+              name="distrito"
+              formControlName="distrito"
+              MatInput
+              [matAutocomplete]="autoDistrito"
+            />
+            <mat-autocomplete #autoDistrito="matAutocomplete">
+              <mat-option
+                *ngFor="let distrito of filteredDistritos | async"
+                [value]="distrito"
+              >
+                {{ distrito }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="form-group">
+            <label for="concelho">Concelho</label>
+            <input
+              type="text"
+              placeholder="Escolha um Concelho"
+              class="form-control"
+              id="concelho"
+              name="concelho"
+              formControlName="concelho"
+              MatInput
+              [matAutocomplete]="autoConcelho"
+            />
+            <mat-autocomplete #autoConcelho="matAutocomplete">
+              <mat-option
+                *ngFor="let concelho of filteredConcelhos | async"
+                [value]="concelho"
+              >
+                {{ concelho }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <hr />
+          <button class="btn btn-primary btn-block" mat-button matStepperNext>
+            Continuar
+          </button>
+        </form>
+      </mat-step>
+      <mat-step label="Registar 3/3" [stepControl]="formPreferencias">
         <form [formGroup]="formPreferencias">
+          <div class="row">
+            <div class="col">
+              <label for="tipoMembro">Tipo de membro:</label>
+              <select
+                class="form-control"
+                id="tipoMembro"
+                name="tipoMembro"
+                formControlName="tipoMembro"
+              >
+                <option
+                  *ngFor="let tipo of tiposMembro; let i = index"
+                  [ngValue]="tipo"
+                  >{{ tipo }}</option
+                >
+              </select>
+              <div
+                *ngIf="
+                  tipoMembro.invalid && (tipoMembro.dirty || tipoMembro.touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="tipoMembro.errors.required">
+                  O tipo membro tem de ser selecionado
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div *ngIf="tipoMembro.value === 'Voluntario Interno'">
+                <div class="row">
+                  <label for="escola">Escola</label>
+                  <select
+                    class="form-control"
+                    id="escola"
+                    name="escola"
+                    formControlName="escola"
+                  >
+                    <option
+                      *ngFor="let escola of escolas; let i = index"
+                      [ngValue]="escola"
+                      >{{ escola }}</option
+                    >
+                  </select>
+                </div>
+                <div class="row">
+                  <label for="formacao">Formação</label>
+                  <select
+                    class="form-control"
+                    id="formacao"
+                    name="formacao"
+                    formControlName="formacao"
+                  >
+                    <option
+                      *ngFor="let formacao of formacoes; let i = index"
+                      [ngValue]="formacao"
+                      >{{ formacao }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="row">
             <label class="" for="AreasInteresse">Areas de Interesse:</label>
           </div>
           <div class="row">
             <div class="col-lg-10">
               <!-- <div class="row"> -->
-              <div id="lista" *ngFor="let control of areasArray.controls; let i = index">
-                <div *ngIf="i%2===0 || i===0">
+              <div
+                id="lista"
+                *ngFor="let control of areasArray.controls; let i = index"
+              >
+                <div *ngIf="i % 2 === 0 || i === 0">
                   <div class="row">
-                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
-                      (change)="getSelectedAreas()" name="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
-                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
-                      (change)="getSelectedAreas()" name="{{ areas[i+1] }}">{{ areas[i+1] }}</mat-checkbox>
+                    <mat-checkbox
+                      labelPosition="after"
+                      class="col-md-5"
+                      [formControl]="control"
+                      (change)="getSelectedAreas()"
+                      name="{{ areas[i] }}"
+                      >{{ areas[i] }}</mat-checkbox
+                    >
+                    <mat-checkbox
+                      labelPosition="after"
+                      class="col-md-5"
+                      [formControl]="control"
+                      (change)="getSelectedAreas()"
+                      name="{{ areas[i + 1] }}"
+                      >{{ areas[i + 1] }}</mat-checkbox
+                    >
                   </div>
                 </div>
               </div>
               <!-- </div> -->
             </div>
           </div>
-          <div class="row text-center">
-            <mat-checkbox labelPosition="after" [formControlName]="" name="regulamento">Regulamento1</mat-checkbox>
-            <div *ngIf="regulamento.invalid && (regulamento.dirty || regulamento.touched)" class="alert alert-danger">
-              <div *ngIf="regulamento.errors.requiredTrue">
-                Necessita de Aceitar o seguinte regulamento
-              </div>
-            </div>
-          </div>
           <div class="row align-items-center">
-            <mat-checkbox labelPosition="after" name="RGPD">RGPD</mat-checkbox>
-            <div *ngIf="RGPD.invalid && (RGPD.dirty || RGPD.touched)" class="alert alert-danger">
-              <div *ngIf="RGPD.errors.requiredTrue">
-                Necessita de aceitar o seguinte regulamento de proteção de dados.
+            <mat-checkbox labelPosition="after" formGroupName="RGPD" name="RGPD" (change)="RGPDchecked($event)">Li a aceito a Política de Privacidade e Proteção de Dados</mat-checkbox>
+            <div
+              *ngIf="RGPD.invalid && (RGPD.dirty || RGPD.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="RGPD.errors.required">
+                Necessita de aceitar o seguinte regulamento de proteção de
+                dados.
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-block" (click)="postData()">
+          <button
+            type="submit"
+            class="btn btn-primary btn-block"
+            (click)="postData()"
+          >
             Registar
           </button>
         </form>
