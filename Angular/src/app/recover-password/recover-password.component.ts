@@ -10,7 +10,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
   styleUrls: ['./recover-password.component.css']
 })
 export class RecoverPasswordComponent implements OnInit {
-
+  public alert : any;
   constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router) {
   }
 
@@ -30,7 +30,6 @@ export class RecoverPasswordComponent implements OnInit {
 
       let formbody = { ... this.formIPS.value, password: pass };
       this.service.alterPassword(formbody).subscribe((res) => {
-        this.router.navigate(['login']);
         // Send Email
         this.emailService.sendEmail(formbody.email, "Password", "Password: " + pass).subscribe((responnse) => {
         }, (err) => {
@@ -42,9 +41,11 @@ export class RecoverPasswordComponent implements OnInit {
         this.router.navigate(['login']);
       }, (err) => {
         console.log('error during post is ', err);
+        this.alert = {success: err.error.success, msg:err.error.msg};
       });
     } else {
       console.log('formulario invalido');
+      this.alert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
     }
   }
 

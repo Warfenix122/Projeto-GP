@@ -12,7 +12,8 @@
     "Saúde",
     "Social"
   ],
-  "tipoUtilizadores": ["Gestor", "Voluntario Interno", "Voluntario Externo"],
+  "generos": ["Masculino","Femenino","Outros"],
+  "tipoUtilizadores": ["Voluntario Interno", "Voluntario Externo"],
   "fomação": ["Estudante", "Administrativo", "Docente"],
   "distritos": [
     "Lisboa",

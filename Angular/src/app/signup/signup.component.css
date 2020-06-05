@@ -12,3 +12,19 @@
 .row{
   orientation: landscape;
 }
+
+
+
+form{
+  display: inline-block;
+  width: 50%;
+  margin-left: 20%;
+}
+
+input{
+  width: 75%;
+}
+
+select{
+  width: 90%;
+}

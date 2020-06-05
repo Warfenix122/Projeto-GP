@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatStepperModule, MatStep } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox'
@@ -27,6 +27,9 @@ import { FooterComponent } from './footer/footer.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
+
+import {InterceptorAutenticacao} from './Interceptor/interceptor-autenticacao';
+import { CompareValidatorDirective } from './validators/compare-validator.directive';
 
 
 @NgModule({
@@ -57,9 +60,14 @@ import { RecoverPasswordComponent } from './recover-password/recover-password.co
     FooterComponent,
     PerfilComponent,
     UnauthorizedComponent,
-    RecoverPasswordComponent
+    RecoverPasswordComponent,
+    CompareValidatorDirective
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: InterceptorAutenticacao,
+    multi: true
+  }],
   bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent],
 })
 export class AppModule { }
