@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+var router = express.Router();
 const bcrypt = require("bcryptjs");
 const utils = require('../utils/utils');
 const passport = require('passport');
@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const User = require('../models/mongoConnection').Utilizadores;
-const email = require('../config/sender.js');
+router = require("./email");
 
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
@@ -206,45 +206,5 @@ router.post("/recover_password", (req, res) => {
       next(err);
     });
 })
-
-//// EMAILS
-router.post("/sendEmail", (req, res) => {
-  let to = req.body.to;
-  let subject = req.body.subject;
-  let content = req.body.content;
-  email.sendEmail(to, subject, content);
-})
-
-router.post("/sendConfirmationEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendConfirmationEmail(to);
-})
-
-router.post("/sendRecoverPasswordEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendRecoverPasswordEmail(to);
-})
-
-router.post("/sendConfirmProjectEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendConfirmProjectEmail(to);
-})
-
-router.post("/sendChangesInProjectEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendChangesInProjectEmail(to);
-})
-
-router.post("/sendProjectGuidelinesEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendProjectGuidelinesEmail(to);
-})
-
-router.post("/sendQRCodeEmail", (req, res) => {
-  let to = req.body.to;
-  let attachment = req.body.attachment;
-  email.sendQRCodeEmail(to, attachment);
-})
-
 
 module.exports = router;

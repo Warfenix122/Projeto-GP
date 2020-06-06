@@ -12,10 +12,9 @@
     </div>
 
     <mat-horizontal-stepper labelPosition="bottom">
-      <mat-step label="Registar 1/2" [stepControl]="formRegisto">
+      <mat-step label="Email & Password" [stepControl]="formRegisto">
         <form [formGroup]="formRegisto">
-          <div class="row">
-            <div class="col">
+          <div>
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
@@ -83,15 +82,14 @@
                 </div>
               </div>
               <hr />
-            </div>
           </div>
           <button class="btn btn-primary btn-block" mat-button matStepperNext>
             Continuar
           </button>
         </form>
       </mat-step>
-      <mat-step label="Registar 2/3" [stepControl]="formInformacao">
-        <form [formGroup]="formInformacao">
+      <mat-step label="Utilizador" [stepControl]="formInformacao">
+        <form [formGroup]="formInformacao"  >
           <div class="form-group">
             <label for="nome">Nome</label>
             <input
@@ -157,7 +155,7 @@
             </div>
           </div>
             <div class="form-group">
-              <label for="numeroTelefone">Phone Number</label>
+              <label for="numeroTelefone">Numero de Telemóvel</label>
               <input
                 type="number"
                 id="numeroTelefone"
@@ -215,9 +213,9 @@
           </button>
         </form>
       </mat-step>
-      <mat-step label="Registar 3/3" [stepControl]="formPreferencias">
-        <form [formGroup]="formPreferencias">
-          <div class="row">
+      <mat-step label="Informações" [stepControl]="formPreferencias">
+        <form [formGroup]="formPreferencias" >
+          <div>
             <div class="col">
               <label for="tipoMembro">Tipo de membro:</label>
               <select
@@ -278,18 +276,16 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <label class="" for="AreasInteresse">Areas de Interesse:</label>
-          </div>
-          <div class="row">
+          <div >
+            <label  for="AreasInteresse">Areas de Interesse:</label>
+
             <div class="col-lg-10">
-              <!-- <div class="row"> -->
               <div
                 id="lista"
                 *ngFor="let control of areasArray.controls; let i = index"
               >
                 <div *ngIf="i % 2 === 0 || i === 0">
-                  <div class="row">
+                  <div class="row d-flex justify-content-between">
                     <mat-checkbox
                       labelPosition="after"
                       class="col-md-5"

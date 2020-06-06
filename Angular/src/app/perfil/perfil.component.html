@@ -10,8 +10,11 @@
         formControlName="numeroTelefone" #numeroTelefone name="numeroTelefone"> </div>
 
     <div class="row mb-2">
-      <label class="col-md-4">Genero</label> <input type="text" class="col-md-4 form-control" formControlName="genero"
-        #genero name="genero"> </div>
+      <label class="col-md-4">Genero</label>
+      <select class="col-md-4 form-control" id="genero" name="genero" formControlName="genero">
+        <option *ngFor="let genero of generos; let i = index" [ngValue]="genero">{{ genero }}</option>
+      </select>
+    </div>
 
     <div class="row mb-2">
       <label class="col-md-4">Data de Nascimento </label> <input type="date" class="col-md-4 form-control"
@@ -49,14 +52,7 @@
         #dataCriacao></span>
     </div>
 
-    <!--   <div class="row">
-      <label class="col-md-4">Foto de Perfil</label>
-    </div>
-    <div class="row">
-      <input class="col-md-4 form-control" type="file" accept="image/png, image/jpeg" #photoSrc>
-      <img class="border border-secondary rounded col-md-4" #photo>
-    </div>
-  -->
+
     <div class="row mb-2">
       <a class="btn btn-success" (click)="updateData()"> Guardar Alteraçoes</a>
     </div>

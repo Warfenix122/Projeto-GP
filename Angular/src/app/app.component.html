@@ -1,12 +1,8 @@
 <app-nav></app-nav>
-<div id="container" class="container">
-<router-outlet></router-outlet>
+
+<div id="page-container" class="container">
+  <div id="content-wrap">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer id="footer"></app-footer>
 </div>
-<app-footer>
-    <div id="page-container">
-      <div id="content-wrap">
-        <!-- all other page content -->
-      </div>
-      <footer id="footer"></footer>
-    </div>
-</app-footer>

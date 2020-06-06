@@ -20,6 +20,8 @@ export class PerfilComponent implements OnInit {
 
   distritos: string[] = statics.distritos;
   concelhos: string[] = statics.Concelhos;
+  generos: string[] = statics.generos;
+
   filteredConcelhos: Observable<string[]>;
   filteredDistritos: Observable<string[]>;
 
@@ -104,9 +106,8 @@ export class PerfilComponent implements OnInit {
         }
       }
 
-      //add email to find user
       formbody['email'] = this.email.nativeElement.innerHTML;
-
+      console.log(formbody)
       this.userService.editUser(formbody).subscribe((res) => {
         console.log(res);
       }, (err) => {
