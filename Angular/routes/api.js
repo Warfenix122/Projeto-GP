@@ -79,9 +79,8 @@ router.post("/register", (req, res) => {
 //Confirm Account
 router.put("/confirmAccount/:id", (req, res) => {
   let id = req.params.id;
-  User.findOne({ email: req.body.email }).then((user) => {
+  User.findOne({ utilizadorId: id }).then((user) => {
     if(user){
-      id = user.utilizadorId;
       user.contaConfirmada = true;
       user.save();
       res.redirect('/login');
@@ -229,7 +228,13 @@ router.post("/sendConfirmationEmail", (req, res) => {
   let body = req.body.body;
   let to = body.email;
   let nome = body.nome;
-  email.sendConfirmationEmail(to, nome);
+  let id;
+  User.findOne({ email: to }).then((user) => {
+    if(user){
+      id = user.utilizadorId;
+      email.sendConfirmationEmail(to, nome, id);
+    }
+  });
 })
 
 router.post("/sendRecoverPasswordEmail", (req, res) => {
