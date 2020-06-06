@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { EmailSenderService } from '../services/email-sender.service';
 import { Router } from '@angular/router';
+import { AlertService } from '../services/alert.service';
 @Component({
   selector: 'app-internal-user-signup',
   templateUrl: './internal-user-signup.component.html',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class InternalUserSignupComponent implements OnInit {
 
 
-  constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router) {
+  constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router,private _alertService:AlertService) {
   }
 
   formIPS = this._fb.group({
@@ -41,9 +42,11 @@ export class InternalUserSignupComponent implements OnInit {
         this.router.navigate(['login']);
       }, (err) => {
         console.log('error during post is ', err);
+        this._alertService.error(err.error.msg);
       });
     } else {
       console.log('formulario invalido');
+      this._alertService.error("Formulário Invalido");
     }
   }
 

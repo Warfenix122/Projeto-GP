@@ -3,7 +3,8 @@ import { UserService } from '../services/user.service';
 import { FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { debounceTime } from 'rxjs/operators';
+import { AlertService } from '../services/alert.service';
+
 
 @Component({
   selector: 'app-login',
@@ -11,8 +12,8 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginAlert: any;
-  constructor(private service: UserService, private authService: AuthService, public _fb: FormBuilder, private router: Router) {
+  // loginAlert: any;
+  constructor(private service: UserService, private authService: AuthService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
 
   formLogin = this._fb.group({
@@ -39,12 +40,13 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/"]);
       }, (err) => {
         console.log('error during post is ', err);
-        this.loginAlert = {success: err.error.success, msg:err.error.msg};
+        // this.loginAlert = {success: err.error.success, msg:err.error.msg};
+        this._alertService.error(err.error.msg);
       });
 
     } else {
       console.log('formulario invalido');
-      this.loginAlert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
+      this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }
 
