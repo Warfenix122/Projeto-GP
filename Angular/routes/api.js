@@ -76,6 +76,19 @@ router.post("/register", (req, res) => {
   //}
 });
 
+//Confirm Account
+router.put("/confirmAccount/:id", (req, res) => {
+  let id = req.params.id;
+  User.findOne({ email: req.body.email }).then((user) => {
+    if(user){
+      id = user.utilizadorId;
+      user.contaConfirmada = true;
+      user.save();
+      res.redirect('/login');
+    }
+  });
+});
+
 //Login handle
 router.post("/login", (req, res, next) => {
   // passport.authenticate("local", {

@@ -36,7 +36,9 @@ module.exports.sendEmail = function send(to, subject, content) {
 };
 
 module.exports.sendConfirmationEmail = function send(email, nome) {
-  this.sendEmail(email, "Confirmation Email", {nome: nome});
+  var ip = "localhost";
+  var port = "8080";
+  this.sendEmail(email, "Confirmation Email", {nome: nome, id: id, ip: ip, port: port});
 };
 
 module.exports.sendRecoverPasswordEmail = function send(email, password) {

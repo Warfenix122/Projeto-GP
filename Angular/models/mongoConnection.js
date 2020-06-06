@@ -34,6 +34,7 @@ var UtilizadorSchema = new Schema({
     enum: ["Gestor", "Voluntario Interno", "Voluntario Externo"],
   },
   aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
+  contaConfirmada : Boolean,
   entidades: [{ entidadeId: mongoose.ObjectId }],
   dataCriacao: Date,
   fotoPerfilCaminho: String,
