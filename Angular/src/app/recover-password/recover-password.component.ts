@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-recover-password',
@@ -10,8 +11,8 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
   styleUrls: ['./recover-password.component.css']
 })
 export class RecoverPasswordComponent implements OnInit {
-  public alert : any;
-  constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router) {
+
+  constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router,private _alertService: AlertService) {
   }
 
   formIPS = this._fb.group({
@@ -27,7 +28,6 @@ export class RecoverPasswordComponent implements OnInit {
   postData() {
     if (this.formIPS.valid) {
       let pass = this.generatepassword(this.formIPS.value.email);
-
       let formbody = { ... this.formIPS.value, password: pass };
       this.service.alterPassword(formbody).subscribe((res) => {
         // Send Email
@@ -36,16 +36,15 @@ export class RecoverPasswordComponent implements OnInit {
           console.log('error during post is ', err);
         });
 
-
         // REDIRECT
         this.router.navigate(['login']);
       }, (err) => {
         console.log('error during post is ', err);
-        this.alert = {success: err.error.success, msg:err.error.msg};
+        this._alertService.error(err.error.msg);
       });
     } else {
       console.log('formulario invalido');
-      this.alert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
+      this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }
 

@@ -7,6 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { EmailSenderService } from '../services/email-sender.service';
+import { AlertService } from '../services/alert.service';
 
 
 @Component({
@@ -24,11 +25,11 @@ export class SignupComponent implements OnInit {
   generos: string[] = statics.generos;
   filteredConcelhos: Observable<string[]>;
   filteredDistritos: Observable<string[]>;
-  registerAlert:any;
+
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
-  constructor(private userService: UserService, private authService: AuthService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router) {
+  constructor(private userService: UserService, private authService: AuthService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
 
   formRegisto = this._fb.group({
@@ -197,20 +198,19 @@ export class SignupComponent implements OnInit {
           console.log(responnse);
         }, (err) => {
           console.log('error during post is ', err);
-          this.registerAlert = {success: err.error.success, msg:err.error.msg};
-
+          this._alertService.error(err.error.msg);
         });
 
         // REDIRECT
         this.router.navigate(['login']);
       }, (err) => {
         console.log('error during post is ', err);
-        this.registerAlert = {success: err.error.success, msg:err.error.msg};
+        this._alertService.error(err.error.msg);
       })
     } else {
 
       console.log('formulario invalido');
-      this.registerAlert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
+      this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }
 }

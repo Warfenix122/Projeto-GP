@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service'
 import {User} from '../../../models/utilizadores'
-import {Router} from '@angular/router'
+import {Router, RouterModule} from '@angular/router'
   import { from } from 'rxjs';
+import { AlertService } from '../services/alert.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {Router} from '@angular/router'
 export class AproveUserComponent implements OnInit {
   utilizadores: Array<User>;
   emptyReturnMessage: string;
-  constructor(private service: UserService, private router : Router) { }
+  constructor(private service: UserService, private router : Router,private _alertService: AlertService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('role') !== "Gestor"){
@@ -22,7 +23,7 @@ export class AproveUserComponent implements OnInit {
     this.service.getDisaprovedUsers().subscribe(users=>{
       this.utilizadores = users;
       if(this.utilizadores.length === 0){
-        this.emptyReturnMessage = "Não existem utilizadores para avaliar";
+        this._alertService.success("Não existem utilizadores para avaliar");
       }
     });
   }

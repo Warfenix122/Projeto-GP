@@ -30,6 +30,8 @@ import { RecoverPasswordComponent } from './recover-password/recover-password.co
 
 import {InterceptorAutenticacao} from './Interceptor/interceptor-autenticacao';
 import { CompareValidatorDirective } from './validators/compare-validator.directive';
+import { AlertsComponent } from './alerts/alerts.component';
+import { AlertService } from './services/alert.service';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { CompareValidatorDirective } from './validators/compare-validator.direct
     MatButtonModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+
   ],
   declarations: [
     AppComponent,
@@ -61,13 +64,14 @@ import { CompareValidatorDirective } from './validators/compare-validator.direct
     PerfilComponent,
     UnauthorizedComponent,
     RecoverPasswordComponent,
-    CompareValidatorDirective
+    CompareValidatorDirective,
+    AlertsComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,
     multi: true
-  }],
-  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent],
+  },AlertsComponent],
+  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent,AproveUserComponent,AlertsComponent,RecoverPasswordComponent,UnauthorizedComponent],
 })
 export class AppModule { }

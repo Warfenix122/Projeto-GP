@@ -2,15 +2,6 @@
   <div class="col-md-10 m-auto">
     <!-- {{ formRegisto.value | json }} -->
     <!-- <form [formGroup]="formRegisto" (ngSubmit)="postData()"> -->
-    <div *ngIf="registerAlert">
-      <p *ngIf="!registerAlert.success">
-        <ngb-alert type="danger">{{ registerAlert.msg }}</ngb-alert>
-      </p>
-      <p *ngIf="registerAlert.success">
-        <ngb-alert type="success">{{ registerAlert.msg }}</ngb-alert>
-      </p>
-    </div>
-
     <mat-horizontal-stepper labelPosition="bottom">
       <mat-step label="Registar 1/2" [stepControl]="formRegisto">
         <form [formGroup]="formRegisto">
