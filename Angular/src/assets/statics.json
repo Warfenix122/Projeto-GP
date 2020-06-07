@@ -12,7 +12,7 @@
     "Saúde",
     "Social"
   ],
-  "generos": ["Masculino","Feminino","Outros"],
+  "generos": ["Masculino","Feminino","Outro"],
   "tipoUtilizadores": ["Voluntario Interno", "Voluntario Externo"],
   "fomação": ["Estudante", "Administrativo", "Docente"],
   "distritos": [

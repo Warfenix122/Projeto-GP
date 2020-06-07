@@ -30,6 +30,7 @@ import { RecoverPasswordComponent } from './recover-password/recover-password.co
 
 import {InterceptorAutenticacao} from './Interceptor/interceptor-autenticacao';
 import { CompareValidatorDirective } from './validators/compare-validator.directive';
+import { AlterPasswordComponent } from './alter-password/alter-password.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { CompareValidatorDirective } from './validators/compare-validator.direct
     PerfilComponent,
     UnauthorizedComponent,
     RecoverPasswordComponent,
-    CompareValidatorDirective
+    CompareValidatorDirective,
+    AlterPasswordComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -44,7 +44,6 @@ export class RecoverPasswordComponent implements OnInit {
         this.alert = {success: err.error.success, msg:err.error.msg};
       });
     } else {
-      console.log('formulario invalido');
       this.alert = {success:false, msg:"Não preencheu todos os campos obrigatórios"};
     }
   }
