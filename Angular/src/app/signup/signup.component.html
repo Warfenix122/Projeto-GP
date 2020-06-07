@@ -130,17 +130,15 @@
       <mat-step label="Informações" [stepControl]="formPreferencias">
         <form [formGroup]="formPreferencias">
           <div>
-            <div class="col">
-              <label for="tipoMembro">Tipo de membro:</label>
-              <select class="form-control" id="tipoMembro" name="tipoMembro" formControlName="tipoMembro">
-                <option *ngFor="let tipo of tiposMembro; let i = index" [ngValue]="tipo">{{ tipo }}</option>
-              </select>
-              <div *ngIf="
-                  tipoMembro.invalid && (tipoMembro.dirty || tipoMembro.touched)
-                " class="alert alert-danger">
-                <div *ngIf="tipoMembro.errors.required">
-                  O tipo membro tem de ser selecionado
-                </div>
+            <label for="tipoMembro">Tipo de membro:</label>
+            <select class="form-control" id="tipoMembro" name="tipoMembro" formControlName="tipoMembro">
+              <option *ngFor="let tipo of tiposMembro; let i = index" [ngValue]="tipo">{{ tipo }}</option>
+            </select>
+            <div *ngIf="
+                tipoMembro.invalid && (tipoMembro.dirty || tipoMembro.touched)
+              " class="alert alert-danger">
+              <div *ngIf="tipoMembro.errors.required">
+                O tipo membro tem de ser selecionado
               </div>
             </div>
             <div class="col">
@@ -178,7 +176,7 @@
               <!-- </div> -->
             </div>
           </div>
-          <div class="row align-items-center">
+          <div class="align-items-center">
             <mat-checkbox labelPosition="after" formGroupName="RGPD" name="RGPD" (change)="RGPDchecked($event)">Li a
               aceito a Política de Privacidade e Proteção de Dados</mat-checkbox>
             <div *ngIf="RGPD.invalid && (RGPD.dirty || RGPD.touched)" class="alert alert-danger">
