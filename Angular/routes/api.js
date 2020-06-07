@@ -77,13 +77,17 @@ router.post("/register", (req, res) => {
 });
 
 //Confirm Account
-router.put("/confirmAccount/:id", (req, res) => {
-  let id = req.params.id;
-  User.findOne({ utilizadorId: id }).then((user) => {
+router.get("/confirmAccount/:email", async (req, res) => {
+  let email = req.params.email;
+  console.log(req.params);
+  User.findOne({ email: email }).then((user) => {
     if(user){
+      console.log("yey fez!");
       user.contaConfirmada = true;
       user.save();
       res.redirect('/login');
+    }else {
+      console.log("cucu deu merda");
     }
   });
 });
