@@ -82,13 +82,12 @@ router.get("/confirmAccount/:email", async (req, res) => {
   console.log(req.params);
   User.findOne({ email: email }).then((user) => {
     if(user){
-      console.log("yey fez!");
       user.contaConfirmada = true;
       user.save();
-      res.redirect('/login');
+      res.redirect('/login')
     }else {
-      console.log("cucu deu merda");
-    }
+      //ToDo
+    } 
   });
 });
 

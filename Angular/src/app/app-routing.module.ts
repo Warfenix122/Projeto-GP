@@ -21,7 +21,8 @@ const routes: Routes = [
   { path: 'ips_signup', component: InternalUserSignupComponent },
   { path: 'profile', component: PerfilComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: 'recover', component: RecoverPasswordComponent }
+  { path: 'recover', component: RecoverPasswordComponent },
+  { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 
 @NgModule({
