@@ -21,16 +21,31 @@ export class AproveUserComponent implements OnInit {
       this.router.navigate(['unauthorized']);
      }
     this.service.getDisaprovedUsers().subscribe(users=>{
-      this.utilizadores = users;
-      if(this.utilizadores.length === 0){
-        this._alertService.success("Não existem utilizadores para avaliar");
-      }
+      this.updateUsers(users);
     });
   }
 
+  updateUsers(users){
+    this.utilizadores = users;
+    if(this.utilizadores.length === 0){
+      this.emptyReturnMessage = "Não existem utilizadores para avaliar";
+    }
+  }
+
+  removeUser(user){
+    let removeI = 0;
+    this.utilizadores.forEach((elem, index) => {
+      if(elem.email == user.email){
+        removeI = index;
+        return;
+      }
+    });
+    this.utilizadores.splice(removeI, 1);
+  }
+
   avaliarUtilizador(utilizador,avaliacao){
-    this.service.aproveUser(utilizador,avaliacao).subscribe(res=>{
-      console.log(res);
+    this.service.aproveUser(utilizador,avaliacao).subscribe(user =>{
+      this.removeUser(user);
     });
   }
 

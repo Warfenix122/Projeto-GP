@@ -50,7 +50,7 @@ export class UserService {
 
   aproveUser(user, avaliacao) {
     user.aprovado = avaliacao;
-    return this.http.post("/api/avaliarUser", user);
+    return this.http.post<User>("/api/avaliarUser", user);
   }
 
   editUser(formData) {
