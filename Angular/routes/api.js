@@ -176,8 +176,10 @@ router.post("/avaliarUser", (req, res) => {
   const aprovado = req.body.aprovado;
   user = User.updateOne({ email: email }, { aprovado: aprovado }, function (err, doc) {
     if (err) res.status(500).send({ error: err });
-    return res.status(200).send("Utilizador Aprovado com Sucesso!");
-  });
+    User.findOne({email: email}).then((user) => {
+      res.json(user);
+    })
+  })
 });
 
 
