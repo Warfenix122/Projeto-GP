@@ -24,7 +24,8 @@ const routes: Routes = [
   { path: 'profile', component: PerfilComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'recover', component: RecoverPasswordComponent },
-  { path: 'alterPassword', component: AlterPasswordComponent }
+  { path: 'alterPassword', component: AlterPasswordComponent },
+  { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 
 @NgModule({

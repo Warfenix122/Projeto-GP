@@ -31,7 +31,7 @@ export class RecoverPasswordComponent implements OnInit {
       let formbody = { ... this.formIPS.value, password: pass };
       this.service.alterPassword(formbody).subscribe((res) => {
         // Send Email
-        this.emailService.sendEmail(formbody.email, "Password", "Password: " + pass).subscribe((responnse) => {
+        this.emailService.sendRecoverPasswordEmail(formbody.email, pass).subscribe((responnse) => {
         }, (err) => {
           console.log('error during post is ', err);
         });

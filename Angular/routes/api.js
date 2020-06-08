@@ -16,7 +16,6 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), (req,
   res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!" });
 });
 
-
 //Register handle
 router.post("/register", (req, res) => {
   const {
@@ -75,6 +74,21 @@ router.post("/register", (req, res) => {
     }
   });
   //}
+});
+
+//Confirm Account
+router.get("/confirmAccount/:email", async (req, res) => {
+  let email = req.params.email;
+  console.log(req.params);
+  User.findOne({ email: email }).then((user) => {
+    if(user){
+      user.contaConfirmada = true;
+      user.save();
+      res.redirect('/login')
+    }else {
+      //ToDo
+    }
+  });
 });
 
 //Login handle
@@ -208,5 +222,54 @@ router.post("/alter_password", (req, res) => {
       next(err);
     });
 })
+
+//// EMAILS
+router.post("/sendEmail", (req, res) => {
+  let to = req.body.to;
+  let subject = req.body.subject;
+  let content = req.body.content;
+  email.sendEmail(to, subject, content);
+})
+
+router.post("/sendConfirmationEmail", (req, res) => {
+  let body = req.body.body;
+  let to = body.email;
+  let nome = body.nome;
+  let id;
+  User.findOne({ email: to }).then((user) => {
+    if(user){
+      id = user.utilizadorId;
+      email.sendConfirmationEmail(to, nome, id);
+    }
+  });
+})
+
+router.post("/sendRecoverPasswordEmail", (req, res) => {
+  let to = req.body.to;
+  let password = req.body.password;
+  email.sendRecoverPasswordEmail(to, password);
+})
+
+router.post("/sendConfirmProjectEmail", (req, res) => {
+  let to = req.body.to;
+  email.sendConfirmProjectEmail(to);
+})
+
+router.post("/sendChangesInProjectEmail", (req, res) => {
+  let to = req.body.to;
+  email.sendChangesInProjectEmail(to);
+})
+
+router.post("/sendProjectGuidelinesEmail", (req, res) => {
+  let to = req.body.to;
+  email.sendProjectGuidelinesEmail(to);
+})
+
+router.post("/sendQRCodeEmail", (req, res) => {
+  let to = req.body.to;
+  let attachment = req.body.attachment;
+  email.sendQRCodeEmail(to, attachment);
+})
+
 
 module.exports = router;

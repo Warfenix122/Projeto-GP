@@ -1,4 +1,5 @@
 const sgMail = require('@sendgrid/mail');
+const mustache = require('mustache');
 var fs = require("fs");
 const EMAIL = "ips.voluntatiado.noreplay@gmail.com";
 const api_key = require("./keys").SENDGRID_API_KEY;
@@ -6,11 +7,17 @@ sgMail.setApiKey(api_key);
 console.log(api_key)
 
 module.exports.sendEmail = function send(to, subject, content) {
-  var htmlEmailTemplate = content;
+  var htmlEmailTemplate;
   try {
-    htmlEmailTemplate = fs.readFileSync("./templates/" + subject + ".html", "utf-8", function (err) {
-      console.log(err)
-    });
+    let mustachPath = "./templates/" + subject + ".mustache";
+    if(fs.existsSync(mustachPath)){
+      let data = fs.readFileSync(mustachPath);
+      htmlEmailTemplate = mustache.render(data.toString(), content);
+    } else {
+      htmlEmailTemplate = fs.readFileSync("./templates/" + subject + ".html", "utf-8", function (err) {
+        console.log(err)
+      });
+    }
   } catch (err) {
     console.log(err)
   };
@@ -28,12 +35,14 @@ module.exports.sendEmail = function send(to, subject, content) {
   });
 };
 
-module.exports.sendConfirmationEmail = function send(email) {
-  this.sendEmail(email, "Confirmation Email");
+module.exports.sendConfirmationEmail = function send(email, nome) {
+  var ip = "localhost";
+  var port = "4200";
+  this.sendEmail(email, "Confirmation Email", {nome: nome, email: email, ip: ip, port: port});
 };
 
-module.exports.sendRecoverPasswordEmail = function send(email) {
-  this.sendEmail(email, "Recover Password", password);
+module.exports.sendRecoverPasswordEmail = function send(email, password) {
+  this.sendEmail(email, "Recover Password", {password: password});
 };
 
 module.exports.sendConfirmProjectEmail = function send(email) {
