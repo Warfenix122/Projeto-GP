@@ -2,7 +2,7 @@ const email = require('../config/sender.js');
 const express = require("express");
 const router = express.Router();
 
-
+//// EMAILS
 router.post("/sendEmail", (req, res) => {
   let to = req.body.to;
   let subject = req.body.subject;
@@ -12,12 +12,16 @@ router.post("/sendEmail", (req, res) => {
 
 router.post("/sendConfirmationEmail", (req, res) => {
   let to = req.body.to;
-  email.sendConfirmationEmail(to);
+  let nome = req.body.nome;
+
+  email.sendConfirmationEmail(to, nome);
+
 })
 
 router.post("/sendRecoverPasswordEmail", (req, res) => {
   let to = req.body.to;
-  email.sendRecoverPasswordEmail(to);
+  let password = req.body.password;
+  email.sendRecoverPasswordEmail(to, password);
 })
 
 router.post("/sendConfirmProjectEmail", (req, res) => {
@@ -40,5 +44,6 @@ router.post("/sendQRCodeEmail", (req, res) => {
   let attachment = req.body.attachment;
   email.sendQRCodeEmail(to, attachment);
 })
+
 
 module.exports = router;

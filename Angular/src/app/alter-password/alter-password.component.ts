@@ -7,6 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { EmailSenderService } from '../services/email-sender.service';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-alter-password',
@@ -15,7 +16,7 @@ import { EmailSenderService } from '../services/email-sender.service';
 })
 export class AlterPasswordComponent implements OnInit {
 
-  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router) { }
+  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) { }
 
 
   formPassword = this._fb.group({
@@ -36,7 +37,7 @@ export class AlterPasswordComponent implements OnInit {
       this.userService.alterPassword(formbody).subscribe((res) => {
         this.router.navigate(['/profile']);
       }, (err) => {
-        console.log('error during post is ', err);
+        this._alertService.error("Não preencheu todos os campos obrigatórios");
       }, () => {
 
       });

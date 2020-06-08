@@ -1,5 +1,4 @@
 import { Component, AfterViewInit, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({

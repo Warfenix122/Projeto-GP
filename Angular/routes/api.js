@@ -79,13 +79,12 @@ router.post("/register", (req, res) => {
 //Confirm Account
 router.get("/confirmAccount/:email", async (req, res) => {
   let email = req.params.email;
-  console.log(req.params);
   User.findOne({ email: email }).then((user) => {
-    if(user){
+    if (user) {
       user.contaConfirmada = true;
       user.save();
       res.redirect('/login')
-    }else {
+    } else {
       //ToDo
     }
   });
@@ -93,26 +92,26 @@ router.get("/confirmAccount/:email", async (req, res) => {
 
 //Login handle
 router.post("/login", (req, res, next) => {
-  // passport.authenticate("local", {
-  //   successRedirect: "/dashboard",
-  //   failureRedirect: "/users/login",
-  //   failureFlash: true,
-  // })(req, res, next);
   const password = req.body.password.toString();
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        res.status(401).json({ success: false, msg: "Utilizador não encontrado, porfavor verifique o seu mail e password" });
+        res.status(401).json({ success: false, msg: "Utilizador não encontrado, por favor verifique o seu mail e password" });
       }
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) throw err;
-        if (isMatch && user.aprovado === "Aprovado") {
-          const tokenObject = utils.issueJWT(user);
-          res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires });
-        } else {
-          res.status(401).json({ success: false, msg: "Password Incorreta" });
-        }
-      });
+      if (user.contaConfirmada) {
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+          if (err) throw err;
+          if (isMatch && user.aprovado === "Aprovado") {
+            const tokenObject = utils.issueJWT(user);
+            res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires });
+          } else {
+            res.status(401).json({ success: false, msg: "Password Incorreta" });
+          }
+        });
+      } else {
+        res.status(401).json({ success: false, msg: "A sua conta ainda não foi confirmada/validade" });
+
+      }
     })
     .catch((err) => {
       next(err);
@@ -189,7 +188,7 @@ router.post("/avaliarUser", (req, res) => {
   const email = req.body.email;
   const aprovado = req.body.aprovado;
   user = User.updateOne({ email: email }, { aprovado: aprovado }, function (err, doc) {
-    if (err) res.status(500).send({ error: err });
+    if (err) res.status(500).json({ success: false, msg: 'Erro a aprovar Utilizador'});
     return res.status(200).send("Utilizador Aprovado com Sucesso!");
   });
 });
@@ -197,78 +196,29 @@ router.post("/avaliarUser", (req, res) => {
 
 
 router.post("/alter_password", (req, res) => {
-  console.log(req.body)
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         res.status(401).json({ success: false, msg: "Utilizador não encontrado, porfavor verifique o seu email" });
-      }else{
+      } else {
         bcrypt.genSalt(10, (err, salt) =>
-        bcrypt.hash(req.body.password, salt, (err, hash) => {
-          if (err) throw err;
-          //set Password to hashed
-          user.password = hash;
-          //save user
-          user
-            .save()
-            .then((user) => {
-              res.status(200).json({ success: true, user: user });
-            })
-        })
-      );
+          bcrypt.hash(req.body.password, salt, (err, hash) => {
+            if (err) throw err;
+            //set Password to hashed
+            user.password = hash;
+            //save user
+            user
+              .save()
+              .then((user) => {
+                res.status(200).json({ success: true, user: user });
+              })
+          })
+        );
       }
     })
     .catch((err) => {
       next(err);
     });
-})
-
-//// EMAILS
-router.post("/sendEmail", (req, res) => {
-  let to = req.body.to;
-  let subject = req.body.subject;
-  let content = req.body.content;
-  email.sendEmail(to, subject, content);
-})
-
-router.post("/sendConfirmationEmail", (req, res) => {
-  let body = req.body.body;
-  let to = body.email;
-  let nome = body.nome;
-  let id;
-  User.findOne({ email: to }).then((user) => {
-    if(user){
-      id = user.utilizadorId;
-      email.sendConfirmationEmail(to, nome, id);
-    }
-  });
-})
-
-router.post("/sendRecoverPasswordEmail", (req, res) => {
-  let to = req.body.to;
-  let password = req.body.password;
-  email.sendRecoverPasswordEmail(to, password);
-})
-
-router.post("/sendConfirmProjectEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendConfirmProjectEmail(to);
-})
-
-router.post("/sendChangesInProjectEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendChangesInProjectEmail(to);
-})
-
-router.post("/sendProjectGuidelinesEmail", (req, res) => {
-  let to = req.body.to;
-  email.sendProjectGuidelinesEmail(to);
-})
-
-router.post("/sendQRCodeEmail", (req, res) => {
-  let to = req.body.to;
-  let attachment = req.body.attachment;
-  email.sendQRCodeEmail(to, attachment);
 })
 
 

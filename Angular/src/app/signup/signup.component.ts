@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
   formInformacao = this._fb.group({
     nome: new FormControl('', [Validators.required]),
     dataNascimento: new FormControl('', [Validators.required]),
-    genero: new FormControl('',[Validators.required]),
+    genero: new FormControl('', [Validators.required]),
     numeroTelefone: new FormControl(''),
     distrito: new FormControl(''),
     concelho: new FormControl(''),
@@ -93,7 +93,7 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  generoSelecionado(e){
+  generoSelecionado(e) {
     this.genero.setValue(e.target.value, {
       onlySelf: true,
     })
@@ -117,16 +117,16 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  RGPDchecked(e){
+  RGPDchecked(e) {
 
-    if(e.checked){
+    if (e.checked) {
       this.RGPD.setValue(true);
-    }else{
+    } else {
       this.RGPD.setValue(false);
     }
   }
 
-  get genero(){
+  get genero() {
     return this.formInformacao.get("genero");
   }
 
@@ -182,33 +182,27 @@ export class SignupComponent implements OnInit {
       }
     });
     this.selectedAreasError = this.selectedAreas.length > 0 ? false : true;
-    console.log(this.selectedAreas);
+
   }
 
   postData() {
-    console.log(this.RGPD.value);
     if (this.formRegisto.valid && this.formInformacao.valid && this.formPreferencias.valid) {
       const selectedAreas = this.selectedAreas;
-      let formbody = { ...this.formRegisto.value, ...this.formInformacao.value,...this.formPreferencias.value,selectedAreas };
-      console.log(formbody);
+      let formbody = { ...this.formRegisto.value, ...this.formInformacao.value, ...this.formPreferencias.value, selectedAreas };
       this.userService.register(formbody).subscribe((res) => {
-        console.log(res);
-        // Send Email
-        this.emailService.sendConfirmationEmail(formbody).subscribe((response) => {
-        }, (err) => {
-          console.log('error during post is ', err);
-          this._alertService.error(err.error.msg);
-        });
-
-        // REDIRECT
+        if (formbody.tipoMembro === 'Voluntario Interno') {
+          this.emailService.sendConfirmationEmail(formbody.email, formbody.nome).subscribe((response) => {
+          }, (err) => {
+            this._alertService.error(err.error.msg);
+          });
+        }
         this.router.navigate(['login']);
-      }, (err) => {
-        console.log('error during post is ', err);
-        this._alertService.error(err.error.msg);
-      })
-    } else {
+        this._alertService.success("Conta criada com sucesso. Por favor aguarde aprovação!");
 
-      console.log('formulario invalido');
+      }, (err) => {
+        this._alertService.error(err.error.msg);
+      });
+    } else {
       this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }

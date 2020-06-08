@@ -30,7 +30,7 @@ export class AproveUserComponent implements OnInit {
 
   avaliarUtilizador(utilizador,avaliacao){
     this.service.aproveUser(utilizador,avaliacao).subscribe(res=>{
-      console.log(res);
+      this._alertService.success("Utilizador Aprovado!");
     });
   }
 

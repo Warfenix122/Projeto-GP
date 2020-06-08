@@ -12,8 +12,8 @@ export class EmailSenderService {
     return this.http.post('/api/sendEmail', { 'to': to, 'subject': subject, 'content': content });
   }
 
-  sendConfirmationEmail(body: string) {
-    return this.http.post('/api/sendConfirmationEmail', { 'body': body });
+  sendConfirmationEmail(to: string, name: string) {
+    return this.http.post('/api/sendConfirmationEmail', { 'to': to, 'name': name });
   }
 
   sendRecoverPasswordEmail(to, password) {

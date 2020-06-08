@@ -35,17 +35,12 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.valid) {
       this.service.login(this.formLogin.value).subscribe((res) => {
         this.authService.setLocalStorage(res);
-        // this.loginAlert = {success: true, msg:"Login Efetuado"};
-        // debounceTime(5000);
         this.router.navigate(["/"]);
       }, (err) => {
-        console.log('error during post is ', err);
-        // this.loginAlert = {success: err.error.success, msg:err.error.msg};
         this._alertService.error(err.error.msg);
       });
 
     } else {
-      console.log('formulario invalido');
       this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }

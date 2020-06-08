@@ -12,7 +12,7 @@ import { AlertService } from '../services/alert.service';
 export class InternalUserSignupComponent implements OnInit {
 
 
-  constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router,private _alertService:AlertService) {
+  constructor(private service: UserService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
 
   formIPS = this._fb.group({
@@ -32,20 +32,24 @@ export class InternalUserSignupComponent implements OnInit {
       this.service.register(formbody).subscribe((res) => {
 
         // Send Email
+        this.emailService.sendConfirmationEmail(formbody.email, formbody.nome).subscribe((response) => {
+        }, (err) => {
+          this._alertService.error(err.error.msg);
+        });
+
+
         this.emailService.sendEmail(formbody.email, "Password", "Password: " + pass).subscribe((responnse) => {
         }, (err) => {
-          console.log('error during post is ', err);
+          this._alertService.error(err.error.msg);
         });
 
 
         // REDIRECT
         this.router.navigate(['login']);
       }, (err) => {
-        console.log('error during post is ', err);
         this._alertService.error(err.error.msg);
       });
     } else {
-      console.log('formulario invalido');
       this._alertService.error("Formulário Invalido");
     }
   }
@@ -58,7 +62,6 @@ export class InternalUserSignupComponent implements OnInit {
       endpass += asci % 10;
 
     }
-    console.log(endpass);
     return endpass;
   }
 

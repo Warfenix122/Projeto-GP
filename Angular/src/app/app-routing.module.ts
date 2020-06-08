@@ -9,7 +9,6 @@ import { InternalUserSignupComponent } from './internal-user-signup/internal-use
 import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
-import { AlertsComponent } from './alerts/alerts.component';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
 
 

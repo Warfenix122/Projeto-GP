@@ -33,17 +33,15 @@ export class RecoverPasswordComponent implements OnInit {
         // Send Email
         this.emailService.sendRecoverPasswordEmail(formbody.email, pass).subscribe((responnse) => {
         }, (err) => {
-          console.log('error during post is ', err);
+          this._alertService.error(err.error.msg);
         });
 
         // REDIRECT
         this.router.navigate(['login']);
       }, (err) => {
-        console.log('error during post is ', err);
         this._alertService.error(err.error.msg);
       });
     } else {
-      console.log('formulario invalido');
       this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }
@@ -56,7 +54,6 @@ export class RecoverPasswordComponent implements OnInit {
       endpass += asci % 10;
 
     }
-    console.log(endpass);
     return endpass;
   }
 

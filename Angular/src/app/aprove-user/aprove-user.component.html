@@ -1,11 +1,15 @@
 <div class="row mt-5">
-  <div class="col-md-10 m-auto">
-    <ul style="list-style-type: none;">
-      <li *ngFor="let utilizador of utilizadores; let i = index">
-        {{utilizador.nome}} | {{utilizador.email}}
-        <button id="aproveButton" type="button" class="btn btn-success" (click)="avaliarUtilizador(utilizador,'Aprovado')">Aprovar</button>
-        <button id="recuseButton" type="button" class="btn btn-danger" (click)="avaliarUtilizador(utilizador,'Recusado')">Recusar</button>
-      </li>
-    </ul>
+  <div class="col-md-10 m-auto container">
+    <div *ngFor="let utilizador of utilizadores; let i = index" class="row mt-2 justify-content-between ">
+      <div class="col-6"> {{utilizador.nome}} | {{utilizador.email}} </div>
+      <div class="col-2 ">
+        <button class="btn btn-success" id="aproveButton"
+          (click)="avaliarUtilizador(utilizador,'Aprovado')">Aprovar</button>
+      </div>
+      <div class="col-2 ">
+        <button class=" btn btn-danger" id="recuseButton"
+          (click)="avaliarUtilizador(utilizador,'Recusado')">Recusar</button>
+      </div>
+    </div>
   </div>
 </div>

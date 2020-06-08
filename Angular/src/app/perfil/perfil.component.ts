@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { User } from '../../../models/utilizadores';
 import { FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { EmailSenderService } from '../services/email-sender.service';
-
 
 import statics from '../../assets/statics.json';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-perfil',
@@ -29,7 +26,7 @@ export class PerfilComponent implements OnInit {
   @ViewChild('dataCriacao') dataCriacao: ElementRef;
   @ViewChild('email') email: ElementRef;
 
-  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router) {
+  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
   oldForm: any;
   formProfile = this._fb.group({
@@ -76,7 +73,7 @@ export class PerfilComponent implements OnInit {
       this.email.nativeElement.innerHTML = user.email;
       this.oldForm = this.formProfile.value;
     }, (err) => {
-      console.log('error during post is ', err);
+      this._alertService.error(err.error.msg);
     });
 
 
@@ -107,16 +104,15 @@ export class PerfilComponent implements OnInit {
       }
 
       formbody['email'] = this.email.nativeElement.innerHTML;
-      console.log(formbody)
       this.userService.editUser(formbody).subscribe((res) => {
-        console.log(res);
+        this._alertService.success("Alterações Guardadas!");
       }, (err) => {
-        console.log('error during post is ', err);
+        this._alertService.error(err.error.msg);
       }, () => {
 
       });
     } else {
-      console.log('formulario invalido');
+      this._alertService.error('Formulário Invalido');
     }
   }
 }
