@@ -48,14 +48,12 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.service.eventIsLoggedIn.subscribe(isLoggedIn => {
-      if (isLoggedIn) {
+    if (localStorage.getItem('token')) {
         this.displayLoggedInNav();
-      }
-      else {
-        this.displayLoggedOutNav();
-      }
-    });
+    }
+    else {
+      this.displayLoggedOutNav();
+    }
     this.service.eventRole.subscribe(event => {
       if (event === 'Gestor') {
         this.displayAprove();
