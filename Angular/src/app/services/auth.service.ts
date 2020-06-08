@@ -8,6 +8,7 @@ import { Router, NavigationEnd } from '@angular/router';
 export class AuthService {
   mySubscription: any;
   @Output() eventIsLoggedIn: EventEmitter<boolean> = new EventEmitter();
+  @Output() eventRole: EventEmitter<string> = new EventEmitter();
 
   constructor(private router: Router) { }
 
@@ -18,6 +19,7 @@ export class AuthService {
     localStorage.setItem('expires', JSON.stringify(expires.valueOf()));
     localStorage.setItem('role', userRole);
     this.eventIsLoggedIn.emit(true);
+    this.eventRole.emit(userRole);
   }
 
   isLoggedIn() {
@@ -26,6 +28,10 @@ export class AuthService {
 
   isLoggedout() {
     return !this.isLoggedIn();
+  }
+
+  getRole(){
+    return localStorage.getItem('role');
   }
 
   getExpiration() {
@@ -42,6 +48,9 @@ export class AuthService {
     localStorage.removeItem('role');
     this.eventIsLoggedIn.emit(false);
     this.router.navigate(['/']);
+    this.eventIsLoggedIn.emit(false);
+    this.eventRole.emit('');
+
   }
 
 }

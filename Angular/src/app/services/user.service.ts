@@ -37,7 +37,7 @@ export class UserService {
   }
 
   alterPassword(formData) {
-    return this.http.post('/api/recover_password', formData, {
+    return this.http.post('/api/alter_password', formData, {
       observe: 'body',
       withCredentials: true,
       headers: new HttpHeaders().append('Content-Type', 'application/json')

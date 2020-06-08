@@ -10,6 +10,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 import { AlertsComponent } from './alerts/alerts.component';
+import { AlterPasswordComponent } from './alter-password/alter-password.component';
 
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'ips_signup', component: InternalUserSignupComponent },
   { path: 'profile', component: PerfilComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: 'recover', component: RecoverPasswordComponent }
+  { path: 'recover', component: RecoverPasswordComponent },
+  { path: 'alterPassword', component: AlterPasswordComponent }
 ];
 
 @NgModule({

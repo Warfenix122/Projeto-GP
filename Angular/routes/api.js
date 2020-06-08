@@ -180,12 +180,14 @@ router.post("/avaliarUser", (req, res) => {
   });
 });
 
-router.post("/recover_password", (req, res) => {
+
+
+router.post("/alter_password", (req, res) => {
+  console.log(req.body)
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         res.status(401).json({ success: false, msg: "Utilizador não encontrado, porfavor verifique o seu email" });
-        console.log("entrou aqui");
       }else{
         bcrypt.genSalt(10, (err, salt) =>
         bcrypt.hash(req.body.password, salt, (err, hash) => {

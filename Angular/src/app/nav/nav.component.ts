@@ -10,15 +10,33 @@ import { AuthService } from '../services/auth.service';
 export class NavComponent implements AfterViewInit {
   @ViewChild('logout') logout: ElementRef;
   @ViewChild('logged') logged: ElementRef;
+  @ViewChild('aprove') aprove: ElementRef;
+  roleType: any;
   constructor(private service: AuthService) {
     service.eventIsLoggedIn.subscribe(isLoggedIn => {
-      if(isLoggedIn)
+      if (isLoggedIn) {
         this.displayLoggedInNav();
-      else
+      }
+      else {
         this.displayLoggedOutNav();
+      }
+    });
+    service.eventRole.subscribe(event => {
+      if (event === 'Gestor') {
+        this.displayAprove();
+      }
+      else {
+        this.hideAprove();
+      }
     });
   }
 
+  displayAprove() {
+    this.aprove.nativeElement.style.display = 'block';
+  }
+  hideAprove() {
+    this.aprove.nativeElement.style.display = 'none';
+  }
   displayLoggedInNav(): void {
     this.logged.nativeElement.style.display = 'block';
     this.logout.nativeElement.style.display = 'none';
@@ -30,16 +48,25 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-    if (localStorage.getItem('token')) {
-      this.displayLoggedInNav();
-    } else {
-      this.displayLoggedOutNav();
-
-    }
+    this.service.eventIsLoggedIn.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.displayLoggedInNav();
+      }
+      else {
+        this.displayLoggedOutNav();
+      }
+    });
+    this.service.eventRole.subscribe(event => {
+      if (event === 'Gestor') {
+        this.displayAprove();
+      }
+      else {
+        this.hideAprove();
+      }
+    });
   }
 
   logOut() {
-    this.service.logout(); 
+    this.service.logout();
   }
 }

@@ -32,6 +32,7 @@ import {InterceptorAutenticacao} from './Interceptor/interceptor-autenticacao';
 import { CompareValidatorDirective } from './validators/compare-validator.directive';
 import { AlertsComponent } from './alerts/alerts.component';
 import { AlertService } from './services/alert.service';
+import { AlterPasswordComponent } from './alter-password/alter-password.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { AlertService } from './services/alert.service';
     UnauthorizedComponent,
     RecoverPasswordComponent,
     CompareValidatorDirective,
-    AlertsComponent
+    AlertsComponent,
+    AlterPasswordComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
