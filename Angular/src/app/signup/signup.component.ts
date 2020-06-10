@@ -190,17 +190,21 @@ export class SignupComponent implements OnInit {
       const selectedAreas = this.selectedAreas;
       let formbody = { ...this.formRegisto.value, ...this.formInformacao.value, ...this.formPreferencias.value, selectedAreas };
       this.userService.register(formbody).subscribe((res) => {
+        let successMsg = "";
         if (formbody.tipoMembro === 'Voluntario Interno') {
           this.emailService.sendConfirmationEmail(formbody.email, formbody.nome).subscribe((response) => {
           }, (err) => {
             this._alertService.error(err.error.msg);
           });
+          this.router.navigate(['login']);
+          this._alertService.warning("Recebeu um email para completar o registo da sua conta. Complete o registo clicando no botão 'Completar registo' no email recebido.");
+        } else {
+          this.router.navigate(['login']);
+          this._alertService.success("Conta criada com sucesso. Por favor aguarde aprovação!");
         }
-        this.router.navigate(['login']);
-        this._alertService.success("Conta criada com sucesso. Por favor aguarde aprovação!");
-
       }, (err) => {
-        this._alertService.error(err.error.msg);
+        if(err.statusText == "Conflict")
+          this._alertService.error("Já existe um utilizador com esse email. Por favor use outro email para continuar.");
       });
     } else {
       this._alertService.error("Não preencheu todos os campos obrigatórios");

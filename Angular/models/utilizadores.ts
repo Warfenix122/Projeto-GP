@@ -9,7 +9,7 @@ export class User {
   entidades:[number];
   dataCriacao: Date;
   fotoPerfilCaminho: String;
-  projetosFavoritos: [number];
+  projetosFavoritos: [string];
   areasInteresse:[{type: string}];
   distrito: String;
   concelho: String;

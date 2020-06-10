@@ -9,8 +9,12 @@ const path = require('path');
 const User = require('../models/mongoConnection').Utilizadores;
 router = require("./email");
 
+const projectAPI = require("./project");
+
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
+
+router.use('/project', projectAPI);
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!" });
@@ -109,8 +113,12 @@ router.post("/login", (req, res, next) => {
           }
         });
       } else {
-        res.status(401).json({ success: false, msg: "A sua conta ainda não foi confirmada/validade" });
-
+        let msg = "";
+        if(user.tipoMembro == "Voluntario Interno")
+          msg = "Ainda não confirmou a sua conta através do email. Por favor verifique o seu email.";
+        if(user.tipoMembro == "Voluntario Externo")
+          msg = "A sua conta ainda não foi validada pelo administrador.";
+        res.status(401).json({ success: false, msg: msg });
       }
     })
     .catch((err) => {
@@ -191,7 +199,8 @@ router.post("/avaliarUser", (req, res) => {
     if (err) res.status(500).json({ success: false, msg: 'Erro a aprovar Utilizador'});
     User.findOne({email: email}).then((user) => {
       res.json(user);
-    })  });
+    })  
+  });
 });
 
 
