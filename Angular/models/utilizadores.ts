@@ -3,7 +3,7 @@ export class User {
   public email: string;
   private password: string;
   public numeroTelefone: number;
-  public dataDeNascimento: Date;
+  public dataNascimento: Date;
   public tipoMembro: String;
   aprovado: Boolean;
   entidades:[number];

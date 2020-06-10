@@ -34,7 +34,7 @@ var UtilizadorSchema = new Schema({
     enum: ["Gestor", "Voluntario Interno", "Voluntario Externo"],
   },
   aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
-  contaConfirmada : Boolean,
+  contaConfirmada: Boolean,
   entidades: [{ entidadeId: mongoose.ObjectId }],
   dataCriacao: Date,
   fotoPerfilCaminho: String,
@@ -45,7 +45,12 @@ var UtilizadorSchema = new Schema({
   concelho: String,
   escola: String,
   formacao: String,
+
 });
+var FotoSchema = new Schema({
+  foto: { data: Buffer, contentType: String },
+  userId: [mongoose.ObjectId]
+})
 
 var ProjetoSchema = new Schema({
   projetoId: mongoose.ObjectId,
@@ -93,12 +98,13 @@ var InscricaoSchema = new Schema({
   cancelado: Boolean,
 });
 
-const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema,"Utilizador");
-const Entidade = mongoose.model("Entidade", EntidadeSchema,"Entidade");
-const Inscricao = mongoose.model("Inscricao", InscricaoSchema,"Inscricao");
-const CategoriaProjeto = mongoose.model("CategoriaProjeto",CategoriaProjetoSchema,"CategoriaProjeto");
-const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema,"PublicoAlvo");
-const Projeto = mongoose.model("Projeto", ProjetoSchema,"Projeto");
+const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
+const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");
+const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
+const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSchema, "CategoriaProjeto");
+const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
+const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
+const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
 
 module.exports = {
   Utilizadores: Utilizadores,
@@ -107,4 +113,5 @@ module.exports = {
   CategoriaProjeto: CategoriaProjeto,
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
+  Foto: Foto
 };

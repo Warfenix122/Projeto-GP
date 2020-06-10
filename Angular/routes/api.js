@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const User = require('../models/mongoConnection').Utilizadores;
+const Foto = require('../models/mongoConnection').Foto;
 router = require("./email");
 
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
@@ -188,12 +189,12 @@ router.post("/avaliarUser", (req, res) => {
   const email = req.body.email;
   const aprovado = req.body.aprovado;
   user = User.updateOne({ email: email }, { aprovado: aprovado }, function (err, doc) {
-    if (err) res.status(500).json({ success: false, msg: 'Erro a aprovar Utilizador'});
-    User.findOne({email: email}).then((user) => {
+    if (err) res.status(500).json({ success: false, msg: 'Erro a aprovar Utilizador' });
+    User.findOne({ email: email }).then((user) => {
       res.json(user);
-    })  });
+    })
+  });
 });
-
 
 
 router.post("/alter_password", (req, res) => {
@@ -221,6 +222,40 @@ router.post("/alter_password", (req, res) => {
       next(err);
     });
 })
+
+var multer = require('multer');
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, callBack) => {
+    callBack(null, 'uploads')
+  },
+  filename: (req, file, callBack) => {
+    callBack(null, file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
+
+router.post('/uploadPhoto', function(req, res) {
+  upload(req, res, function(err) {
+      if (err) {
+          if (err.code === 'LIMIT_FILE_SIZE') {
+              res.json({ success: false, message: 'File size is too large. Max limit is 10MB' });
+          } else if (err.code === 'filetype') {
+              res.json({ success: false, message: 'Filetype is invalid. Must be .png' });
+          } else {
+              res.json({ success: false, message: 'Unable to upload file' });
+          }
+      } else {
+          if (!req.file) {
+              res.json({ success: false, message: 'No file was selected' });
+          } else {
+              res.json({ success: true, message: 'File uploaded!' });
+          }
+      }
+  });
+});
 
 
 module.exports = router;

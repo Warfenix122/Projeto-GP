@@ -12,7 +12,6 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   profile(token) {
-
     return this.http.post('/api/profile', { authorization: token }, {
       observe: 'body',
       withCredentials: true,
@@ -59,6 +58,16 @@ export class UserService {
       withCredentials: true,
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
+  }
+  uploadPhoto(formData) {
+    return this.http.post('/api/uploadPhoto', formData, {
+      observe: 'body',
+      withCredentials: true,
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
+  }
+  getProfilePhoto(formData) {
+    return this.http.post('/api/getPhoto', formData);
   }
 
 }
