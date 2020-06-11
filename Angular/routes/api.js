@@ -6,18 +6,22 @@ const passport = require('passport');
 var jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const Foto = require('../models/mongoConnection').Foto;
 const User = require('../models/mongoConnection').Utilizadores;
 router = require("./email");
 
 const projectAPI = require("./project");
 
+router = require("./file");
+var bodyparser = require('body-parser');
+var multer = require('multer');
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 router.use('/project', projectAPI);
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-  res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!" });
+  res.status(200).json({ success: true, message: "You are successfully authenticated to this route!" });
 });
 
 //Register handle
@@ -100,7 +104,7 @@ router.post("/login", (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        res.status(401).json({ success: false, msg: "Utilizador não encontrado, por favor verifique o seu mail e password" });
+        res.status(401).json({ success: false, message: "Utilizador não encontrado, por favor verifique o seu mail e password" });
       }
       if (user.contaConfirmada) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -109,7 +113,7 @@ router.post("/login", (req, res, next) => {
             const tokenObject = utils.issueJWT(user);
             res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires });
           } else {
-            res.status(401).json({ success: false, msg: "Password Incorreta" });
+            res.status(401).json({ success: false, message: "Password Incorreta" });
           }
         });
       } else {
@@ -196,20 +200,19 @@ router.post("/avaliarUser", (req, res) => {
   const email = req.body.email;
   const aprovado = req.body.aprovado;
   user = User.updateOne({ email: email }, { aprovado: aprovado }, function (err, doc) {
-    if (err) res.status(500).json({ success: false, msg: 'Erro a aprovar Utilizador'});
-    User.findOne({email: email}).then((user) => {
+    if (err) res.status(500).json({ success: false, message: 'Erro a aprovar Utilizador' });
+    User.findOne({ email: email }).then((user) => {
       res.json(user);
-    })  
+    })
   });
 });
-
 
 
 router.post("/alter_password", (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        res.status(401).json({ success: false, msg: "Utilizador não encontrado, porfavor verifique o seu email" });
+        res.status(401).json({ success: false, message: "Utilizador não encontrado, porfavor verifique o seu email" });
       } else {
         bcrypt.genSalt(10, (err, salt) =>
           bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -230,6 +233,5 @@ router.post("/alter_password", (req, res) => {
       next(err);
     });
 })
-
 
 module.exports = router;

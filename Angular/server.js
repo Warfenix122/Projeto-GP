@@ -10,7 +10,8 @@ const fs = require("fs");
 const cors = require("cors");
 
 var app = express();
-
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 app.use(
   cors({
     //TODO: MUDAR PARA O URL DE DEPLOYMENT

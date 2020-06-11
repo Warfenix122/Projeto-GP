@@ -10,6 +10,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'recover', component: RecoverPasswordComponent },
   { path: 'alterPassword', component: AlterPasswordComponent },
+  { path: 'editProfile', component: EditProfileComponent },
   { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 

@@ -1,66 +1,48 @@
-<div id="info" class="container p-5 m-10 ">
-  <form [formGroup]="formProfile">
-    <div class="row mb-2">
-      <label class="col-md-4">Nome</label> <input type="text" class="col-md-4 form-control" formControlName="nome" #nome
-        name="nome"> </div>
-    <div class="row mb-2">
-      <label class="col-md-4">Email</label> <span class="col-md-4" #email name="email"></span></div>
-    <div class="row mb-2">
-      <label class="col-md-4">Numero de Telefone</label> <input type="number" class="col-md-4 form-control"
-        formControlName="numeroTelefone" #numeroTelefone name="numeroTelefone"> </div>
+<div class="container p-5 m-10 ">
+  <h1>{{user.nome}}</h1>
 
-    <div class="row mb-2">
-      <label class="col-md-4">Genero</label>
-      <select class="col-md-4 form-control" id="genero" name="genero" formControlName="genero">
-        <option *ngFor="let genero of generos; let i = index" [ngValue]="genero">{{ genero }}</option>
-      </select>
-    </div>
+  <div>
+    <ul class="nav nav-tabs">
+      <li class="nav-item "><a class="nav-link active" href="#info" data-toggle="tab">Informação</a></li>
+      <li class="nav-item"><a class="nav-link" href="#project" data-toggle="tab">Projetos</a></li>
+      <li class="nav-item"><a class="nav-link" href="#question" data-toggle="tab">Questionarios</a></li>
+    </ul>
+    <div class="tab-content" id="tabs">
+      <div class="tab-pane container p-5 m-10 " id="info">
+        <div class="container d-flex justify-content-between">
+          <div class="container ">
+            <div *ngFor="let attr of userInfo">
+              <div class="row mb-2">
+                <label class="col">
+                  {{attr.key}}
+                </label>
+                <label class="col">
+                  {{attr.value}}
+                </label>
+              </div>
+            </div>
 
-    <div class="row mb-2">
-      <label class="col-md-4">Data de Nascimento </label> <input type="date" class="col-md-4 form-control"
-        formControlName="dataNascimento" #dataNascimento name="dataDeNascimento">
-    </div>
+            <button class="btn btn-primary col" [routerLink]="['/editProfile']"> Editar Informações</button>
+          </div>
+          <div class="container">
+            <div class="container-sm row mb-5 d-flex justify-content-center">
+              <img class="img-thumbnail" style="max-width:150px;width:100%" #image >
+            </div>
+            <form class="row ">
+              <input style="display: none" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
+              <button class="btn btn-dark col" (click)="fileInput.click()">Escolher Ficheiro</button>
+              <button class="btn btn-warning col " (click)="onUpload()">Upload</button></form>
 
-    <div class="row mb-2">
-      <label class="col-md-4">Distrito</label> <input #distrito name="distrito" type="text"
-        placeholder="Escolha um Distrito" class="form-control col-md-4" formControlName="distrito" MatInput
-        [matAutocomplete]="autoDistrito">
-      <mat-autocomplete #autoDistrito="matAutocomplete">
-        <mat-option *ngFor="let distrito of filteredDistritos | async" [value]="distrito">
-          {{distrito}}
-        </mat-option>
-      </mat-autocomplete>
-    </div>
-
-    <div class="row mb-2">
-      <label class="col-md-4">Concelho</label> <input type="text" placeholder="Escolha um Concelho"
-        class="form-control col-md-4" id="concelho" name="concelho" formControlName="concelho" MatInput
-        [matAutocomplete]="autoConcelho">
-      <mat-autocomplete #autoConcelho="matAutocomplete">
-        <mat-option *ngFor="let concelho of filteredConcelhos | async" [value]="concelho">
-          {{concelho}}
-        </mat-option>
-      </mat-autocomplete>
-    </div>
-
-    <div class="row mb-2">
-      <label class="col-md-4">Tipo de Utilizador</label> <span class="col-md-4 " name="tipoMembro" #tipoMembro></span>
-    </div>
-
-    <div class="row mb-2">
-      <label class="col-md-4">Data de Criação de Conta</label> <span class="col-md-4 " name="dataCriacao"
-        #dataCriacao></span>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane container p-5 m-10 " id="project">
+        <div class="container d-flex justify-content-between">projetos component</div>
+      </div>
+      <div class="tab-pane container p-5 m-10 " id="question">
+        <div class="container d-flex justify-content-between">questionario componet </div>
+      </div>
     </div>
 
 
-    <div class="row mb-2">
-      <a class="btn btn-success" (click)="updateData()"> Guardar Alteraçoes</a>
-    </div>
-
-    <div class="row mb-2">
-      <a class="btn btn-warning" [routerLink]="[ '/alterPassword' ]"> Alterar Password</a>
-    </div>
-
-  </form>
-
-</div>
+  </div>

@@ -28,12 +28,13 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
-import {InterceptorAutenticacao} from './Interceptor/interceptor-autenticacao';
+import { InterceptorAutenticacao } from './Interceptor/interceptor-autenticacao';
 import { CompareValidatorDirective } from './validators/compare-validator.directive';
 import { AlertsComponent } from './alerts/alerts.component';
 import { AlertService } from './services/alert.service';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -69,13 +70,14 @@ import { ListProjectsComponent } from './list-projects/list-projects.component';
     CompareValidatorDirective,
     AlertsComponent,
     AlterPasswordComponent,
-    ListProjectsComponent
+    ListProjectsComponent,
+    EditProfileComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,
     multi: true
-  },AlertsComponent],
-  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent,AproveUserComponent,AlertsComponent,RecoverPasswordComponent,UnauthorizedComponent],
+  }, AlertsComponent],
+  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent, AproveUserComponent, AlertsComponent, RecoverPasswordComponent, UnauthorizedComponent],
 })
 export class AppModule { }

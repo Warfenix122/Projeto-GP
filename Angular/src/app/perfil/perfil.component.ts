@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
-
+import { User } from '../../../models/utilizadores';
 import statics from '../../assets/statics.json';
 import { AlertService } from '../services/alert.service';
+import { HttpClient } from '@angular/common/http';
+import { ReadVarExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-perfil',
@@ -15,104 +17,73 @@ import { AlertService } from '../services/alert.service';
 })
 export class PerfilComponent implements OnInit {
 
-  distritos: string[] = statics.distritos;
-  concelhos: string[] = statics.Concelhos;
-  generos: string[] = statics.generos;
-
-  filteredConcelhos: Observable<string[]>;
-  filteredDistritos: Observable<string[]>;
-
-  @ViewChild('tipoMembro') type: ElementRef;
-  @ViewChild('dataCriacao') dataCriacao: ElementRef;
-  @ViewChild('email') email: ElementRef;
-
-  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
+  @ViewChild('image') img: ElementRef;
+  user: any = User;
+  userInfo: any;
+  existsImage: boolean = false;
+  file: any;
+  constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private _alertService: AlertService) {
   }
-  oldForm: any;
-  formProfile = this._fb.group({
-    nome: new FormControl(''),
-    genero: new FormControl(''),
-    dataNascimento: new FormControl(''),
-    password: new FormControl(''),
-    numeroTelefone: new FormControl(''),
-    distrito: new FormControl(''),
-    concelho: new FormControl(''),
-    tipoMembro: new FormControl(''),
-    dataCriacao: new FormControl('')
-  });
+  formImage = this._fb.group({});
 
   ngOnInit() {
-    this.filteredConcelhos = this.formProfile.get('concelho').valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterConcelho(value))
-      );
-    this.filteredDistritos = this.formProfile.get('distrito').valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterDistrito(value))
-      );
-
-
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
-
-      let user = res['user'];
-
-      this.formProfile = this._fb.group({
-        nome: new FormControl(user.nome, [Validators.required]),
-        genero: new FormControl(user.genero),
-        dataNascimento: new FormControl(user.dataNascimento),
-        password: new FormControl(''),
-        numeroTelefone: new FormControl(user.numeroTelefone),
-        distrito: new FormControl(user.distrito),
-        concelho: new FormControl(user.concelho),
-      });
-
-      this.dataCriacao.nativeElement.innerHTML = user.dataCriacao;
-      this.type.nativeElement.innerHTML = user.tipoMembro;
-      this.email.nativeElement.innerHTML = user.email;
-      this.oldForm = this.formProfile.value;
-    }, (err) => {
-      this._alertService.error(err.error.msg);
+      this.user = res['user'];
+      this.userInfo = [];
+      this.userInfo.push({ key: 'Email', value: this.user.email });
+      this.userInfo.push({ key: 'Data de Nascimento', value: this.user.dataNascimento });
+      this.userInfo.push({ key: 'Distrito', value: this.user.distrito });
+      this.userInfo.push({ key: 'Concelho', value: this.user.concelho });
+      this.userInfo.push({ key: 'Número de Telefone', value: this.user.numeroTelefone });
+      this.userInfo.push({ key: 'Data de Criação de Conta', value: this.user.dataCriacao });
+      this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
+      this.getProfilePhoto(this.user.email);
     });
 
-
-
-  }
-
-  private _filterConcelho(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.concelhos.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
-  private _filterDistrito(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.distritos.filter(option => option.toLowerCase().includes(filterValue));
   }
 
 
-  updateData() {
-    let formbody = {};
-    let form = this.formProfile.value;
-    if (this.formProfile.valid) {
-      for (const key in form) {
-        if (this.oldForm[key] !== form[key]) {
-          formbody[key] = form[key];
-        }
-      }
+  getProfilePhoto(email) {
 
-      formbody['email'] = this.email.nativeElement.innerHTML;
-      this.userService.editUser(formbody).subscribe((res) => {
-        this._alertService.success("Alterações Guardadas!");
+    const formData = { 'email': email }
+    this.userService.getProfilePhoto(formData).subscribe((res) => {
+      const src = this.arrayBufferToBase64(res['foto'].data);
+      this.img.nativeElement.src = 'data:' + res['foto'].contentType + ';base64,' + src;
+    }, (err) => {
+      this._alertService.error(err.error.msg);
+    }, () => {
+
+    });
+  }
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+    return window.btoa(binary);
+  };
+
+  onFileChanged(event) {
+    this.file = event.target.files[0];
+  }
+
+  onUpload() {
+    const formData = new FormData();
+    formData.append('email', this.user.email);
+    formData.append('file', this.file, this.file.name);
+
+    const reader = new FileReader();
+    const mail = this.user.email;
+    const userservice = this.userService;
+    const alert = this._alertService;
+    reader.onloadend = () => {
+      const src = reader.result;
+      userservice.uploadPhoto(formData).subscribe((res) => {
+        alert.success("Sucesso");
       }, (err) => {
-        this._alertService.error(err.error.msg);
-      }, () => {
-
+        alert.error(err.error.msg);
       });
-    } else {
-      this._alertService.error('Formulário Invalido');
-    }
+    };
+    reader.readAsDataURL(this.file);
+
   }
 }
