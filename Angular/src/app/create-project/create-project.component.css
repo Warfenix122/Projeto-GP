@@ -1,0 +1,15 @@
+#add-formacao{
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding : 5px 9px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+  cursor: pointer;
+  float: right;
+}
+
+.center-column{
+  margin-left: -15px;
+}

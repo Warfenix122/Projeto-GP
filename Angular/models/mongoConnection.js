@@ -28,16 +28,15 @@ var UtilizadorSchema = new Schema({
     type: String,
     enum: ["Masculino", "Feminino", "Outro"],
   },
-  dataDeNascimento: Date,
+  dataNascimento: Date,
   tipoMembro: {
     type: String,
     enum: ["Gestor", "Voluntario Interno", "Voluntario Externo"],
   },
   aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
-  contaConfirmada : Boolean,
+  contaConfirmada: Boolean,
   entidades: [{ entidadeId: mongoose.ObjectId }],
   dataCriacao: Date,
-  fotoPerfilCaminho: String,
   projetosFavoritos: [mongoose.ObjectId],
   areasInteresse: [{ type: String }],
   numeroTelefone: Number,
@@ -52,37 +51,33 @@ var ProjetoSchema = new Schema({
   nome: String,
   resumo: String,
   responsavelId: mongoose.ObjectId,
-  categorias: [{ categoriaId: mongoose.ObjectId }],
+  // categorias: [{ categoriaId: mongoose.ObjectId }],
   palavrasChave: [{ nome: String }],
   contactos: [{ contacto: String, descricao: String }],
   publicoAlvoId: mongoose.ObjectId,
-  formacoesNecessarias: [{ nome: String }],
-  logotipoCaminho: String,
-  XemXTempo: String,
-  edicoes: [
+  formacoesNecessarias: [String],
+  XemXTempo: String, // "1 vez por mes " etc..
+  aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
+  gestores: [{ gestorId: mongoose.ObjectId }], //só podem ser externos
+  comentarios: [
     {
-      aprovado: Boolean,
-      gestores: [{ gestorId: mongoose.ObjectId }],
-      comentarios: [
-        {
-          comentario: String,
-          utilizadorId: mongoose.ObjectId,
-          dataCriacao: Date,
-        },
-      ],
-      fotosCaminho: [{ caminho: String }],
-      vagas: Number,
-      horarios: [{ descricao: String, dataAcontecimento: Date }],
-      capaCaminho: String,
-      ficheirosCaminho: [{ caminho: String }],
-      projetoMes: Boolean,
+      comentario: String,
+      utilizadorId: mongoose.ObjectId,
       dataCriacao: Date,
-      dataTermino: Date,
-      dataFechoInscricoes: Date,
-      dataComeco: Date,
     },
   ],
+  vagas: Number,
+  horarios: [{ descricao: String, dataAcontecimento: Date }],
+  ficheirosCaminho: [{ caminho: String }],
+  projetoMes: Boolean,
+  dataCriacao: Date,
+  dataTermino: Date,
+  dataFechoInscricoes: Date,
+  dataComeco: Date,
+  areasInteresse: [String],   //Areas onde este projeto se enquadra
 });
+
+
 
 var InscricaoSchema = new Schema({
   inscricaoId: mongoose.ObjectId,
@@ -93,12 +88,25 @@ var InscricaoSchema = new Schema({
   cancelado: Boolean,
 });
 
-const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema,"Utilizador");
-const Entidade = mongoose.model("Entidade", EntidadeSchema,"Entidade");
-const Inscricao = mongoose.model("Inscricao", InscricaoSchema,"Inscricao");
-const CategoriaProjeto = mongoose.model("CategoriaProjeto",CategoriaProjetoSchema,"CategoriaProjeto");
-const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema,"PublicoAlvo");
-const Projeto = mongoose.model("Projeto", ProjetoSchema,"Projeto");
+const Utilizadores = mongoose.model(
+  "Utilizador",
+  UtilizadorSchema,
+  "Utilizador"
+);
+const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");
+const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
+const CategoriaProjeto = mongoose.model(
+  "CategoriaProjeto",
+  CategoriaProjetoSchema,
+  "CategoriaProjeto"
+);
+const PublicoAlvo = mongoose.model(
+  "PublicoAlvo",
+  PublicoAlvoSchema,
+  "PublicoAlvo"
+);
+const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
+// const Images = mongoose.model("Images", imageSchema, "Images");
 
 module.exports = {
   Utilizadores: Utilizadores,
@@ -107,4 +115,5 @@ module.exports = {
   CategoriaProjeto: CategoriaProjeto,
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
+  // Image: Images,
 };

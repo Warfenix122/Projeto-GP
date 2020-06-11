@@ -1,0 +1,155 @@
+<h1>Criar Projeto</h1>
+<mat-horizontal-stepper labelPosition="bottom">
+  <mat-step label="Informações Do projeto" [stepControl]="formInfo">
+    <form [formGroup]="formInfo">
+      <div class="form-group">
+        <label for="Nome">Nome</label>
+        <input type="text" id="nome" name="nome" class="form-control" placeholder="Introduza o nome do projeto"
+          formControlName="nome" />
+      </div>
+      <div class="form-group">
+        <label for="resumo">Resumo</label>
+        <textarea id="resumo" name="resumo" class="form-control" placeholder="Introduza um pequeno resumo do projeto"
+          formControlName="resumo"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="vagas">Quantas vagas serão disponibilizadas?</label>
+        <input type="number" id="vagas" name="vagas" class="form-control" formControlName="vagas">
+      </div>
+      <mat-slide-toggle formControlName="necessarioFormacao" color="primary">O voluntario necessita de formação?</mat-slide-toggle>
+      <div class="form-group" *ngIf="this.isFormacaoNecessaria.value">
+        <div class="col-md-6 center-column">
+          <input type="text" class="form-control" name="formacao" placeholder="Introduza a formação requirida" formControlName="formacao"/>
+          <button id="add-formacao" name="btn-add-formacao" (click)="addFormacao()">
+            +
+          </button>
+        </div>
+        <div class="col-md-6">
+          <!-- Por o for a correr -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="AreasInteresse">Areas de Interesse:</label>
+        <div class="col-lg-10">
+          <div id="lista" *ngFor="let control of areasArray.controls; let i = index">
+            <div *ngIf="i % 2 === 0 || i === 0">
+              <div class="row d-flex justify-content-between">
+                <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control" color="primary"
+                  (change)="getSelectedAreas()" name="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
+                <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control" color="primary"
+                  (change)="getSelectedAreas()" name="{{ areas[i + 1] }}">{{ areas[i + 1] }}</mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Launch demo modal
+        </button>
+        <!-- <label for="gestoresId">Adicionar Gestor</label>
+        <input type="text" placeholder="Introduza o email do sub-gestor" class="form-control" id="gestoresId" name="gestoresId"
+          formControlName="gestoresId" MatInput [matAutocomplete]="autoGestor" />
+        <mat-autocomplete #autoGestor="matAutocomplete">
+          <mat-option *ngFor="let email of filteredEmails | async" [value]="email">
+            {{ email }}
+          </mat-option>
+        </mat-autocomplete>
+        <button id="add-gestao" name="btn-add-gestor" (click)="gestoresEscolhidos()">
+          +
+        </button> -->
+      </div>
+    </form>
+    <button class="btn btn-primary btn-block" mat-button matStepperNext>
+      Proximo Passo
+    </button>
+  </mat-step>
+  <mat-step label="Datas e Horarios" [stepControl]="formDatas">
+    <form [formGroup]="formDatas">
+      <mat-slide-toggle formControlName="recorrente" color="primary">O voluntario necessita de formação?</mat-slide-toggle>
+      <div class="form-group" *ngIf="this.recorrente.value">
+        <label for="XemXtempo">O projetdo devera occorrer de quanto em quanto tempo?</label>
+        <div class="row">
+          <div class="col-md-2">
+            <input type="text" id="XemXtempo1" name="XemXtempo1" class="form-control center-column"
+          formControlName="XemXtempo1" />
+          </div>
+          <div class="col-sm-1">
+            <p>em</p>
+          </div>
+          <div class="col-md-2">
+            <input type="text" id="XemXtempo2" name="XemXtempo2" class="form-control"
+          formControlName="XemXtempo2" />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-5">
+            <label for="dataComeco">Quando é o começo do projeto?</label>
+            <input matInput [matDatepicker]="dataComeco" [min]="minDate" formControlName="dataComeco">
+            <mat-datepicker-toggle [for]="dataComeco" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #dataComeco></mat-datepicker>
+          </div>
+          <div class="col-md-5">
+            <label for="dataTermino">Quando termina o projeto?</label>
+            <input matInput [matDatepicker]="dataTermino" [min]="minDate" formControlName="dataTermino">
+            <mat-datepicker-toggle [for]="dataTermino" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #dataTermino></mat-datepicker>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dataFechoInscricoes">Determine a data em que as inscrições para este projeto fecharão</label>
+        <input matInput [matDatepicker]="dataFechoInscricoes" [min]="minDate" formControlName="dataFechoInscricoes">
+        <mat-datepicker-toggle [for]="dataFechoInscricoes" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #dataFechoInscricoes></mat-datepicker>
+      </div>
+      <div class="form-group">
+        <label>Atividades:</label>
+        <select></select>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<!-- Modals -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="gestoresId">Adicionar Gestor</label>
+        <input type="text" placeholder="Introduza o email do sub-gestor" class="form-control" id="gestoresId" name="gestoresId"
+          formControlName="gestoresId" MatInput [matAutocomplete]="autoGestor" />
+        <mat-autocomplete #autoGestor="matAutocomplete">
+          <mat-option *ngFor="let email of filteredEmails | async" [value]="email">
+            {{ email }}
+          </mat-option>
+        </mat-autocomplete>
+        <!-- <button id="add-gestao" name="btn-add-gestor" (click)="gestoresEscolhidos()">
+          +
+        </button> -->
+
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active" >
+
+          </a>
+          <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+          <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+          <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+          <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

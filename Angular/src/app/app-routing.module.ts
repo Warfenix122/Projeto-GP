@@ -10,6 +10,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
 
 
 const routes: Routes = [
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'recover', component: RecoverPasswordComponent },
   { path: 'alterPassword', component: AlterPasswordComponent },
-  { path: 'api/confirmAccount/:email', component: LoginComponent }
+  { path: 'api/confirmAccount/:email', component: LoginComponent },
+  { path: 'createProject', component: CreateProjectComponent}
 ];
 
 @NgModule({

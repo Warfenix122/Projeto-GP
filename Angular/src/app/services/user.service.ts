@@ -61,4 +61,12 @@ export class UserService {
     });
   }
 
+  getCurrentUserId(token){
+    return this.http.post('/api/currentUser',token);
+  }
+
+  getVoluntariosExternos():Observable<User[]>{
+    return this.http.get<User[]>('/api/externos');
+  }
+
 }

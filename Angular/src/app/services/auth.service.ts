@@ -2,6 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import * as moment from "moment";
 import { Router, NavigationEnd } from '@angular/router';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -39,8 +40,6 @@ export class AuthService {
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
   }
-
-
 
   logout() {
     localStorage.removeItem('token');

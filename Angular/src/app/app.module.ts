@@ -11,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 import { AppComponent } from './app.component';
@@ -33,6 +36,8 @@ import { CompareValidatorDirective } from './validators/compare-validator.direct
 import { AlertsComponent } from './alerts/alerts.component';
 import { AlertService } from './services/alert.service';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -51,7 +56,10 @@ import { AlterPasswordComponent } from './alter-password/alter-password.componen
     MatCheckboxModule,
     MatSelectModule,
     MatAutocompleteModule,
-
+    MatSlideToggleModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
     AppComponent,
@@ -67,13 +75,14 @@ import { AlterPasswordComponent } from './alter-password/alter-password.componen
     RecoverPasswordComponent,
     CompareValidatorDirective,
     AlertsComponent,
-    AlterPasswordComponent
+    AlterPasswordComponent,
+    CreateProjectComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,
     multi: true
-  },AlertsComponent],
+  },AlertsComponent,MatNativeDateModule],
   bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent,AproveUserComponent,AlertsComponent,RecoverPasswordComponent,UnauthorizedComponent],
 })
 export class AppModule { }

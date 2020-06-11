@@ -30,4 +30,9 @@ function issueJWT(user) {
   }
 }
 
+function getCurrentUserId(token){
+  var currentUser = jsonwebtoken.decode(token);
+  return currentUser.sub;
+}
 module.exports.issueJWT = issueJWT;
+module.exports.getCurrentUserId = getCurrentUserId;

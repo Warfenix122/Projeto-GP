@@ -157,9 +157,9 @@
               <div id="lista" *ngFor="let control of areasArray.controls; let i = index">
                 <div *ngIf="i % 2 === 0 || i === 0">
                   <div class="row d-flex justify-content-between">
-                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control" color="primary"
                       (change)="getSelectedAreas()" name="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
-                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control" color="primary"
                       (change)="getSelectedAreas()" name="{{ areas[i + 1] }}">{{ areas[i + 1] }}</mat-checkbox>
                   </div>
                 </div>
