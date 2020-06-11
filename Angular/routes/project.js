@@ -1,8 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const { forEachChild } = require("typescript");
 var router = express.Router();
 const Project = require('../models/mongoConnection').Projeto;
 
+//update
 router.put('/:id', (req, res) => {
     let projectId = mongoose.Types.ObjectId(req.params.id);
     project = Project.updateOne({ _id : projectId}, req.body, (err, doc) => {
@@ -15,6 +17,7 @@ router.put('/:id', (req, res) => {
     })
 });
 
+//get one
 router.get('/:id', (req, res) => {
     let projectId = mongoose.Types.ObjectId(req.params.id);
     Project.findOne({ _id : projectId}).then((project) => {
@@ -22,6 +25,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
+//get all
 router.get('', (req, res) => {
     Project.find({}).then((projects) => {
         res.json(projects);

@@ -13,7 +13,7 @@ export class ProjectService {
     let obj = {
       dataFechoInscricoes: new Date()
     };
-    return this.http.put<Project>('/api/project/'+projectId+'/closeApplications', obj);
+    return this.http.put<Project>('/api/project/'+projectId, obj);
   }
 
   projects(){
