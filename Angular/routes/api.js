@@ -9,9 +9,12 @@ const path = require('path');
 const User = require('../models/mongoConnection').Utilizadores;
 const Foto = require('../models/mongoConnection').Foto;
 router = require("./email");
+const questionarioApi = require('./questionario');
 
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
+
+router.use('/questionario', questionarioApi);
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!" });

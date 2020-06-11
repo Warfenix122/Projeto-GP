@@ -98,6 +98,18 @@ var InscricaoSchema = new Schema({
   cancelado: Boolean,
 });
 
+var QuestionarioSchema = new Schema({
+  nome: String,
+  descricao: String,
+  perguntas: [String]
+});
+
+var RespostaSchema = new Schema({
+  utilizadorId: mongoose.ObjectId,
+  questionarioId: mongoose.ObjectId,
+  respostas: [String]
+})
+
 const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
 const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");
 const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
@@ -105,6 +117,8 @@ const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSche
 const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
+const Questionario = mongoose.model("Questionario", QuestionarioSchema, "Questionario");
+const Resposta = mongoose.model("Resposta", RespostaSchema, "Resposta");
 
 module.exports = {
   Utilizadores: Utilizadores,
@@ -113,5 +127,7 @@ module.exports = {
   CategoriaProjeto: CategoriaProjeto,
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
-  Foto: Foto
+  Foto: Foto,
+  Questionario: Questionario,
+  Resposta: Resposta
 };
