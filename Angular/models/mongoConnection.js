@@ -49,7 +49,7 @@ var UtilizadorSchema = new Schema({
 });
 var FotoSchema = new Schema({
   foto: { data: Buffer, contentType: String },
-  userId: [mongoose.ObjectId]
+  userEmail: String
 })
 
 var ProjetoSchema = new Schema({
@@ -105,7 +105,6 @@ const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSche
 const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
-
 module.exports = {
   Utilizadores: Utilizadores,
   Entidade: Entidade,

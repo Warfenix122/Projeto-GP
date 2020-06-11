@@ -25,20 +25,14 @@
             <button class="btn btn-primary col" [routerLink]="['/editProfile']"> Editar Informações</button>
           </div>
           <div class="container">
-            <div class="container-sm">
-              <img *ngIf="existsImage" src={{images.src}} class="img-thumbnail ">
+            <div class="container-sm row mb-5 d-flex justify-content-center">
+              <img class="img-thumbnail" style="max-width:150px;width:100%" #image >
             </div>
-            <form>
-              <input style="display: none" type="file" accept="image/*" (change)="selectImage($event)" #fileInput>
-              <button class="btn btn-light" (click)="fileInput.click()">Select File</button>
-              <button class="btn btn-warning" (click)="onSubmit()">Upload!</button></form>
-            <!--  <div>
-                <label for="image">Upload Image</label>
-                <input type="file" id="image" name="image"  accept="image/*" value="" required>
-              </div>
-              <div>
-                <button type="submit">Submit</button>
-              </div>-->
+            <form class="row ">
+              <input style="display: none" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
+              <button class="btn btn-dark col" (click)="fileInput.click()">Escolher Ficheiro</button>
+              <button class="btn btn-warning col " (click)="onUpload()">Upload</button></form>
+
           </div>
         </div>
       </div>

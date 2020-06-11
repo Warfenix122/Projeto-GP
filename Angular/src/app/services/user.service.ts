@@ -62,12 +62,15 @@ export class UserService {
   uploadPhoto(formData) {
     return this.http.post('/api/uploadPhoto', formData, {
       observe: 'body',
-      withCredentials: true,
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
+      withCredentials: true
     });
   }
   getProfilePhoto(formData) {
-    return this.http.post('/api/getPhoto', formData);
+    return this.http.post('/api/getProfilePhoto', formData, {
+      observe: 'body',
+      withCredentials: true,
+
+    });
   }
 
 }

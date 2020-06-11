@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { FormBuilder, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -17,14 +17,14 @@ import { ReadVarExpr } from '@angular/compiler';
 })
 export class PerfilComponent implements OnInit {
 
-
-  user: User;
+  @ViewChild('image') img: ElementRef;
+  user: any = User;
   userInfo: any;
-  existsImage: false;
-  images: any;
-  file: File;
+  existsImage: boolean = false;
+  file: any;
   constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private _alertService: AlertService) {
   }
+  formImage = this._fb.group({});
 
   ngOnInit() {
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
@@ -37,25 +37,53 @@ export class PerfilComponent implements OnInit {
       this.userInfo.push({ key: 'Número de Telefone', value: this.user.numeroTelefone });
       this.userInfo.push({ key: 'Data de Criação de Conta', value: this.user.dataCriacao });
       this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
+      this.getProfilePhoto(this.user.email);
     });
 
   }
-  selectImage(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.images = file;
-    }
+
+
+  getProfilePhoto(email) {
+
+    const formData = { 'email': email }
+    this.userService.getProfilePhoto(formData).subscribe((res) => {
+      const src = this.arrayBufferToBase64(res['foto'].data);
+      this.img.nativeElement.src = 'data:' + res['foto'].contentType + ';base64,' + src;
+    }, (err) => {
+      this._alertService.error(err.error.msg);
+    }, () => {
+
+    });
+  }
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+    return window.btoa(binary);
+  };
+
+  onFileChanged(event) {
+    this.file = event.target.files[0];
   }
 
-
-  onSubmit() {
+  onUpload() {
     const formData = new FormData();
-    formData.append('file', this.images);
     formData.append('email', this.user.email);
-    this.userService.uploadPhoto(formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
-  }
+    formData.append('file', this.file, this.file.name);
 
+    const reader = new FileReader();
+    const mail = this.user.email;
+    const userservice = this.userService;
+    const alert = this._alertService;
+    reader.onloadend = () => {
+      const src = reader.result;
+      userservice.uploadPhoto(formData).subscribe((res) => {
+        alert.success("Sucesso");
+      }, (err) => {
+        alert.error(err.error.msg);
+      });
+    };
+    reader.readAsDataURL(this.file);
+
+  }
 }
