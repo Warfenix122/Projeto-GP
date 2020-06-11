@@ -15,6 +15,13 @@ router.put('/:id', (req, res) => {
     })
 });
 
+router.get('/:id', (req, res) => {
+    let projectId = mongoose.Types.ObjectId(req.params.id);
+    Project.findOne({ _id : projectId}).then((project) => {
+        res.json(project);
+    })
+})
+
 router.get('', (req, res) => {
     Project.find({}).then((projects) => {
         res.json(projects);

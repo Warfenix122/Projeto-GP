@@ -1,4 +1,5 @@
 export class Project {
+    _id: string;
     nome: string;
     resumo: string;
     responsavelId: string; //mongoose.ObjectId

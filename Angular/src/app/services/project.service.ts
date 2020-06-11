@@ -15,4 +15,12 @@ export class ProjectService {
     };
     return this.http.put<Project>('/api/project/'+projectId+'/closeApplications', obj);
   }
+
+  projects(){
+    return this.http.get<Project[]>('/api/project');
+  }
+
+  getProject(id){
+    return this.http.get<Project>('/api/project/'+id);
+  }
 }
