@@ -12,13 +12,19 @@ import { Questionario } from 'models/questionario';
 export class QuestionarioComponent implements OnInit {
   questionarios: Array<Questionario>;
 
-  constructor(public _fb: FormBuilder, private userService: UserService, private questionarioSevice: QuestionarioService) { }
+  constructor(public _fb: FormBuilder, private userService: UserService, private questionarioService: QuestionarioService) { }
+
+
 
   ngOnInit(): void {
-    this.questionarioSevice.getQuestionarios().subscribe((questionarios) => {
+    this.questionarioService.getQuestionarios().subscribe((questionarios) => {
       this.questionarios = questionarios;
     })
+
     this.questionarioSevice.getQuestionarioById(questionarios[]._id).subscribe((questionario))
   }
 
+  getQuestionario(index){
+    console.log(this.questionarios[index]);
+  }
 }
