@@ -11,6 +11,7 @@ import { Questionario } from 'models/questionario';
 })
 export class QuestionarioComponent implements OnInit {
   questionarios: Array<Questionario>;
+  valor : Boolean;
 
   constructor(public _fb: FormBuilder, private userService: UserService, private questionarioService: QuestionarioService) { }
 
@@ -21,10 +22,16 @@ export class QuestionarioComponent implements OnInit {
       this.questionarios = questionarios;
     })
 
-    this.questionarioSevice.getQuestionarioById(questionarios[]._id).subscribe((questionario))
+    this.questionarioService.getQuestionarioById(this.questionarios[1]._id).subscribe((questionario) =>{
+
+    }) 
   }
 
   getQuestionario(index){
     console.log(this.questionarios[index]);
+  }
+
+  onCheck(){
+    this.valor = !this.valor;
   }
 }

@@ -1,6 +1,8 @@
 export class Questionario {
   _id: string;
   nome: String;
-  descricao: String;
-  perguntas: [String];
+  perguntas: [{
+  	id: number,
+  	pergunta: string
+  }];
 }
