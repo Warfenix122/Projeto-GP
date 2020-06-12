@@ -2,7 +2,7 @@ const express = require("express");
 var router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const Foto = require('../models/mongoConnection').Foto;
+const FotoPerfil = require('../models/mongoConnection').FotoPerfil;
 const User = require('../models/mongoConnection').Utilizadores;
 var multer = require('multer');
 
@@ -24,16 +24,16 @@ router.post("/uploadProfilePhoto", upload.single('file'), (req, res, next) => {
       if (!user) {
         res.status(401).json({ success: false, message: "Erro no servidor" });
       } else {
-        let userEmail = user.email;
+        let id = user._id;
 
-        Foto.findOne({ userEmail: userEmail }).then((foto) => {
+        FotoPerfil.findOne({ userId: id }).then((foto) => {
           var bin = fs.readFileSync(path.join(path.dirname(require.main.filename) + '/uploads/' + req.file.filename));
-          var newPhoto = new Foto({
-            userEmail: user.email,
+          var newPhoto = new FotoPerfil({
+            userId: user._id,
             foto: { data: bin, contentType: 'image/png' }
           });
           if (foto) {
-            Foto.deleteOne({ userEmail: userEmail }, () => {
+            FotoPerfil.deleteOne({ userId: id }, () => {
               res.contentType('json');
               res.json({ success: false, message: 'Dificuldades a alterar imagem' });
             });
@@ -56,8 +56,8 @@ router.post("/uploadProfilePhoto", upload.single('file'), (req, res, next) => {
 router.post('/getProfilePhoto', (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
-      let userEmail = user.email;
-      Foto.findOne({ userEmail: userEmail }).then((foto) => {
+      let id = user._id;
+      FotoPerfil.findOne({ userId: id }).then((foto) => {
         if (foto) {
           res.contentType('json');
           res.status(200).json({ success: true, foto: foto.foto.data });

@@ -18,15 +18,20 @@ import { ReadVarExpr } from '@angular/compiler';
 export class PerfilComponent implements OnInit {
 
   @ViewChild('image') img: ElementRef;
+  @ViewChild('checkboxes') checkboxes: ElementRef;
+  @ViewChild('editAreas') editAreas: ElementRef;
+  @ViewChild('saveAreas') saveAreas: ElementRef;
   user: any = User;
   userInfo: any;
   existsImage: boolean = false;
   file: any;
+  static = new Array()
   constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private _alertService: AlertService) {
   }
-  formImage = this._fb.group({});
+  form = this._fb.group({});
 
   ngOnInit() {
+
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       this.user = res['user'];
       this.userInfo = [];
@@ -38,6 +43,13 @@ export class PerfilComponent implements OnInit {
       this.userInfo.push({ key: 'Data de Criação de Conta', value: this.user.dataCriacao });
       this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
       this.getProfilePhoto(this.user.email);
+      for (const are of statics.areas) {
+        if (this.user.areasInteresse.includes(are)) {
+          this.static.push({ 'area': are, 'user': true })
+        } else {
+          this.static.push({ 'area': are, 'user': false })
+        }
+      }
     });
 
   }
@@ -84,6 +96,24 @@ export class PerfilComponent implements OnInit {
       });
     };
     reader.readAsDataURL(this.file);
+
+  }
+  alterAreasInteresse() {
+    this.saveAreas.nativeElement.style.display = 'block';
+    this.editAreas.nativeElement.style.display = 'none';
+    var check = this.checkboxes.nativeElement.children[0];
+
+    for (const c of this.static) {
+      let checkbox = document.getElementById(c.area);
+      console.log('div :>> ', checkbox.attributes);
+
+    }
+
+
+  }
+  saveAreasInteresse() {
+    this.editAreas.nativeElement.style.display = 'block';
+    this.saveAreas.nativeElement.style.display = 'none';
 
   }
 }

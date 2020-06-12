@@ -42,9 +42,13 @@ var UtilizadorSchema = new Schema({
   formacao: String,
 
 });
-var FotoSchema = new Schema({
+var FotoPerfilSchema = new Schema({
   foto: { data: Buffer, contentType: String },
-  userEmail: String
+  userId:  [mongoose.ObjectId]
+});
+var FotoCapaSchema = new Schema({
+  foto: { data: Buffer, contentType: String },
+  projetoId: [mongoose.ObjectId]
 })
 
 var ProjetoSchema = new Schema({
@@ -93,7 +97,8 @@ const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
 const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSchema, "CategoriaProjeto");
 const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
-const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
+const FotoPerfil = mongoose.model('FotoPerfil', FotoPerfilSchema, 'FotoPerfil');
+const FotoCapa = mongoose.model('FotoCapa', FotoCapaSchema, 'FotoCapa');
 module.exports = {
   Utilizadores: Utilizadores,
   Entidade: Entidade,
@@ -101,5 +106,6 @@ module.exports = {
   CategoriaProjeto: CategoriaProjeto,
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
-  Foto: Foto
+  FotoPerfil: FotoPerfil,
+  FotoCapa: FotoCapa
 };

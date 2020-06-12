@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../../models/utilizadores';
@@ -8,6 +8,9 @@ import { User } from '../../../models/utilizadores';
   providedIn: 'root'
 })
 export class UserService {
+
+  @Output() profileLoaded: EventEmitter<boolean> = new EventEmitter();
+  @Output() photoUploaded: EventEmitter<string> = new EventEmitter();
 
   constructor(private http: HttpClient) { }
 
@@ -60,7 +63,7 @@ export class UserService {
     });
   }
   uploadPhoto(formData) {
-    return this.http.post('/api/uploadPhoto', formData, {
+    return this.http.post('/api/uploadProfilePhoto', formData, {
       observe: 'body',
       withCredentials: true
     });
