@@ -22,9 +22,9 @@ export class QuestionarioComponent implements OnInit {
       this.questionarios = questionarios;
     })
 
-    this.questionarioService.getQuestionarioById(this.questionarios[1]._id).subscribe((questionario) =>{
+    /*this.questionarioService.getQuestionarioById(this.questionarios[1]._id).subscribe((questionario) =>{
 
-    }) 
+    }) */
   }
 
   getQuestionario(index){
@@ -33,5 +33,9 @@ export class QuestionarioComponent implements OnInit {
 
   onCheck(){
     this.valor = !this.valor;
+  }
+
+  onSubmit(){
+    
   }
 }

@@ -100,6 +100,7 @@ var InscricaoSchema = new Schema({
 
 var QuestionarioSchema = new Schema({
   nome: String,
+  descricao: String,
   perguntas: [{
   	id: Number,
   	pergunta: String
