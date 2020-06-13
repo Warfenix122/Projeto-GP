@@ -33,15 +33,15 @@ router.post("/uploadProfilePhoto", upload.single('file'), (req, res, next) => {
             foto: { data: bin, contentType: 'image/png' }
           });
           if (foto) {
-            FotoPerfil.deleteOne({ userId: id }, () => {
-              res.contentType('json');
-              res.json({ success: false, message: 'Dificuldades a alterar imagem' });
+            FotoPerfil.deleteOne({ userId: id }, (err) => {
+              if (err) {
+                res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });
+              }
             });
           }
           newPhoto.save()
             .then((newPhoto) => {
-              res.contentType('json');
-              res.json({ success: true, message: 'Imagem Guardada com Sucesso!' });
+              res.status(200).json({ success: true, message: 'Imagem Guardada com Sucesso!' });
             })
             .catch((err) => console.log(err));
 
@@ -59,11 +59,9 @@ router.post('/getProfilePhoto', (req, res) => {
       let id = user._id;
       FotoPerfil.findOne({ userId: id }).then((foto) => {
         if (foto) {
-          res.contentType('json');
           res.status(200).json({ success: true, foto: foto.foto.data });
         } else {
           var img = fs.readFileSync(path.join(path.dirname(require.main.filename) + '/src/assets/img/user.png'));
-          res.contentType('json');
           res.status(200).json({ success: true, foto: img });
         }
       });

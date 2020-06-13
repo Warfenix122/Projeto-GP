@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
     nome: new FormControl('', [Validators.required]),
     dataNascimento: new FormControl('', [Validators.required]),
     genero: new FormControl('', [Validators.required]),
-    numeroTelefone: new FormControl(''),
+    numeroTelefone: new FormControl('', [Validators.required]),
     distrito: new FormControl(''),
     concelho: new FormControl(''),
   });
@@ -125,6 +125,9 @@ export class SignupComponent implements OnInit {
       this.RGPD.setValue(false);
     }
   }
+  get numeroTelefone() {
+    return this.formInformacao.get("numeroTelefone")
+  }
 
   get genero() {
     return this.formInformacao.get("genero");
@@ -203,11 +206,21 @@ export class SignupComponent implements OnInit {
           this._alertService.success("Conta criada com sucesso. Por favor aguarde aprovação!");
         }
       }, (err) => {
-        if(err.statusText == "Conflict")
+        if (err.statusText == "Conflict")
           this._alertService.error("Já existe um utilizador com esse email. Por favor use outro email para continuar.");
       });
     } else {
       this._alertService.error("Não preencheu todos os campos obrigatórios");
     }
   }
+
+  /*
+  ValidatePhone(control: AbstractControl): { [key: string]: any } | null {
+    if (control.value && control.value.length != 10) {
+      return { 'phoneNumberInvalid': true };
+    }
+    return null;
+  }
+*/
+
 }

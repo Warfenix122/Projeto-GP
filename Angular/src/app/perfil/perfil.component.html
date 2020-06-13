@@ -50,35 +50,21 @@
               Editar <i class="far fa-edit"></i></button>
           </div>
           <form [formGroup]="form">
-            <div #checkboxes class="row container m-5">
-              <div class="col-md-6">
-                <div *ngFor="let attr of static; let i = index">
-                  <span *ngIf="i < static.length/2">
-                    <input *ngIf="attr.user;else elseblock" disabled class="form-check-input" type="checkbox" checked
-                    id='{{attr.area}}'>
-                    <ng-template #elseblock>
-                      <input class="form-check-input" disabled type="checkbox" id='{{attr.area}}'>
-                    </ng-template>
-                    <label class="form-check-label">
-                      {{attr.area}}
-                    </label>
-                  </span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div *ngFor="let attr of static; let i = index">
-                  <span *ngIf="i >= static.length/2">
-                    <input *ngIf="attr.user;else elseblock" disabled class="form-check-input" type="checkbox" checked
-                    id='{{attr.area}}'>
-                    <ng-template #elseblock> <input class="form-check-input" disabled type="checkbox" id='{{attr.area}}'>
-                    </ng-template>
-                    <label class="form-check-label">
-                      {{attr.area}}
-                    </label>
-                  </span>
-                </div>
-              </div>
+            <div>
+              <ul class="m-5 col-lg-10 list-unstyled" style="column-count: 2;">
+                <li *ngFor="let control of areasArray.controls; let i = index" #checkboxes>
+                  <div>
+                    <div class="row">
+                      <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                        (change)="getSelectedAreas()" id="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
+
+                    </div>
+                  </div>
+                </li>
+                <!-- </div> -->
+              </ul>
             </div>
+
             <button style="display: none;" class="btn btn-success" type="submit" (click)="saveAreasInteresse()"
               #saveAreas> Guardar
               Alterações <i class="far fa-edit"></i></button>

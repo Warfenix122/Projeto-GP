@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const fs = require("fs");
 const cors = require("cors");
+const del = require('del');
 
 var app = express();
 app.use(express.json({limit: '50mb'}));
@@ -20,6 +21,8 @@ app.use(
   })
 );
 
+del.sync('./uploads')
+fs.mkdirSync('./uploads');
 //configurações de autenticação
 require("./config/passport")(passport);
 

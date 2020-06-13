@@ -35,6 +35,11 @@ import { AlertService } from './services/alert.service';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { TelephoneValidatorDirective } from './validators/telephone-validator.directive';
+import { PasswordValidatorDirective } from './validators/password-validator.directive';
+import { NameValidatorDirective } from './validators/name-validator.directive';
+import { DateValidatorDirective } from './validators/date-validator.directive';
+import { EmailValidatorDirective } from './validators/email-validator.directive';
 
 
 @NgModule({
@@ -71,7 +76,12 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     AlertsComponent,
     AlterPasswordComponent,
     ListProjectsComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    TelephoneValidatorDirective,
+    PasswordValidatorDirective,
+    NameValidatorDirective,
+    DateValidatorDirective,
+    EmailValidatorDirective
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
