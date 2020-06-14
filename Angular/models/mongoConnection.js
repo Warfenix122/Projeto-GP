@@ -98,23 +98,23 @@ var InscricaoSchema = new Schema({
   cancelado: Boolean,
 });
 
-var QuestionarioSchema = new Schema({
+var SondagemSchema = new Schema({
   nome: String,
   descricao: String,
-  perguntas: [{
+  opcoes: [{
   	id: Number,
-  	pergunta: String
+  	opcao: String
   }]
-});      
+});
 
 var RespostaSchema = new Schema({
   utilizadorId: mongoose.ObjectId,
-  questionarioId: mongoose.ObjectId,
-  respostas: [{
-  	perguntaId: Number,
-  	resposta: String,
-  	respostaPorOpcao: Boolean
-  }]
+  sondagemId: mongoose.ObjectId,
+  opcoesEscolhidas: [{
+  	opcaoId: Number,
+  	escolheu: Boolean, //escolheu ou nao
+  }],
+  outraResposta: String
 })     
 
 const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
@@ -124,7 +124,7 @@ const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSche
 const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
-const Questionario = mongoose.model("Questionario", QuestionarioSchema, "Questionario");
+const Sondagem = mongoose.model("Sondagem", SondagemSchema, "Sondagem");
 const Resposta = mongoose.model("Resposta", RespostaSchema, "Resposta");
 
 module.exports = {
@@ -135,6 +135,6 @@ module.exports = {
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
   Foto: Foto,
-  Questionario: Questionario,
+  Sondagem: Sondagem,
   Resposta: Resposta
 };

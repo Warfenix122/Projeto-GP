@@ -1,9 +1,9 @@
-export class Questionario {
+export class Sondagem {
   _id: string;
   nome: string;
   descricao: string;
-  perguntas: [{
+  opcoes: [{
   	id: number,
-  	pergunta: string
+  	opcao: string
   }];
 }
