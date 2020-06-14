@@ -118,7 +118,6 @@ export class PerfilComponent implements OnInit {
     this.editAreas.nativeElement.style.display = 'block';
     this.saveAreas.nativeElement.style.display = 'none';
     const selectedAreas = this.selectedAreas;
-    console.log('selectedAreas :>> ', selectedAreas);
     let user = this.user;
     user.areasInteresse = selectedAreas;
     const formdata = user;

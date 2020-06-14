@@ -12,6 +12,8 @@ import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
 export class TelephoneValidatorDirective implements Validator {
   validate(control: AbstractControl): { [key: string]: any } | null {
     if (control.value) {
+      console.log('control.value :>> ', control.value);
+
       if (!Number.isInteger(parseInt(control.value, 10))) {
         return { 'integer': true };
       }
