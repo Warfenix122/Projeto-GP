@@ -1,9 +1,13 @@
 
-<div class="card">
-  <div class="card-body" *ngFor="let questionario of questionarios; let i = index" [attr.data-index]="i">
-    <h3 class="card-title">{{questionario.nome}}</h3>
-    <button (click)="getQuestionario(i)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Responder</button>
-  </div>
+
+
+<div class="container">
+    <div class="card">
+      <div class="card-body col-sm-6" *ngFor="let questionario of questionarios; let i = index" [attr.data-index]="i">
+        <h3 class="card-title">{{questionario.nome}}</h3>
+        <button (click)="getQuestionario(i)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Responder</button>
+      </div>
+    </div>
 </div>
 
 <!--modals-->
