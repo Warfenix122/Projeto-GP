@@ -9,6 +9,9 @@ import statics from '../../assets/statics.json';
 import { AlertService } from '../services/alert.service';
 import { HttpClient } from '@angular/common/http';
 import { ReadVarExpr } from '@angular/compiler';
+import { Injectable, Output, EventEmitter } from '@angular/core';
+import * as moment from "moment";
+import { NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
@@ -55,7 +58,6 @@ export class PerfilComponent implements OnInit {
       this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
       this.getProfilePhoto(this.user.email);
 
-      console.log('areasInteresse :>> ', this.user.areasInteresse);
       this.form = this._fb.group({
         areas: this.addAreasInteresseControls(this.user.areasInteresse),
       });
@@ -95,15 +97,13 @@ export class PerfilComponent implements OnInit {
     formData.append('file', this.file, this.file.name);
 
     const reader = new FileReader();
-    const mail = this.user.email;
-    const userservice = this.userService;
-    const alert = this._alertService;
     reader.onloadend = () => {
       const src = reader.result;
-      userservice.uploadPhoto(formData).subscribe((res) => {
-        alert.success("Foto Atualizada");
+      this.userService.uploadPhoto(formData).subscribe((res) => {
+        this._alertService.success("Foto Atualizada");
+        this.getProfilePhoto(this.user.email);
       }, (err) => {
-        alert.error("Impossivel atualizar a foto, tente utilizar outra foto!");
+        this._alertService.error("Impossivel atualizar a foto, tente utilizar outra foto!");
       });
     };
     reader.readAsDataURL(this.file);
@@ -122,7 +122,6 @@ export class PerfilComponent implements OnInit {
     let user = this.user;
     user.areasInteresse = selectedAreas;
     const formdata = user;
-    console.log(formdata)
     this.userService.editUser(formdata).subscribe((res) => {
       this._alertService.success(res['success'].message);
 

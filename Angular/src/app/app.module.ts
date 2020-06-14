@@ -40,6 +40,7 @@ import { PasswordValidatorDirective } from './validators/password-validator.dire
 import { NameValidatorDirective } from './validators/name-validator.directive';
 import { DateValidatorDirective } from './validators/date-validator.directive';
 import { EmailValidatorDirective } from './validators/email-validator.directive';
+import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.component';
 
 
 @NgModule({
@@ -81,8 +82,9 @@ import { EmailValidatorDirective } from './validators/email-validator.directive'
     PasswordValidatorDirective,
     NameValidatorDirective,
     DateValidatorDirective,
-    EmailValidatorDirective
-  ],
+    EmailValidatorDirective,
+    EditCarrouselComponent,
+    ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,

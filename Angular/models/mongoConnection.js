@@ -50,6 +50,9 @@ var FotoCapaSchema = new Schema({
   foto: { data: Buffer, contentType: String },
   projetoId: [mongoose.ObjectId]
 })
+var FotoCarroselSchema = new Schema({
+  foto: { data: Buffer, contentType: String },
+})
 
 var ProjetoSchema = new Schema({
   nome: String,
@@ -99,6 +102,7 @@ const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlv
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const FotoPerfil = mongoose.model('FotoPerfil', FotoPerfilSchema, 'FotoPerfil');
 const FotoCapa = mongoose.model('FotoCapa', FotoCapaSchema, 'FotoCapa');
+const FotoCarrosel = mongoose.model('FotoCarrosel', FotoCarroselSchema, 'FotoCarrosel');
 module.exports = {
   Utilizadores: Utilizadores,
   Entidade: Entidade,
@@ -107,5 +111,6 @@ module.exports = {
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
   FotoPerfil: FotoPerfil,
-  FotoCapa: FotoCapa
+  FotoCapa: FotoCapa,
+  FotoCarrosel: FotoCarrosel,
 };

@@ -1,0 +1,21 @@
+<div>
+  <h1> Editar Conteudo do Carrosel</h1>
+  <div class="container">
+    <div  class="container d-justify-content-start">
+      <h2> Fotos Existentes</h2>
+      <form>
+        <input style="display: none" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
+        <button class="btn btn-dark " (click)="fileInput.click()">Escolher Ficheiro <i
+            class="far fa-image"></i></button>
+        <button class="btn btn-warning " (click)="onUpload()">Upload <i class="fas fa-arrow-circle-up"></i>
+        </button>
+      </form>
+    </div>
+    <div id='images' class="container-sm row mt-5 mb-5 d-flex justify-content-center">
+
+    </div>
+
+  </div>
+
+
+</div>
