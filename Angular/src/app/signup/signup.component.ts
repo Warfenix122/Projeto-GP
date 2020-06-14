@@ -100,7 +100,7 @@ export class SignupComponent implements OnInit {
   }
 
   formacaoSelecionada(e) {
-    this.escola.setValue(e.target.value, {
+    this.formacao.setValue(e.target.value, {
       onlySelf: true,
     });
   }

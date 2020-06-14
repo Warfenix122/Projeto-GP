@@ -67,17 +67,15 @@ var ProjetoSchema = new Schema({
     },
   ],
   vagas: Number,
-  horarios: [{ descricao: String, dataAcontecimento: Date }],
+  atividades: [{ descricao: String, dataAcontecimento: Date }],
   ficheirosCaminho: [{ caminho: String }],
   projetoMes: Boolean,
   dataCriacao: Date,
   dataTermino: Date,
   dataFechoInscricoes: Date,
   dataComeco: Date,
-  areasInteresse: [String],   //Areas onde este projeto se enquadra
+  areasInteresse: [String], //Areas onde este projeto se enquadra
 });
-
-
 
 var InscricaoSchema = new Schema({
   inscricaoId: mongoose.ObjectId,
@@ -86,6 +84,15 @@ var InscricaoSchema = new Schema({
   presente: Boolean,
   avaliacao: [{ valor: Number, descricao: String }],
   cancelado: Boolean,
+});
+
+var FotoPerfilSchema = new Schema({
+  foto: { data: Buffer, contentType: String },
+  userId: { type: mongoose.ObjectId, ref: "Utilizador" },
+});
+var FotoCapaSchema = new Schema({
+  foto: { data: Buffer, contentType: String },
+  projetoId: { type: mongoose.ObjectId, ref: "Projeto" },
 });
 
 const Utilizadores = mongoose.model(
@@ -106,7 +113,8 @@ const PublicoAlvo = mongoose.model(
   "PublicoAlvo"
 );
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
-// const Images = mongoose.model("Images", imageSchema, "Images");
+const FotoPerfil = mongoose.model("FotoPerfil", FotoPerfilSchema, "FotoPerfil");
+const FotoCapa = mongoose.model("FotoCapa", FotoCapaSchema, "FotoCapa");
 
 module.exports = {
   Utilizadores: Utilizadores,
@@ -115,5 +123,6 @@ module.exports = {
   CategoriaProjeto: CategoriaProjeto,
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
-  // Image: Images,
+  FotoPerfil: FotoPerfil,
+  FotoCapa: FotoCapa,
 };

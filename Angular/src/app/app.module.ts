@@ -11,10 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatInputModule} from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -31,7 +31,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
-import {InterceptorAutenticacao} from './Interceptor/interceptor-autenticacao';
+import { InterceptorAutenticacao } from './Interceptor/interceptor-autenticacao';
 import { CompareValidatorDirective } from './validators/compare-validator.directive';
 import { AlertsComponent } from './alerts/alerts.component';
 import { AlertService } from './services/alert.service';
@@ -60,6 +60,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatFormFieldModule,
   ],
   declarations: [
     AppComponent,
@@ -82,7 +83,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,
     multi: true
-  },AlertsComponent,MatNativeDateModule],
-  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent,AproveUserComponent,AlertsComponent,RecoverPasswordComponent,UnauthorizedComponent],
+  }, AlertsComponent, MatNativeDateModule],
+  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent, AproveUserComponent, AlertsComponent, RecoverPasswordComponent, UnauthorizedComponent],
 })
 export class AppModule { }

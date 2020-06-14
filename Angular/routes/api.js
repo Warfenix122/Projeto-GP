@@ -7,22 +7,24 @@ var jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
 const User = require("../models/mongoConnection").Utilizadores;
-router = require('./email');
-router = require("./project");
+const email = require("./email");
+const projetos = require("./project");
+const files = require("./file");
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
+
+router.use("/project", projetos);
+router.use("/file", files);
 
 router.get(
   "/protected",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    res
-      .status(200)
-      .json({
-        success: true,
-        msg: "You are successfully authenticated to this route!",
-      });
+    res.status(200).json({
+      success: true,
+      msg: "You are successfully authenticated to this route!",
+    });
   }
 );
 
@@ -61,7 +63,7 @@ router.post("/register", (req, res) => {
         escola,
         formacao,
         aprovado: "Aprovado",
-        contaConfirmada:false,
+        contaConfirmada: false,
       });
       if (tipoMembro === "Voluntario Externo") {
         newUser.aprovado = "Em Espera";
@@ -77,14 +79,12 @@ router.post("/register", (req, res) => {
             .save()
             .then((user) => {
               const jwt = utils.issueJWT(user);
-              res
-                .status(200)
-                .json({
-                  success: true,
-                  user: newUser,
-                  token: jwt.token,
-                  expiresIn: jwt.expires,
-                });
+              res.status(200).json({
+                success: true,
+                user: newUser,
+                token: jwt.token,
+                expiresIn: jwt.expires,
+              });
             })
             .catch((err) => console.log(err));
         })
@@ -114,38 +114,32 @@ router.post("/login", (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        res
-          .status(401)
-          .json({
-            success: false,
-            msg:
-              "Utilizador não encontrado, por favor verifique o seu mail e password",
-          });
+        res.status(401).json({
+          success: false,
+          msg:
+            "Utilizador não encontrado, por favor verifique o seu mail e password",
+        });
       }
       if (user.contaConfirmada) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err) throw err;
           if (isMatch && user.aprovado === "Aprovado") {
             const tokenObject = utils.issueJWT(user);
-            res
-              .status(200)
-              .json({
-                success: true,
-                user: user,
-                token: tokenObject.token,
-                expiresIn: tokenObject.expires,
-              });
+            res.status(200).json({
+              success: true,
+              user: user,
+              token: tokenObject.token,
+              expiresIn: tokenObject.expires,
+            });
           } else {
             res.status(401).json({ success: false, msg: "Password Incorreta" });
           }
         });
       } else {
-        res
-          .status(401)
-          .json({
-            success: false,
-            msg: "A sua conta ainda não foi confirmada/validade",
-          });
+        res.status(401).json({
+          success: false,
+          msg: "A sua conta ainda não foi confirmada/validade",
+        });
       }
     })
     .catch((err) => {
@@ -180,13 +174,11 @@ router.post("/edit_user", (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        res
-          .status(401)
-          .json({
-            success: false,
-            message:
-              "Utilizador não encontrado, porfavor verifique o seu mail e password",
-          });
+        res.status(401).json({
+          success: false,
+          message:
+            "Utilizador não encontrado, porfavor verifique o seu mail e password",
+        });
       }
       if (req.body.password) {
         bcrypt.genSalt(10, (err, salt) =>
@@ -239,12 +231,10 @@ router.post("/alter_password", (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        res
-          .status(401)
-          .json({
-            success: false,
-            msg: "Utilizador não encontrado, porfavor verifique o seu email",
-          });
+        res.status(401).json({
+          success: false,
+          msg: "Utilizador não encontrado, porfavor verifique o seu email",
+        });
       } else {
         bcrypt.genSalt(10, (err, salt) =>
           bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -264,17 +254,16 @@ router.post("/alter_password", (req, res) => {
     });
 });
 
-router.get('/externos',(req,res)=>{
+router.get("/externos", (req, res) => {
   User.find({ tipoMembro: "Voluntario Externo" }).then((users) => {
     res.json(users);
   });
 });
 
-router.post('/currentUser',(req,res)=>{
-  if(req.body.token){
+router.post("/currentUser", (req, res) => {
+  if (req.body.token) {
     res.status(200).send(utils.getCurrentUserId(req.body.token));
-  }else
-    res.status(400).send("Não existe um token associado ao request");
-})
+  } else res.status(400).send("Não existe um token associado ao request");
+});
 
 module.exports = router;

@@ -1,15 +1,33 @@
-#add-formacao{
-  background-color: #007bff;
-  border: none;
-  color: white;
-  padding : 5px 9px;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 50%;
-  cursor: pointer;
-  float: right;
+#add-formacao {
+  width: 100%;
 }
 
-.center-column{
+#add-atividade {
+  float: right;
+  margin-top: 1.5rem;
+}
+.adding-removing {
+  border: none;
+  color: white;
+  padding: 5px 9px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 40px;
+  cursor: pointer;
+  float: none;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.btn-add-gestor {
+  margin-top: 1.7rem;
+}
+
+.remove-gestor {
+  background-color: red;
+  text-align: center;
+  color: white;
+}
+.center-column {
   margin-left: -15px;
 }
