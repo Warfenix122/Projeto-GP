@@ -41,6 +41,7 @@ import { NameValidatorDirective } from './validators/name-validator.directive';
 import { DateValidatorDirective } from './validators/date-validator.directive';
 import { EmailValidatorDirective } from './validators/email-validator.directive';
 import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.component';
+import { FavoriteProjectComponent } from './favorite-project/favorite-project.component';
 
 
 @NgModule({
@@ -84,6 +85,7 @@ import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.componen
     DateValidatorDirective,
     EmailValidatorDirective,
     EditCarrouselComponent,
+    FavoriteProjectComponent,
     ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
