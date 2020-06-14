@@ -6,7 +6,8 @@ import { User } from '../../../models/utilizadores';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as _moment from 'moment';
-import { AlertService } from '../services/alert.service'
+import { AlertService } from '../services/alert.service';
+import { AuthService } from '../services/auth.service';
 import { ProjectService } from '../services/project.service'
 import { ProjetoResponse } from 'models/responseInterfaces';
 
@@ -36,7 +37,7 @@ export class CreateProjectComponent implements OnInit {
   validationMessages: [String];
 
 
-  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService) { }
+  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService) { }
 
   formInfo = this._fb.group({
     nome: new FormControl('', [Validators.required]),
@@ -227,31 +228,33 @@ export class CreateProjectComponent implements OnInit {
 
   postData() {
     if (this.formInfo.valid && this.formDatas.valid && this.dataTermino.valid && this.dataComeco.valid && this.dataFechoInscricoes.valid) {
-      let userId = this._userService.getCurrentUserId(localStorage.getItem('token'));
-      console.log(userId);
-      let XemXtempo = this.XemXtempo1.value + " em " + this.XemXtempo2.value;
-      let atividades = [];
-      let gestoresIds = []//this.gestores.map((gestor) => { gestorId: gestor._id });
-      let selectedAreas = this.selectedAreas;
-      for (let gestor in this.gestores) {
-        let id = this.gestores[gestor]._id;
-        gestoresIds.push({ gestorId: id });
-      }
-      this.atividadesArr.controls.forEach(atividade => {
-        let atividadeObj = atividade.value;
-        let horas = parseInt(atividadeObj.horas.split(':')[0]);
-        let minutos = parseInt(atividadeObj.horas.split(':')[1]);
-        let data = new Date(atividadeObj.dia.getFullYear(), atividadeObj.dia.getMonth(), atividadeObj.dia.getDate(), horas, minutos);
-        atividades.push({ descricao: atividadeObj.descricao, dataAcontecimento: data });
+      this._userService.getCurrentUserId().subscribe((res) => {
+        console.log(res["UserID"]);
+        let responsavelId = res["UserID"];
+        let XemXtempo = this.XemXtempo1.value + " em " + this.XemXtempo2.value;
+        let atividades = [];
+        let gestoresIds = []//this.gestores.map((gestor) => { gestorId: gestor._id });
+        let selectedAreas = this.selectedAreas;
+        for (let gestor in this.gestores) {
+          let id = this.gestores[gestor]._id;
+          gestoresIds.push({ gestorId: id });
+        }
+        this.atividadesArr.controls.forEach(atividade => {
+          let atividadeObj = atividade.value;
+          let horas = parseInt(atividadeObj.horas.split(':')[0]);
+          let minutos = parseInt(atividadeObj.horas.split(':')[1]);
+          let data = new Date(atividadeObj.dia.getFullYear(), atividadeObj.dia.getMonth(), atividadeObj.dia.getDate(), horas, minutos);
+          atividades.push({ descricao: atividadeObj.descricao, dataAcontecimento: data });
+        });
+        let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
+        console.log(formBody);
+        this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
+          if (this.file) {
+            this.imgUpload(res.projetoId);
+          }
+        });
       });
 
-      let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, userId, gestoresIds, selectedAreas }
-      console.log(formBody);
-      this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
-        if (this.file) {
-          this.imgUpload(res.projetoId);
-        }
-      });
     } else if (!this.atividadesArr.valid) {
       this._alertService.error("Os campos das atividades são obrigatorios");
     }

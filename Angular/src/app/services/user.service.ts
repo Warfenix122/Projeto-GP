@@ -61,11 +61,13 @@ export class UserService {
     });
   }
 
-  getCurrentUserId(token){
-    return this.http.post('/api/currentUser',token);
+  getCurrentUserId(): Observable<String> {
+    let token = { token: localStorage.getItem('token').split(' ')[1] };
+    console.log(token);
+    return this.http.post<String>('/api/currentUser', token);
   }
 
-  getVoluntariosExternos():Observable<User[]>{
+  getVoluntariosExternos(): Observable<User[]> {
     return this.http.get<User[]>('/api/externos');
   }
 

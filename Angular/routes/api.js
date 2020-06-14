@@ -261,9 +261,18 @@ router.get("/externos", (req, res) => {
 });
 
 router.post("/currentUser", (req, res) => {
+  console.log(req.body);
   if (req.body.token) {
-    res.status(200).send(utils.getCurrentUserId(req.body.token));
-  } else res.status(400).send("Não existe um token associado ao request");
+    res
+      .status(200)
+      .json({ success: true, UserID: utils.getCurrentUserId(req.body.token) });
+  } else
+    res
+      .status(400)
+      .json({
+        success: false,
+        msg: "Não existe um token associado ao request",
+      });
 });
 
 module.exports = router;

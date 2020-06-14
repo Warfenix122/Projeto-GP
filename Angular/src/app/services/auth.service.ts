@@ -3,6 +3,7 @@ import * as moment from "moment";
 import { Router, NavigationEnd } from '@angular/router';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +32,7 @@ export class AuthService {
     return !this.isLoggedIn();
   }
 
-  getRole(){
+  getRole() {
     return localStorage.getItem('role');
   }
 
