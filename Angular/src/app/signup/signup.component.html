@@ -43,12 +43,22 @@
             </div>
             <div class="form-group">
               <label for="confirmPassword">Confirm Password</label>
-              <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-                placeholder="Confirm Password" formControlName="confirmPassword" compare="password" />
-              <div *ngIf="
-                    confirmPassword.invalid &&
-                    (confirmPassword.dirty || confirmPassword.touched)
-                  " class="alert alert-danger">
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                class="form-control"
+                placeholder="Confirm Password"
+                formControlName="confirmPassword"
+                compare="password"
+              />
+              <div
+                *ngIf="
+                  confirmPassword.invalid &&
+                  (confirmPassword.dirty || confirmPassword.touched)
+                "
+                class="alert alert-danger"
+              >
                 <div *ngIf="confirmPassword.errors.required">
                   A password de confirmação é um campo obrigatorio.
                 </div>
@@ -80,13 +90,31 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="genero">Genero</label>
-            <select class="form-control" id="genero" name="genero" formControlName="genero">
-              <option *ngFor="let genero of generos; let i = index" [ngValue]="genero">{{ genero }}</option>
-            </select>
-            <div *ngIf="
-                genero.invalid && (genero.dirty || genero.touched)
-                " class="alert alert-danger">
+            <mat-form-field>
+              <mat-label>Genero</mat-label>
+              <mat-select [formControl]="genero">
+                <mat-option *ngFor="let genero of generos" [value]="genero">{{
+                  genero
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <label for="genero">Genero</label>
+            <select
+              class="form-control"
+              id="genero"
+              name="genero"
+              formControlName="genero"
+            >
+              <option
+                *ngFor="let genero of generos; let i = index"
+                [ngValue]="genero"
+                >{{ genero }}</option
+              >
+            </select> -->
+            <div
+              *ngIf="genero.invalid && (genero.dirty || genero.touched)"
+              class="alert alert-danger"
+            >
               <div *ngIf="genero.errors.required">
                 Tem de selecionar um genero
               </div>
@@ -125,20 +153,42 @@
           </div>
           <div class="form-group">
             <label for="distrito">Distrito</label>
-            <input type="text" placeholder="Escolha um Distrito" class="form-control" id="distrito" name="distrito"
-              formControlName="distrito" MatInput [matAutocomplete]="autoDistrito" />
+            <input
+              type="text"
+              placeholder="Escolha um Distrito"
+              class="form-control"
+              id="distrito"
+              name="distrito"
+              formControlName="distrito"
+              MatInput
+              [matAutocomplete]="autoDistrito"
+            />
             <mat-autocomplete #autoDistrito="matAutocomplete">
-              <mat-option *ngFor="let distrito of filteredDistritos | async" [value]="distrito">
+              <mat-option
+                *ngFor="let distrito of filteredDistritos | async"
+                [value]="distrito"
+              >
                 {{ distrito }}
               </mat-option>
             </mat-autocomplete>
           </div>
           <div class="form-group">
             <label for="concelho">Concelho</label>
-            <input type="text" placeholder="Escolha um Concelho" class="form-control" id="concelho" name="concelho"
-              formControlName="concelho" MatInput [matAutocomplete]="autoConcelho" />
+            <input
+              type="text"
+              placeholder="Escolha um Concelho"
+              class="form-control"
+              id="concelho"
+              name="concelho"
+              formControlName="concelho"
+              MatInput
+              [matAutocomplete]="autoConcelho"
+            />
             <mat-autocomplete #autoConcelho="matAutocomplete">
-              <mat-option *ngFor="let concelho of filteredConcelhos | async" [value]="concelho">
+              <mat-option
+                *ngFor="let concelho of filteredConcelhos | async"
+                [value]="concelho"
+              >
                 {{ concelho }}
               </mat-option>
             </mat-autocomplete>
@@ -152,13 +202,35 @@
       <mat-step label="Informações" [stepControl]="formPreferencias">
         <form [formGroup]="formPreferencias">
           <div>
-            <label for="tipoMembro">Tipo de membro:</label>
-            <select class="form-control" id="tipoMembro" name="tipoMembro" formControlName="tipoMembro">
-              <option *ngFor="let tipo of tiposMembro; let i = index" [ngValue]="tipo">{{ tipo }}</option>
-            </select>
-            <div *ngIf="
+            <mat-form-field>
+              <mat-label>Tipo de Membro:</mat-label>
+              <mat-select [formControl]="tipoMembro">
+                <mat-option
+                  *ngFor="let tipoMembro of tiposMembro"
+                  [value]="tipoMembro"
+                  >{{ tipoMembro }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <!-- <label for="tipoMembro">Tipo de membro:</label>
+            <select
+              class="form-control"
+              id="tipoMembro"
+              name="tipoMembro"
+              formControlName="tipoMembro"
+            >
+              <option
+                *ngFor="let tipo of tiposMembro; let i = index"
+                [ngValue]="tipo"
+                >{{ tipo }}</option
+              >
+            </select> -->
+            <div
+              *ngIf="
                 tipoMembro.invalid && (tipoMembro.dirty || tipoMembro.touched)
-              " class="alert alert-danger">
+              "
+              class="alert alert-danger"
+            >
               <div *ngIf="tipoMembro.errors.required">
                 O tipo membro tem de ser selecionado
               </div>
@@ -166,17 +238,41 @@
             <div class="col">
               <div *ngIf="tipoMembro.value === 'Voluntario Interno'">
                 <div class="row">
-                  <label for="escola">Escola</label>
-                  <select class="form-control" id="escola" name="escola" formControlName="escola">
-                    <option *ngFor="let escola of escolas; let i = index" [ngValue]="escola">{{ escola }}</option>
-                  </select>
+                  <mat-form-field>
+                    <mat-label>Escola</mat-label>
+                    <mat-select [formControl]="escola">
+                      <mat-option
+                        *ngFor="let escola of escolas"
+                        [value]="escola"
+                        >{{ escola }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <label for="escola">Escola</label>
+                  <select
+                    class="form-control"
+                    id="escola"
+                    name="escola"
+                    formControlName="escola"
+                  >
+                    <option
+                      *ngFor="let escola of escolas; let i = index"
+                      [ngValue]="escola"
+                      >{{ escola }}</option
+                    >
+                  </select> -->
                 </div>
                 <div class="row">
-                  <label for="formacao">Formação</label>
-                  <select class="form-control" id="formacao" name="formacao" formControlName="formacao">
-                    <option *ngFor="let formacao of formacoes; let i = index" [ngValue]="formacao">{{ formacao }}
-                    </option>
-                  </select>
+                  <mat-form-field>
+                    <mat-label>Formacao</mat-label>
+                    <mat-select [formControl]="formacao">
+                      <mat-option
+                        *ngFor="let formacao of formacoes"
+                        [value]="formacao"
+                        >{{ formacao }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
                 </div>
               </div>
             </div>
@@ -195,16 +291,29 @@
             </ul>
           </div>
           <div class="align-items-center">
-            <mat-checkbox labelPosition="after" formGroupName="RGPD" name="RGPD" (change)="RGPDchecked($event)">Li a
-              aceito a Política de Privacidade e Proteção de Dados</mat-checkbox>
-            <div *ngIf="RGPD.invalid && (RGPD.dirty || RGPD.touched)" class="alert alert-danger">
+            <mat-checkbox
+              labelPosition="after"
+              formGroupName="RGPD"
+              name="RGPD"
+              (change)="RGPDchecked($event)"
+              >Li a aceito a Política de Privacidade e Proteção de
+              Dados</mat-checkbox
+            >
+            <div
+              *ngIf="RGPD.invalid && (RGPD.dirty || RGPD.touched)"
+              class="alert alert-danger"
+            >
               <div *ngIf="RGPD.errors.required">
                 Necessita de aceitar o seguinte regulamento de proteção de
                 dados.
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-block" (click)="postData()">
+          <button
+            type="submit"
+            class="btn btn-primary btn-block"
+            (click)="postData()"
+          >
             Registar
           </button>
         </form>

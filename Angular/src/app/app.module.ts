@@ -11,7 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -42,6 +45,8 @@ import { DateValidatorDirective } from './validators/date-validator.directive';
 import { EmailValidatorDirective } from './validators/email-validator.directive';
 import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.component';
 import { FavoriteProjectComponent } from './favorite-project/favorite-project.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -60,7 +65,11 @@ import { FavoriteProjectComponent } from './favorite-project/favorite-project.co
     MatCheckboxModule,
     MatSelectModule,
     MatAutocompleteModule,
-
+    MatSlideToggleModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
   ],
   declarations: [
     AppComponent,
@@ -86,12 +95,14 @@ import { FavoriteProjectComponent } from './favorite-project/favorite-project.co
     EmailValidatorDirective,
     EditCarrouselComponent,
     FavoriteProjectComponent,
-    ],
+    CreateProjectComponent,
+
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,
     multi: true
-  }, AlertsComponent],
+  }, AlertsComponent, MatNativeDateModule],
   bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent, AproveUserComponent, AlertsComponent, RecoverPasswordComponent, UnauthorizedComponent],
 })
 export class AppModule { }

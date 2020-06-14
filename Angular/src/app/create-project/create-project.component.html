@@ -1,0 +1,394 @@
+<h1>Criar Projeto</h1>
+<mat-horizontal-stepper labelPosition="bottom">
+  <mat-step label="Informações Do projeto" [stepControl]="formInfo">
+    <form [formGroup]="formInfo" autocomplete="off">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="Nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              name="hidden"
+              class="form-control"
+              placeholder="Introduza o nome do projeto"
+              formControlName="nome"
+              autocomplete="off"
+            />
+            <div
+              *ngIf="nome.invalid && (nome.dirty || nome.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="nome.errors.required">
+                O nome é um campo obrigatorio.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <form class="d-flex justify-content-center">
+            <label for="file" *ngIf="this.file">{{ this.file.name }}</label>
+            <input
+              style="display: none;"
+              type="file"
+              accept="image/*"
+              (change)="onFileChanged($event.target.files)"
+              #fileInput
+            />
+            <button class="btn btn-dark" (click)="fileInput.click()">
+              Escolher Ficheiro <i class="far fa-image"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="resumo">Resumo</label>
+        <textarea
+          id="resumo"
+          name="resumo"
+          class="form-control"
+          placeholder="Introduza um pequeno resumo do projeto"
+          formControlName="resumo"
+        ></textarea>
+        <div
+          *ngIf="resumo.invalid && (resumo.dirty || resumo.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="resumo.errors.required">
+            O resumo é um campo obrigatorio.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="vagas">Quantas vagas serão disponibilizadas?</label>
+        <input
+          type="number"
+          id="vagas"
+          name="vagas"
+          class="form-control"
+          formControlName="vagas"
+        />
+        <div
+          *ngIf="vagas.invalid && (vagas.dirty || vagas.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="vagas.errors.required">
+            O numero de vagas é um campo obrigatorio.
+          </div>
+        </div>
+      </div>
+      <mat-slide-toggle formControlName="necessarioFormacao" color="primary"
+        >O voluntario necessita de formação?</mat-slide-toggle
+      >
+      <div class="form-group" *ngIf="this.isFormacaoNecessaria.value">
+        <div class="col-md-6 center-column">
+          <!-- <label for="formacao">Formação</label> -->
+          <mat-form-field>
+            <mat-label>Formacao</mat-label>
+            <mat-select [formControl]="formacao" multiple>
+              <mat-option
+                *ngFor="let formacao of formacoes"
+                [value]="formacao"
+                >{{ formacao }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6"></div>
+      </div>
+      <div class="form-group">
+        <label for="areas">Areas de Interesse:</label>
+        <ul class="col-lg-10 list-unstyled" style="column-count: 2;">
+          <li
+            id="lista"
+            *ngFor="let control of areasArray.controls; let i = index"
+          >
+            <div class="row d-flex justify-content-between">
+              <mat-checkbox
+                labelPosition="after"
+                class="col-md-5"
+                [formControl]="control"
+                (change)="getSelectedAreas()"
+                name="{{ areas[i] }}"
+                >{{ areas[i] }}</mat-checkbox
+              >
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-7">
+            <label for="gestoremail">Adicionar Gestor</label>
+            <input
+              type="text"
+              placeholder="Introduza o email do sub-gestor"
+              class="form-control"
+              id="gestoremail"
+              name="gestoremail"
+              formControlName="gestoremail"
+              MatInput
+              [matAutocomplete]="autoGestor"
+            />
+            <mat-autocomplete #autoGestor="matAutocomplete">
+              <mat-option
+                *ngFor="let email of filteredEmails | async"
+                [value]="email"
+              >
+                {{ email }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div id="add-gestor" class="col-sm-1">
+            <button
+              class="btn btn-primary btn-add-gestor"
+              name="btn-add-gestor"
+              (click)="gestoresEscolhidos()"
+            >
+              <i class="fas fa-plus-circle"></i>
+            </button>
+          </div>
+          <div class="col-sm-4">
+            <button
+              type="button"
+              class="btn btn-primary btn-add-gestor"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
+              Mostrar Gestores adicionados
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <button class="btn btn-primary btn-block" mat-button matStepperNext>
+      Proximo Passo
+    </button>
+  </mat-step>
+  <mat-step label="Datas e Horarios" [stepControl]="formDatas">
+    <form [formGroup]="formDatas">
+      <mat-slide-toggle formControlName="recorrente" color="primary"
+        >O projeto é recorrente?</mat-slide-toggle
+      >
+      <div class="form-group" *ngIf="this.recorrente.value">
+        <label for="XemXtempo"
+          >O projetdo devera occorrer de quanto em quanto tempo?</label
+        >
+        <div class="row">
+          <div class="col-md-2">
+            <input
+              type="text"
+              id="XemXtempo1"
+              name="XemXtempo1"
+              class="form-control center-column"
+              formControlName="XemXtempo1"
+            />
+          </div>
+          <div class="col-sm-1">
+            <p>em</p>
+          </div>
+          <div class="col-md-2">
+            <input
+              type="text"
+              id="XemXtempo2"
+              name="XemXtempo2"
+              class="form-control"
+              formControlName="XemXtempo2"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-5">
+            <mat-form-field>
+              <mat-label>Data de Comeco do projeto</mat-label>
+              <input
+                matInput
+                [matDatepicker]="dataComeco"
+                [min]="minDate"
+                formControlName="dataComeco"
+                (dateChange)="setDataComeco()"
+              />
+              <mat-datepicker-toggle
+                [for]="dataComeco"
+                matSuffix
+              ></mat-datepicker-toggle>
+              <mat-datepicker #dataComeco></mat-datepicker>
+              <mat-error>A Data de inicio é requirida</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-5" *ngIf="comeco">
+            <mat-form-field>
+              <mat-label>Data de Termino do Projeto</mat-label>
+              <input
+                matInput
+                [matDatepicker]="dataTermino"
+                [min]="comeco"
+                formControlName="dataTermino"
+                (dateChange)="calculateDaysBetween()"
+              />
+              <mat-datepicker-toggle
+                [for]="dataTermino"
+                matSuffix
+              ></mat-datepicker-toggle>
+              <mat-datepicker #dataTermino></mat-datepicker>
+              <mat-error>A Data de Termino é requirida</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <span *ngIf="_datesSet">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-label>Fecho de inscrições</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dataFechoInscricoes"
+              [min]="comeco"
+              [max]="termino"
+              formControlName="dataFechoInscricoes"
+            />
+            <mat-datepicker-toggle
+              [for]="dataFechoInscricoes"
+              matSuffix
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dataFechoInscricoes></mat-datepicker>
+            <mat-error>A Data do fecho das inscricoes é requirida</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-3">
+              <label>Atividades:</label>
+              <select
+                class="form-control"
+                name="calendarização"
+                formControlName="diaAtividade"
+              >
+                <option *ngFor="let date of daysBetween" [value]="date"
+                  >{{ date.getFullYear() }}/{{ date.getMonth() + 1 }}/{{
+                    date.getDate()
+                  }}</option
+                >
+              </select>
+            </div>
+            <div class="col-md-8">
+              <button
+                id="add-atividade"
+                class="btn btn-primary"
+                (click)="addAtividade()"
+              >
+                Adicionar Atividade
+              </button>
+            </div>
+          </div>
+
+          <div formArrayName="atividadesArr">
+            <div
+              *ngFor="let atividade of atividadesArr.controls; let i = index"
+              formGroupName="{{ i }}"
+            >
+              <div class="row">
+                <div class="col-sm-4">
+                  <label class="col-sm-2">Atividade</label>
+                  <input
+                    class="form-control"
+                    id="descricao"
+                    type="text"
+                    formControlName="descricao"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="col-sm-2">Horas:</label>
+                    <input
+                      class="form-control"
+                      id="dataAcontecimento"
+                      type="time"
+                      formControlName="horas"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <button
+                    class="btn btn-add-gestor remove-gestor"
+                    (click)="removerAtividade(i)"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="postData()"
+      >
+        Submeter
+      </button>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
+
+<!-- Modals -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Gestores Adicionados</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Numero de Telefone</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let gestor of gestores; let i = index">
+              <th scope="row">{{ i }}</th>
+              <td>{{ gestor.nome }}</td>
+              <td>{{ gestor.email }}</td>
+              <td>{{ gestor.numeroTelefone }}</td>
+              <td>
+                <button class="btn remove-gestor" (click)="removerGestor(i)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

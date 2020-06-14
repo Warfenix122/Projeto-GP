@@ -12,10 +12,12 @@ import { RecoverPasswordComponent } from './recover-password/recover-password.co
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { ListProjectsComponent } from './list-projects/list-projects.component';
 
 
 const routes: Routes = [
-  { path: '', component: MainComponent},
+  { path: '', component: MainComponent },
   { path: 'dashboard', component: MainComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
@@ -28,6 +30,9 @@ const routes: Routes = [
   { path: 'alterPassword', component: AlterPasswordComponent },
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'editCarrosel', component: EditCarrouselComponent },
+  { path: 'api/confirmAccount/:email', component: LoginComponent },
+  { path: 'createProject', component: CreateProjectComponent },
+  { path: 'projects', component: ListProjectsComponent },
   { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 
