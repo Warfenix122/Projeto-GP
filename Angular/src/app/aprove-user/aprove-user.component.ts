@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service'
 import { User } from '../../../models/utilizadores'
-import { Router, RouterModule } from '@angular/router'
-import { from } from 'rxjs';
+import { Router } from '@angular/router'
 import { AlertService } from '../services/alert.service';
 
 

@@ -11,7 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -35,6 +38,8 @@ import { AlertService } from './services/alert.service';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -53,7 +58,11 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     MatCheckboxModule,
     MatSelectModule,
     MatAutocompleteModule,
-
+    MatSlideToggleModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
   ],
   declarations: [
     AppComponent,
@@ -71,13 +80,14 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     AlertsComponent,
     AlterPasswordComponent,
     ListProjectsComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    CreateProjectComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: InterceptorAutenticacao,
     multi: true
-  }, AlertsComponent],
+  }, AlertsComponent, MatNativeDateModule],
   bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent, AproveUserComponent, AlertsComponent, RecoverPasswordComponent, UnauthorizedComponent],
 })
 export class AppModule { }

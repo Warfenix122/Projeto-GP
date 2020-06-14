@@ -78,7 +78,7 @@ var ProjetoSchema = new Schema({
   dataTermino: Date,
   dataFechoInscricoes: Date,
   dataComeco: Date,
-  areasInteresse: [String],   //Areas onde este projeto se enquadra
+  areasInteresse: [String], //Areas onde este projeto se enquadra
 });
 
 
