@@ -7,15 +7,15 @@ var jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
 const User = require("../models/mongoConnection").Utilizadores;
+const files = require("./file");
 const email = require("./email");
 const projetos = require("./project");
-const files = require("./file");
-
+router.use("/file", files);
+router.use("/email", email);
+router.use("/project", projetos);
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
-router.use("/project", projetos);
-router.use("/file", files);
 
 router.get(
   "/protected",

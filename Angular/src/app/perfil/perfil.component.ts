@@ -12,6 +12,7 @@ import { ReadVarExpr } from '@angular/compiler';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import * as moment from "moment";
 import { NavigationEnd } from '@angular/router';
+import { FileService } from '../services/file.service';
 
 @Component({
   selector: 'app-perfil',
@@ -36,7 +37,7 @@ export class PerfilComponent implements OnInit {
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
-  constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private _alertService: AlertService) {
+  constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private fileService: FileService, private _alertService: AlertService) {
   }
 
 
@@ -71,7 +72,7 @@ export class PerfilComponent implements OnInit {
 
   getProfilePhoto(email) {
     const formData = { 'email': email }
-    this.userService.getProfilePhoto(formData).subscribe((res) => {
+    this.fileService.getProfilePhoto(formData).subscribe((res) => {
       const src = this.arrayBufferToBase64(res['foto'].data);
       this.img.nativeElement.src = 'data:' + res['foto'].contentType + ';base64,' + src;
     }, (err) => {
@@ -99,7 +100,7 @@ export class PerfilComponent implements OnInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       const src = reader.result;
-      this.userService.uploadPhoto(formData).subscribe((res) => {
+      this.fileService.uploadPhoto(formData).subscribe((res) => {
         this._alertService.success("Foto Atualizada");
         this.getProfilePhoto(this.user.email);
       }, (err) => {

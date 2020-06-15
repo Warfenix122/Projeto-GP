@@ -48,7 +48,6 @@ app.use(express.static("dist/Projeto-GP"));
 
 const api = require("./routes/api");
 app.use("/api", api);
-
 app.get("*", (req, res) => {
   console.log(__dirname);
   res.sendFile(path.join(__dirname, "index.html"));

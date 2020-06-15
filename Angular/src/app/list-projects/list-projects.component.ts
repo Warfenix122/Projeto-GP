@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class ListProjectsComponent implements OnInit {
   projects: Array<Project>;
 
-  constructor(private projectService : ProjectService, private _alertService: AlertService) { }
+  constructor(private projectService: ProjectService, private _alertService: AlertService) { }
 
   ngOnInit(): void {
     this.projectService.projects().subscribe(projects => {
@@ -21,7 +21,7 @@ export class ListProjectsComponent implements OnInit {
     });
   }
 
-  openProject(index){
+  openProject(index) {
     let projectId = this.projects[index]._id;
     this.projectService.getProject(projectId).subscribe(project => {
       //navigate to the project page passing the 'project' value

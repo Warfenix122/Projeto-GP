@@ -8,23 +8,35 @@ export class FileService {
 
   constructor(private http: HttpClient) { }
 
+  uploadPhoto(formData) {
+    return this.http.post('/api/file/uploadProfilePhoto', formData, {
+      observe: 'body',
+      withCredentials: true
+    });
+  }
+  getProfilePhoto(formData) {
+    return this.http.post('/api/file/getProfilePhoto', formData, {
+      observe: 'body',
+      withCredentials: true,
 
+    });
+  }
   uploadCarrouselPhoto(formData) {
-    return this.http.post('/api/uploadCarrouselPhoto', formData, {
+    return this.http.post('/api/file/uploadCarrouselPhoto', formData, {
       observe: 'body',
       withCredentials: true
     });
   }
 
   deleteCarrouselPhoto(formdata) {
-    return this.http.post('/api/deleteCarrouselPhoto', formdata, {
+    return this.http.post('/api/file/deleteCarrouselPhoto', formdata, {
       observe: 'body',
       withCredentials: true
     });
   }
 
   getAllCarrouselPhotos() {
-    return this.http.post('/api/getAllCarrouselPhotos', {
+    return this.http.post('/api/file/getAllCarrouselPhotos', {
       observe: 'body',
       withCredentials: true,
 

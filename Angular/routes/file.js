@@ -31,8 +31,8 @@ router.post("/uploadProfilePhoto", upload.single("file"), (req, res, next) => {
           var bin = fs.readFileSync(
             path.join(
               path.dirname(require.main.filename) +
-                "/uploads/" +
-                req.file.filename
+              "/uploads/" +
+              req.file.filename
             )
           );
           var newPhoto = new FotoPerfil({
@@ -147,7 +147,6 @@ router.post("/deleteCarrouselPhoto", (req, res, next) => {
     }
   });
   res.status(200).json({ success: true, message: "sucesso" });
+});
 
-
-})
 module.exports = router;
