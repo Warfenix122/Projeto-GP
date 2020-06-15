@@ -9,12 +9,14 @@ const path = require("path");
 const User = require("../models/mongoConnection").Utilizadores;
 const email = require("./email");
 const projectAPI = require("./project");
+const fotoAPI = require("./foto")
 const files = require("./file");
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
 router.use("/project", projectAPI);
+router.use("/foto", fotoAPI);
 router.use("/file", files);
 
 router.get(

@@ -27,4 +27,5 @@ export class Project {
   dataFechoInscricoes: Date;
   dataComeco: Date;
   areasInteresse: [string];
+  fotoCapaId: string;
 }

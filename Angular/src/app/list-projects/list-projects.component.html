@@ -1,7 +1,7 @@
 <h1 class="mt-4 mb-5">Projetos</h1>
 <div class="d-flex mt-3 flex-wrap">
 <div (click)="openProject(i)" *ngFor="let project of projects; let i = index" [attr.data-index]="i" class="card">
-    <img class="card-img-top" src="https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg" alt="Card image cap">
+    <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
     <div class="card-body">
         <h2 class="card-title">{{project.nome}}</h2>
         <p class="card-text">{{project.resumo}}</p>
