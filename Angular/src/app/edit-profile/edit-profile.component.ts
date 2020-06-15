@@ -29,15 +29,12 @@ export class EditProfileComponent implements OnInit {
   }
   oldForm: any;
   formProfile = this._fb.group({
-    nome: new FormControl(''),
-    genero: new FormControl(''),
+    nome: new FormControl('',Validators.required),
+    genero: new FormControl('',Validators.required),
     dataNascimento: new FormControl(''),
-    password: new FormControl(''),
-    numeroTelefone: new FormControl(''),
-    distrito: new FormControl(''),
-    concelho: new FormControl(''),
-    tipoMembro: new FormControl(''),
-    dataCriacao: new FormControl('')
+    numeroTelefone: new FormControl('',Validators.required),
+    distrito: new FormControl('',Validators.required),
+    concelho: new FormControl('',Validators.required)
   });
 
   ngOnInit(): void {
@@ -54,7 +51,6 @@ export class EditProfileComponent implements OnInit {
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
 
       this.user = res['user'];
-
       this.formProfile = this._fb.group({
         nome: new FormControl(this.user.nome, [Validators.required]),
         genero: new FormControl(this.user.genero),
@@ -76,6 +72,24 @@ export class EditProfileComponent implements OnInit {
 
 
   }
+
+  get numeroTelefone() {
+    return this.formProfile.get("numeroTelefone")
+  }
+
+  get genero() {
+    return this.formProfile.get("genero");
+  }
+
+  get dataNascimento() {
+    return this.formProfile.get("dataNascimento");
+  }
+
+  get nome() {
+    return this.formProfile.get('nome');
+  }
+
+
 
   private _filterConcelho(value: string): string[] {
     const filterValue = value.toLowerCase();

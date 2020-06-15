@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Attribute } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { FormBuilder, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -9,6 +9,10 @@ import statics from '../../assets/statics.json';
 import { AlertService } from '../services/alert.service';
 import { HttpClient } from '@angular/common/http';
 import { ReadVarExpr } from '@angular/compiler';
+import { Injectable, Output, EventEmitter } from '@angular/core';
+import * as moment from "moment";
+import { NavigationEnd } from '@angular/router';
+import { FileService } from '../services/file.service';
 
 @Component({
   selector: 'app-perfil',
@@ -25,10 +29,17 @@ export class PerfilComponent implements OnInit {
   userInfo: any;
   existsImage: boolean = false;
   file: any;
-  static = new Array()
-  constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private _alertService: AlertService) {
+  static = new Array();
+  areas: Array<String> = statics.areas;
+  form = this._fb.group({
+    areas: '',
+  });
+
+  selectedAreas: Array<String>;
+  selectedAreasError: Boolean
+  constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private fileService: FileService, private _alertService: AlertService) {
   }
-  form = this._fb.group({});
+
 
   ngOnInit() {
 
@@ -36,33 +47,36 @@ export class PerfilComponent implements OnInit {
       this.user = res['user'];
       this.userInfo = [];
       this.userInfo.push({ key: 'Email', value: this.user.email });
-      this.userInfo.push({ key: 'Data de Nascimento', value: this.user.dataNascimento });
+      const brithDate = new Date(this.user.dataNascimento);
+      const strBirth = brithDate.getDay().toString().concat("/", brithDate.getMonth().toString(), "/", brithDate.getFullYear().toString())
+      this.userInfo.push({ key: 'Data de Nascimento', value: strBirth });
       this.userInfo.push({ key: 'Distrito', value: this.user.distrito });
       this.userInfo.push({ key: 'Concelho', value: this.user.concelho });
       this.userInfo.push({ key: 'Número de Telefone', value: this.user.numeroTelefone });
-      this.userInfo.push({ key: 'Data de Criação de Conta', value: this.user.dataCriacao });
+      const creationDate = new Date(this.user.dataCriacao);
+      const strCreation = creationDate.getDay().toString().concat("/", creationDate.getMonth().toString(), "/", creationDate.getFullYear().toString())
+      this.userInfo.push({ key: 'Data de Criação de Conta', value: strCreation });
       this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
       this.getProfilePhoto(this.user.email);
+
+      this.form = this._fb.group({
+        areas: this.addAreasInteresseControls(this.user.areasInteresse),
+      });
+
       for (const are of statics.areas) {
-        if (this.user.areasInteresse.includes(are)) {
-          this.static.push({ 'area': are, 'user': true })
-        } else {
-          this.static.push({ 'area': are, 'user': false })
-        }
+        this.form.controls['areas'].disable();
       }
     });
-
   }
 
 
   getProfilePhoto(email) {
-
     const formData = { 'email': email }
-    this.userService.getProfilePhoto(formData).subscribe((res) => {
+    this.fileService.getProfilePhoto(formData).subscribe((res) => {
       const src = this.arrayBufferToBase64(res['foto'].data);
       this.img.nativeElement.src = 'data:' + res['foto'].contentType + ';base64,' + src;
     }, (err) => {
-      this._alertService.error(err.error.msg);
+      this._alertService.error("Dificuldade em encontrar a foto. Tente de novo, dentro de 30 segundos");
     }, () => {
 
     });
@@ -72,7 +86,7 @@ export class PerfilComponent implements OnInit {
     var bytes = [].slice.call(new Uint8Array(buffer));
     bytes.forEach((b) => binary += String.fromCharCode(b));
     return window.btoa(binary);
-  };
+  }
 
   onFileChanged(event) {
     this.file = event.target.files[0];
@@ -84,15 +98,13 @@ export class PerfilComponent implements OnInit {
     formData.append('file', this.file, this.file.name);
 
     const reader = new FileReader();
-    const mail = this.user.email;
-    const userservice = this.userService;
-    const alert = this._alertService;
     reader.onloadend = () => {
       const src = reader.result;
-      userservice.uploadPhoto(formData).subscribe((res) => {
-        alert.success("Sucesso");
+      this.fileService.uploadPhoto(formData).subscribe((res) => {
+        this._alertService.success("Foto Atualizada");
+        this.getProfilePhoto(this.user.email);
       }, (err) => {
-        alert.error(err.error.msg);
+        this._alertService.error("Impossivel atualizar a foto, tente utilizar outra foto!");
       });
     };
     reader.readAsDataURL(this.file);
@@ -101,19 +113,46 @@ export class PerfilComponent implements OnInit {
   alterAreasInteresse() {
     this.saveAreas.nativeElement.style.display = 'block';
     this.editAreas.nativeElement.style.display = 'none';
-    var check = this.checkboxes.nativeElement.children[0];
-
-    for (const c of this.static) {
-      let checkbox = document.getElementById(c.area);
-      console.log('div :>> ', checkbox.attributes);
-
-    }
-
-
+    this.form.controls['areas'].enable();
   }
   saveAreasInteresse() {
     this.editAreas.nativeElement.style.display = 'block';
     this.saveAreas.nativeElement.style.display = 'none';
+    const selectedAreas = this.selectedAreas;
+    let user = this.user;
+    user.areasInteresse = selectedAreas;
+    const formdata = user;
+    this.userService.editUser(formdata).subscribe((res) => {
+      this._alertService.success(res['success'].message);
 
+      this.form.controls['areas'].disable();
+
+    })
+
+  }
+
+  getSelectedAreas() {
+    this.selectedAreas = [];
+    this.areasArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedAreas.push(this.areas[i]);
+      }
+    });
+    this.selectedAreasError = this.selectedAreas.length > 0 ? false : true;
+
+  }
+  get areasArray() {
+    return <FormArray>this.form.get('areas');
+  }
+
+  addAreasInteresseControls(userAreas) {
+    const arr = this.areas.map(element => {
+      if (userAreas.includes(element)) {
+        return this._fb.control(true);
+      } else {
+        return this._fb.control(false);
+      }
+    });
+    return this._fb.array(arr);
   }
 }

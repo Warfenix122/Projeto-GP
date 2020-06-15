@@ -62,19 +62,7 @@ export class UserService {
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
-  uploadPhoto(formData) {
-    return this.http.post('/api/uploadProfilePhoto', formData, {
-      observe: 'body',
-      withCredentials: true
-    });
-  }
-  getProfilePhoto(formData) {
-    return this.http.post('/api/getProfilePhoto', formData, {
-      observe: 'body',
-      withCredentials: true,
 
-    });
-  }
 
   getCurrentUserId(): Observable<String> {
     let token = { token: localStorage.getItem('token').split(' ')[1] };

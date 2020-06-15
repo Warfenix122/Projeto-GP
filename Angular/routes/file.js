@@ -1,11 +1,12 @@
 const express = require("express");
 var router = express.Router();
-const fs = require("fs");
-const path = require("path");
-const FotoPerfil = require("../models/mongoConnection").FotoPerfil;
-const FotoCapa = require("../models/mongoConnection").FotoCapa;
-const User = require("../models/mongoConnection").Utilizadores;
-var multer = require("multer");
+const fs = require('fs');
+const path = require('path');
+const FotoPerfil = require('../models/mongoConnection').FotoPerfil;
+const FotoCarrosel = require('../models/mongoConnection').FotoCarrosel;
+const User = require('../models/mongoConnection').Utilizadores;
+var multer = require('multer');
+
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -30,8 +31,8 @@ router.post("/uploadProfilePhoto", upload.single("file"), (req, res, next) => {
           var bin = fs.readFileSync(
             path.join(
               path.dirname(require.main.filename) +
-                "/uploads/" +
-                req.file.filename
+              "/uploads/" +
+              req.file.filename
             )
           );
           var newPhoto = new FotoPerfil({
@@ -39,22 +40,16 @@ router.post("/uploadProfilePhoto", upload.single("file"), (req, res, next) => {
             foto: { data: bin, contentType: "image/png" },
           });
           if (foto) {
-            FotoPerfil.deleteOne({ userId: id }, () => {
-              res.contentType("json");
-              res.json({
-                success: false,
-                message: "Dificuldades a alterar imagem",
-              });
+            FotoPerfil.deleteOne({ userId: id }, (err) => {
+              if (err) {
+                res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });
+              }
             });
           }
           newPhoto
             .save()
             .then((newPhoto) => {
-              res.contentType("json");
-              res.json({
-                success: true,
-                message: "Imagem Guardada com Sucesso!",
-              });
+              res.status(200).json({ success: true, message: 'Imagem Guardada com Sucesso!' });
             })
             .catch((err) => console.log(err));
         })
@@ -71,15 +66,9 @@ router.post("/getProfilePhoto", (req, res) => {
       let id = user._id;
       FotoPerfil.findOne({ userId: id }).then((foto) => {
         if (foto) {
-          res.contentType("json");
           res.status(200).json({ success: true, foto: foto.foto.data });
         } else {
-          var img = fs.readFileSync(
-            path.join(
-              path.dirname(require.main.filename) + "/src/assets/img/user.png"
-            )
-          );
-          res.contentType("json");
+          var img = fs.readFileSync(path.join(path.dirname(require.main.filename) + '/src/assets/img/user.png'));
           res.status(200).json({ success: true, foto: img });
         }
       });
@@ -120,4 +109,44 @@ router.post("/uploadCapaFoto", upload.single("file"), (req, res) => {
       .catch((err) => console.log(err));
   });
 });
+
+
+router.post("/uploadCarrouselPhoto", upload.single('file'), (req, res, next) => {
+  var bin = fs.readFileSync(path.join(path.dirname(require.main.filename) + '/uploads/' + req.file.filename));
+  FotoCarrosel.find({ 'foto.data': bin }).then((items) => {
+    res.status(500).json({ success: false, message: 'Imagem já inserida!' });
+  }).catch((err) => console.log(err));
+
+  var newPhoto = new FotoCarrosel({
+    foto: { data: bin, contentType: 'image/png' }
+  });
+
+  newPhoto.save()
+    .then((newPhoto) => {
+      res.status(200).json({ success: true, message: 'Imagem Guardada com Sucesso!' });
+    })
+    .catch((err) => console.log(err));
+})
+
+router.post("/getAllCarrouselPhotos", (req, res, next) => {
+
+  FotoCarrosel.find({ 'foto.contentType': "image/png" }).then((items) => {
+    console.log('items :>> ', items);
+    res.status(200).json({ success: true, fotos: items });
+
+  }).catch((err) => console.log(err));
+
+})
+
+
+router.post("/deleteCarrouselPhoto", (req, res, next) => {
+  FotoCarrosel.deleteOne({ '_id': req.body.src }).then((err) => {
+    if (err) {
+      console.log('err :>> ', err);
+      res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });
+    }
+  });
+  res.status(200).json({ success: true, message: "sucesso" });
+});
+
 module.exports = router;

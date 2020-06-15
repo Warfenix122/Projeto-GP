@@ -38,6 +38,13 @@ import { AlertService } from './services/alert.service';
 import { AlterPasswordComponent } from './alter-password/alter-password.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { TelephoneValidatorDirective } from './validators/telephone-validator.directive';
+import { PasswordValidatorDirective } from './validators/password-validator.directive';
+import { NameValidatorDirective } from './validators/name-validator.directive';
+import { DateValidatorDirective } from './validators/date-validator.directive';
+import { EmailValidatorDirective } from './validators/email-validator.directive';
+import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.component';
+import { FavoriteProjectComponent } from './favorite-project/favorite-project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -81,7 +88,15 @@ import { MatNativeDateModule } from '@angular/material/core';
     AlterPasswordComponent,
     ListProjectsComponent,
     EditProfileComponent,
+    TelephoneValidatorDirective,
+    PasswordValidatorDirective,
+    NameValidatorDirective,
+    DateValidatorDirective,
+    EmailValidatorDirective,
+    EditCarrouselComponent,
+    FavoriteProjectComponent,
     CreateProjectComponent,
+
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

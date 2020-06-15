@@ -16,7 +16,7 @@ export class ListProjectsComponent implements OnInit {
   projects: Array<Project> = [];
   fotos: Array<any> = [];
 
-  constructor(private projectService : ProjectService, private _alertService: AlertService, private fotoService: FotoService) { }
+  constructor(private projectService: ProjectService, private _alertService: AlertService, private fotoService: FotoService) { }
 
   ngOnInit(): void {
     this.projectService.projects().subscribe(projects => {
@@ -27,17 +27,17 @@ export class ListProjectsComponent implements OnInit {
     });
   }
 
-  getSrc(fotoId){
+  getSrc(fotoId) {
     let foto = this.fotos.find(elem => elem.id == fotoId);
     let res;
-    if(foto)
+    if (foto)
       res = 'data:' + foto.contentType + ';base64,' + foto.src;
-    else 
+    else
       res = "https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg";
     return res;
   }
 
-  openProject(index){
+  openProject(index) {
     let projectId = this.projects[index]._id;
     this.projectService.getProject(projectId).subscribe(project => {
       //navigate to the project page passing the 'project' value
