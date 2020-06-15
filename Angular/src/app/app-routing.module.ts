@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'alterPassword', component: AlterPasswordComponent },
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'api/confirmAccount/:email', component: LoginComponent },
-  { path: 'createProject', component: CreateProjectComponent }
+  { path: 'createProject', component: CreateProjectComponent },
   { path: 'projects', component: ListProjectsComponent },
   { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];

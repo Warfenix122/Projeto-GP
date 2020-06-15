@@ -2,10 +2,8 @@ const Project = require("../models/mongoConnection").Projeto;
 const PublicoAlvo = require("../models/mongoConnection").PublicoAlvo;
 const mongoose = require("mongoose");
 const { forEachChild } = require("typescript");
-var router = express.Router();
-const Project = require('../models/mongoConnection').Projeto;
 const express = require("express");
-const router = express.Router();
+var router = express.Router();
 
 router.post("", (req, res) => {
   const {
@@ -38,6 +36,7 @@ router.post("", (req, res) => {
       });
     }
   });
+})
 
 //update
 router.put('/:id', (req, res) => {

@@ -8,13 +8,13 @@ const fs = require("fs");
 const path = require("path");
 const User = require("../models/mongoConnection").Utilizadores;
 const email = require("./email");
-const projetos = require("./project");
+const projectAPI = require("./project");
 const files = require("./file");
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
-router.use("/project", projetos);
+router.use("/project", projectAPI);
 router.use("/file", files);
 
 router.get(
