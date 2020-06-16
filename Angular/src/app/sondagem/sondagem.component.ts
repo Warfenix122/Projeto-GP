@@ -12,7 +12,10 @@ import { Sondagem } from 'models/sondagem';
 export class SondagemComponent implements OnInit {
   sondagens: Array<Sondagem>;
   valor : Boolean;
-  selectedIndex: number = 0;
+  selectedIndex: number = 0; // index da sondagem selecionada
+  selectedAnswerIndex: Array<number>; // indexes das opções que o user selecionou
+  selectedOptions: Array<number>; // string das opções selecionadas pelo user
+  sondagemId: string;
 
   constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService) { }
 
@@ -28,12 +31,21 @@ export class SondagemComponent implements OnInit {
   selectIndex(index){
     this.selectedIndex = index;
   }
+  getAswerSelectedIndex(index){
+    this.selectedAnswerIndex = index;
+  }
 
   onCheck(){
     this.valor = !this.valor;
   }
 
-  onSubmit(){
-    //this.sondagemService.
+  onSubmit(otherReason){
+    this.selectedAnswerIndex.forEach((opcaoIndex) => {
+      this.sondagens.forEach((sondagem) => {
+        this.selectedOptions.push(sondagem.opcoes[opcaoIndex].id);
+      });
+    });
+    this.sondagemId = (this.sondagens[this.selectedIndex]._id);
+    this.sondagemService.answerSondagem( this.sondagemId, this.selectedOptions, otherReason);
   }
 }

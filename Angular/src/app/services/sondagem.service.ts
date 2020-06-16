@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Sondagem } from '../../../models/sondagem'
+import { Sondagem } from '../../../models/sondagem';
+import { User } from 'models/utilizadores';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,9 @@ import { Sondagem } from '../../../models/sondagem'
 
 export class SondagemService {
 
-  constructor(private http: HttpClient) {
+  user: User;
+
+  constructor(private http: HttpClient, private userService: UserService) {
     
   }
 
@@ -21,14 +25,21 @@ export class SondagemService {
   }
 
   answerSondagem(sondagemId, opcoesEscolhidas, outraResposta){
-    //Pedir ajuda à paquete para saber como ir buscar o user Id do utilizador logado
-    let obj = {
-      //utilizadorId: ...,
-      //sondagemId: ...,
-      //opcoesEscolhidas: ...,
-      //outraResposta: ...
-    }
-    return this.http.post('/api/sondagem', obj);
+   
+    this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
+      this.user = res['user'];
+      let obj = {
+      
+        utilizadorId: this.user._id,
+        sondagemId: sondagemId,
+        opcoesEscolhidas: opcoesEscolhidas,
+        outraResposta: outraResposta
+      }
+      
+      return this.http.post('/api/sondagem', obj);
+    });
+    
+    
   }
 
 }

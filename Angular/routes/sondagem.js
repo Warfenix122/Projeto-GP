@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 var router = express.Router();
 const Sondagem = require('../models/mongoConnection').Sondagem;
-//Meter a respostaSondagem do mongoconnection aqui
+const Resposta = require('../models/mongoConnection').Resposta;
 
 router.get('/:id', (req, res) => {
     let sondagemId = mongoose.Types.ObjectId(req.params.id);
@@ -20,6 +20,7 @@ router.get('', (req, res) => {
 router.post('', (req, res) => {
     let novaSondagem = req.body;
     //Inserir na BD a novaSondagem
+    
 })
 
 module.exports = router;

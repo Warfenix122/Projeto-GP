@@ -21,8 +21,8 @@
         <div class="modal-body" >
             <div class="form-check">
               <ul>
-                <li *ngFor="let opcao of sondagens[selectedIndex].opcoes">
-                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <li *ngFor="let opcao of sondagens[selectedIndex].opcoes; let o = index" [attr.data-index]="o">
+                  <input (click)="getSe lectedIndex(o)" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                   <label class="form-check-label" for="defaultCheck1">
                       {{opcao.opcao}}
                   </label>
@@ -32,7 +32,7 @@
             <div class="form-check ">
               <ul>
                 <li>
-                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"  (click)="onCheck()">
+                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" (click)="onCheck()">
                   <label class="form-check-label" for="defaultCheck1">
                     Outro
                 </label>
@@ -40,13 +40,13 @@
               </ul>
             </div>
             <div class="m-2">
-              <textarea class="form-control form-control-sm" id="exampleFormControlTextarea1" placeholder="Indique outra razão" rows="3" *ngIf="valor"></textarea>
+              <textarea class="form-control form-control-sm" id="exampleFormControlTextarea1" placeholder="Indique outra razão" rows="3" *ngIf="valor" #otherReason></textarea>
             </div>
         </div>
 
         <div class="modal-footer" >
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="button" class="btn btn-primary" (click)="onSubmit()">Submeter</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmit(otherReason.value)">Submeter</button>
         </div>
       </div>
     </div>
