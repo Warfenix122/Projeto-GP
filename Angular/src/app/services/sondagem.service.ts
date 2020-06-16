@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Sondagem } from '../../../models/sondagem';
 import { User } from 'models/utilizadores';
 import { UserService } from './user.service';
@@ -11,34 +11,25 @@ import { RespostaSondagem } from 'models/respostaSondagem';
 
 export class SondagemService {
 
-  user: User;
-
   constructor(private http: HttpClient, private userService: UserService) {
-    
+
   }
 
-  getSondagens(){
+  getSondagens() {
     return this.http.get<Sondagem[]>('/api/sondagem');
   }
 
-  getSondagemById(id){
+  getSondagemById(id) {
     return this.http.get<Sondagem>('/api/sondagem/' + id);
   }
 
-  answerSondagem(sondagemId, opcoesEscolhidas, outraResposta){
-   
-    this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
-      this.user = res['user'];
-      let newAnswer = {
-        utilizadorId: this.user._id,
-        sondagemId: sondagemId,
-        opcoesEscolhidas: opcoesEscolhidas,
-        outraResposta: outraResposta
-      }
-      return this.http.post('/api/sondagem/answer', newAnswer);
+  answerSondagem(formbody) {
+    return this.http.post('/api/sondagem/answer', formbody, {
+      observe: 'body',
+      withCredentials: true,
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
-    
-    
+
   }
 
 }

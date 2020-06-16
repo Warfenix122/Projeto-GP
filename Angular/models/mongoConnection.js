@@ -99,23 +99,19 @@ var InscricaoSchema = new Schema({
 });
 
 var SondagemSchema = new Schema({
+  sondagemId: mongoose.ObjectId,
   nome: String,
   descricao: String,
-  opcoes: [{
-  	id: Number,
-  	opcao: String
-  }]
+  opcoes: [String]
 });
 
 var RespostaSchema = new Schema({
+  respostaId: mongoose.ObjectId,
   utilizadorId: mongoose.ObjectId,
   sondagemId: mongoose.ObjectId,
-  opcoesEscolhidas: [{
-  	opcaoId: Number,
-  	escolheu: Boolean, //escolheu ou nao
-  }],
+  opcoes: [String],
   outraResposta: String
-})     
+})
 
 const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
 const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");

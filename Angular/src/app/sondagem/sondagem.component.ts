@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { FormBuilder, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
 import { SondagemService } from '../services/sondagem.service';
 import { Sondagem } from 'models/sondagem';
+import { User } from 'models/utilizadores';
 
 @Component({
   selector: 'app-sondagem',
@@ -11,41 +12,75 @@ import { Sondagem } from 'models/sondagem';
 })
 export class SondagemComponent implements OnInit {
   sondagens: Array<Sondagem>;
-  valor : Boolean;
-  selectedIndex: number = 0; // index da sondagem selecionada
-  selectedAnswerIndex: Array<number>; // indexes das opções que o user selecionou
-  selectedOptions: Array<number>; // string das opções selecionadas pelo user
-  sondagemId: string;
-
+  opcoes: Array<any>;
+  chosenSondagem: Sondagem;
+  selectedOptions: Array<String>;
+  selectedOptionError: Boolean;
+  user: User;
   constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService) { }
+  formSondagem = this._fb.group({
+    opcoes: this.addOpcoes(),
+    outro: new FormControl('')
+  });
 
 
 
   ngOnInit(): void {
-    this.sondagemService.getSondagens().subscribe((sondagens) => {
-      console.log(sondagens);
-      this.sondagens = sondagens;
-    })
-  }
-
-  selectIndex(index){
-    this.selectedIndex = index;
-  }
-  getAswerSelectedIndex(index){
-    this.selectedAnswerIndex = index;
-  }
-
-  onCheck(){
-    this.valor = !this.valor;
-  }
-
-  onSubmit(otherReason){
-    this.selectedAnswerIndex.forEach((opcaoIndex) => {
-      this.sondagens.forEach((sondagem) => {
-        this.selectedOptions.push(sondagem.opcoes[opcaoIndex].id);
+    this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
+      this.user = res['user']
+      this.sondagemService.getSondagens().subscribe((sondagens) => {
+        console.log(' sondagens :>> ', sondagens);
+        this.sondagens = sondagens;
       });
     });
-    this.sondagemId = (this.sondagens[this.selectedIndex]._id);
-    this.sondagemService.answerSondagem( this.sondagemId, this.selectedOptions, otherReason);
+  }
+
+  getSondagem(id) {
+    this.chosenSondagem = this.sondagens.find((e) => { if (e._id == id) return e });
+    this.formSondagem = this._fb.group({
+      opcoes: this.addOpcoes(),
+      outro: new FormControl('')
+    });
+
+
+  }
+
+  get outro() {
+    return <FormArray>this.formSondagem.get('outro');
+
+  }
+
+  get opcoesArray() {
+    return <FormArray>this.formSondagem.get('opcoes');
+  }
+
+  getSelectedOptions() {
+    this.selectedOptions = [];
+    this.opcoesArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedOptions.push(this.chosenSondagem.opcoes[i]);
+      }
+    });
+    this.selectedOptionError = this.selectedOptions.length > 0 ? false : true;
+
+  }
+
+  addOpcoes() {
+    if (this.chosenSondagem) {
+      const arr = this.chosenSondagem.opcoes.map(element => {
+        return this._fb.control(false);
+      });
+      return this._fb.array(arr);
+    }
+  }
+
+
+
+  onSubmit() {
+    if (this.formSondagem.valid) {
+      const selected = this.selectedOptions;
+      const formbody = { ...this.formSondagem.value, 'options': selected, 'userId': this.user._id, 'sondagemId': this.chosenSondagem._id };
+      this.sondagemService.answerSondagem(formbody).subscribe(res => { })
+    }
   }
 }

@@ -2,8 +2,5 @@ export class Sondagem {
   _id: string;
   nome: string;
   descricao: string;
-  opcoes: [{
-  	id: number,
-  	opcao: string
-  }];
+  opcoes: [string];
 }

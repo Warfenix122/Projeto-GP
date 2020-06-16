@@ -14,7 +14,7 @@ const sondagemAPI = require('./sondagem');
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
-router.use('/songadem', sondagemAPI);
+router.use('/sondagem', sondagemAPI);
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {
   res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!" });

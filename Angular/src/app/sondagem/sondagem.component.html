@@ -1,54 +1,49 @@
 <div class="d-flex mt-3 flex-wrap">
-  <div *ngFor="let sondagem of sondagens; let i = index" [attr.data-index]="i" class="card">
+  <div *ngFor="let s of sondagens; let i = index" [attr.data-index]="i" class="card">
     <div class="card-body">
-      <h3 class="card-title">{{sondagem.nome}}</h3>
-      <button (click)="selectIndex(i)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Responder</button>
+      <h3 class="card-title">{{s.nome}}</h3>
+      <button (click)="getSondagem(s._id)" type="button" class="btn btn-primary" data-toggle="modal"
+        data-target="#exampleModal">Responder</button>
     </div>
   </div>
 </div>
 
 <!--modals-->
-<form>
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel" >{{sondagens[selectedIndex].descricao}}</h3>
+          <h3 class="modal-title" id="exampleModalLabel">{{chosenSondagem.descricao}}</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" >
-            <div class="form-check">
-              <ul>
-                <li *ngFor="let opcao of sondagens[selectedIndex].opcoes; let o = index" [attr.data-index]="o">
-                  <input (click)="getAswerSelectedIndex(o)" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                  <label class="form-check-label" for="defaultCheck1">
-                      {{opcao.opcao}}
-                  </label>
-                </li>
-            </ul>
+        <div class="modal-body">
+          <form [formGroup]="formSondagem">
+            <div id="lista" *ngFor="let opcao of opcoesArray.controls;let i = index">
+              <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="opcao" (change)="getSelectedOptions()"
+                name="{{this.chosenSondagem.opcoes[i]}}">
+                {{this.chosenSondagem.opcoes[i]}}
+              </mat-checkbox>
             </div>
-            <div class="form-check ">
-              <ul>
-                <li>
-                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" (click)="onCheck()">
-                  <label class="form-check-label" for="defaultCheck1">
-                    Outro
-                </label>
-                </li>
-              </ul>
+            <div>
+              <mat-checkbox labelPosition="after" class="col-md-5" name="outro" #check>Outro </mat-checkbox>
             </div>
-            <div class="m-2">
-              <textarea class="form-control form-control-sm" id="exampleFormControlTextarea1" placeholder="Indique outra razão" rows="3" *ngIf="valor" #otherReason></textarea>
+            <div *ngIf="check.checked" style="width: max-content;">
+              <textarea [formControl]="outro" id="exampleFormControlTextarea1"
+                placeholder="Indique outra razão"></textarea>
             </div>
+          </form>
+
         </div>
 
-        <div class="modal-footer" >
+        <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="button" class="btn btn-primary" (click)="onSubmit(otherReason.value)">Submeter</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSubmit()">Submeter</button>
         </div>
       </div>
     </div>
   </div>
-</form>
+</div>
