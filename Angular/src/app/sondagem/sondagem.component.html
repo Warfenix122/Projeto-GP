@@ -22,7 +22,7 @@
             <div class="form-check">
               <ul>
                 <li *ngFor="let opcao of sondagens[selectedIndex].opcoes; let o = index" [attr.data-index]="o">
-                  <input (click)="getSe lectedIndex(o)" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <input (click)="getAswerSelectedIndex(o)" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                   <label class="form-check-label" for="defaultCheck1">
                       {{opcao.opcao}}
                   </label>
