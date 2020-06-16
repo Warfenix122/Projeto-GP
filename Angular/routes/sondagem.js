@@ -23,4 +23,12 @@ router.post('', (req, res) => {
     
 })
 
+router.post('/answer', (req, res) => {
+    let novaResposta = new Resposta(req.body);
+    novaResposta.save((err) => {
+        if (err) res.json({success: false, err: err});
+        res.json({success: true})
+    })
+})
+
 module.exports = router;

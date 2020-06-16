@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Sondagem } from '../../../models/sondagem';
 import { User } from 'models/utilizadores';
 import { UserService } from './user.service';
+import { RespostaSondagem } from 'models/respostaSondagem';
 
 @Injectable({
   providedIn: 'root'
@@ -28,15 +29,13 @@ export class SondagemService {
    
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       this.user = res['user'];
-      let obj = {
-      
+      let newAnswer = {
         utilizadorId: this.user._id,
         sondagemId: sondagemId,
         opcoesEscolhidas: opcoesEscolhidas,
         outraResposta: outraResposta
       }
-      
-      return this.http.post('/api/sondagem', obj);
+      return this.http.post('/api/sondagem/answer', newAnswer);
     });
     
     
