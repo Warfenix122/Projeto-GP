@@ -60,19 +60,19 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="vagas">Quantas vagas serão disponibilizadas?</label>
+        <label for="nrVagas">Quantas vagas serão disponibilizadas?</label>
         <input
           type="number"
-          id="vagas"
-          name="vagas"
+          id="nrVagas"
+          name="nrVagas"
           class="form-control"
-          formControlName="vagas"
+          formControlName="nrVagas"
         />
         <div
-          *ngIf="vagas.invalid && (vagas.dirty || vagas.touched)"
+          *ngIf="nrVagas.invalid && (nrVagas.dirty || nrVagas.touched)"
           class="alert alert-danger"
         >
-          <div *ngIf="vagas.errors.required">
+          <div *ngIf="nrVagas.errors.required">
             O numero de vagas é um campo obrigatorio.
           </div>
         </div>
@@ -110,6 +110,7 @@
                 [formControl]="control"
                 (change)="getSelectedAreas()"
                 name="{{ areas[i] }}"
+                color= "primary"
                 >{{ areas[i] }}</mat-checkbox
               >
             </div>

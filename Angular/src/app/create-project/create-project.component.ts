@@ -42,7 +42,7 @@ export class CreateProjectComponent implements OnInit {
   formInfo = this._fb.group({
     nome: new FormControl('', [Validators.required]),
     resumo: new FormControl('', [Validators.required]),
-    vagas: new FormControl('', [Validators.required]),
+    nrVagas: new FormControl('', [Validators.required]),
     necessarioFormacao: new FormControl(false),
     formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
@@ -89,8 +89,8 @@ export class CreateProjectComponent implements OnInit {
     return this.formInfo.get('resumo');
   }
 
-  get vagas() {
-    return this.formInfo.get('vagas');
+  get nrVagas() {
+    return this.formInfo.get('nrVagas');
   }
 
   get diaAtividade() {

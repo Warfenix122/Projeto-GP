@@ -56,6 +56,7 @@ router.post("", (req, res) => {
         dataFechoInscricoes: dataFechoInscricoes,
         dataComeco: dataComeco,
         areasInteresse: selectedAreas,
+        voluntarios: new Array(),
       });
       newProject.save().then((project) => {
         res.status(200).json({ success: true, projetoId: project._id });
@@ -89,5 +90,50 @@ router.get("", (req, res) => {
     res.json(projects);
   });
 });
+
+router.put('/anularCandidatura/:id',(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let voluntarioId = req.body.voluntarioId;
+  Project.findOne({_id:projectId}).then((project)=>{
+    if(project["voluntarios"].includes(voluntarioId)){
+      let indexOfId = project["voluntarios"].indexOf(voluntarioId);
+      project["voluntarios"].splice(indexOfId,1);
+      project.save().then(()=>{
+        res.status(200).json({success:true,msg:"Anulou a candidatura"});
+      }).catch(err=>{
+        console.log(err);
+        res.status(500).json({success:false,msg:"Falha a guardar Projeto"});
+      });
+    }
+  }).catch((err)=>{
+    console.log(err);
+    res.status(404).json({success:false,msg:"Projeto Não encontrado"});
+  });
+});
+
+router.put('/candidatar/:id',(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let voluntarioId = req.body.voluntarioId;
+  // console.log(voluntarioId);
+  // console.log(projectId);
+  Project.findOne({_id: projectId}).then((project)=>{
+    let vagas = project["vagas"]
+    console.log(project["voluntarios"]);
+    if(project["voluntarios"] < vagas){
+      project["voluntarios"].push(voluntarioId);
+      project.save().then(()=>{
+        res.status(200).json({success:true,msg:"Voluntario candidatado com sucesso"})
+      }).catch((err)=>{
+        console.log(err);
+        res.status(500).json({success:false,msg:"Falha ao guardar projeto"});
+      })
+    }else{
+      res.status(500).json({success:false,msg:"O projeto não tem mais vagas para preencher"})
+    }
+  }).catch((err)=>{
+    console.log(err);
+    res.status(404).json({success:false,msg:"Não existe um projeto com esse ID"})});
+});
+
 
 module.exports = router;
