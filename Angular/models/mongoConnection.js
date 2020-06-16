@@ -82,8 +82,8 @@ var ProjetoSchema = new Schema({
   dataFechoInscricoes: Date,
   dataComeco: Date,
   areasInteresse: [String], //Areas onde este projeto se enquadra
-  voluntarios: [{voluntarioId: mongoose.ObjectId}],
   fotoCapaId: mongoose.ObjectId
+  voluntarios: [mongoose.ObjectId]
 });
 
 
