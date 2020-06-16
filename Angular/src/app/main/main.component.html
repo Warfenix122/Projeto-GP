@@ -4,6 +4,9 @@
     <div class="carousel-item active">
       <img class="d-block w-100" style="max-height: 300;" src="assets/img/carousel/slide1.jpg" alt="First slide">
     </div>
+    <div class="carousel-item"  *ngFor="let foto of this.fotos; let i = index" [attr.data-index]="i">
+      <img class="d-block w-100" style="max-height: 300;" [src]="getSrc(foto.id)" >
+    </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

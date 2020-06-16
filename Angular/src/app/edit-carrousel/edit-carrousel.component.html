@@ -1,7 +1,7 @@
 <div>
   <h1> Editar Conteudo do Carrosel</h1>
   <div class="container">
-    <div  class="container d-justify-content-start">
+    <div class="container d-justify-content-start">
       <h2> Fotos Existentes</h2>
       <form>
         <input style="display: none" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
@@ -11,10 +11,17 @@
         </button>
       </form>
     </div>
-    <div id='images' class="container-sm row mt-5 mb-5 d-flex justify-content-center">
+    <div class="d-flex mt-3 flex-wrap">
 
+      <div *ngFor="let foto of this.fotos; let i = index" [attr.data-index]="i" class="card">
+        <img class="card-img-top" style="max-width: 150px;" [src]="getSrc(foto.id)" alt="Card image cap">
+        <div class="card-body">
+          <h2 class="card-text"><button class="button btn-danger" (click)="onDelete(foto.id)">
+              Eliminar
+            </button></h2>
+        </div>
+      </div>
     </div>
-
   </div>
 
 

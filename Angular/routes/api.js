@@ -7,7 +7,6 @@ var jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
 const User = require("../models/mongoConnection").Utilizadores;
-const files = require("./file");
 const email = require("./email");
 const projectAPI = require("./project");
 const fotoAPI = require("./foto")
@@ -280,7 +279,6 @@ router.get("/externos", (req, res) => {
 });
 
 router.post("/currentUser", (req, res) => {
-  console.log(req.body);
   if (req.body.token) {
     res
       .status(200)

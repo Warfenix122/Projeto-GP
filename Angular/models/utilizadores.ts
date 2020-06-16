@@ -16,4 +16,5 @@ export class User {
   concelho: String;
   escola: String;
   formacao: String;
+  fotoPerfilId:string;
 }

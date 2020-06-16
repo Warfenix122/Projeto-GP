@@ -28,15 +28,14 @@ export class ListProjectsComponent implements OnInit {
   }
 
   getSrc(fotoId) {
-    let foto = this.fotos.find(elem => elem.id == fotoId);
-    let res;
-    if (foto)
-      res = 'data:' + foto.contentType + ';base64,' + foto.src;
-    else
-      res = "https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg";
-    return res;
+    const foto = this.fotos.find(elem => elem.id == fotoId);
+    if (foto) {
+      return 'data:' + foto.contentType + ';base64,' + foto.src;
+    }
+    else {
+      return "https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg";
+    }
   }
-
   openProject(index) {
     let projectId = this.projects[index]._id;
     this.projectService.getProject(projectId).subscribe(project => {

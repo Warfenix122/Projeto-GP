@@ -66,7 +66,6 @@ export class UserService {
 
   getCurrentUserId(): Observable<String> {
     let token = { token: localStorage.getItem('token').split(' ')[1] };
-    console.log(token);
     return this.http.post<String>('/api/currentUser', token);
   }
 

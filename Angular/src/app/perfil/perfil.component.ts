@@ -13,6 +13,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import * as moment from "moment";
 import { NavigationEnd } from '@angular/router';
 import { FileService } from '../services/file.service';
+import { FotoService } from '../services/foto.service';
 
 @Component({
   selector: 'app-perfil',
@@ -37,7 +38,7 @@ export class PerfilComponent implements OnInit {
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
-  constructor(private http: HttpClient, public _fb: FormBuilder, private userService: UserService, private fileService: FileService, private _alertService: AlertService) {
+  constructor(private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService) {
   }
 
 
@@ -57,7 +58,8 @@ export class PerfilComponent implements OnInit {
       const strCreation = creationDate.getDay().toString().concat("/", creationDate.getMonth().toString(), "/", creationDate.getFullYear().toString())
       this.userInfo.push({ key: 'Data de Criação de Conta', value: strCreation });
       this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
-      this.getProfilePhoto(this.user.email);
+
+      this.getProfilePhoto(this.user.fotoPerfilId);
 
       this.form = this._fb.group({
         areas: this.addAreasInteresseControls(this.user.areasInteresse),
@@ -69,25 +71,21 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-
-  getProfilePhoto(email) {
-    const formData = { 'email': email }
-    this.fileService.getProfilePhoto(formData).subscribe((res) => {
-      const src = this.arrayBufferToBase64(res['foto'].data);
-      this.img.nativeElement.src = 'data:' + res['foto'].contentType + ';base64,' + src;
-    }, (err) => {
-      this._alertService.error("Dificuldade em encontrar a foto. Tente de novo, dentro de 30 segundos");
-    }, () => {
-
-    });
-  }
-  arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b) => binary += String.fromCharCode(b));
-    return window.btoa(binary);
+  getSrc(foto) {
+    if (foto) {
+      return 'data:' + foto.contentType + ';base64,' + foto.src;
+    }
+    else {
+      return "https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg";
+    }
   }
 
+  getProfilePhoto(fotoID) {
+    this.fotoService.getUserPhoto(fotoID).then((fotos) => {
+      //fotos = [{id, src, contentType}]
+      this.img.nativeElement.src = this.getSrc(fotos[0]);
+    })
+  }
   onFileChanged(event) {
     this.file = event.target.files[0];
   }
@@ -100,12 +98,7 @@ export class PerfilComponent implements OnInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       const src = reader.result;
-      this.fileService.uploadPhoto(formData).subscribe((res) => {
-        this._alertService.success("Foto Atualizada");
-        this.getProfilePhoto(this.user.email);
-      }, (err) => {
-        this._alertService.error("Impossivel atualizar a foto, tente utilizar outra foto!");
-      });
+      this.fileService.updateProfilePhoto(formData);
     };
     reader.readAsDataURL(this.file);
 

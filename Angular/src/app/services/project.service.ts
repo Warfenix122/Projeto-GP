@@ -30,7 +30,6 @@ export class ProjectService {
     return this.http.get<Project[]>('/api/project');
   }
   userFavoriteProjects(userId) {
-    console.log('userId :>> ', userId);
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
   }
 
