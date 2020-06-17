@@ -33,6 +33,11 @@ export class ProjectService {
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
   }
 
+  editProject(id, obj){
+    return this.http.put<Project>('/api/project/'+id, obj);
+  }
+
+  deleteProject(id,)
 
   getProject(id) {
     return this.http.get<Project>('/api/project/' + id);

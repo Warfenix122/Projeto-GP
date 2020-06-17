@@ -47,6 +47,7 @@ import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.componen
 import { FavoriteProjectComponent } from './favorite-project/favorite-project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { EditProjectComponent } from './edit-project/edit-project.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     EditCarrouselComponent,
     FavoriteProjectComponent,
     CreateProjectComponent,
+    EditProjectComponent,
 
   ],
   providers: [{
