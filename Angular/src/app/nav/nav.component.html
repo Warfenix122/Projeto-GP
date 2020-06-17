@@ -20,7 +20,15 @@
         <a class="nav-link" [routerLink]="['/userAprove']">Aprovar Utilizador</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Editar Pagina Inicial</a>
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Criar</a>
+
+        <div class="dropdown-menu">
+          <a class="dropdown-item" [routerLink]="['/createGestor']">Gestores</a>
+          <a class="dropdown-item" [routerLink]="['/createSondagem']">Sondagens</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Editar</a>
 
         <div class="dropdown-menu">
           <a class="dropdown-item" [routerLink]="['/editCarrosel']">Carrousel</a>

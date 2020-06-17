@@ -10,13 +10,16 @@ const User = require('../models/mongoConnection').Utilizadores;
 const Foto = require('../models/mongoConnection').Foto;
 router = require("./email");
 const sondagemAPI = require('./sondagem');
+const projectAPI = require('./project');
+const fotoAPI = require('./foto');
+const fileAPI = require('./file');
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
 router.use("/project", projectAPI);
 router.use("/foto", fotoAPI);
-router.use("/file", files);
+router.use("/file", fileAPI);
 router.use('/sondagem', sondagemAPI);
 
 router.get(

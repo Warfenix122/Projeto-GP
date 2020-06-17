@@ -96,7 +96,7 @@ var InscricaoSchema = new Schema({
 
 var SondagemSchema = new Schema({
   sondagemId: mongoose.ObjectId,
-  nome: String,
+  titulo: String,
   descricao: String,
   opcoes: [String]
 });

@@ -1,6 +1,6 @@
 export class Sondagem {
   _id: string;
-  nome: string;
+  titulo: string;
   descricao: string;
   opcoes: [string];
 }

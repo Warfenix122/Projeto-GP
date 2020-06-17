@@ -48,6 +48,7 @@ import { FavoriteProjectComponent } from './favorite-project/favorite-project.co
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
+import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { SondagemComponent } from './sondagem/sondagem.component';
     CreateProjectComponent,
     EditProfileComponent,
     SondagemComponent,
+    CreateSondagemComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -50,10 +50,17 @@ router.get('/answered/:userId', (req, res) => {
 })
 
 router.post('', (req, res) => {
-  let novaSondagem = req.body;
-  //Inserir na BD a novaSondagem
+  let sond = new Sondagem({
+    descricao: req.body['descricao'],
+    opcoes: req.body['opcao'],
+     titulo: req.body['titulo'],
 
-})
+  })
+  sond.save((err) => {
+    if (err) res.json({ success: false, err: err });
+    res.status(200).json({ success: true })
+  })
+});
 
 router.post('/answer', (req, res) => {
 

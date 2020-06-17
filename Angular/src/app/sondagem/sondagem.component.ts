@@ -65,7 +65,6 @@ export class SondagemComponent implements OnInit {
     this.selectedOptionError = this.selectedOptions.length > 0 ? false : true;
 
   }
-
   addOpcoes() {
     if (this.chosenSondagem) {
       const arr = this.chosenSondagem.opcoes.map(element => {

@@ -15,6 +15,10 @@ export class SondagemService {
 
   }
 
+  createSondagem(formdata) {
+    return this.http.post('/api/sondagem', formdata);
+  }
+
   getSondagens() {
     return this.http.get<Sondagem[]>('/api/sondagem');
   }
