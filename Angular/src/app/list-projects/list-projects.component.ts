@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { AlertService } from '../services/alert.service';
 import { Project } from 'models/projeto';
@@ -13,6 +13,8 @@ import { Foto } from 'models/foto';
   styleUrls: ['./list-projects.component.css']
 })
 export class ListProjectsComponent implements OnInit {
+  @Input() 
+
   projects: Array<Project> = [];
   fotos: Array<any> = [];
 
