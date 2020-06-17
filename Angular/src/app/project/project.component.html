@@ -1,0 +1,36 @@
+<div id="firstdiv" class="container" *ngIf = "project">
+    <div class="header" >
+        <div id="titulo">
+            <h1>{{project.nome}}</h1>
+            <button type="button" class="btn btn-success">CANDIDATAR</button>
+        </div>
+        
+    </div>
+    <div class="row container">
+        <div id="info" class="container col-9">
+            <br><h1 id="titulo2">{{project.nome}}</h1>
+            <h4 id="resumo">{{project.resumo}}</h4>
+            <h5 id="detalhes">Inscrições até: {{project.dataFechoInscricoes}} </h5>
+            <h5 id="detalhes" *ngIf="project.vagas != null">Número de vagas: {{project.vagas}}</h5>
+            <h5 id="detalhes" >Formação necessária:
+                <div *ngFor="let f of project.formacoesNecessarias">
+                 <h5>{{f.formacoesNecessarias}}, </h5>
+                </div>
+            </h5>
+            <div *ngfor="let c of project.contactos">
+                <h5 id="detalhes" >Contactos: {{c.descricao}}</h5>
+            </div>
+            <div class="row justify-content-center">
+                <button type="button" class="btn btn-success btn-lg" id="botao2" >CANDIDATAR</button>
+            </div>
+            
+        </div>
+        <div id="comentarios" class="container col-3">
+            <br><h1 id="titulo2">Comentários</h1>
+            <h3>comentario blabla</h3>
+        </div> 
+        
+    </div>
+    
+</div>
+

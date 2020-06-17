@@ -14,6 +14,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
+import { ProjectComponent } from './project/project.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'api/confirmAccount/:email', component: LoginComponent },
   { path: 'createProject', component: CreateProjectComponent },
   { path: 'projects', component: ListProjectsComponent },
+  { path: 'projects/:id', component: ProjectComponent},
   { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 

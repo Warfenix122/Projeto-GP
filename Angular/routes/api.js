@@ -11,7 +11,7 @@ const files = require("./file");
 const email = require("./email");
 const projectAPI = require("./project");
 const fotoAPI = require("./foto")
-const files = require("./file");
+
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");

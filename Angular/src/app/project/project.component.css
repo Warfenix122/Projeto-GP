@@ -1,0 +1,43 @@
+
+
+.header {
+    padding: 100px !important;
+    background-image: url(https://caritascoimbra.pt/wp-content/uploads/2020/01/VOLUNTARIADO_12.png) !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    width: 100%;
+    left: 0%;
+    position: relative;
+}
+
+
+#info {
+    justify-content: center;
+}
+
+#titulo{
+    color: white;
+    font-weight: bold;
+
+}
+
+button{
+    background-color: #39E85F;
+    border-color: #39E85F;
+}
+
+
+#detalhes{
+    text-align: left;
+    font-weight: bold;
+}
+
+#resumo{
+    text-align: justify;
+}
+
+#titulo2{
+    text-align: center;
+}
+
