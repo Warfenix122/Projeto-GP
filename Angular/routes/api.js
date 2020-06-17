@@ -1,16 +1,15 @@
 const express = require("express");
 var router = express.Router();
 const bcrypt = require("bcryptjs");
-const utils = require("../utils/utils");
-const passport = require("passport");
-var jwt = require("jsonwebtoken");
-const fs = require("fs");
-const path = require("path");
-const User = require("../models/mongoConnection").Utilizadores;
-const email = require("./email");
-const projectAPI = require("./project");
-const fotoAPI = require("./foto")
-const files = require("./file");
+const utils = require('../utils/utils');
+const passport = require('passport');
+var jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+const User = require('../models/mongoConnection').Utilizadores;
+const Foto = require('../models/mongoConnection').Foto;
+router = require("./email");
+const sondagemAPI = require('./sondagem');
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
@@ -18,6 +17,7 @@ const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 router.use("/project", projectAPI);
 router.use("/foto", fotoAPI);
 router.use("/file", files);
+router.use('/sondagem', sondagemAPI);
 
 router.get(
   "/protected",

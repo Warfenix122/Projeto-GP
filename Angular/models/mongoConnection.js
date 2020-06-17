@@ -82,7 +82,6 @@ var ProjetoSchema = new Schema({
   areasInteresse: [String], //Areas onde este projeto se enquadra
   voluntarios: [{ voluntarioId: mongoose.ObjectId }],
   fotoCapaId: mongoose.ObjectId
-  voluntarios: [mongoose.ObjectId]
 });
 
 
@@ -95,6 +94,21 @@ var InscricaoSchema = new Schema({
   cancelado: Boolean,
 });
 
+var SondagemSchema = new Schema({
+  sondagemId: mongoose.ObjectId,
+  nome: String,
+  descricao: String,
+  opcoes: [String]
+});
+
+var RespostaSchema = new Schema({
+  respostaId: mongoose.ObjectId,
+  userId: mongoose.ObjectId,
+  sondagemId: mongoose.ObjectId,
+  opcoes: [String],
+  outraResposta: String
+})
+
 const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
 const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");
 const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
@@ -102,6 +116,9 @@ const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSche
 const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
+const Sondagem = mongoose.model("Sondagem", SondagemSchema, "Sondagem");
+const Resposta = mongoose.model("Resposta", RespostaSchema, "Resposta");
+
 module.exports = {
   Utilizadores: Utilizadores,
   Entidade: Entidade,
@@ -109,5 +126,7 @@ module.exports = {
   CategoriaProjeto: CategoriaProjeto,
   PublicoAlvo: PublicoAlvo,
   Projeto: Projeto,
-  Foto: Foto
+  Foto: Foto,
+  Sondagem: Sondagem,
+  Resposta: Resposta
 };
