@@ -37,7 +37,7 @@ export class ProjectService {
     return this.http.put<Project>('/api/project/'+id, obj);
   }
 
-  deleteProject(id,)
+  //deleteProject(id)
 
   getProject(id) {
     return this.http.get<Project>('/api/project/' + id);
