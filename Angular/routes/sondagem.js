@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
+const { map } = require("jquery");
 var router = express.Router();
 const Sondagem = require('../models/mongoConnection').Sondagem;
 const Resposta = require('../models/mongoConnection').Resposta;
@@ -17,6 +18,37 @@ router.get('', (req, res) => {
   })
 })
 
+router.get('/unanswered/:userId', (req, res) => {
+  Resposta.find({ userId: req.params.userId }).then((respostas) => {
+    Sondagem.find({}).then((sondagens) => {
+      let answeredId = Array();
+      respostas.forEach(e => answeredId.push(e.sondagemId.toString()))
+      let unanswerd = sondagens.filter(e => {
+        if (e) {
+          if (!answeredId.includes(e.id.toString())) {
+            return e
+          }
+        }
+      });
+      res.json(unanswerd);
+    })
+  })
+})
+router.get('/answered/:userId', (req, res) => {
+  Resposta.find({ userId: req.params.userId }).then((respostas) => {
+    Sondagem.find({}).then((sondagens) => {
+      let answeredId = Array();
+      respostas.forEach(e => answeredId.push(e.sondagemId.toString()))
+      let answerd = sondagens.filter(e => {
+        if (answeredId.includes(e.id.toString())) {
+          return e
+        }
+      });
+      res.json(answerd);
+    })
+  })
+})
+
 router.post('', (req, res) => {
   let novaSondagem = req.body;
   //Inserir na BD a novaSondagem
@@ -24,7 +56,6 @@ router.post('', (req, res) => {
 })
 
 router.post('/answer', (req, res) => {
-  console.log('req.body :>> ', req.body);
 
   if (req.body['userId']) {
     let newResp = new Resposta({

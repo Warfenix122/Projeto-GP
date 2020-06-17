@@ -11,7 +11,7 @@ import { User } from 'models/utilizadores';
   styleUrls: ['./sondagem.component.css']
 })
 export class SondagemComponent implements OnInit {
-  sondagens: Array<Sondagem>;
+  sondagens: Array<Sondagem> = undefined;
   opcoes: Array<any>;
   chosenSondagem: Sondagem;
   selectedOptions: Array<String>;
@@ -25,13 +25,14 @@ export class SondagemComponent implements OnInit {
 
 
 
+
   ngOnInit(): void {
+
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       this.user = res['user']
-      this.sondagemService.getSondagens().subscribe((sondagens) => {
-        console.log(' sondagens :>> ', sondagens);
-        this.sondagens = sondagens;
-      });
+      this.sondagemService.getUnanseredSondagens(this.user._id).subscribe((sondagens) => {
+        if (sondagens) this.sondagens = sondagens;
+        });
     });
   }
 

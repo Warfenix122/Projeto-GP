@@ -19,6 +19,15 @@ export class SondagemService {
     return this.http.get<Sondagem[]>('/api/sondagem');
   }
 
+  getAnsweredSondagens(userId) {
+    return this.http.get<Sondagem[]>('/api/sondagem/answered/' + userId);
+  }
+
+  getUnanseredSondagens(userId) {
+    return this.http.get<Sondagem[]>('/api/sondagem/unanswered/' + userId);
+  }
+
+
   getSondagemById(id) {
     return this.http.get<Sondagem>('/api/sondagem/' + id);
   }

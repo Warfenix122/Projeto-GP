@@ -107,7 +107,7 @@ var SondagemSchema = new Schema({
 
 var RespostaSchema = new Schema({
   respostaId: mongoose.ObjectId,
-  utilizadorId: mongoose.ObjectId,
+  userId: mongoose.ObjectId,
   sondagemId: mongoose.ObjectId,
   opcoes: [String],
   outraResposta: String
