@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FileService } from '../services/file.service';
 import { AlertService } from '../services/alert.service';
 import { FotoService } from '../services/foto.service';
+import { ActivatedRoute } from '@angular/router';
+import { Foto } from 'models/foto';
 
 @Component({
   selector: 'app-main',
@@ -11,12 +13,16 @@ import { FotoService } from '../services/foto.service';
 
 export class MainComponent implements OnInit {
 
-  fotos: Array<any>;
-  constructor(private fotoService: FotoService) { }
+  fotos: Array<any> = [];
+  constructor(private fotoService: FotoService, private route: ActivatedRoute,
+  ) { }
 
 
   ngOnInit(): void {
-    this.getAllCarrouselPhotos();
+    this.fotoService.getAllDecodedCarouselFotos().then((fotos) => {
+      this.fotos = fotos;
+    });
+
   }
 
   getAllCarrouselPhotos() {

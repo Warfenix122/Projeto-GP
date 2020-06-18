@@ -1,7 +1,7 @@
 <div class="d-flex mt-3 flex-wrap">
   <div *ngFor="let sondagem of this.sondagens; let i = index" [attr.data-index]="i" class="card">
     <div class="card-body">
-      <h3 class="card-title">{{sondagem.nome}}</h3>
+      <h3 class="card-title">{{sondagem.titulo}}</h3>
       <div class="card-text">{{sondagem.descricao}}</div>
       <button (click)="getSondagem(sondagem._id)" type="button" class="btn btn-primary" data-toggle="modal"
         data-target="#exampleModal">Responder</button>

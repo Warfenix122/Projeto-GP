@@ -1,0 +1,65 @@
+<div class="container">
+
+  <div class="container mt-5">
+    <h1>Criar Sondagem</h1>
+    <form [formGroup]="formSondagem">
+      <div class="row form-group">
+
+        <label class="col-md-4" for="titulo">Titulo</label>
+        <input type="text" id="titulo" name="titulo" required class="col-md-4 form-control"
+          placeholder="titulo da Sondagem" formControlName="titulo" />
+        <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)" class="alert alert-danger">
+          <div *ngIf="titulo.errors.required">
+            O titulo é um campo obrigatorio.
+          </div>
+
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-md-4" for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" required class="col-md-4 form-control"
+          placeholder="Descrição da Sondagem" formControlName="descricao"></textarea>
+
+        <div *ngIf="descricao.invalid && (descricao.dirty || descricao.touched)" class="alert alert-danger">
+          <div *ngIf="descricao.errors.required">
+            A descrição é um campo obrigatorio.
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label class="" for="numberOption">Numero de Opções</label>
+          <button type="button" class="btn btn-secondary btn-circle" data-toggle="tooltip" data-placement="top" title="A opção 'Outro' assim como o campo de texto para explicar uma opção serão
+           adicionados automaticamente"><i class="far fa-question-circle"></i>
+          </button>
+        </div>
+        <input class="col-md-2" type="number" #numberOptions min="0" max="20" />
+        <button (click)='createOption(numberOptions)' class="btn btn-info">Criar Opções</button>
+
+      </div>
+
+      <div id="options">
+
+      </div>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">Submeter</button>
+
+    </form>
+
+  </div>
+
+</div>
+<div class="container mt-5">
+  <h1>Sondagens Existentes</h1>
+  <div class="d-flex mt-3 flex-wrap">
+    <div *ngFor="let sondagem of this.sondagens; let i = index" [attr.data-index]="i" class="card">
+      <div class="card-body">
+        <h3 class="card-title">{{sondagem.titulo}}</h3>
+        <h5 class="card-text">{{sondagem.descricao}}</h5>
+      </div>
+    </div>
+    <div *ngIf="!sondagens">
+      Não existem sondagens para responder neste momento.
+    </div>
+  </div>
+</div>
