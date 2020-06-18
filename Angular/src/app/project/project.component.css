@@ -1,14 +1,21 @@
 
 
 .header {
-    padding: 100px !important;
-    background-image: url(https://caritascoimbra.pt/wp-content/uploads/2020/01/VOLUNTARIADO_12.png) !important;
+    padding-top: 25vmax;
+    
+    background-image: url('https://caritascoimbra.pt/wp-content/uploads/2020/01/VOLUNTARIADO_12.png') !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
     width: 100%;
     left: 0%;
     position: relative;
+}
+
+.top-left {
+    position: absolute;
+    top: 115px;
+    left: 120px;
 }
 
 
@@ -27,6 +34,10 @@ button{
     border-color: #39E85F;
 }
 
+#botao2{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 
 #detalhes{
     text-align: left;
@@ -41,3 +52,66 @@ button{
     text-align: center;
 }
 
+#lista{
+    display: inline-block;
+}
+
+#areasInteresse{
+    margin-right:5px;
+    
+    
+}
+
+h4{
+    margin-block-end: 0px !important;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/*div.col-sm{
+    padding-right: 2.5px;
+    padding-left: 2.5px;
+}*/
+
+.multi-item-carousel .carousel-inner > .item {
+    -webkit-transition: 500ms ease-in-out left;
+    transition: 500ms ease-in-out left;
+  }
+  .multi-item-carousel .carousel-inner .active.left {
+    left: -33%;
+  }
+  .multi-item-carousel .carousel-inner .active.right {
+    left: 33%;
+  }
+  .multi-item-carousel .carousel-inner .next {
+    left: 33%;
+  }
+  .multi-item-carousel .carousel-inner .prev {
+    left: -33%;
+  }
+  @media all and (transform-3d), (-webkit-transform-3d) {
+    .multi-item-carousel .carousel-inner > .item {
+      -webkit-transition: 500ms ease-in-out left;
+      transition: 500ms ease-in-out left;
+      -webkit-transition: 500ms ease-in-out all;
+      transition: 500ms ease-in-out all;
+      -webkit-backface-visibility: visible;
+              backface-visibility: visible;
+      -webkit-transform: none!important;
+              transform: none!important;
+    }
+  }
+  .multi-item-carousel .carouse-control.left,
+  .multi-item-carousel .carouse-control.right {
+    background-image: none;
+  }

@@ -1,36 +1,122 @@
-<div id="firstdiv" class="container" *ngIf = "project">
-    <div class="header" >
-        <div id="titulo">
-            <h1>{{project.nome}}</h1>
+<div id="firstdiv" class="container" *ngIf="project">
+    <div class="container">
+        <img class="header"> <!--FOTO DE CAPA AQUI-->
+        <div class="top-left">
+            <h1 id="titulo">{{project.nome}}</h1>
             <button type="button" class="btn btn-success">CANDIDATAR</button>
         </div>
-        
     </div>
     <div class="row container">
         <div id="info" class="container col-9">
             <br><h1 id="titulo2">{{project.nome}}</h1>
-            <h4 id="resumo">{{project.resumo}}</h4>
-            <h5 id="detalhes">Inscrições até: {{project.dataFechoInscricoes}} </h5>
-            <h5 id="detalhes" *ngIf="project.vagas != null">Número de vagas: {{project.vagas}}</h5>
-            <h5 id="detalhes" >Formação necessária:
-                <div *ngFor="let f of project.formacoesNecessarias">
-                 <h5>{{f.formacoesNecessarias}}, </h5>
+            <h3 id="resumo">{{project.resumo}}</h3>
+            <h4 id="detalhes">Inscrições até: 
+                <h4 id="lista">{{project.dataFechoInscricoes|date:'shortDate'}}</h4> 
+            </h4>
+            <div *ngIf="project.vagas">
+                <h4 id="detalhes" >Número de Vagas: 
+                    <h4 id="lista">{{project.vagas}}</h4>
+                </h4>
+            </div> 
+            <h4 id="detalhes" *ngIf="project.formacoesNecessarias">Formação Necessária:
+                <div id="lista"  *ngFor="let f of project.formacoesNecessarias">
+                    <h4>{{f}} </h4>
                 </div>
-            </h5>
-            <div *ngfor="let c of project.contactos">
-                <h5 id="detalhes" >Contactos: {{c.descricao}}</h5>
-            </div>
+            </h4>
+            <h4 id="detalhes" *ngIf="project.contactos"> Contactos: 
+                <div id="lista"  *ngFor="let c of project.contactos">
+                    <h4>{{c.contacto}} |</h4>
+                </div>
+            </h4>
+            
+            <h4 id="detalhes" *ngIf="project.areasInteresse"> Áreas de Interesse: 
+                <div id="lista"  *ngFor="let a of project.areasInteresse">
+                    <h5 class="badge badge-primary" id="areasInteresse">{{a}}</h5>
+                </div>
+            </h4>
+
             <div class="row justify-content-center">
                 <button type="button" class="btn btn-success btn-lg" id="botao2" >CANDIDATAR</button>
             </div>
-            
+            <!--
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-item">
+                <div class="carousel-inner row">
+                  <div class="col-sm">
+                    <img class="d-block w-100" src="https://img.freepik.com/fotos-gratis/piramide-quadrada-cor-de-rosa-no-fundo-cor-de-rosa-ideia-de-conceito-minimo_40193-79.jpg?size=338&ext=jpg" alt="First slide">
+                  </div>
+                  <div class="col-sm">
+                    <img class="d-block w-100" src="https://img.freepik.com/fotos-gratis/piramide-quadrada-cor-de-rosa-no-fundo-cor-de-rosa-ideia-de-conceito-minimo_40193-79.jpg?size=338&ext=jpg" alt="Second slide">
+                  </div>
+                  <div class="col-sm">
+                    <img class="d-block w-100" src="https://img.freepik.com/fotos-gratis/piramide-quadrada-cor-de-rosa-no-fundo-cor-de-rosa-ideia-de-conceito-minimo_40193-79.jpg?size=338&ext=jpg" alt="Third slide">
+                  </div>
+                </div>
+            </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  
+                </a>
+              </div>
+            -->
+
+            <div class="container">
+                
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="carousel slide multi-item-carousel" id="theCarousel">
+                      <div class="carousel-inner">
+                        <div class="item active">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?perth,australia" class="img-responsive"></a></div>
+                        </div>
+                        <div class="item">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?fremantle,australia" class="img-responsive"></a></div>
+                        </div>
+                        <div class="item">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?west-australia" class="img-responsive"></a></div>
+                        </div>
+                        <div class="item">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?perth" class="img-responsive"></a></div>
+                        </div>
+                        <div class="item">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?quokka,perth" class="img-responsive"></a></div>
+                        </div>
+                        <div class="item">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?margaretriver,australia" class="img-responsive"></a></div>
+                        </div>
+                        <!-- add  more items here -->
+                        <!-- Example item start:  -->
+                        
+                        <div class="item">
+                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?perth,australia&r=7" class="img-responsive"></a></div>
+                        </div>
+                        
+                        <!--  Example item end -->
+                      </div>
+                      <a class="left carousel-control" href="#theCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                      <a class="right carousel-control" href="#theCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+              
         </div>
-        <div id="comentarios" class="container col-3">
+        <div id="comentarios" class="container col-3"> <!--COMENTARIOS AQUI-->
             <br><h1 id="titulo2">Comentários</h1>
             <h3>comentario blabla</h3>
         </div> 
-        
     </div>
-    
 </div>
 
