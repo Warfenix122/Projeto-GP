@@ -28,4 +28,5 @@ export class Project {
   dataComeco: Date;
   areasInteresse: [string];
   fotoCapaId: string;
+  voluntarios: [ string ];
 }
