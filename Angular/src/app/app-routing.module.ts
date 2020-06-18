@@ -15,6 +15,7 @@ import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.componen
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
+import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'createProject', component: CreateProjectComponent },
   { path: 'projects', component: ListProjectsComponent },
   { path: 'createSondagem', component: CreateSondagemComponent },
+  { path: 'createGestor', component: CreateGestorComponent },
   { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 

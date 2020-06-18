@@ -73,6 +73,9 @@ router.post("/register", (req, res) => {
       if (tipoMembro === "Voluntario Externo") {
         newUser.aprovado = "Em Espera";
       }
+      if (tipoMembro === "Gestor") {
+        newUser.contaConfirmada = true;
+      }
       //Hash Password
       bcrypt.genSalt(10, (err, salt) =>
         bcrypt.hash(newUser.password, salt, (err, hash) => {
