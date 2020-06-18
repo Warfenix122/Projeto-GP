@@ -5,6 +5,8 @@ const User = require("../models/mongoConnection").Utilizadores;
 const PublicoAlvo = require("../models/mongoConnection").PublicoAlvo;
 const mongoose = require("mongoose");
 const { forEachChild } = require("typescript");
+
+
 router.post("", (req, res) => {
   const {
     nome,

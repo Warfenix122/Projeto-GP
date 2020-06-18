@@ -51,6 +51,7 @@ import { SondagemComponent } from './sondagem/sondagem.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
+import { ProjectComponent } from './project/project.component';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { CreateGestorComponent } from './create-gestor/create-gestor.component';
     EditProfileComponent,
     SondagemComponent,
     EditProjectComponent,
+    ProjectComponent,
 
     CreateSondagemComponent,
     CreateGestorComponent,
