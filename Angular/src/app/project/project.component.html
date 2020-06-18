@@ -5,7 +5,9 @@
             <h1 id="titulo">{{project.nome}}</h1>
             <div>
               <button type="button" class="btn btn-success botoes">CANDIDATAR</button>
-              <button id="fav" type="button" class="btn btn-outline-warning "><i class="far fa-star"></i> Adicionar aos favoritos</button>
+              <button (mouseover)="showHideAddFavProjectState = 'show'" (mouseleave)="showHideAddFavProjectState = 'hide'" id="fav" type="button" class="btn btn-outline-warning ">
+                <i class="far fa-star mr-1"></i><span [@showHideAddFavProject]="showHideAddFavProjectState">Adicionar aos favoritos</span>
+              </button>
             </div>
         </div>
     </div>

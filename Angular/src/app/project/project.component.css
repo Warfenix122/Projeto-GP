@@ -40,7 +40,7 @@
 }
 
 #fav{
-    width:  42px;
+    width:  43.5px;
     text-align: left;
     height: 36px;
     transition: 0.5s;
@@ -48,7 +48,7 @@
 }
 
 #fav:hover, #fav.focus{
-    width: 92px;
+    width: 220px;
 }
 
 #detalhes{

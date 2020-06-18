@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'models/projeto';
 import { ProjectService } from '../services/project.service';
+import { ShowHideAddFavProjectAnimation } from '../animations/showHideAddFavProjectTextAnimation'
 import { DatePipe } from '@angular/common';
 
 
@@ -9,9 +10,11 @@ import { DatePipe } from '@angular/common';
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
+  animations: [ShowHideAddFavProjectAnimation]
 })
 export class ProjectComponent implements OnInit {
+  showHideAddFavProjectState: string = "hide";
 
   project: Project;
   id: string;
