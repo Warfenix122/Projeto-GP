@@ -58,6 +58,7 @@ import { ProjectComponent } from './project/project.component';
 
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule,
     AppRoutingModule,
     FormsModule,

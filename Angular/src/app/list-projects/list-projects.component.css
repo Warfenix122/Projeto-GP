@@ -7,6 +7,95 @@ h1{
     text-align: center;
 }
 
+.badge > i:hover{
+    cursor: pointer;
+}
+
+.dropdown-item:hover{
+    cursor:pointer;
+}
+
+.btn-outline-secondary{
+    color: #495057!important;
+    border-color: #ced4da!important;
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:focus, .show>.btn-outline-secondary.dropdown-toggle{
+    color: #495057 !important;
+    background: #f2f2f2 !important;
+    border-color: #ced4da !important;
+}
+
+.badge{
+    margin-right: 1px;
+}
+
+.badge-success{
+    background: #336699;
+}
+
+.badge-secondary{
+    background: #6e5a97;
+}
+
+.fillFlexDiv{
+    width: 100%;
+}
+
+#applyFilterButton{
+    margin-right:5px;
+}
+
+#clearFilterButton{
+    margin-left: 5px;
+}
+
+label{
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+
+.hide{
+    visibility: hidden;
+    height: 0;
+    transition: 0.5s;
+}
+
+.horizontalDivider{
+    width: 100%;
+    height: 1px;
+    background: #cccccc;
+}
+
+.divider {
+    width: 1px;
+    margin: 12px 0.5vw 4px 0.5vw;
+    background: #cccccc;
+  }
+
+#filterForm{
+    padding: 2px;
+    width: 100%;
+    transition: 0.5s;
+}
+
+#divFilter{
+    margin-left: 0.7%;
+    margin-right: 0.7%;
+}
+
+#buttonFilter{
+    transition: 0.3s;
+    width: 42px;
+    text-align: left;
+    height: 36px;
+    transition: 0.5s;
+}
+
+#buttonFilter:hover, #buttonFilter:focus{
+    width: 92px;
+}
+
 .card-title, .card-text{
     text-align: center;
 }
