@@ -128,10 +128,13 @@ router.put('/anularCandidatura/:id',(req,res)=>{
 router.put('/candidatar/:id',(req,res)=>{
   let projectId = mongoose.Types.ObjectId(req.params.id);
   let voluntarioId = req.body.voluntarioId;
+  console.log(req.body);
+  console.log(projectId)
+  console.log(voluntarioId);
   Project.findOne({_id: projectId}).then((project)=>{
     let vagas = project["vagas"]
     console.log(project["voluntarios"]);
-    if(project["voluntarios"] < vagas){
+    if(project["voluntarios"].length+1 < vagas){
       project["voluntarios"].push(voluntarioId);
       project.save().then(()=>{
         res.status(200).json({success:true,msg:"Voluntario candidatado com sucesso"})

@@ -50,4 +50,14 @@ export class ProjectService {
   uploadPhoto(formData) {
     return this.http.post<ImageResponse>('/api/file/uploadCapaFoto', formData);
   }
+
+  volunteer(projectId,voluntarioId){
+    let volId = {voluntarioId:voluntarioId}
+    return this.http.put<ImageResponse>('/api/project/candidatar/'+projectId,volId);
+  }
+
+  cancelVolunteer(projectId,voluntarioId){
+    let volId = {voluntarioId:voluntarioId}
+    return this.http.put<ImageResponse>('/api/project/anularCandidatura/'+projectId,volId);
+  }
 }
