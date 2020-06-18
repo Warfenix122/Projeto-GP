@@ -31,11 +31,6 @@ export class FileService {
 
   }
 
-  uploadCarouselPhoto(formdata) {
-    formdata.append('type', 'carousel')
-    this.uploadPhoto(formdata).subscribe((res) => {
-    });
-  }
 
   updateUserPhoto(fotoId, userId) {
     return this.http.put<User>('/api/file/updateUserPhoto/' + userId, { 'fotoId': fotoId });

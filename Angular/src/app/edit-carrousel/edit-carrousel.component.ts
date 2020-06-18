@@ -53,7 +53,10 @@ export class EditCarrouselComponent implements OnInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       const src = reader.result;
-      this.fileService.uploadCarouselPhoto(formData);
+      formData.append('type', 'carousel');
+      this.fileService.uploadPhoto(formData).subscribe((res) => {
+        this.getAllCarrouselPhotos();
+      });
     };
     reader.readAsDataURL(this.file);
 
