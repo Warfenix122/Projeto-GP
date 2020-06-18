@@ -3,7 +3,10 @@
         <img class="header"> <!--FOTO DE CAPA AQUI-->
         <div class="top-left">
             <h1 id="titulo">{{project.nome}}</h1>
-            <button type="button" class="btn btn-success">CANDIDATAR</button>
+            <div>
+              <button type="button" class="btn btn-success botoes">CANDIDATAR</button>
+              <button id="fav" type="button" class="btn btn-outline-warning "><i class="far fa-star"></i> Adicionar aos favoritos</button>
+            </div>
         </div>
     </div>
     <div class="row container">
@@ -36,7 +39,7 @@
             </h4>
 
             <div class="row justify-content-center">
-                <button type="button" class="btn btn-success btn-lg" id="botao2" >CANDIDATAR</button>
+                <button type="button" class="btn btn-success btn-lg botoes" id="botao2" >CANDIDATAR</button>
             </div>
             <!--
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
