@@ -106,7 +106,7 @@ import { ProjectComponent } from './project/project.component';
     SondagemComponent,
     EditProjectComponent,
     ProjectComponent,
-
+    MainComponent,
     CreateSondagemComponent,
     CreateGestorComponent,
   ],
@@ -115,6 +115,6 @@ import { ProjectComponent } from './project/project.component';
     useClass: InterceptorAutenticacao,
     multi: true
   }, AlertsComponent, MatNativeDateModule],
-  bootstrap: [AppComponent, MainComponent, LoginComponent, SignupComponent, NavComponent, InternalUserSignupComponent, AproveUserComponent, AlertsComponent, RecoverPasswordComponent, UnauthorizedComponent],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

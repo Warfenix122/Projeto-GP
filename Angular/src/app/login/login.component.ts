@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
         this.authService.setLocalStorage(res);
         this.router.navigate(["/"]);
       }, (err) => {
+        console.log(err);
         this._alertService.error(err.error.msg);
       });
 

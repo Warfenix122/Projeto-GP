@@ -150,10 +150,11 @@ router.post("/login", (req, res, next) => {
       } else {
         let msg = "";
         if (user.tipoMembro == "Voluntario Interno")
-          msg =
-            "Ainda não confirmou a sua conta através do email. Por favor verifique o seu email.";
+          msg = "Ainda não confirmou a sua conta através do email. Por favor verifique o seu email.";
         if (user.tipoMembro == "Voluntario Externo")
           msg = "A sua conta ainda não foi validada pelo administrador.";
+        if(msg == "")
+          msg = "Erro incomum. É possível que esta conta seja do tipo Gestor e não esteja confirmada. Contacte um administrador do site para reportar este erro."
         res.status(401).json({ success: false, msg: msg });
       }
     })

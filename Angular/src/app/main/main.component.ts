@@ -14,15 +14,13 @@ import { Foto } from 'models/foto';
 export class MainComponent implements OnInit {
 
   fotos: Array<any> = [];
-  constructor(private fotoService: FotoService, private route: ActivatedRoute,
-  ) { }
+  constructor(private fotoService: FotoService, private route: ActivatedRoute) { }
 
 
   ngOnInit(): void {
     this.fotoService.getAllDecodedCarouselFotos().then((fotos) => {
       this.fotos = fotos;
     });
-
   }
 
   getAllCarrouselPhotos() {
