@@ -46,4 +46,8 @@ export class ProjectService {
   uploadPhoto(formData) {
     return this.http.post<ImageResponse>('/api/file/uploadCapaFoto', formData);
   }
+
+  addFavProject(userId, projectId){
+    return this.http.put<Project>('/api/fav', userId, projectId);
+  }
 }
