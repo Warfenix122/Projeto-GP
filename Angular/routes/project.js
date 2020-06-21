@@ -147,19 +147,4 @@ router.put('/candidatar/:id',(req,res)=>{
     res.status(404).json({success:false,msg:"Não existe um projeto com esse ID"})});
 });
 
-//adicionar projeto favorito
-router.put('/fav/:idUser/:idProject', (req, res) => {
-  let userId = req.params.idUser;
-  let projectId = req.params.idProject;
-  User.find({ _id: userId }).then((user) => {
-    user['projetosFavoritos'].push(projectId);
-    user.save().then(()=>{
-      res.status(200).json({success:true,msg:"Adicionado aos favoritos"})
-    }).catch((err)=>{
-      console.log(err);
-      res.status(500).json({success:false,msg:"Nao foi possivel adicionar o projeto"});
-    });
-  });
-});
-
 module.exports = router;

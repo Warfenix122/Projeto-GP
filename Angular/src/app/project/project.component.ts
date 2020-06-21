@@ -19,35 +19,33 @@ export class ProjectComponent implements OnInit {
   showHideAddFavProjectState: string = "hide";
 
   project: Project;
-  id: string;
   date : string;
   user : User;
-  star: boolean = false;
+  isFavProject: boolean = false;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private userService: UserService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.id = params['id'];
+      let id = params['id'];
 
-    });
-    this.projectService.getProject(this.id).subscribe(project => {
-      this.project = project;
-     
-      
-    });
-    this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
-      this.user = res['user']
+      this.projectService.getProject(id).subscribe(project => {
+        this.project = project;
+
+        this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
+          this.user = res['user'];
+          if(this.user.projetosFavoritos.find((projeto) => projeto == id))
+            this.isFavProject = true;
+          else
+            this.isFavProject = false;
+        });
+      });
     });
   }
 
-  addToFavProject(){
-    if(this.star == false){
-      this.star = true;
-    } else {
-      this.star = false;
-    }
-    this.projectService.addFavProject(this.user._id, this.id);
+  updateFavProject(){
+    this.isFavProject = !this.isFavProject;
+    this.userService.updateUserFavProject(this.isFavProject, this.user._id, this.project._id).subscribe();
   }
 }
 

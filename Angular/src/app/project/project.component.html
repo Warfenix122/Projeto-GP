@@ -5,10 +5,9 @@
             <h1 id="titulo">{{project.nome}}</h1>
             <div>
               <button type="button" class="btn btn-success botoes">CANDIDATAR</button>
-              <button (onclick)="addToFavProject()" (mouseover)="showHideAddFavProjectState = 'show'" (mouseleave)="showHideAddFavProjectState = 'hide'" id="fav" type="button" class="btn btn-outline-warning" >
-                <div *ngIf="star == false"><i class="far fa-star mr-1"></i></div>
-                <div *ngIf="star == true"><i class="fas fa-star"></i></div>
-                <span [@showHideAddFavProject]="showHideAddFavProjectState">Adicionar aos favoritos</span>
+              <button (click)="updateFavProject()" (mouseover)="showHideAddFavProjectState = 'show'" (mouseleave)="showHideAddFavProjectState = 'hide'" id="fav" type="button" class="btn btn-outline-warning" >
+                <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i>
+                <span [@showHideAddFavProject]="showHideAddFavProjectState">{{isFavProject ? 'Remover dos favoritos' : 'Adicionar aos Favoritos'}}</span>
               </button>
             </div>
         </div>

@@ -1,5 +1,5 @@
 import { Injectable, Output, EventEmitter } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../../models/utilizadores';
 
@@ -72,6 +72,11 @@ export class UserService {
 
   getVoluntariosExternos(): Observable<User[]> {
     return this.http.get<User[]>('/api/externos');
+  }
+
+  updateUserFavProject(isAdd ,userId, projectId) {
+    let purpose = isAdd ? 'pushFavProject' : 'removeFavProject';
+    return this.http.put<User>('/api/user/'+userId, {projectId: projectId}, {params: new HttpParams().set('purpose', purpose)});
   }
 
 }
