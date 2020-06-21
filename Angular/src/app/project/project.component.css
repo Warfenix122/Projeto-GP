@@ -29,7 +29,7 @@
 
 }
 
-button{
+.botoes{
     background-color: #39E85F;
     border-color: #39E85F;
 }
@@ -37,6 +37,18 @@ button{
 #botao2{
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+#fav{
+    width:  43.5px;
+    text-align: left;
+    height: 36px;
+    transition: 0.5s;
+    margin-left:5px;
+}
+
+#fav:hover, #fav.focus{
+    width: 220px;
 }
 
 #detalhes{

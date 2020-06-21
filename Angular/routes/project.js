@@ -150,5 +150,4 @@ router.put('/candidatar/:id',(req,res)=>{
     res.status(404).json({success:false,msg:"Não existe um projeto com esse ID"})});
 });
 
-
 module.exports = router;

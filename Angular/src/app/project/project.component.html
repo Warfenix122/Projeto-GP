@@ -5,6 +5,12 @@
             <h1 id="titulo">{{project.nome}}</h1>
             <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
             <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
+            <div>
+              <button (click)="updateFavProject()" (mouseover)="showHideAddFavProjectState = 'show'" (mouseleave)="showHideAddFavProjectState = 'hide'" id="fav" type="button" class="btn btn-outline-warning" >
+                <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i>
+                <span [@showHideAddFavProject]="showHideAddFavProjectState">{{isFavProject ? 'Remover dos favoritos' : 'Adicionar aos Favoritos'}}</span>
+              </button>
+            </div>
         </div>
     </div>
     <div class="row container">
