@@ -1,14 +1,14 @@
 <div id="firstdiv" class="container" *ngIf="project">
     <div class="container header">
       <div class="row image-header justify-content-end">
-        <div class="col-sm-5 text-right">
-          <button class="btn btn-dark" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
-            <i [class]="editIconClass"></i> Editar
+        <div class="col-sm-4 text-right">
+          <button *ngIf="isManagerOrResponsible" class="btn btn-dark" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <i [class]="editIconClass"></i> {{editButtonText}}
           </button>
         </div>
       </div>
       <div class="row image-body">
-        <div class="col-sm-8">
+        <div *ngIf="!isEditButtonToggled" class="col-sm-8">
           <h1 id="titulo">{{project.nome}}</h1>
           <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
           <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
@@ -16,16 +16,28 @@
             <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
           </button>
         </div>
-        <div class="col-sm-4 text-right">
-          <button class="btn btn-dark" (click)="viewAsButtonClicked($event.target)" data-toggle="button" aria-pressed="false" autocomplete="off">
-            <i [class]="viewingAsIconClass"></i> {{viewingAsButtonText}}
-          </button>
+        <div *ngIf="isEditButtonToggled" class="col-sm-8">
+          <label class="pb-1 pt-2 px-2 bg-light rounded">Nome do projeto</label>
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <button (click)="readonlyInput('projectName')" class="btn btn-light active" type="button" data-toggle="button" aria-pressed="true" autocomplete="off"><i [class]="isProjectNameInputReadonly ? 'fas fa-edit' : 'far fa-edit'"></i></button>
+            </div>
+            <input id="projectNameInput" type="text" class="form-control border-0" placeholder="Nome do projeto" aria-label="ProjectName" [(ngModel)]="projectNameInput" [readonly]="isProjectNameInputReadonly">
+          </div>
+        </div>
+        <!---->
+        <div class="col-sm-4">
+          <div *ngIf="isEditButtonToggled" class="btn-toolbar justify-content-end" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-secondary"><i class="fas fa-check"></i> Guardar</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="row container">
         <div id="info" class="container col-9">
-            <br><h1 id="titulo2">{{project.nome}}</h1>
+            <br><h1 [style.visibility]="isEditButtonToggled ? 'hidden' : 'visible'" id="titulo2">{{project.nome}}</h1>
             <h3 id="resumo">{{project.resumo}}</h3>
             <h4 id="detalhes">Inscrições até:
                 <h4 id="lista">{{project.dataFechoInscricoes|date:'shortDate'}}</h4>

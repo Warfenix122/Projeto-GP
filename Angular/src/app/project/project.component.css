@@ -25,8 +25,8 @@
     overflow: hidden;
 }
 
-.col-sm-4 > .btn-dark{
-    width: 191px;
+#projectNameInput{
+    max-width:15vw;
 }
 
 .image-body{
@@ -37,7 +37,7 @@
     padding-left: 7vw;
 }
 
-.image-body > .col-sm-4, .image-header > .col-sm-5{
+.image-header > .col-sm-4, .image-body > .col-sm-4{
     padding-right: 40px;
 }
 

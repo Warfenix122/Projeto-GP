@@ -17,15 +17,20 @@ import { User } from 'models/utilizadores';
 export class ProjectComponent implements OnInit {
   //buttonsText
   addRemFavButtonText: string;
-  viewingAsButtonText: string = 'Ver como gestor';
+  editButtonText: string = "Editar";
 
   //buttonSupports
   isFavProject: boolean = false;
-  isViewingAsButtonFocused: boolean = false;
   isEditButtonToggled: boolean = false;
-  viewingAsIconClass: string = 'far fa-eye';
-  editIconClass: string = 'far fa-edit';
+  editIconClass: string = 'fas fa-edit';
 
+  //edit inputs values
+  projectNameInput: String;
+
+  //edit inputs readonly or not
+  isProjectNameInputReadonly: boolean = true;
+
+  isManagerOrResponsible: boolean;
   project: Project;
   id: string;
   date: string;
@@ -43,17 +48,24 @@ export class ProjectComponent implements OnInit {
       });
       this.projectService.getProject(this.id).subscribe(project => {
         this.project = project;
+
+        this.projectNameInput = this.project.nome;
         this._userService.getCurrentUserId().subscribe(res => {
           this.currentUserId = res["UserID"];
+          this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.find((gestorId) => gestorId.gestorId == this.currentUserId) != undefined);
           this.role = this._authService.getRole();
           if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
             this.candidato = true;
           }
-          if(this.user != undefined && this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
+          this._userService.getUser(this.currentUserId).subscribe((user: User) => {
+            this.user = user;
+            if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
               this.isFavProject = true;
           }else{
               this.isFavProject = false;
           }
+          })
+          
         });
       });
     }
@@ -82,20 +94,20 @@ export class ProjectComponent implements OnInit {
 
     editButtonClicked(){
       this.isEditButtonToggled = !this.isEditButtonToggled;
-      if(this.isEditButtonToggled)
+      if(this.isEditButtonToggled){
+        this.editIconClass = 'fas fa-times';
+        this.editButtonText = 'Cancelar';
+      } else {
         this.editIconClass = 'fas fa-edit';
-      else
-        this.editIconClass = 'far fa-edit';
+        this.editButtonText = 'Editar';
+      }
     }
 
-    viewAsButtonClicked(htmlElem){
-      this.isViewingAsButtonFocused = !this.isViewingAsButtonFocused;
-      if(this.isViewingAsButtonFocused){
-        this.viewingAsButtonText = 'Ver como voluntário';
-        this.viewingAsIconClass = 'fas fa-eye';
-      } else {
-        this.viewingAsButtonText = 'Ver como gestor';
-        this.viewingAsIconClass = 'far fa-eye';
+    readonlyInput(input){
+      switch(input){
+        case "projectName": 
+          this.isProjectNameInputReadonly = !this.isProjectNameInputReadonly;
+          break;
       }
     }
 }

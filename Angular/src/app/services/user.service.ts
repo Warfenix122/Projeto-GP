@@ -63,10 +63,13 @@ export class UserService {
     });
   }
 
-
   getCurrentUserId(): Observable<String> {
     let token = { token: localStorage.getItem('token').split(' ')[1] };
     return this.http.post<String>('/api/currentUser', token);
+  }
+
+  getUser(id){
+    return this.http.get<User>('/api/user/'+id);
   }
 
   getVoluntariosExternos(): Observable<User[]> {

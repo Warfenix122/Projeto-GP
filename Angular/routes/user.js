@@ -20,4 +20,9 @@ router.put('/:id', (req, res) => {
         res.end();
 });
 
+router.get('/:id', (req, res) => {
+    let userId = mongoose.Types.ObjectId(req.params.id);
+    User.findById(userId).then((user) => res.json(user));
+});
+
 module.exports = router;
