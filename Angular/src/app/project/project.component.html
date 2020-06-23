@@ -1,17 +1,27 @@
 <div id="firstdiv" class="container" *ngIf="project">
-    <div class="container">
-        <img class="header"> <!--FOTO DE CAPA AQUI-->
-        <div class="top-left">
-            <h1 id="titulo">{{project.nome}}</h1>
-            <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
-            <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
-            <div>
-              <button (click)="updateFavProject()" (mouseover)="showHideAddFavProjectState = 'show'" (mouseleave)="showHideAddFavProjectState = 'hide'" id="fav" type="button" class="btn btn-outline-warning" >
-                <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i>
-                <span [@showHideAddFavProject]="showHideAddFavProjectState">{{isFavProject ? 'Remover dos favoritos' : 'Adicionar aos Favoritos'}}</span>
-              </button>
-            </div>
+    <div class="container header">
+      <div class="row image-header justify-content-end">
+        <div class="col-sm-5 text-right">
+          <button class="btn btn-dark" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <i [class]="editIconClass"></i> Editar
+          </button>
         </div>
+      </div>
+      <div class="row image-body">
+        <div class="col-sm-8">
+          <h1 id="titulo">{{project.nome}}</h1>
+          <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
+          <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
+          <button (click)="updateFavProject()" (mouseover)="hoverFavButton(true)" (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning" >
+            <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
+          </button>
+        </div>
+        <div class="col-sm-4 text-right">
+          <button class="btn btn-dark" (click)="viewAsButtonClicked($event.target)" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <i [class]="viewingAsIconClass"></i> {{viewingAsButtonText}}
+          </button>
+        </div>
+      </div>
     </div>
     <div class="row container">
         <div id="info" class="container col-9">

@@ -43,6 +43,7 @@ export class ListProjectsComponent implements OnInit {
   //animations
   filterState: string = 'hide';
   
+  projectRoute: string = '';
   projects: Array<Project> = [];
   filteredProjects: Array<Project> = [];
   fotos: Array<any> = [];

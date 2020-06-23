@@ -13,8 +13,6 @@ const sondagemAPI = require('./sondagem');
 const projectAPI = require('./project');
 const fotoAPI = require('./foto');
 const fileAPI = require('./file');
-const projectAPI = require("./project");
-const fotoAPI = require("./foto");
 const userAPI = require("./user");
 
 

@@ -1,23 +1,49 @@
 
 
 .header {
-    padding-top: 25vmax;
-    
     background-image: url('https://caritascoimbra.pt/wp-content/uploads/2020/01/VOLUNTARIADO_12.png') !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    width: 100%;
-    left: 0%;
-    position: relative;
+    height: 35vh;
+    padding-bottom: 30px;
 }
 
-.top-left {
-    position: absolute;
-    top: 115px;
-    left: 120px;
+.image-header{
+    height: 20%;
+    padding-top: 30px;
 }
 
+#fav{
+    width:  43.5px;
+    text-align: left;
+    height: 36px;
+    transition: 0.5s;
+    margin-left:5px;
+    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.col-sm-4 > .btn-dark{
+    width: 191px;
+}
+
+.image-body{
+    height: 80%;
+}
+
+.image-body > .col-sm-8{
+    padding-left: 7vw;
+}
+
+.image-body > .col-sm-4, .image-header > .col-sm-5{
+    padding-right: 40px;
+}
+
+.image-body > .col-sm-4{
+    padding-top: 10px;
+}
 
 #info {
     justify-content: center;
@@ -26,7 +52,6 @@
 #titulo{
     color: white;
     font-weight: bold;
-
 }
 
 .botoes{
@@ -37,14 +62,6 @@
 #botao2{
     margin-bottom: 20px;
     margin-top: 20px;
-}
-
-#fav{
-    width:  43.5px;
-    text-align: left;
-    height: 36px;
-    transition: 0.5s;
-    margin-left:5px;
 }
 
 #fav:hover, #fav.focus{

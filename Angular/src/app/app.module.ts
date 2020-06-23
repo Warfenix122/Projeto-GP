@@ -48,7 +48,6 @@ import { FavoriteProjectComponent } from './favorite-project/favorite-project.co
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
-import { EditProjectComponent } from './edit-project/edit-project.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { ProjectComponent } from './project/project.component';
@@ -104,7 +103,6 @@ import { ProjectComponent } from './project/project.component';
     CreateProjectComponent,
     EditProfileComponent,
     SondagemComponent,
-    EditProjectComponent,
     ProjectComponent,
     MainComponent,
     CreateSondagemComponent,
