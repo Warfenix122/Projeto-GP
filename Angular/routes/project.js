@@ -108,6 +108,7 @@ router.get('/favoriteProject/:userId', (req, res) => {
 router.put('/anularCandidatura/:id',(req,res)=>{
   let projectId = mongoose.Types.ObjectId(req.params.id);
   let voluntarioId = req.body.voluntarioId;
+  console.log("entrou")
   Project.findOne({_id:projectId}).then((project)=>{
     if(project["voluntarios"].includes(voluntarioId)){
       let indexOfId = project["voluntarios"].indexOf(voluntarioId);
@@ -118,7 +119,8 @@ router.put('/anularCandidatura/:id',(req,res)=>{
         console.log(err);
         res.status(500).json({success:false,msg:"Falha a guardar Projeto"});
       });
-    }
+    }else
+      res.status(500).json({success:false,msg:"Utilizador nao está inscrito"});
   }).catch((err)=>{
     console.log(err);
     res.status(404).json({success:false,msg:"Projeto Não encontrado"});

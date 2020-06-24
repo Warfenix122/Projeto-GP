@@ -39,16 +39,18 @@ export class ProjectComponent implements OnInit {
         this.project = project;
         this._userService.getCurrentUserId().subscribe(res => {
           this.currentUserId = res["UserID"];
-          this.role = this._authService.getRole();
-          console.log(this.project);
-          if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
-            this.candidato = true;
-          }
-          if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
-              this.isFavProject = true;
-          }else{
-              this.isFavProject = false;
-          }
+          this._authService.getRole().subscribe(res =>{
+            this.role = res["Role"];
+            console.log(this.role);
+            if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
+              this.candidato = true;
+            }
+            if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
+                this.isFavProject = true;
+            }else{
+                this.isFavProject = false;
+            }
+          })
         });
       });
     }
@@ -68,6 +70,6 @@ export class ProjectComponent implements OnInit {
     }
 }
 
-  
+
 
 

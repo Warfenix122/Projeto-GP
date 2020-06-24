@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service'
 import { User } from '../../../models/utilizadores'
 import { Router } from '@angular/router'
 import { AlertService } from '../services/alert.service';
+import {AuthService} from '../services/auth.service';
 
 
 @Component({
@@ -13,13 +14,15 @@ import { AlertService } from '../services/alert.service';
 export class AproveUserComponent implements OnInit {
   utilizadores: Array<User>;
   emptyReturnMessage: string;
-  constructor(private service: UserService, private router: Router, private _alertService: AlertService) { }
+  constructor(private _userService: UserService, private router: Router, private _alertService: AlertService, private _authService: AuthService) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('role') !== "Gestor") {
-      this.router.navigate(['unauthorized']);
-    }
-    this.service.getDisaprovedUsers().subscribe(users => {
+    this._authService.getRole().subscribe(res =>{
+      if(res["Role"] !== "Gestor")
+        this.router.navigate(['unauthorized']);
+    });
+
+    this._userService.getDisaprovedUsers().subscribe(users => {
       this.updateUsers(users);
     });
   }
@@ -43,7 +46,7 @@ export class AproveUserComponent implements OnInit {
   }
 
   avaliarUtilizador(utilizador, avaliacao) {
-    this.service.aproveUser(utilizador, avaliacao).subscribe(user => {
+    this._userService.aproveUser(utilizador, avaliacao).subscribe(user => {
       this.removeUser(user);
       this._alertService.success("Utilizador Aprovado!");
 

@@ -13,8 +13,6 @@ const sondagemAPI = require('./sondagem');
 const projectAPI = require('./project');
 const fotoAPI = require('./foto');
 const fileAPI = require('./file');
-const projectAPI = require("./project");
-const fotoAPI = require("./foto");
 const userAPI = require("./user");
 
 
@@ -300,6 +298,16 @@ router.post("/currentUser", (req, res) => {
       success: false,
       msg: "Não existe um token associado ao request",
     });
+});
+
+router.post("/currentUserRole", (req,res)=>{
+  if(req.body.token){
+    res.status(200).json({ success: true, Role: utils.getCurrentUserRole(req.body.token)});
+  }else
+  res.status(400).json({
+    success: false,
+    msg: "Não existe um token associado ao request",
+  });
 });
 
 module.exports = router;
