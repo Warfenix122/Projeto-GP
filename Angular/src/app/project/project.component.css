@@ -9,8 +9,12 @@
     padding-bottom: 30px;
 }
 
+.mat-icons:hover{
+    cursor:pointer;
+}
+
 .image-header{
-    height: 20%;
+    height: 41%;
     padding-top: 30px;
 }
 
@@ -25,12 +29,26 @@
     overflow: hidden;
 }
 
-#projectNameInput{
-    max-width:15vw;
+.editListItem{
+    height: 88px !important;
+}
+
+.contactInput{
+    width: 42% !important;
+    margin-right: 5px;
+}
+
+.contactsItem:hover{
+    cursor: pointer;
+}
+
+.mat-inputs{
+    width: 50% !important;
+    display: block;
 }
 
 .image-body{
-    height: 80%;
+    height: 59%;
 }
 
 .image-body > .col-sm-8{
@@ -43,10 +61,6 @@
 
 .image-body > .col-sm-4{
     padding-top: 10px;
-}
-
-#info {
-    justify-content: center;
 }
 
 #titulo{

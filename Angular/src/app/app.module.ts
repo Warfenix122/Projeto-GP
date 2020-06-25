@@ -14,7 +14,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -75,6 +82,13 @@ import { ProjectComponent } from './project/project.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatChipsModule,
+    MatListModule,
+    MatRippleModule,
+    MatDialogModule
   ],
   declarations: [
     AppComponent,
@@ -106,7 +120,7 @@ import { ProjectComponent } from './project/project.component';
     ProjectComponent,
     MainComponent,
     CreateSondagemComponent,
-    CreateGestorComponent,
+    CreateGestorComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

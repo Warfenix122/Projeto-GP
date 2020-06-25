@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, Inject } from '@angular/core';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'models/projeto';
 import { UserService } from '../services/user.service';
@@ -6,8 +7,16 @@ import { ProjectService } from '../services/project.service';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { User } from 'models/utilizadores';
+import { MatIconRegistry } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AlertService } from '../services/alert.service';
 
-
+export interface DialogData {
+  contact: string;
+  description: string;
+}
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -15,23 +24,30 @@ import { User } from 'models/utilizadores';
   providers: [DatePipe]
   })
 export class ProjectComponent implements OnInit {
+  //Others
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  showEditProjectContact: boolean[] = [];
+  addContactField: boolean = false;
+  newContact: {contacto: string, descricao: string} = {contacto: "", descricao: ""};
+
   //buttonsText
   addRemFavButtonText: string;
-  editButtonText: string = "Editar";
 
   //buttonSupports
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
-  editIconClass: string = 'fas fa-edit';
-
-  //edit inputs values
-  projectNameInput: String;
 
   //edit inputs readonly or not
   isProjectNameInputReadonly: boolean = true;
+  isProjectSummaryInputReadonly: boolean = true;
+  isProjectApplicationsCloseDateReadonly: boolean = true;
+  isProjectVacanciesReadonly: boolean = true;
+  isProjectNecessaryFormationsReadonly: boolean = true;
+  isProjectAreasOfInterestReadonly: boolean = true;
 
   isManagerOrResponsible: boolean;
   project: Project;
+  updatedProject: Project;
   id: string;
   date: string;
   role: string;
@@ -39,7 +55,11 @@ export class ProjectComponent implements OnInit {
   currentUserId: String;
   user : User;
 
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private _userService: UserService, private _authService: AuthService) { }
+  newContactsSession: string = "";
+
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
+              private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
+              public dialog: MatDialog, private alertService: AlertService) { }
 
     ngOnInit(): void {
       this.route.params.subscribe((params) => {
@@ -47,9 +67,10 @@ export class ProjectComponent implements OnInit {
 
       });
       this.projectService.getProject(this.id).subscribe(project => {
-        this.project = project;
+        this.project = this.deepCopy(project) as Project;
+        this.updatedProject = this.deepCopy(project) as Project;
+        this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-        this.projectNameInput = this.project.nome;
         this._userService.getCurrentUserId().subscribe(res => {
           this.currentUserId = res["UserID"];
           this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.find((gestorId) => gestorId.gestorId == this.currentUserId) != undefined);
@@ -70,15 +91,135 @@ export class ProjectComponent implements OnInit {
       });
     }
 
+    deepCopy(obj){
+      var copy;
+
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+        copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = this.deepCopy(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = this.deepCopy(obj[attr]);
+        }
+        return copy;
+    }
+    }
+
+    openSnackBar(message: string, action: string, duration: number) {
+      this._snackBar.open(message, action, {
+        duration: duration,
+      });
+    }
+
+    openRemoveContactDialog(index): void {
+      let contact = this.updatedProject.contactos[index];
+      const dialogRef = this.dialog.open(DialogRemoveContact, {
+        width: '400px',
+        data: {contact: contact.contacto, description: contact.descricao}
+      });
+  
+      dialogRef.afterClosed().subscribe(isRemove => {
+        if(isRemove)
+          this.updatedProject.contactos.splice(index, 1);
+      });
+    }
+
+    openDeleteProjectDialog(): void {
+      const dialogRef = this.dialog.open(DialogRemoveContact, {
+        width: '400px',
+        data: {}
+      });
+  
+      dialogRef.afterClosed().subscribe(isRemove => {
+        if(isRemove)
+          this.deleteProject();
+      });
+    }
+
     volunteer() {
       this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
         console.log(res);
       });
     }
 
+    removeNecessaryFormation(formation: string): void {
+      const index = this.updatedProject.formacoesNecessarias.indexOf(formation);
+  
+      if (index >= 0) {
+        this.updatedProject.formacoesNecessarias.splice(index, 1);
+      }
+    }
+
+    removeAreaOfInterest(areaOfInterest: string): void {
+      const index = this.updatedProject.areasInteresse.indexOf(areaOfInterest);
+  
+      if (index >= 0) {
+        this.updatedProject.areasInteresse.splice(index, 1);
+      }
+    }
+
+    showEditContact(index){
+      this.showEditProjectContact[index] = !this.showEditProjectContact[index];
+    }
+
+    addNecessaryFormation(event: MatChipInputEvent): void {
+      const input = event.input;
+      const value = event.value;
+
+      // Add formation
+      if ((value || '').trim()) {
+        this.updatedProject.formacoesNecessarias.push(value.trim());
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+    }
+
+    addAreaOfInterest(event: MatChipInputEvent): void {
+      const input = event.input;
+      const value = event.value;
+
+      // Add formation
+      if ((value || '').trim()) {
+        this.updatedProject.areasInteresse.push(value.trim());
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+    }
+
+    saveContactField(){
+      this.addContactField = false;
+      this.updatedProject.contactos.push(this.newContact);
+      this.newContact = {contacto: "", descricao: ""};
+    }
+
     cancelVolunteer(){
       this.projectService.cancelVolunteer(this.id,this.currentUserId).subscribe(res => console.log(res));
     }
+
     updateFavProject(){
       this.isFavProject = !this.isFavProject;
       this.addRemFavButtonText = this.isFavProject ? 'Remover dos favoritos' : 'Adicionar aos Favoritos';
@@ -94,13 +235,22 @@ export class ProjectComponent implements OnInit {
 
     editButtonClicked(){
       this.isEditButtonToggled = !this.isEditButtonToggled;
-      if(this.isEditButtonToggled){
-        this.editIconClass = 'fas fa-times';
-        this.editButtonText = 'Cancelar';
-      } else {
-        this.editIconClass = 'fas fa-edit';
-        this.editButtonText = 'Editar';
-      }
+      if(this.isEditButtonToggled)
+        this.openSnackBar('Para editar cada campo tem que clicar no respetivo lápis', 'Fechar', 20000);
+      else 
+        this.updatedProject = this.deepCopy(this.project) as Project;
+    }
+
+    saveUpdatedProject(){
+      this.projectService.editProject(this.updatedProject._id, this.updatedProject).subscribe((updatedProject) => {
+        this.project = this.deepCopy(updatedProject);
+        this.isEditButtonToggled = !this.isEditButtonToggled;
+        this.alertService.success("Projeto atualizado com sucesso");
+      });
+    }
+
+    deleteProject(){
+      //Service delete project
     }
 
     readonlyInput(input){
@@ -108,8 +258,50 @@ export class ProjectComponent implements OnInit {
         case "projectName": 
           this.isProjectNameInputReadonly = !this.isProjectNameInputReadonly;
           break;
+        case "projectSummary":
+          this.isProjectSummaryInputReadonly = !this.isProjectSummaryInputReadonly;
+          break;
+        case "projectApplicationsCloseDate":
+          this.isProjectApplicationsCloseDateReadonly = !this.isProjectApplicationsCloseDateReadonly;
+          break;
+        case "projectVacancies":
+          this.isProjectVacanciesReadonly = !this.isProjectVacanciesReadonly;
+          break;
+        case "projectNecessaryFormations":
+          this.isProjectNecessaryFormationsReadonly = !this.isProjectNecessaryFormationsReadonly;
+          break;
+        case "projectAreasOfInterest":
+          this.isProjectAreasOfInterestReadonly = !this.isProjectAreasOfInterestReadonly
+          break;
       }
     }
+}
+
+@Component({
+  selector: 'dialog-remove-contact',
+  templateUrl: 'dialog-remove-contact.html',
+})
+export class DialogRemoveContact {
+  constructor(
+    public dialogRef: MatDialogRef<DialogRemoveContact>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData){}
+
+  onClose(isRemove){
+    this.dialogRef.close(isRemove);
+  }
+}
+
+@Component({
+  selector: 'dialog-delete-project',
+  templateUrl: 'dialog-delete-project.html',
+})
+export class DialogDeleteProject {
+  constructor(
+    public dialogRef: MatDialogRef<DialogDeleteProject>){}
+
+  onClose(isRemove){
+    this.dialogRef.close(isRemove);
+  }
 }
 
   
