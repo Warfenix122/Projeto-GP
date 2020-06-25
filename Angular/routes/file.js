@@ -48,9 +48,20 @@ router.put("/updateUserPhoto/:userId", (req, res) => {
 
 })
 
-router.put("/updateProjectPhoto/:projectId", (req, res) => {
+router.put("/updateProjectCover/:projectId", (req, res) => {
     Projeto.findOne({ _id: req.params.projectId }).then((proj) => {
-        proj.fotoCapaId = req.body.projectId;
+        proj.fotoCapaId = req.body.fotoId;
+        proj.save().then((pr) => {
+            res.send({ success: true, project: pr, msg: "Imagem Guardada com sucesso" });
+        })
+    }).catch((err) => console.log(err));
+
+})
+router.put("/updateProjectPhotos/:projectId", (req, res) => {
+    Projeto.findOne({ _id: req.params.projectId }).then((proj) => {
+        var arr = proj.fotosIds;
+        arr.push(req.body.fotoId)
+        proj.fotoCaminhoId = arr;
         proj.save().then((pr) => {
             res.send({ success: true, project: pr, msg: "Imagem Guardada com sucesso" });
         })

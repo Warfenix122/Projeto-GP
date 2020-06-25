@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, Inject } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Project } from 'models/projeto';
 import { UserService } from '../services/user.service';
 import { ProjectService } from '../services/project.service';
@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from '../services/alert.service';
+import {MatBottomSheet,MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 
 export interface DialogData {
   contact: string;
@@ -23,9 +24,11 @@ export interface DialogData {
   styleUrls: ['./project.component.css'],
   providers: [DatePipe]
   })
+
 export class ProjectComponent implements OnInit {
   //Others
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  showEditProjectContact: boolean[] = [];
   addContactField: boolean = false;
   newContact: {contacto: string, descricao: string} = {contacto: "", descricao: ""};
 
@@ -35,6 +38,7 @@ export class ProjectComponent implements OnInit {
   //buttonSupports
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
+  isAddingManagers: boolean = false;
 
   //edit inputs readonly or not
   isProjectNameInputReadonly: boolean = true;
@@ -43,7 +47,6 @@ export class ProjectComponent implements OnInit {
   isProjectVacanciesReadonly: boolean = true;
   isProjectNecessaryFormationsReadonly: boolean = true;
   isProjectAreasOfInterestReadonly: boolean = true;
-  showEditProjectContact: boolean[] = [];
 
   isManagerOrResponsible: boolean;
   project: Project;
@@ -54,39 +57,45 @@ export class ProjectComponent implements OnInit {
   candidato: boolean = false;
   currentUserId: String;
   user : User;
+  gestores: User[];
 
   newContactsSession: string = "";
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
               private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
-              public dialog: MatDialog, private alertService: AlertService, private router: Router) { }
+              public dialog: MatDialog, private alertService: AlertService, private _bottomSheet:MatBottomSheet) { }
 
     ngOnInit(): void {
       this.route.params.subscribe((params) => {
         this.id = params['id'];
+
       });
       this.projectService.getProject(this.id).subscribe(project => {
-        console.log(project.formacoesNecessarias);
         this.project = this.deepCopy(project) as Project;
         this.updatedProject = this.deepCopy(project) as Project;
         this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-        this._userService.getCurrentUserId().subscribe(res => {
-          this.currentUserId = res["UserID"];
-          this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.find((gestorId) => gestorId.gestorId == this.currentUserId) != undefined);
-          this.role = this._authService.getRole();
-          if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
-            this.candidato = true;
-          }
-          this._userService.getUser(this.currentUserId).subscribe((user: User) => {
-            this.user = user;
-            if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
-              this.isFavProject = true;
-          }else{
-              this.isFavProject = false;
-          }
-          })
+        this.projectService.getGestores(this.id).subscribe(res=>{
+          this.gestores = res["gestores"];
+          this._userService.getCurrentUserId().subscribe(res => {
+            this.currentUserId = res["UserID"];
+            this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.includes(this.currentUserId));
+            this._authService.getRole().subscribe(res =>{
+              this.role = res["Role"];
+              if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
+                this.candidato = true;
+              }
+              this._userService.getUser(this.currentUserId).subscribe((user: User) => {
+                this.user = user;
+                if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
+                  this.isFavProject = true;
+              }else{
+                  this.isFavProject = false;
+              }
+              });
+            });
 
+          });
         });
       });
     }
@@ -143,7 +152,7 @@ export class ProjectComponent implements OnInit {
     }
 
     openDeleteProjectDialog(): void {
-      const dialogRef = this.dialog.open(DialogDeleteProject, {
+      const dialogRef = this.dialog.open(DialogRemoveContact, {
         width: '400px',
         data: {}
       });
@@ -153,6 +162,23 @@ export class ProjectComponent implements OnInit {
           this.deleteProject();
       });
     }
+
+    openSettingsBottomSheet(){
+      const bottomSheetRef = this._bottomSheet.open(BottomSheetSetting, {
+        data:{}
+      });
+
+      bottomSheetRef.afterDismissed().subscribe(option => {
+        switch(option){
+          case "managers":
+            break;
+          case "volunteers":
+            break;
+          case "filesPhotos":
+            break;
+        }
+      })
+  }
 
     volunteer() {
       this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
@@ -233,34 +259,12 @@ export class ProjectComponent implements OnInit {
         this.addRemFavButtonText = '';
     }
 
-    activateEditAll(){
-      this.isProjectNameInputReadonly = false;
-      this.isProjectSummaryInputReadonly = false;
-      this.isProjectApplicationsCloseDateReadonly = false;
-      this.isProjectVacanciesReadonly = false;
-      this.isProjectNecessaryFormationsReadonly = false;
-      this.isProjectAreasOfInterestReadonly = false;
-      this.showEditProjectContact = this.showEditProjectContact.map((elem, index) => {
-        return true;
-      });
-    }
-
     editButtonClicked(){
       this.isEditButtonToggled = !this.isEditButtonToggled;
       if(this.isEditButtonToggled)
         this.openSnackBar('Para editar cada campo tem que clicar no respetivo lápis', 'Fechar', 20000);
-      else {
+      else
         this.updatedProject = this.deepCopy(this.project) as Project;
-        this.isProjectNameInputReadonly = true;
-        this.isProjectSummaryInputReadonly = true;
-        this.isProjectApplicationsCloseDateReadonly = true;
-        this.isProjectVacanciesReadonly = true;
-        this.isProjectNecessaryFormationsReadonly = true;
-        this.isProjectAreasOfInterestReadonly = true;
-        this.showEditProjectContact = this.showEditProjectContact.map((elem, index) => {
-          return false;
-        });
-      }
     }
 
     saveUpdatedProject(){
@@ -272,10 +276,7 @@ export class ProjectComponent implements OnInit {
     }
 
     deleteProject(){
-      this.projectService.deleteProject(this.project._id).subscribe((deletedProject) => {
-        this.router.navigate(['/projects']);
-        this.alertService.success("Projeto eliminado com sucesso");
-      })
+      //Service delete project
     }
 
     readonlyInput(input){
@@ -328,4 +329,18 @@ export class DialogDeleteProject {
     this.dialogRef.close(isRemove);
   }
 }
+
+@Component({
+  selector: 'bottom-sheet-settings',
+  templateUrl: 'bottom-sheet-settings.html'
+})
+export class BottomSheetSetting{
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetSetting>){}
+
+  closeSettings(option){
+    this._bottomSheetRef.dismiss(option);
+    event.preventDefault();
+  }
+}
+
 

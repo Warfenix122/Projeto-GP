@@ -72,7 +72,7 @@ var ProjetoSchema = new Schema({
     }, ],
     vagas: Number,
     atividades: [{ descricao: String, dataAcontecimento: Date }],
-    ficheirosCaminho: [{ caminho: String }],
+    fotosIds: [mongoose.ObjectId],
     projetoMes: Boolean,
     dataCriacao: Date,
     dataTermino: Date,
