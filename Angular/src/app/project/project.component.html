@@ -5,7 +5,7 @@
           <button mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
             <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon> {{isEditButtonToggled ? 'Cancelar' : 'Editar Projeto'}}
           </button><br>
-          <button mat-raised-button class="mt-2" color="primary" *ngIf="isManagerOrResponsible" (click)="settingsButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+          <button mat-raised-button class="mt-2" color="primary" *ngIf="isManagerOrResponsible && !isEditButtonToggled" (click)="openSettingsBottomSheet()" data-toggle="button" aria-pressed="false" autocomplete="off">
             <mat-icon>settings</mat-icon> Definições
           </button><br>
           <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="saveUpdatedProject()"><mat-icon>check</mat-icon> Guardar </button>

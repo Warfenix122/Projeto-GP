@@ -1,5 +1,20 @@
 <mat-nav-list>
-  <a href="" mat-list-item (click)="closeSettings('addManagers')">
-    <span mat-line>Adicionar mais gestores</span>
-  </a>
+  <mat-list-item>
+    <mat-icon mat-list-icon>engineering</mat-icon>
+    <a mat-line href="" (click)="closeSettings('managers')">
+      <span>Gerir gestores do projeto</span>
+    </a>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>person</mat-icon>
+    <a mat-line href="" (click)="closeSettings('volunteers')">
+      <span>Gerir voluntários do projeto</span>
+    </a>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>attach_file</mat-icon>
+    <a mat-line href="" (click)="closeSettings('filesPhotos')">
+      <span>Gerir ficheiros e fotos do projeto</span>
+    </a>
+  </mat-list-item>
 </mat-nav-list>

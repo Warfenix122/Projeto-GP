@@ -38,7 +38,6 @@ export class ProjectComponent implements OnInit {
   //buttonSupports
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
-  isSettingsToggled: boolean = false;
   isAddingManagers: boolean = false;
 
   //edit inputs readonly or not
@@ -164,6 +163,23 @@ export class ProjectComponent implements OnInit {
       });
     }
 
+    openSettingsBottomSheet(){
+      const bottomSheetRef = this._bottomSheet.open(BottomSheetSetting, {
+        data:{}
+      });
+
+      bottomSheetRef.afterDismissed().subscribe(option => {
+        switch(option){
+          case "managers":
+            break;
+          case "volunteers":
+            break;
+          case "filesPhotos":
+            break;
+        }
+      })
+  }
+
     volunteer() {
       this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
         console.log(res);
@@ -249,12 +265,6 @@ export class ProjectComponent implements OnInit {
         this.openSnackBar('Para editar cada campo tem que clicar no respetivo lápis', 'Fechar', 20000);
       else
         this.updatedProject = this.deepCopy(this.project) as Project;
-    }
-
-    settingsButtonClicked(){
-      this.isSettingsToggled = !this.isSettingsToggled;
-      if(this.isSettingsToggled)
-        this._bottomSheet.open(BottomSheetSetting,{data:{isAddingManagers: this.isAddingManagers}});
     }
 
     saveUpdatedProject(){
