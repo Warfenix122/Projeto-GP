@@ -52,6 +52,7 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { ProjectComponent } from './project/project.component';
+import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 
 
 @NgModule({
@@ -109,6 +110,7 @@ import { ProjectComponent } from './project/project.component';
     MainComponent,
     CreateSondagemComponent,
     CreateGestorComponent,
+    RegisteredProjectsComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

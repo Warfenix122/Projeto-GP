@@ -5,6 +5,9 @@ import { ProjectService } from '../services/project.service';
 import { DatePipe } from '@angular/common';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
+import { Foto } from 'models/foto';
+import { FotoService } from '../services/foto.service';
+import { FileService } from '../services/file.service';
 
 
 @Component({
@@ -21,8 +24,9 @@ export class ProjectComponent implements OnInit {
   role: string;
   candidato: boolean = false;
   currentUserId: String;
-
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private _userService: UserService, private _authService: AuthService) { }
+  fotos: Array<any> = [];
+  cover: any;
+  constructor(private route: ActivatedRoute, private fotoService: FotoService, private fileService: FileService, private projectService: ProjectService, public datepipe: DatePipe, private _userService: UserService, private _authService: AuthService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -39,8 +43,27 @@ export class ProjectComponent implements OnInit {
           this.candidato = true;
         }
       });
+      this.fotoService.geDecodedProjectFotos(this.project._id).then((fotos) => { this.fotos = fotos })
+      this.fotoService.getDecodedFotos(this.project.fotoCapaId, 'projects').then((fotoCapa) => {
+        console.log('fotoCapa :>> ', fotoCapa);
+        this.fotos.push(fotoCapa);
+      })
     });
+
   }
+
+
+  getSrc(fotoId) {
+    const foto = this.fotos.find(elem => elem.id == fotoId);
+    if (foto) {
+      return 'data:' + foto.contentType + ';base64,' + foto.src;
+    }
+    else {
+      return "https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg";
+    }
+  }
+
+
 
   volunteer() {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
@@ -48,7 +71,7 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  cancelVolunteer(){
-    this.projectService.cancelVolunteer(this.id,this.currentUserId).subscribe(res => console.log(res));
+  cancelVolunteer() {
+    this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(res => console.log(res));
   }
 }

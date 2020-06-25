@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../models/projeto';
 import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfaces';
 import { Observable } from 'rxjs';
+import { Inscricao } from 'models/inscricao';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,10 @@ export class ProjectService {
   }
   userFavoriteProjects(userId) {
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
+  }
+
+  userRegisterProjects(userId){
+    return this.http.get<Inscricao[]>('/api/project/registerProject/' + userId);
   }
 
   editProject(id, obj){

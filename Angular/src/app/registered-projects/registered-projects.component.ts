@@ -6,13 +6,12 @@ import { ThrowStmt } from '@angular/compiler';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { FotoService } from '../services/foto.service';
-
 @Component({
-  selector: 'app-favorite-project',
-  templateUrl: './favorite-project.component.html',
-  styleUrls: ['./favorite-project.component.css']
+  selector: 'app-registered-projects',
+  templateUrl: './registered-projects.component.html',
+  styleUrls: ['./registered-projects.component.css']
 })
-export class FavoriteProjectComponent implements OnInit {
+export class RegisteredProjectsComponent implements OnInit {
   projects: Array<Project> = [];
   fotos: Array<any> = [];
 
@@ -21,9 +20,9 @@ export class FavoriteProjectComponent implements OnInit {
   ngOnInit(): void {
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       const user = res['user'];
-      this.projectService.userFavoriteProjects(user._id).subscribe(projects => {
+      this.projectService.userRegisterProjects(user._id).subscribe(projects => {
         projects.forEach(element => {
-          this.projectService.getProject(element).subscribe((elem) => {
+          this.projectService.getProject(element['projetoId']).subscribe((elem) => {
             this.projects.push(elem);
           });
           this.fotoService.getAllDecodedProjectFotos().then((fotos) => {

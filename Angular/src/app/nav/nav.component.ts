@@ -11,6 +11,7 @@ export class NavComponent implements AfterViewInit {
   @ViewChild('logged') logged: ElementRef;
   @ViewChild('aprove') aprove: ElementRef;
   roleType: any;
+  isGestor: boolean =false;
   constructor(private service: AuthService) {
     service.eventIsLoggedIn.subscribe(isLoggedIn => {
       if (isLoggedIn) {
@@ -28,6 +29,11 @@ export class NavComponent implements AfterViewInit {
         this.hideAprove();
       }
     });
+  }
+
+  ngOnInit(): void {
+    var role = this.service.getRole();
+    if (role === 'Gestor') this.isGestor = true;
   }
 
   displayAprove() {
