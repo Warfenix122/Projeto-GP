@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from '../services/alert.service';
+import {MatBottomSheet,MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 
 export interface DialogData {
   contact: string;
@@ -23,6 +24,7 @@ export interface DialogData {
   styleUrls: ['./project.component.css'],
   providers: [DatePipe]
   })
+
 export class ProjectComponent implements OnInit {
   //Others
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -36,6 +38,8 @@ export class ProjectComponent implements OnInit {
   //buttonSupports
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
+  isSettingsToggled: boolean = false;
+  isAddingManagers: boolean = false;
 
   //edit inputs readonly or not
   isProjectNameInputReadonly: boolean = true;
@@ -54,12 +58,13 @@ export class ProjectComponent implements OnInit {
   candidato: boolean = false;
   currentUserId: String;
   user : User;
+  gestores: User[];
 
   newContactsSession: string = "";
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
               private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
-              public dialog: MatDialog, private alertService: AlertService) { }
+              public dialog: MatDialog, private alertService: AlertService, private _bottomSheet:MatBottomSheet) { }
 
     ngOnInit(): void {
       this.route.params.subscribe((params) => {
@@ -71,22 +76,27 @@ export class ProjectComponent implements OnInit {
         this.updatedProject = this.deepCopy(project) as Project;
         this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-        this._userService.getCurrentUserId().subscribe(res => {
-          this.currentUserId = res["UserID"];
-          this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.find((gestorId) => gestorId.gestorId == this.currentUserId) != undefined);
-          this.role = this._authService.getRole();
-          if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
-            this.candidato = true;
-          }
-          this._userService.getUser(this.currentUserId).subscribe((user: User) => {
-            this.user = user;
-            if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
-              this.isFavProject = true;
-          }else{
-              this.isFavProject = false;
-          }
-          })
-          
+        this.projectService.getGestores(this.id).subscribe(res=>{
+          this.gestores = res["gestores"];
+          this._userService.getCurrentUserId().subscribe(res => {
+            this.currentUserId = res["UserID"];
+            this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.includes(this.currentUserId));
+            this._authService.getRole().subscribe(res =>{
+              this.role = res["Role"];
+              if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
+                this.candidato = true;
+              }
+              this._userService.getUser(this.currentUserId).subscribe((user: User) => {
+                this.user = user;
+                if(this.user.projetosFavoritos.find((projeto) => projeto == this.id)){
+                  this.isFavProject = true;
+              }else{
+                  this.isFavProject = false;
+              }
+              });
+            });
+
+          });
         });
       });
     }
@@ -135,7 +145,7 @@ export class ProjectComponent implements OnInit {
         width: '400px',
         data: {contact: contact.contacto, description: contact.descricao}
       });
-  
+
       dialogRef.afterClosed().subscribe(isRemove => {
         if(isRemove)
           this.updatedProject.contactos.splice(index, 1);
@@ -147,7 +157,7 @@ export class ProjectComponent implements OnInit {
         width: '400px',
         data: {}
       });
-  
+
       dialogRef.afterClosed().subscribe(isRemove => {
         if(isRemove)
           this.deleteProject();
@@ -162,7 +172,7 @@ export class ProjectComponent implements OnInit {
 
     removeNecessaryFormation(formation: string): void {
       const index = this.updatedProject.formacoesNecessarias.indexOf(formation);
-  
+
       if (index >= 0) {
         this.updatedProject.formacoesNecessarias.splice(index, 1);
       }
@@ -170,7 +180,7 @@ export class ProjectComponent implements OnInit {
 
     removeAreaOfInterest(areaOfInterest: string): void {
       const index = this.updatedProject.areasInteresse.indexOf(areaOfInterest);
-  
+
       if (index >= 0) {
         this.updatedProject.areasInteresse.splice(index, 1);
       }
@@ -237,8 +247,14 @@ export class ProjectComponent implements OnInit {
       this.isEditButtonToggled = !this.isEditButtonToggled;
       if(this.isEditButtonToggled)
         this.openSnackBar('Para editar cada campo tem que clicar no respetivo lápis', 'Fechar', 20000);
-      else 
+      else
         this.updatedProject = this.deepCopy(this.project) as Project;
+    }
+
+    settingButtonClicked(){
+      this.isSettingsToggled = !this.isSettingsToggled;
+      if(this.isSettingsToggled)
+        this._bottomSheet.open(BottomSheetSetting,{data:{isAddingManagers: this.isAddingManagers}});
     }
 
     saveUpdatedProject(){
@@ -255,7 +271,7 @@ export class ProjectComponent implements OnInit {
 
     readonlyInput(input){
       switch(input){
-        case "projectName": 
+        case "projectName":
           this.isProjectNameInputReadonly = !this.isProjectNameInputReadonly;
           break;
         case "projectSummary":
@@ -304,6 +320,18 @@ export class DialogDeleteProject {
   }
 }
 
-  
+@Component({
+  selector: 'bottom-sheet-settings',
+  templateUrl: 'bottom-sheet-settings.html'
+})
+export class BottomSheetSetting{
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: any,private _bottomSheetRef: MatBottomSheetRef<BottomSheetSetting>){}
+
+  addGestores(event:MouseEvent):void{
+    this.data.isAddingManagers = true;
+    this._bottomSheetRef.dismiss();
+    event.preventDefault();
+  }
+}
 
 

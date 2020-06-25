@@ -300,4 +300,14 @@ router.post("/currentUser", (req, res) => {
     });
 });
 
+router.post("/currentUserRole", (req,res)=>{
+  if(req.body.token){
+    res.status(200).json({ success: true, Role: utils.getCurrentUserRole(req.body.token)});
+  }else
+  res.status(400).json({
+    success: false,
+    msg: "Não existe um token associado ao request",
+  });
+});
+
 module.exports = router;

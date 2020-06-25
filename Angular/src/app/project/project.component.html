@@ -5,6 +5,9 @@
           <button mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
             <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon> {{isEditButtonToggled ? 'Cancelar' : 'Editar'}}
           </button><br>
+          <button mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="settingButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <mat-icon>{{isSettingsToggled ? 'cancel': 'settings'}}</mat-icon> {{isSettingsToggled ? 'Cancelar': 'Definições'}}
+          </button><br>
           <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="saveUpdatedProject()"><mat-icon>check</mat-icon> Guardar </button>
           <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="openDeleteProjectDialog()"><mat-icon>delete_forever</mat-icon> Eliminar </button>
         </div>
@@ -177,7 +180,6 @@
                        [readonly]="isProjectAreasOfInterestReadonly">
               </mat-chip-list>
             </mat-form-field>
-
             <div *ngIf="!isEditButtonToggled" class="row justify-content-center">
                 <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success btn-lg" id="botao2" (click)="volunteer()">CANDIDATAR</button>
                 <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
