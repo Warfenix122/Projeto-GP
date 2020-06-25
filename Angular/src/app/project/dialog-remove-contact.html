@@ -1,0 +1,10 @@
+<h1 mat-dialog-title color="warn">Atenção!!</h1>
+<div mat-dialog-content>
+  <p>Tem a certeza que quer <b>REMOVER</b> o seguinte contacto?</p>
+  <p><b>Contacto</b>: {{data.contact}}</p>
+  <p><b>Descrição</b>: {{data.description}}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onClose(true)">Sim</button>
+  <button mat-raised-button color="primary" (click)="onClose(false)">Não</button>
+</div>

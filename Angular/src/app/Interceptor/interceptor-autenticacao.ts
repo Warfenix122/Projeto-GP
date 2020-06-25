@@ -11,7 +11,6 @@ export class InterceptorAutenticacao implements HttpInterceptor{
                 const cloned = req.clone({
                   headers: req.headers.set("Authorization",token)
                 });
-                console.log("Intercepted");
                 return next.handle(cloned);
               }else{
                 return next.handle(req);

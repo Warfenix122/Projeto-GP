@@ -40,5 +40,14 @@ function getCurrentUserId(token) {
   return currentUser.sub;
 }
 
+function getCurrentUserRole(token){
+  console.log(jsonwebtoken.verify(token, PUB_KEY));
+  var currentUser = jsonwebtoken.decode(token);
+  return currentUser.tipoMembro;
+}
+
+
+
 module.exports.issueJWT = issueJWT;
 module.exports.getCurrentUserId = getCurrentUserId;
+module.exports.getCurrentUserRole = getCurrentUserRole;

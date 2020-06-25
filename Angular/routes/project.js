@@ -162,4 +162,12 @@ router.put('/candidatar/:id', (req, res) => {
 });
 
 
+router.get("/gestores/:id",(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  Project.findOne({_id:projectId}).then(project=>{
+    User.find({'_id':{$in:project.gestores}}).then(users=>res.status(200).json({success:true,gestores:users}))
+    .catch(err=>res.status(404).json({success:false,err:err}));
+  }).catch(err=>res.status(500).json({success:false,err:err}));
+});
+
 module.exports = router;

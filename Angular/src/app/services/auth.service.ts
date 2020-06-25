@@ -1,6 +1,8 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import * as moment from "moment";
 import { Router, NavigationEnd } from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs'
 
 
 
@@ -12,14 +14,13 @@ export class AuthService {
   @Output() eventIsLoggedIn: EventEmitter<boolean> = new EventEmitter();
   @Output() eventRole: EventEmitter<string> = new EventEmitter();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   setLocalStorage(responseObj) {
     const expires = moment().add(responseObj.expiresIn);
     const userRole = responseObj.user.tipoMembro;
     localStorage.setItem('token', responseObj.token);
     localStorage.setItem('expires', JSON.stringify(expires.valueOf()));
-    localStorage.setItem('role', userRole);
     this.eventIsLoggedIn.emit(true);
     this.eventRole.emit(userRole);
   }
@@ -32,8 +33,9 @@ export class AuthService {
     return !this.isLoggedIn();
   }
 
-  getRole() {
-    return localStorage.getItem('role');
+  getRole(): Observable<String> {
+    let token = { token: localStorage.getItem('token').split(' ')[1] };
+    return this.http.post<String>("/api/currentUserRole",token);
   }
 
   getExpiration() {

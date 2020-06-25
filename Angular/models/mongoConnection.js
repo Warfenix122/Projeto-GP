@@ -64,7 +64,7 @@ var ProjetoSchema = new Schema({
     formacoesNecessarias: [String],
     XemXTempo: String, // "1 vez por mes " etc..
     aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
-    gestores: [{ gestorId: mongoose.ObjectId }], //só podem ser externos
+    gestores: [mongoose.ObjectId], //só podem ser externos
     comentarios: [{
         comentario: String,
         utilizadorId: mongoose.ObjectId,
@@ -72,7 +72,7 @@ var ProjetoSchema = new Schema({
     }, ],
     vagas: Number,
     atividades: [{ descricao: String, dataAcontecimento: Date }],
-    fotosIds: [{ fotoId: mongoose.ObjectId }],
+    ficheirosCaminho: [{ caminho: String }],
     projetoMes: Boolean,
     dataCriacao: Date,
     dataTermino: Date,

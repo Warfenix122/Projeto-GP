@@ -13,11 +13,14 @@ const sondagemAPI = require('./sondagem');
 const projectAPI = require('./project');
 const fotoAPI = require('./foto');
 const fileAPI = require('./file');
+const userAPI = require("./user");
+
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
 router.use("/project", projectAPI);
+router.use("/user", userAPI);
 router.use("/foto", fotoAPI);
 router.use("/file", fileAPI);
 router.use('/sondagem', sondagemAPI);
@@ -295,6 +298,16 @@ router.post("/currentUser", (req, res) => {
       success: false,
       msg: "Não existe um token associado ao request",
     });
+});
+
+router.post("/currentUserRole", (req,res)=>{
+  if(req.body.token){
+    res.status(200).json({ success: true, Role: utils.getCurrentUserRole(req.body.token)});
+  }else
+  res.status(400).json({
+    success: false,
+    msg: "Não existe um token associado ao request",
+  });
 });
 
 module.exports = router;
