@@ -3,10 +3,10 @@
       <div class="row image-header justify-content-end">
         <div class="col-sm-4 text-right">
           <button mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
-            <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon> {{isEditButtonToggled ? 'Cancelar' : 'Editar'}}
+            <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon> {{isEditButtonToggled ? 'Cancelar' : 'Editar Projeto'}}
           </button><br>
-          <button mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="settingButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
-            <mat-icon>{{isSettingsToggled ? 'cancel': 'settings'}}</mat-icon> {{isSettingsToggled ? 'Cancelar': 'Definições'}}
+          <button mat-raised-button class="mt-2" color="primary" *ngIf="isManagerOrResponsible" (click)="settingsButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <mat-icon>settings</mat-icon> Definições
           </button><br>
           <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="saveUpdatedProject()"><mat-icon>check</mat-icon> Guardar </button>
           <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="openDeleteProjectDialog()"><mat-icon>delete_forever</mat-icon> Eliminar </button>

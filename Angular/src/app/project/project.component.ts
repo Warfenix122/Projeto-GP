@@ -251,7 +251,7 @@ export class ProjectComponent implements OnInit {
         this.updatedProject = this.deepCopy(this.project) as Project;
     }
 
-    settingButtonClicked(){
+    settingsButtonClicked(){
       this.isSettingsToggled = !this.isSettingsToggled;
       if(this.isSettingsToggled)
         this._bottomSheet.open(BottomSheetSetting,{data:{isAddingManagers: this.isAddingManagers}});
@@ -325,11 +325,10 @@ export class DialogDeleteProject {
   templateUrl: 'bottom-sheet-settings.html'
 })
 export class BottomSheetSetting{
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: any,private _bottomSheetRef: MatBottomSheetRef<BottomSheetSetting>){}
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetSetting>){}
 
-  addGestores(event:MouseEvent):void{
-    this.data.isAddingManagers = true;
-    this._bottomSheetRef.dismiss();
+  closeSettings(option){
+    this._bottomSheetRef.dismiss(option);
     event.preventDefault();
   }
 }
