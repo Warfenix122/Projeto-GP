@@ -49,11 +49,17 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { MatNativeDateModule } from '@angular/material/core';
 import { ProjectComponent } from './project/project.component';
 
+import {AccordionModule} from 'primeng/accordion';     
+import {CarouselModule} from 'primeng/carousel';
+
 
 @NgModule({
 
   imports: [
+    AccordionModule,
+    CarouselModule,
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule,
     AppRoutingModule,
     FormsModule,
