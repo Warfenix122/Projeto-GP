@@ -1,12 +1,24 @@
 <div id="firstdiv" class="container" *ngIf="project">
     <div class="container header">
       <div class="row image-header justify-content-end">
+        <div class="col-sm-8">
+          <button routerLink="/projects" mat-raised-button data-toggle="button" aria-pressed="false" autocomplete="off">
+            <mat-icon>chevron_left</mat-icon> Voltar aos Projetos
+          </button><br>
+        </div>
         <div class="col-sm-4 text-right">
-          <button mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+          <button class="editActionButton" mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
             <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon> {{isEditButtonToggled ? 'Cancelar' : 'Editar'}}
           </button><br>
-          <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="saveUpdatedProject()"><mat-icon>check</mat-icon> Guardar </button>
-          <button mat-raised-button *ngIf="isEditButtonToggled" type="button" class="mt-1" (click)="openDeleteProjectDialog()"><mat-icon>delete_forever</mat-icon> Eliminar </button>
+          <button mat-raised-button color="warn" *ngIf="isEditButtonToggled" class="mt-1 editActionButton" (click)="openDeleteProjectDialog()">
+            <mat-icon>delete_forever</mat-icon> Eliminar 
+          </button><br>
+          <button mat-raised-button *ngIf="isEditButtonToggled" class="mt-1 editActionButton" (click)="saveUpdatedProject()">
+            <mat-icon>check</mat-icon> Guardar 
+          </button><br>
+          <button mat-raised-button *ngIf="isEditButtonToggled" class="mt-3" (click)="activateEditAll()">
+            <mat-icon>edit</mat-icon> Editar tudo 
+          </button>
         </div>
       </div>
       <div class="row image-body">

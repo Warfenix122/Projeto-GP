@@ -29,6 +29,10 @@
     overflow: hidden;
 }
 
+.editActionButton{
+    width: 115px !important;
+}
+
 .editListItem{
     height: 88px !important;
 }
@@ -53,6 +57,10 @@
 
 .image-body > .col-sm-8{
     padding-left: 7vw;
+}
+
+.image-header > .col-sm-8{
+    padding-left: 40px;
 }
 
 .image-header > .col-sm-4, .image-body > .col-sm-4{

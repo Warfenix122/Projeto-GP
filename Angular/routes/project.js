@@ -96,6 +96,11 @@ router.get('', (req, res) => {
   })
 })
 
+router.delete('/:id', (req, res) => {
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  Project.findByIdAndDelete(projectId).then(project => res.json(project));
+})
+
 //get favorits of user
 router.get('/favoriteProject/:userId', (req, res) => {
   const u = req.params['userId']

@@ -57,7 +57,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
-import { ProjectComponent } from './project/project.component';
+import { ProjectComponent, DialogDeleteProject, DialogRemoveContact } from './project/project.component';
 
 
 @NgModule({
@@ -120,7 +120,9 @@ import { ProjectComponent } from './project/project.component';
     ProjectComponent,
     MainComponent,
     CreateSondagemComponent,
-    CreateGestorComponent
+    CreateGestorComponent,
+    DialogDeleteProject,
+    DialogRemoveContact
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

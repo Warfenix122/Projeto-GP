@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, Inject } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'models/projeto';
 import { UserService } from '../services/user.service';
 import { ProjectService } from '../services/project.service';
@@ -26,7 +26,6 @@ export interface DialogData {
 export class ProjectComponent implements OnInit {
   //Others
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  showEditProjectContact: boolean[] = [];
   addContactField: boolean = false;
   newContact: {contacto: string, descricao: string} = {contacto: "", descricao: ""};
 
@@ -44,6 +43,7 @@ export class ProjectComponent implements OnInit {
   isProjectVacanciesReadonly: boolean = true;
   isProjectNecessaryFormationsReadonly: boolean = true;
   isProjectAreasOfInterestReadonly: boolean = true;
+  showEditProjectContact: boolean[] = [];
 
   isManagerOrResponsible: boolean;
   project: Project;
@@ -59,14 +59,14 @@ export class ProjectComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
               private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
-              public dialog: MatDialog, private alertService: AlertService) { }
+              public dialog: MatDialog, private alertService: AlertService, private router: Router) { }
 
     ngOnInit(): void {
       this.route.params.subscribe((params) => {
         this.id = params['id'];
-
       });
       this.projectService.getProject(this.id).subscribe(project => {
+        console.log(project.formacoesNecessarias);
         this.project = this.deepCopy(project) as Project;
         this.updatedProject = this.deepCopy(project) as Project;
         this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
@@ -143,7 +143,7 @@ export class ProjectComponent implements OnInit {
     }
 
     openDeleteProjectDialog(): void {
-      const dialogRef = this.dialog.open(DialogRemoveContact, {
+      const dialogRef = this.dialog.open(DialogDeleteProject, {
         width: '400px',
         data: {}
       });
@@ -233,12 +233,34 @@ export class ProjectComponent implements OnInit {
         this.addRemFavButtonText = '';
     }
 
+    activateEditAll(){
+      this.isProjectNameInputReadonly = false;
+      this.isProjectSummaryInputReadonly = false;
+      this.isProjectApplicationsCloseDateReadonly = false;
+      this.isProjectVacanciesReadonly = false;
+      this.isProjectNecessaryFormationsReadonly = false;
+      this.isProjectAreasOfInterestReadonly = false;
+      this.showEditProjectContact = this.showEditProjectContact.map((elem, index) => {
+        return true;
+      });
+    }
+
     editButtonClicked(){
       this.isEditButtonToggled = !this.isEditButtonToggled;
       if(this.isEditButtonToggled)
         this.openSnackBar('Para editar cada campo tem que clicar no respetivo lápis', 'Fechar', 20000);
-      else 
+      else {
         this.updatedProject = this.deepCopy(this.project) as Project;
+        this.isProjectNameInputReadonly = true;
+        this.isProjectSummaryInputReadonly = true;
+        this.isProjectApplicationsCloseDateReadonly = true;
+        this.isProjectVacanciesReadonly = true;
+        this.isProjectNecessaryFormationsReadonly = true;
+        this.isProjectAreasOfInterestReadonly = true;
+        this.showEditProjectContact = this.showEditProjectContact.map((elem, index) => {
+          return false;
+        });
+      }
     }
 
     saveUpdatedProject(){
@@ -250,7 +272,10 @@ export class ProjectComponent implements OnInit {
     }
 
     deleteProject(){
-      //Service delete project
+      this.projectService.deleteProject(this.project._id).subscribe((deletedProject) => {
+        this.router.navigate(['/projects']);
+        this.alertService.success("Projeto eliminado com sucesso");
+      })
     }
 
     readonlyInput(input){
