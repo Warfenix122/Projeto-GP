@@ -14,7 +14,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -48,15 +56,20 @@ import { FavoriteProjectComponent } from './favorite-project/favorite-project.co
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
-import { EditProjectComponent } from './edit-project/edit-project.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
-import { ProjectComponent } from './project/project.component';
+import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact } from './project/project.component';
+
+import {AccordionModule} from 'primeng/accordion';     
+import {CarouselModule} from 'primeng/carousel';
 
 
 @NgModule({
 
   imports: [
+    AccordionModule,
+    CarouselModule,
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,
@@ -76,7 +89,15 @@ import { ProjectComponent } from './project/project.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
-  ],
+    MatIconModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatChipsModule,
+    MatListModule,
+    MatRippleModule,
+    MatDialogModule,
+    MatBottomSheetModule
+    ],
   declarations: [
     AppComponent,
     NavComponent,
@@ -104,11 +125,14 @@ import { ProjectComponent } from './project/project.component';
     CreateProjectComponent,
     EditProfileComponent,
     SondagemComponent,
-    EditProjectComponent,
     ProjectComponent,
     MainComponent,
     CreateSondagemComponent,
     CreateGestorComponent,
+    RegisteredProjectsComponent,
+    BottomSheetSetting,
+    DialogDeleteProject,
+    DialogRemoveContact
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

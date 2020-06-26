@@ -10,7 +10,7 @@ export class Project {
   formacoesNecessarias: [string];
   XemXTempo: string; // "1 vez por mes " etc..
   aprovado: { type: string }; //enum: ["Recusado", "Em Espera", "Aprovado"]
-  gestores: [{ gestorId: string }]; //só podem ser externos //mongoose.ObjectId
+  gestores: [String]; //só podem ser externos //mongoose.ObjectId
   comentarios: [
     {
       comentario: string,
@@ -20,7 +20,7 @@ export class Project {
   ];
   vagas: number;
   atividades: [{ descricao: string, dataAcontecimento: Date }];
-  ficheirosCaminho: [{ caminho: string }];
+  fotosIds: [string ];
   projetoMes: boolean;
   dataCriacao: Date;
   dataTermino: Date;

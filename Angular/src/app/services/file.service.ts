@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { User } from '../../../models/utilizadores';
 import { Project } from 'models/projeto';
+import { ProjectService } from './project.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileService {
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private projectService: ProjectService) { }
 
   updateProfilePhoto(formdata) {
     formdata.append('type', 'users')
@@ -23,11 +24,24 @@ export class FileService {
   }
 
   updateCoverPhoto(formdata) {
-    formdata.append('type', 'projects')
-    this.uploadPhoto(formdata).subscribe((res) => {
-      this.updateProjectPhoto(res['foto'], formdata).subscribe((res) => { })
+    formdata.append('type', 'projects');
+    var projId = formdata.values['projectId'];
+    this.projectService.getProject(projId).subscribe((project) => {
+      this.uploadPhoto(formdata).subscribe((res) => {
+        this.updateProjectCover(res['foto'], formdata).subscribe((res) => { })
+      });
+    })
 
-    });
+
+  }
+  updateProjectPhotoFiles(formdata) {
+    formdata.append('type', 'projects');
+    var projId = formdata.values['projectId'];
+    this.projectService.getProject(projId).subscribe((project) => {
+      this.uploadPhoto(formdata).subscribe((res) => {
+        this.updateProjectPhotos(res['foto'], formdata).subscribe((res) => { })
+      });
+    })
 
   }
 
@@ -36,10 +50,13 @@ export class FileService {
     return this.http.put<User>('/api/file/updateUserPhoto/' + userId, { 'fotoId': fotoId });
   }
 
-  updateProjectPhoto(fotoId, projectId) {
-    return this.http.put<Project>('/api/file/updateProjectPhoto/' + projectId, { 'fotoId': fotoId });
+  updateProjectCover(fotoId, projectId) {
+    return this.http.put<Project>('/api/file/updateProjectCover/' + projectId, { 'fotoId': fotoId });
   }
 
+  updateProjectPhotos(fotoId, projectId) {
+    return this.http.put<Project>('/api/file/updateProjectPhotos/' + projectId, { 'fotoId': fotoId });
+  }
 
   uploadPhoto(formData) {
     return this.http.post('/api/file/uploadPhoto', formData, {

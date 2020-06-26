@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../models/projeto';
 import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfaces';
-import { Observable } from 'rxjs';
+import { Inscricao } from 'models/inscricao';
+import { Observable, from } from 'rxjs';
+import { User } from '../../../models/utilizadores';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +35,10 @@ export class ProjectService {
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
   }
 
+  userRegisterProjects(userId){
+    return this.http.get<Inscricao[]>('/api/project/registerProject/' + userId);
+  }
+
   editProject(id, obj){
     return this.http.put<Project>('/api/project/'+id, obj);
   }
@@ -49,6 +55,10 @@ export class ProjectService {
 
   uploadPhoto(formData) {
     return this.http.post<ImageResponse>('/api/file/uploadCapaFoto', formData);
+  }
+
+  getGestores(projectId){
+    return this.http.get<User[]>("api/project/gestores/"+projectId);
   }
 
   volunteer(projectId,voluntarioId){

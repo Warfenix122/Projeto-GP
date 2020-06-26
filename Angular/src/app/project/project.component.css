@@ -1,80 +1,109 @@
-
-
 .header {
-    padding-top: 25vmax;
-    
     background-image: url('https://caritascoimbra.pt/wp-content/uploads/2020/01/VOLUNTARIADO_12.png') !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    width: 100%;
-    left: 0%;
-    position: relative;
+    height: 35vh;
+    padding-bottom: 30px;
 }
 
-.top-left {
-    position: absolute;
-    top: 115px;
-    left: 120px;
+.mat-icons:hover {
+    cursor: pointer;
 }
 
-
-#info {
-    justify-content: center;
+.image-header {
+    height: 41%;
+    padding-top: 30px;
 }
 
-#titulo{
+#fav {
+    width: 43.5px;
+    text-align: left;
+    height: 36px;
+    transition: 0.5s;
+    margin-left: 5px;
+    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.editListItem {
+    height: 88px !important;
+}
+
+.contactInput {
+    width: 42% !important;
+    margin-right: 5px;
+}
+
+.contactsItem:hover {
+    cursor: pointer;
+}
+
+.mat-inputs {
+    width: 50% !important;
+    display: block;
+}
+
+.image-body {
+    height: 59%;
+}
+
+.image-body>.col-sm-8 {
+    padding-left: 7vw;
+}
+
+.image-header>.col-sm-4,
+.image-body>.col-sm-4 {
+    padding-right: 40px;
+}
+
+.image-body>.col-sm-4 {
+    padding-top: 10px;
+}
+
+#titulo {
     color: white;
     font-weight: bold;
-
 }
 
-.botoes{
+.botoes {
     background-color: #39E85F;
     border-color: #39E85F;
 }
 
-#botao2{
+#botao2 {
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
-#fav{
-    width:  43.5px;
-    text-align: left;
-    height: 36px;
-    transition: 0.5s;
-    margin-left:5px;
-}
-
-#fav:hover, #fav.focus{
+#fav:hover,
+#fav.focus {
     width: 220px;
 }
 
-#detalhes{
+#detalhes {
     text-align: left;
     font-weight: bold;
 }
 
-#resumo{
+#resumo {
     text-align: justify;
 }
 
-#titulo2{
+#titulo2 {
     text-align: center;
 }
 
-#lista{
+#lista {
     display: inline-block;
 }
 
-#areasInteresse{
-    margin-right:5px;
-    
-    
+#areasInteresse {
+    margin-right: 5px;
 }
 
-h4{
+h4 {
     margin-block-end: 0px !important;
 }
 
@@ -90,40 +119,88 @@ h4{
     display: table;
 }
 
+
 /*div.col-sm{
     padding-right: 2.5px;
     padding-left: 2.5px;
 }*/
 
-.multi-item-carousel .carousel-inner > .item {
+.multi-item-carousel .carousel-inner>.item {
     -webkit-transition: 500ms ease-in-out left;
     transition: 500ms ease-in-out left;
-  }
-  .multi-item-carousel .carousel-inner .active.left {
+}
+
+.multi-item-carousel .carousel-inner .active.left {
     left: -33%;
-  }
-  .multi-item-carousel .carousel-inner .active.right {
+}
+
+.multi-item-carousel .carousel-inner .active.right {
     left: 33%;
-  }
-  .multi-item-carousel .carousel-inner .next {
+}
+
+.multi-item-carousel .carousel-inner .next {
     left: 33%;
-  }
-  .multi-item-carousel .carousel-inner .prev {
+}
+
+.multi-item-carousel .carousel-inner .prev {
     left: -33%;
-  }
-  @media all and (transform-3d), (-webkit-transform-3d) {
-    .multi-item-carousel .carousel-inner > .item {
-      -webkit-transition: 500ms ease-in-out left;
-      transition: 500ms ease-in-out left;
-      -webkit-transition: 500ms ease-in-out all;
-      transition: 500ms ease-in-out all;
-      -webkit-backface-visibility: visible;
-              backface-visibility: visible;
-      -webkit-transform: none!important;
-              transform: none!important;
+}
+
+@media all and (transform-3d),
+(-webkit-transform-3d) {
+    .multi-item-carousel .carousel-inner>.item {
+        -webkit-transition: 500ms ease-in-out left;
+        transition: 500ms ease-in-out left;
+        -webkit-transition: 500ms ease-in-out all;
+        transition: 500ms ease-in-out all;
+        -webkit-backface-visibility: visible;
+        backface-visibility: visible;
+        -webkit-transform: none!important;
+        transform: none!important;
     }
-  }
-  .multi-item-carousel .carouse-control.left,
-  .multi-item-carousel .carouse-control.right {
+}
+
+.multi-item-carousel .carouse-control.left,
+.multi-item-carousel .carouse-control.right {
     background-image: none;
-  }
+}
+
+.carousel-demo .ui-carousel .ui-carousel-content .ui-carousel-item .car-details>.p-grid {
+    border: 1px solid #b3c2ca;
+    border-radius: 3px;
+    margin: 0.3em;
+    text-align: center;
+    padding: 2em 0 2.25em 0;
+}
+
+.carousel-demo .ui-carousel .ui-carousel-content .ui-carousel-item .car-data .car-title {
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 24px;
+}
+
+.carousel-demo .ui-carousel .ui-carousel-content .ui-carousel-item .car-data .car-subtitle {
+    margin: 0.25em 0 2em 0;
+}
+
+.carousel-demo .ui-carousel .ui-carousel-content .ui-carousel-item .car-data button {
+    margin-left: 0.5em;
+}
+
+.carousel-demo .ui-carousel .ui-carousel-content .ui-carousel-item .car-data button:first-child {
+    margin-left: 0;
+}
+
+.carousel-demo .ui-carousel.custom-carousel .ui-carousel-dot-icon {
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50%;
+}
+
+.carousel-demo .ui-carousel.ui-carousel-horizontal .ui-carousel-content .ui-carousel-item.ui-carousel-item-start .car-details>.p-grid {
+    margin-left: 0.6em;
+}
+
+.carousel-demo .ui-carousel.ui-carousel-horizontal .ui-carousel-content .ui-carousel-item.ui-carousel-item-end .car-details>.p-grid {
+    margin-right: 0.6em;
+}
