@@ -23,7 +23,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { AccordionModule } from 'primeng/accordion';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -91,8 +90,7 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     MatListModule,
     MatRippleModule,
     MatDialogModule,
-    MatBottomSheetModule,
-    AccordionModule
+    MatBottomSheetModule
   ],
   declarations: [
     AppComponent,
