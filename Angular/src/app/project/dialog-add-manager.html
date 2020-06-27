@@ -1,7 +1,7 @@
 <h1 mat-dialog-title color="primary">Adicionar Gestor</h1>
 <div mat-dialog-content style="width: 100%;">
   <form>
-    <mat-form-field [ngStyle]="{'font-size.px':18}">
+  <mat-form-field style="font-size: 18px; width: 100%;">
       <mat-label>Email</mat-label>
       <input matInput  type="primary" name="gestoremail" [formControl]="inputtedEmail"
         placeholder="Introduza o email do gestor" [matAutocomplete]="autoGestor" />
@@ -10,10 +10,10 @@
           {{ email }}
         </mat-option>
       </mat-autocomplete>
+       <button mat-icon-button matSuffix (click)="addGestor()">
+        <mat-icon>add</mat-icon>
+       </button>
     </mat-form-field>
-    <button mat-mini-fab color="primary" mat-icon-button style="margin-left: 15px;" (click)="addGestor()">
-      <mat-icon>add_circle_outline</mat-icon>
-    </button>
   </form>
   <mat-list>
     <div mat-subheader>Gestores Ativos no projeto</div>

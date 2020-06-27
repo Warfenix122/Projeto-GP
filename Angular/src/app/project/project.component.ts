@@ -186,7 +186,7 @@ export class ProjectComponent implements OnInit {
     openManageVolunteersDialog(){
       const dialogRef = this.dialog.open(DialogManageVolunteers, {
         width: '900px',
-        data: {volunteers: volunteers}
+        data: {volunteers: this.project.voluntarios}
       });
 
       dialogRef.afterClosed().subscribe(volunteers => {
@@ -393,6 +393,7 @@ export class BottomSheetSetting{
 
 @Component({
   selector: 'dialog-add-manager',
+  styleUrls: ['./dialog-add-manager.css'],
   templateUrl: 'dialog-add-manager.html',
 })
 export class DialogAddManager{

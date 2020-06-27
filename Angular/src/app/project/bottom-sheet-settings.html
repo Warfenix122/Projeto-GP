@@ -1,13 +1,13 @@
 <mat-nav-list>
-  <mat-list-item>
+  <mat-list-item (click)="closeSettings('managers')">
     <mat-icon mat-list-icon>engineering</mat-icon>
-    <a mat-line href="" (click)="closeSettings('managers')">
+    <a mat-line href="">
       <span>Gerir gestores do projeto</span>
     </a>
   </mat-list-item>
-  <mat-list-item>
+  <mat-list-item (click)="closeSettings('volunteers')">
     <mat-icon mat-list-icon>person</mat-icon>
-    <a mat-line href="" (click)="closeSettings('volunteers')">
+    <a mat-line href="">
       <span>Gerir voluntários do projeto</span>
     </a>
   </mat-list-item>
