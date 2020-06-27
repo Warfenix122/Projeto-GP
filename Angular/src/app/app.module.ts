@@ -24,7 +24,6 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
-
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
@@ -91,7 +90,7 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     MatListModule,
     MatRippleModule,
     MatDialogModule,
-    MatBottomSheetModule,
+    MatBottomSheetModule
   ],
   declarations: [
     AppComponent,

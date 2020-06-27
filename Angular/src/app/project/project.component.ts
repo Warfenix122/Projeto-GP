@@ -183,6 +183,17 @@ export class ProjectComponent implements OnInit {
       })
     }
 
+    openManageVolunteersDialog(){
+      const dialogRef = this.dialog.open(DialogManageVolunteers, {
+        width: '900px',
+        data: {volunteers: volunteers}
+      });
+
+      dialogRef.afterClosed().subscribe(volunteers => {
+        
+      });
+    }
+
     openSettingsBottomSheet(){
       const bottomSheetRef = this._bottomSheet.open(BottomSheetSetting, {
         data:{}
@@ -194,8 +205,7 @@ export class ProjectComponent implements OnInit {
             this.openAddManagerDialog();
             break;
           case "volunteers":
-            break;
-          case "filesPhotos":
+            this.openManageVolunteersDialog();
             break;
         }
       })
@@ -345,6 +355,19 @@ export class DialogRemoveContact {
 export class DialogDeleteProject {
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteProject>){}
+
+  onClose(isRemove){
+    this.dialogRef.close(isRemove);
+  }
+}
+
+@Component({
+  selector: 'dialog-manage-volunteers',
+  templateUrl: 'dialog-manage-volunteers.html',
+})
+export class DialogManageVolunteers {
+  constructor(
+    public dialogRef: MatDialogRef<DialogManageVolunteers>){}
 
   onClose(isRemove){
     this.dialogRef.close(isRemove);
