@@ -194,80 +194,46 @@
                 <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success btn-lg" id="botao2" (click)="volunteer()">CANDIDATAR</button>
                 <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
             </div>
-            <!--
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                <div class="carousel-item">
-                <div class="carousel-inner row">
-                  <div class="col-sm">
-                    <img class="d-block w-100" src="https://img.freepik.com/fotos-gratis/piramide-quadrada-cor-de-rosa-no-fundo-cor-de-rosa-ideia-de-conceito-minimo_40193-79.jpg?size=338&ext=jpg" alt="First slide">
-                  </div>
-                  <div class="col-sm">
-                    <img class="d-block w-100" src="https://img.freepik.com/fotos-gratis/piramide-quadrada-cor-de-rosa-no-fundo-cor-de-rosa-ideia-de-conceito-minimo_40193-79.jpg?size=338&ext=jpg" alt="Second slide">
-                  </div>
-                  <div class="col-sm">
-                    <img class="d-block w-100" src="https://img.freepik.com/fotos-gratis/piramide-quadrada-cor-de-rosa-no-fundo-cor-de-rosa-ideia-de-conceito-minimo_40193-79.jpg?size=338&ext=jpg" alt="Third slide">
-                  </div>
-                </div>
+            <h2 *ngIf="isEditButtonToggled">Fotos do projeto</h2>
+            <button *ngIf="isEditButtonToggled" mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher ficheiro <mat-icon>insert_photo</mat-icon></button>
+            <button *ngIf="isEditButtonToggled && !addPhotoResult" mat-mini-fab color="primary" disabled><mat-icon>publish</mat-icon></button>
+            <button *ngIf="isEditButtonToggled && addPhotoResult" mat-mini-fab color="primary"><mat-icon>publish</mat-icon></button>
+            <h5 class="mt-1" [style.visibility]="isEditButtonToggled && addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido: <b>{{selectedPhotoFileName}}</b></h5>
+            <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*" id="file">
+            <div *ngIf="isEditButtonToggled" class="d-flex flex-wrap">
+              <mat-card *ngFor="let photo of projectPhotos; let i = index" [attr.index]="i" [class]="i+1 % 3 ? 'cardGallery mb-1' : 'cardGallery mb-1 mr-1'">
+                <img mat-card-image class="cardImage" style="margin-bottom: 0px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+                <mat-card-actions class="cardButtonActions text-center">
+                  <button mat-raised-button color="warn">Eliminar</button>
+                </mat-card-actions>
+              </mat-card>
+              <!--BEGIN: para eliminar depois-->
+              <mat-card class="cardGallery mr-1 mb-1" *ngIf="isEditButtonToggled">
+                <img mat-card-image class="cardImage" style="margin-bottom: 0px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+                <mat-card-actions class="cardButtonActions text-center">
+                  <button mat-raised-button color="warn">Eliminar</button>
+                </mat-card-actions>
+              </mat-card>
+              <mat-card class="cardGallery mr-1 mb-1" *ngIf="isEditButtonToggled">
+                <img mat-card-image class="cardImage" style="margin-bottom: 0px;" src="https://i.pinimg.com/originals/3b/8a/d2/3b8ad2c7b1be2caf24321c852103598a.jpg" alt="Photo of a Shiba Inu">
+                <mat-card-actions class="cardButtonActions text-center">
+                  <button mat-raised-button color="warn">Eliminar</button>
+                </mat-card-actions>
+              </mat-card>
+              <mat-card class="cardGallery mb-1" *ngIf="isEditButtonToggled">
+                <img mat-card-image class="cardImage" style="margin-bottom: 0px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                <mat-card-actions class="cardButtonActions text-center">
+                  <button mat-raised-button color="warn">Eliminar</button>
+                </mat-card-actions>
+              </mat-card>
+              <mat-card class="cardGallery mr-1 mb-1" *ngIf="isEditButtonToggled">
+                <img class="cardImage" mat-card-image style="margin-bottom: 0px;" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                <mat-card-actions class="cardButtonActions text-center">
+                  <button mat-raised-button color="warn">Eliminar</button>
+                </mat-card-actions>
+              </mat-card>
+              <!--END: para eliminar depois-->
             </div>
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                </a>
-              </div>
-            -->
-
-            <div class="container">
-
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="carousel slide multi-item-carousel" id="theCarousel">
-                      <div class="carousel-inner">
-                        <div class="item active">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?perth,australia" class="img-responsive"></a></div>
-                        </div>
-                        <div class="item">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?fremantle,australia" class="img-responsive"></a></div>
-                        </div>
-                        <div class="item">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?west-australia" class="img-responsive"></a></div>
-                        </div>
-                        <div class="item">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?perth" class="img-responsive"></a></div>
-                        </div>
-                        <div class="item">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?quokka,perth" class="img-responsive"></a></div>
-                        </div>
-                        <div class="item">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?margaretriver,australia" class="img-responsive"></a></div>
-                        </div>
-                        <!-- add  more items here -->
-                        <!-- Example item start:  -->
-
-                        <div class="item">
-                          <div class="col-xs-4"><a href="#1"><img src="https://source.unsplash.com/300x300/?perth,australia&r=7" class="img-responsive"></a></div>
-                        </div>
-
-                        <!--  Example item end -->
-                      </div>
-                      <a class="left carousel-control" href="#theCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                      <a class="right carousel-control" href="#theCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-
-
-
-
-
         </div>
         <div id="comentarios" class="container col-3"> <!--COMENTARIOS AQUI-->
             <br><h1 id="titulo2">Comentários</h1>

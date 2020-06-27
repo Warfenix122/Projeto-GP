@@ -35,6 +35,8 @@ export class ProjectComponent implements OnInit {
   //buttonSupports
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
+  addPhotoResult: any;
+  selectedPhotoFileName: string;
 
   //edit inputs readonly or not
   isProjectNameInputReadonly: boolean = true;
@@ -46,6 +48,7 @@ export class ProjectComponent implements OnInit {
   showEditProjectContact: boolean[] = [];
 
   isManagerOrResponsible: boolean;
+  projectPhotos: [];
   project: Project;
   updatedProject: Project;
   id: string;
@@ -62,6 +65,12 @@ export class ProjectComponent implements OnInit {
               public dialog: MatDialog, private alertService: AlertService, private router: Router) { }
 
     ngOnInit(): void {
+      // - algures aqui no init fazer load das fotos que existem no projeto, se não quiseres fazer eu já tenho isto feito na branch que tenho com o joão.
+      // - guardas as fotos na variavel 'projectPhotos'
+      // - no html, na linha 205 vais ter que alterar a propriedade 'src' para meteres o src das imagens que são do projeto
+      // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
+      // - A função, na linha 166 daqui, tem a info que vem do ficheiro que está no input, para depois fazeres então save na base de dados quando clica no botão ao lado.
+
       this.route.params.subscribe((params) => {
         this.id = params['id'];
       });
@@ -152,6 +161,24 @@ export class ProjectComponent implements OnInit {
         if(isRemove)
           this.deleteProject();
       });
+    }
+
+    onFileSelected(event) {
+      let files = event.target.files;
+      if(files.length > 0) 
+        this.selectedPhotoFileName = files[0].name;
+      const inputNode: any = document.querySelector('#file');
+    
+      if (typeof (FileReader) !== 'undefined') {
+        const reader = new FileReader();
+    
+        reader.onload = (e: any) => {
+          this.addPhotoResult = e.target.result;
+          console.log(e.target);
+        };
+    
+        reader.readAsArrayBuffer(inputNode.files[0]);
+      }
     }
 
     volunteer() {
@@ -257,6 +284,7 @@ export class ProjectComponent implements OnInit {
         this.isProjectVacanciesReadonly = true;
         this.isProjectNecessaryFormationsReadonly = true;
         this.isProjectAreasOfInterestReadonly = true;
+        this.addPhotoResult = undefined;
         this.showEditProjectContact = this.showEditProjectContact.map((elem, index) => {
           return false;
         });

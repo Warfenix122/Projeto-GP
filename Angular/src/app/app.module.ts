@@ -22,6 +22,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -88,7 +89,8 @@ import { ProjectComponent, DialogDeleteProject, DialogRemoveContact } from './pr
     MatChipsModule,
     MatListModule,
     MatRippleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule
   ],
   declarations: [
     AppComponent,

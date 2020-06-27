@@ -109,8 +109,21 @@
 
 #areasInteresse{
     margin-right:5px;
-    
-    
+}
+
+.cardGallery{
+    max-width: 248px;
+    height: 240px;
+    box-sizing: border-box;
+}
+
+.cardImage{
+    width: 100% + 32px;
+    height: 90%;
+}
+
+.cardButtonActions{
+    height: 10%;
 }
 
 h4{
