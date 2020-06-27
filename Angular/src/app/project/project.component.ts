@@ -176,9 +176,9 @@ export class ProjectComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(gestores => {
         if(gestores !== undefined){
-          this.setManagerArray(gestores.map(gestor=> gestor._id));
-          console.log(this.updatedProject.gestores);
-          this.gestores = gestores;
+          this.gestores = gestores;{}
+          let gestoresId = this.gestores.map(gestor=> gestor._id);
+          this.projectService.editProject(this.project._id,{gestores:gestoresId}).subscribe();
         }
       })
     }
@@ -225,10 +225,6 @@ export class ProjectComponent implements OnInit {
 
     showEditContact(index){
       this.showEditProjectContact[index] = !this.showEditProjectContact[index];
-    }
-
-    setManagerArray(gestores){
-      this.updatedProject.gestores = gestores;
     }
 
     addNecessaryFormation(event: MatChipInputEvent): void {
@@ -417,8 +413,8 @@ export class DialogAddManager{
     this.gestores.splice(index,1);
   }
 
-  onClose(isClosed){
-    if(isClosed){
+  onClose(isAdded){
+    if(isAdded){
       this.emails.push(this.inputtedEmail.value);
       this.dialogRef.close(this.gestores);
     }else{
