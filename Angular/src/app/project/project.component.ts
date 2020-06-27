@@ -12,7 +12,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from '../services/alert.service';
-import {MatBottomSheet,MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import {MatBottomSheet,MatBottomSheetRef} from '@angular/material/bottom-sheet';
+import {Observable} from 'rxjs'
+import { startWith, map } from 'rxjs/operators';
+import {FormControl,Validators} from '@angular/forms';
 
 export interface DialogData {
   contact: string;
@@ -58,6 +61,7 @@ export class ProjectComponent implements OnInit {
   currentUserId: String;
   user : User;
   gestores: User[];
+  externos: User[];
 
   newContactsSession: string = "";
 
@@ -94,7 +98,9 @@ export class ProjectComponent implements OnInit {
               }
               });
             });
-
+            this._userService.getVoluntariosExternos().subscribe(users=>{
+              this.externos = users;
+            });
           });
         });
       });
@@ -163,6 +169,20 @@ export class ProjectComponent implements OnInit {
       });
     }
 
+    openAddManagerDialog(){
+      let dialogRef = this.dialog.open(DialogAddManager,{
+        width: '600px',
+        data:{gestores:this.gestores, externos: this.externos}
+      });
+      dialogRef.afterClosed().subscribe(gestores => {
+        if(gestores !== undefined){
+          this.setManagerArray(gestores.map(gestor=> gestor._id));
+          console.log(this.updatedProject.gestores);
+          this.gestores = gestores;
+        }
+      })
+    }
+
     openManageVolunteersDialog(){
       const dialogRef = this.dialog.open(DialogManageVolunteers, {
         width: '900px',
@@ -182,6 +202,7 @@ export class ProjectComponent implements OnInit {
       bottomSheetRef.afterDismissed().subscribe(option => {
         switch(option){
           case "managers":
+            this.openAddManagerDialog();
             break;
           case "volunteers":
             this.openManageVolunteersDialog();
@@ -214,6 +235,10 @@ export class ProjectComponent implements OnInit {
 
     showEditContact(index){
       this.showEditProjectContact[index] = !this.showEditProjectContact[index];
+    }
+
+    setManagerArray(gestores){
+      this.updatedProject.gestores = gestores;
     }
 
     addNecessaryFormation(event: MatChipInputEvent): void {
@@ -366,4 +391,62 @@ export class BottomSheetSetting{
   }
 }
 
+@Component({
+  selector: 'dialog-add-manager',
+  templateUrl: 'dialog-add-manager.html',
+})
+export class DialogAddManager{
+  filteredEmails: Observable<String[]>;
+  emails: string[];
+  inputtedEmail= new FormControl('',Validators.required);
+  gestores: User[];
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public dialogRef: MatDialogRef<DialogAddManager>){
+    this.emails = this.data.externos.map(externo=>externo.email);
+    this.gestores = data.gestores;
+  }
 
+  ngOnInit():void{
+    this.gestores.forEach(email=>  this.emails.includes)
+    this.filteredEmails= this.inputtedEmail.valueChanges
+      .pipe(
+        startWith(''),
+        map(val=> this._filterEmails(val))
+      )
+  }
+
+  onSearchChange(searchValue: string): void{
+    this.filteredEmails.pipe(
+      startWith(''),
+      map(value => this._filterEmails(searchValue))
+    );
+
+    console.log(this.emails.indexOf(searchValue));
+  }
+
+  private _filterEmails(value: string): String[] {
+    const filterValue = value.toLowerCase();
+    return this.emails.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  addGestor(){
+    if(this.inputtedEmail.valid){
+      let addedGestor = this.data.externos.filter(externo=> externo.email === this.inputtedEmail.value)[0];
+      if(!this.gestores.includes(addedGestor))
+        this.gestores.push(addedGestor);
+    }
+  }
+
+  removeGestor(index){
+    this.gestores.splice(index,1);
+  }
+
+  onClose(isClosed){
+    if(isClosed){
+      this.emails.push(this.inputtedEmail.value);
+      this.dialogRef.close(this.gestores);
+    }else{
+      this.dialogRef.close();
+    }
+
+  }
+}
