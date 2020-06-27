@@ -23,7 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { AccordionModule } from 'primeng/accordion';
+
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -59,7 +59,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact } from './project/project.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager } from './project/project.component';
 
 
 @NgModule({
@@ -92,7 +92,6 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     MatRippleModule,
     MatDialogModule,
     MatBottomSheetModule,
-    AccordionModule
   ],
   declarations: [
     AppComponent,
@@ -127,7 +126,8 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     CreateGestorComponent,
     BottomSheetSetting,
     DialogDeleteProject,
-    DialogRemoveContact
+    DialogRemoveContact,
+    DialogAddManager,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
