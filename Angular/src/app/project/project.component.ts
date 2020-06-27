@@ -389,7 +389,6 @@ export class BottomSheetSetting{
 
 @Component({
   selector: 'dialog-add-manager',
-  styleUrls: ['./dialog-add-manager.css'],
   templateUrl: 'dialog-add-manager.html',
 })
 export class DialogAddManager{
