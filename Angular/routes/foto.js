@@ -20,6 +20,11 @@ router.get('', (req, res) => {
             })
         }
 
+    } else if (fotoIds == 'only_type') {
+        console.log('fotIds :>> ', fotIds);
+        Foto.find({ 'type': type }, (err, foto) => {
+            res.json(foto);
+        })
     }
 })
 

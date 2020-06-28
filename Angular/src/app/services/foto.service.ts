@@ -23,11 +23,11 @@ export class FotoService {
     })
     //get fotos from Database
     this.getFotos(arrIds, type).subscribe((fotos) => {
-      console.log('fotos :>> ', fotos);
       var binary = '';
       var arr = [];
       //decode each foto
       if (fotos) {
+        console.log('fotos :>> ', fotos);
         if (Array.isArray(fotos)) {
           fotos.forEach((foto) => {
 
@@ -128,7 +128,7 @@ export class FotoService {
     })
 
     //returns a promise
-    resolveRef(this.getDecodedFotos('', 'carousel'));
+    resolveRef(this.getDecodedFotos('only_type', 'carousel'));
 
 
     return dataPromise;

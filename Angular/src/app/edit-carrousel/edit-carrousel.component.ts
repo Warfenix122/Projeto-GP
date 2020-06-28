@@ -18,6 +18,7 @@ export class EditCarrouselComponent implements OnInit {
 
   getAllCarrouselPhotos() {
     this.fotoService.getAllDecodedCarouselFotos().then((fotos) => {
+      console.log('fotosqasxdcf :>> ', fotos);
       this.fotos = fotos;
     });
   }

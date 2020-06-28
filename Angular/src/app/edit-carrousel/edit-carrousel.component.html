@@ -1,28 +1,28 @@
 <div>
-  <h1> Editar Conteudo do Carrosel</h1>
-  <div class="container">
-    <div class="container d-justify-content-start">
-      <h2> Fotos Existentes</h2>
-      <form>
-        <input style="display: none" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
-        <button class="btn btn-dark " (click)="fileInput.click()">Escolher Ficheiro <i
+    <h1> Editar Conteudo do Carrosel</h1>
+    <div class="container">
+        <div class="container d-justify-content-start">
+            <h2> Fotos Existentes</h2>
+            <form>
+                <input style="display: none" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
+                <button class="btn btn-dark " (click)="fileInput.click()">Escolher Ficheiro <i
             class="far fa-image"></i></button>
-        <button class="btn btn-warning " (click)="onUpload()">Upload <i class="fas fa-arrow-circle-up"></i>
+                <button class="btn btn-warning " (click)="onUpload()">Upload <i class="fas fa-arrow-circle-up"></i>
         </button>
-      </form>
-    </div>
-    <div class="d-flex mt-3 flex-wrap">
+            </form>
+        </div>
+        <div class="d-flex mt-3 flex-wrap">
 
-      <div *ngFor="let foto of this.fotos; let i = index" [attr.data-index]="i" class="card">
-        <img class="card-img-top" style="max-width: 150px;" [src]="getSrc(foto.id)" alt="Card image cap">
-        <div class="card-body">
-          <h2 class="card-text"><button class="button btn-danger" (click)="onDelete(foto.id)">
+            <div *ngFor="let foto of this.fotos; let i = index" [attr.data-index]="i" class="card">
+                <img class="card-img-top" style="max-width: 150px;" [src]="getSrc(foto.id)" alt="Card image cap">
+                <div class="card-body">
+                    <h2 class="card-text"><button class="button btn-danger" (click)="onDelete(foto.id)">
               Eliminar
             </button></h2>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
 
 </div>
