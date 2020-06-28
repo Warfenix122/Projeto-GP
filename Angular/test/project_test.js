@@ -1,11 +1,11 @@
 const { assert } = require('console');
 
-const Projeto = require('../Angular/models/mongoConnection').Projeto;
-const User = require('../Angular/models/mongoConnection').Utilizadores;
+const Projeto = require('../models/mongoConnection').Projeto;
+const User = require('../models/mongoConnection').Utilizadores;
 
 
 mongoose = require('mongoose');
-const db = require("../Angular/config/keys").MongoURIProduction;
+const db = require("../config/keys").MongoURIProduction;
 
 mongoose.connection.on('error', function (err) {
   console.log(err);
@@ -81,11 +81,11 @@ describe('Projetos', function(){
                 areasInteresse: [],
                 voluntarios: []
             })
+            newProject.save().then((project) => {
+                assert.strictEqual(!project.isNew, true);
+                done();
+            });
         })
-        newProject.save().then((project) => {
-            assert.strictEqual(!project.isNew, true);
-            done();
-        });
     });
 
     describe('Editar projeto', function(){

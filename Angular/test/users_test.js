@@ -1,7 +1,7 @@
-const User = require('../Angular/models/mongoConnection').Utilizadores;
+const User = require('../models/mongoConnection').Utilizadores;
 
 mongoose = require('mongoose');
-const db = require("../Angular/config/keys").MongoURIProduction;
+const db = require("../config/keys").MongoURIProduction;
 
 mongoose.connection.on('error', function (err) {
   console.log(err);
