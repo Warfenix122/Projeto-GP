@@ -22,7 +22,8 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Criar</a>
 
-        <div class="dropdown-menu">
+        <div #gestoresDropdown class="dropdown-menu">
+          <a class="dropdown-item" [routerLink]="['/createProject']">Projetos</a>
           <a class="dropdown-item" [routerLink]="['/createGestor']">Gestores</a>
           <a class="dropdown-item" [routerLink]="['/createSondagem']">Sondagens</a>
         </div>

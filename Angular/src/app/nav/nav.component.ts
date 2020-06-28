@@ -10,6 +10,7 @@ export class NavComponent implements AfterViewInit {
   @ViewChild('logout') logout: ElementRef;
   @ViewChild('logged') logged: ElementRef;
   @ViewChild('aprove') aprove: ElementRef;
+  @ViewChild('gestoresDropdown') dropdown: ElementRef;
   roleType: any;
   constructor(private service: AuthService) {
     service.eventIsLoggedIn.subscribe(isLoggedIn => {
@@ -23,19 +24,32 @@ export class NavComponent implements AfterViewInit {
     service.eventRole.subscribe(event => {
       if (event === 'Gestor') {
         this.displayAprove();
+        this.displayGestorDropdown();
       }
       else {
         this.hideAprove();
+        this.hideGestorDropdown();
       }
     });
+
+  }
+
+  displayGestorDropdown(){
+    this.dropdown.nativeElement.style.display = 'block';
+  }
+
+  hideGestorDropdown(){
+    this.dropdown.nativeElement.style.display = 'none';
   }
 
   displayAprove() {
     this.aprove.nativeElement.style.display = 'block';
   }
+
   hideAprove() {
     this.aprove.nativeElement.style.display = 'none';
   }
+
   displayLoggedInNav(): void {
     this.logged.nativeElement.style.display = 'block';
     this.logout.nativeElement.style.display = 'none';

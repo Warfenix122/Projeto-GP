@@ -35,7 +35,7 @@ export class CreateProjectComponent implements OnInit {
   file: File = null;
   formErrors: [];
   validationMessages: [String];
-
+  daySelected:Boolean;
 
   constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService) { }
 
@@ -44,6 +44,7 @@ export class CreateProjectComponent implements OnInit {
     resumo: new FormControl('', [Validators.required]),
     nrVagas: new FormControl('', [Validators.required]),
     necessarioFormacao: new FormControl(false),
+    restringido: new FormControl(false),
     formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
     gestoremail: new FormControl(''),
@@ -148,15 +149,19 @@ export class CreateProjectComponent implements OnInit {
   }
 
   addAtividade() {
-    let dia = _moment(this.diaAtividade.value).toDate();
-    console.log(dia)
-    this.atividadesArr.push(this._fb.group({
-      descricao: new FormControl('', Validators.required),
-      //dataAcontecimento: new FormControl(''),
-      dia: new Date(dia.getFullYear(), dia.getMonth() + 1, dia.getDate(),),
-      horas: new FormControl('', Validators.required),
-    })
-    );
+    if(this.diaAtividade.touched){
+      this.daySelected=true;
+      let dia = _moment(this.diaAtividade.value).toDate();
+      this.atividadesArr.push(this._fb.group({
+        descricao: new FormControl('', Validators.required),
+        //dataAcontecimento: new FormControl(''),
+        dia: new Date(dia.getFullYear(), dia.getMonth() + 1, dia.getDate(),),
+        horas: new FormControl('', Validators.required),
+        })
+      );
+    }else{
+      this.daySelected=false;
+    }
   }
 
   removerAtividade(index): void {
@@ -166,7 +171,7 @@ export class CreateProjectComponent implements OnInit {
   calculateDaysBetween() {
     this.termino = this.dataTermino.value;
     if (this.dataComeco.value !== '' && this.dataTermino.value !== '') {
-      this.diaAtividade.setValue(this.comeco);
+
       this._datesSet = true;
       this.daysBetween = [];
       let inicio = _moment(this.dataComeco.value);
@@ -176,8 +181,10 @@ export class CreateProjectComponent implements OnInit {
         for (let i = 0; i < diference; i++) {
           if (i === 0)
             this.daysBetween.push(inicio.toDate());
-          let newMoment = inicio.add(1, 'days').toDate();
-          this.daysBetween.push(newMoment);
+          else{
+            let newMoment = inicio.add(1, 'days').toDate();
+            this.daysBetween.push(newMoment);
+          }
         }
       } else {
         this.daysBetween.push(inicio.toDate());
