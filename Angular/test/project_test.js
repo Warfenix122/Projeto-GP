@@ -1,8 +1,17 @@
-const { assert } = require('console');
+var assert = require('assert');
 
 const Projeto = require('../models/mongoConnection').Projeto;
 const User = require('../models/mongoConnection').Utilizadores;
 
+var generateString = () => {
+    var result = '';
+    var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 10; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 
 mongoose = require('mongoose');
 const db = require("../config/keys").MongoURIProduction;
@@ -28,10 +37,10 @@ describe('Projetos', function(){
         newProject = new Projeto({
             nome:"Projeto teste",
             resumo: "resumo do projeto",
-            responsavelId: mongoose.ObjectId,
+            responsavelId: mongoose.Types.ObjectId(),
             formacoesNecessarias: "formacao teste",
             XemXTempo: "1x a semana",
-            gestores: mongoose.ObjectId,
+            gestores: [mongoose.Types.ObjectId()],
             atividades: [],
             vagas: 30,
             projetoMes: false,
@@ -42,24 +51,28 @@ describe('Projetos', function(){
             areasInteresse: [],
             voluntarios: []
         });
-        user = new User ({
-            nome: "Nome teste",
-            email: "emailTest@hotmail.com",
-            password: "abcdasdf",
-            genero: "Masculino",
-            dataDeNascimento: Date.now(),
-            dataCriacao: Date.now(),
-            areasInteresse: [],
-            distrito: "Setubal",
-            concelho: "Almada",
-            tipoMembro: "Gestor",
-            numeroTelefone: 919999999,
-            escola: "Uma escola",
-            formacao: "Uma formacao",
-            aprovado: "Aprovado",
-            projetosFavoritos: projetosFavoritos.push(newProject._id)
-        });
-
+        newProject.save().then((project) => {
+            user = new User ({
+                nome: "Nome teste",
+                email: "emailTest@hotmail.com",
+                password: "abcdasdf",
+                genero: "Masculino",
+                dataDeNascimento: Date.now(),
+                dataCriacao: Date.now(),
+                areasInteresse: [],
+                distrito: "Setubal",
+                concelho: "Almada",
+                tipoMembro: "Gestor",
+                numeroTelefone: 919999999,
+                escola: "Uma escola",
+                formacao: "Uma formacao",
+                aprovado: "Aprovado",
+                projetosFavoritos: [project._id]
+            });
+            user.save().then((res) => {
+                done();
+            }).catch((err) => done(err));
+        }).catch((err) => done(err));
     });
 
     describe('Criar projeto', function(){
@@ -67,10 +80,10 @@ describe('Projetos', function(){
             const newProject1 = new Projeto({
                 nome:"Projeto teste",
                 resumo: "resumo do projeto",
-                responsavelId: mongoose.ObjectId,
+                responsavelId: mongoose.Types.ObjectId(),
                 formacoesNecessarias: "formacao teste",
                 XemXTempo: "1x a semana",
-                gestores: mongoose.ObjectId,
+                gestores: [mongoose.Types.ObjectId()],
                 atividades: [],
                 vagas: 30,
                 projetoMes: false,
@@ -81,7 +94,7 @@ describe('Projetos', function(){
                 areasInteresse: [],
                 voluntarios: []
             })
-            newProject.save().then((project) => {
+            newProject1.save().then((project) => {
                 assert.strictEqual(!project.isNew, true);
                 done();
             });
@@ -90,18 +103,15 @@ describe('Projetos', function(){
 
     describe('Editar projeto', function(){
         it('Atualizar projeto', (done) => {
-            Projecto.findOne({ _id: newProject._id }).then((project) => {
-                project.nome = "projeto";
+            Projeto.findOne({ nome: 'Projeto teste' }).then((project) => {
+                project.nome = generateString();
                 project.save().then((updatedProject) => {
-                    let isChanged = false;
-                    if(updatedProject.nome != project.nome){
-                        isChanged = true;
-                    } else {
-                        isChanged = false;
-                    }
-                    assert.strictEqual(isChanged, true);
+                    let res = updatedProject.nome != newProject.nome;
+                    assert.strictEqual(res, true);
                     done();
                 })
+            }, (err) => {
+                done(err);
             });
         })
         
@@ -126,20 +136,20 @@ describe('Projetos', function(){
 
     describe('Listar projetos', function(){
         it('Lista com todos os projetos', (done) => {
-            Projecto.find({}).then((projects) => {
-               assert.strictEqual(projects.lenght, 1);
-               done();
+            Projeto.find({}).then((projects) => {
+                let res = projects.length >= 1;
+                assert.strictEqual(res, true);
+                done();
             });
         });
     });
 
     describe('Favoritos', function(){
         it('Projetos favoritos de um user', (done) => {
-            User.find({ _id: user._id }).then((user) => {
+            User.findOne({ _id: user._id }).then((user) => {
                 let fav = user["projetosFavoritos"];
-                let arr = [newProject._id];
                 let areTheSame = false
-                if(fav.equals(arr)){
+                if(fav.includes(newProject._id)){
                     areTheSame = true;
                 } else {
                     areTheSame = false;
@@ -153,9 +163,9 @@ describe('Projetos', function(){
     describe('Anular candidatura', function(){
         it('Inscricao no projeto anulada', (done) => {
             newProject.voluntarios.push(user._id);
-            Project.findOne({_id: newProject._id}).then((project)=>{
-                if(project["voluntarios"].includes(voluntarioId)){
-                    let indexOfId = project["voluntarios"].indexOf(voluntarioId);
+            newProject.save().then((project) => {
+                if(project["voluntarios"].includes(user._id)){
+                    let indexOfId = project["voluntarios"].indexOf(user._id);
                     project["voluntarios"].splice(indexOfId,1);
                     project.save().then((updatedProject) =>{
                         let isRemoved = false;
@@ -165,6 +175,7 @@ describe('Projetos', function(){
                             isRemoved = false;
                         }
                         assert.strictEqual(isRemoved, true);
+                        done();
                     })
                 }
             });
@@ -173,13 +184,14 @@ describe('Projetos', function(){
 
     describe('Candidatar', function() {
         it('Inscrito', (done) => {
-            Project.findOne({_id: newProject._id}).then((project)=>{
+            Projeto.findOne({_id: newProject._id}).then((project)=>{
                 let vagas = project.vagas;
                 if(project["voluntarios"].length+1 < vagas){
                     project["voluntarios"].push(user._id);
                 }
                 project.save().then((updatedProject)=>{
                     assert.strictEqual(updatedProject["voluntarios"].includes(user._id), true);
+                    done();
                 })
             })
         });
