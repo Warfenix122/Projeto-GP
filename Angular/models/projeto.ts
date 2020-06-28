@@ -20,7 +20,7 @@ export class Project {
   ];
   vagas: number;
   atividades: [{ descricao: string, dataAcontecimento: Date }];
-  ficheiros: [ string ];
+  fotosId: [ string ];
   projetoMes: boolean;
   dataCriacao: Date;
   dataTermino: Date;

@@ -59,6 +59,29 @@ export class FotoService {
     });
   }
 
+
+
+  geDecodedProjectFotos(projectId): Promise<Array<any>> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Array<any>> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
+    this.projectService.getProject(projectId).subscribe((p) => {
+      let fotos = [];
+      p.fotosId.forEach((id) => {
+        fotos.push(id);
+      })
+      //returns a promise
+      resolveRef(this.getDecodedFotos(fotos, 'projects'));
+    })
+
+    return dataPromise;
+  }
   getAllDecodedProjectFotos(): Promise<Array<any>> {
     let resolveRef;
     let rejectRef;
