@@ -215,7 +215,7 @@ export class ProjectComponent implements OnInit {
             });
         });
       })
-      
+
     }
 
     openSettingsBottomSheet(){
@@ -429,7 +429,7 @@ export class DialogManageVolunteers {
         return option.name.toLowerCase().includes(filterValue);
       });
     }
-  
+
     private _filterEmails(value: string): String[] {
       const filterValue = value.toLowerCase();
       return this.names.filter(option => option.toLowerCase().includes(filterValue));
@@ -442,7 +442,7 @@ export class DialogManageVolunteers {
     disapproveVolunteer(i){
       this.volunteers[i].state = 'Recusado';
     }
-  
+
     removeVolunteer(index){
       this.volunteers.splice(index,1);
       this.filteredVolunteers = this.filteredVolunteers.pipe(
@@ -450,7 +450,7 @@ export class DialogManageVolunteers {
        map(() => this._filterVolunteers(this.nameFilter.value))
       );
     }
-  
+
     onClose(state){
       if(state == 'save')
         this.dialogRef.close(this.volunteers.map(elem => {return {userId: elem._id, estado: elem.state}}));

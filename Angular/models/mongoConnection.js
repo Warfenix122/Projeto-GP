@@ -81,7 +81,8 @@ var ProjetoSchema = new Schema({
   dataComeco: Date,
   areasInteresse: [String], //Areas onde este projeto se enquadra
   voluntarios: [{userId: mongoose.ObjectId, estado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"]}}],
-  fotoCapaId: mongoose.ObjectId
+  fotoCapaId: mongoose.ObjectId,
+  restringido: Boolean,
 });
 
 

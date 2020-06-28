@@ -12,7 +12,6 @@ router.post("", (req, res) => {
     nome,
     responsavelId,
     resumo,
-    publicoAlvo,
     formacoesNecessarias,
     dataTermino,
     dataComeco,
@@ -25,20 +24,6 @@ router.post("", (req, res) => {
     atividades,
   } = req.body;
 
-  // PublicoAlvo.find({ descricao: publicoAlvo }).then((publicoAlvo) => {
-  //   if (publicoAlvo) {
-  //     existingPublicoAlvo = publicoAlvo;
-  //   } else {
-  //     const newPublicoAlvo = new PublicoAlvo({
-  //       descricao: publicoAlvo,
-  //       predefinido: false,
-  //     });
-  //     newPublicoAlvo.save().then((publicoAlvo) => {
-  //       publicoAlvo = publicoAlvo.id;
-  //     });
-  //   }
-  // });
-
   Project.findOne({ nome: nome }).then((project) => {
     if (project) {
       res.status(409).send("Já existe um projeto com esse nome");
@@ -50,7 +35,6 @@ router.post("", (req, res) => {
         formacoesNecessarias: formacoesNecessarias,
         XemXTempo: XemXTempo,
         gestores: gestoresIds,
-        formacoesNecessarias: formacao,
         atividades: atividades,
         vagas: nrVagas,
         projetoMes: false,

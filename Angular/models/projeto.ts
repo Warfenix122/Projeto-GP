@@ -29,4 +29,5 @@ export class Project {
   areasInteresse: [string];
   fotoCapaId: string;
   voluntarios: [ {userId: string, estado: string} ];
+  restringido: boolean;
 }
