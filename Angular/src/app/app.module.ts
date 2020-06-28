@@ -91,7 +91,7 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     MatListModule,
     MatRippleModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
     MatDialogModule,
     MatBottomSheetModule
   ],
