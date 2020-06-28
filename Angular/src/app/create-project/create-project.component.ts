@@ -36,6 +36,7 @@ export class CreateProjectComponent implements OnInit {
   formErrors: [];
   validationMessages: [String];
   daySelected:Boolean;
+  criacao:Date;
 
   constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService) { }
 
@@ -170,6 +171,7 @@ export class CreateProjectComponent implements OnInit {
 
   calculateDaysBetween() {
     this.termino = this.dataTermino.value;
+    this.criacao = new Date();
     if (this.dataComeco.value !== '' && this.dataTermino.value !== '') {
 
       this._datesSet = true;
