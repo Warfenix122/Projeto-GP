@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -58,7 +59,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager } from './project/project.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 
 
 @NgModule({
@@ -90,7 +91,8 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     MatListModule,
     MatRippleModule,
     MatDialogModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatPaginatorModule
   ],
   declarations: [
     AppComponent,
@@ -127,6 +129,7 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
     DialogDeleteProject,
     DialogRemoveContact,
     DialogAddManager,
+    DialogManageVolunteers
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

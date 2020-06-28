@@ -80,7 +80,7 @@ var ProjetoSchema = new Schema({
   dataFechoInscricoes: Date,
   dataComeco: Date,
   areasInteresse: [String], //Areas onde este projeto se enquadra
-  voluntarios: [mongoose.ObjectId],
+  voluntarios: [{userId: mongoose.ObjectId, estado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"]}}],
   fotoCapaId: mongoose.ObjectId
 });
 

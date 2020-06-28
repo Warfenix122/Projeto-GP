@@ -86,7 +86,7 @@ export class ProjectComponent implements OnInit {
             this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.includes(this.currentUserId));
             this._authService.getRole().subscribe(res =>{
               this.role = res["Role"];
-              if (this.project.voluntarios.filter(v => v === this.currentUserId).length > 0) {
+              if (this.project.voluntarios.filter(v => v.userId === this.currentUserId).length > 0) {
                 this.candidato = true;
               }
               this._userService.getUser(this.currentUserId).subscribe((user: User) => {
@@ -176,7 +176,7 @@ export class ProjectComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(gestores => {
         if(gestores !== undefined){
-          this.gestores = gestores;{}
+          this.gestores = gestores;
           let gestoresId = this.gestores.map(gestor=> gestor._id);
           this.projectService.editProject(this.project._id,{gestores:gestoresId}).subscribe();
         }
@@ -184,14 +184,36 @@ export class ProjectComponent implements OnInit {
     }
 
     openManageVolunteersDialog(){
-      const dialogRef = this.dialog.open(DialogManageVolunteers, {
-        width: '900px',
-        data: {volunteers: this.project.voluntarios}
+      let volunteers = [];
+      let usersId = [];
+      this.project.voluntarios.forEach((elem) => {
+        usersId.push(elem.userId);
       });
+      this._userService.getUsers(usersId).subscribe((users) => {
+        users.forEach((user) => {
+          volunteers.push({
+            _id: user._id,
+            name: user.nome,
+            email: user.email,
+            state: this.project.voluntarios.find(elem => elem.userId == user._id).estado
+          });
+        })
+        const dialogRef = this.dialog.open(DialogManageVolunteers, {
+          width: '600px',
+          data: {volunteers: volunteers}
+        });
 
-      dialogRef.afterClosed().subscribe(volunteers => {
-        
-      });
+        dialogRef.afterClosed().subscribe(result => {
+          if(result == 'back')
+            this.openSettingsBottomSheet();
+          else if(result != 'close')
+            this.projectService.editProject(this.project._id, {voluntarios: result}).subscribe((updatedProject) => {
+              this.project.voluntarios = updatedProject.voluntarios;
+              this.alertService.success("Alterações aos voluntários guardadas com sucesso");
+            });
+        });
+      })
+      
     }
 
     openSettingsBottomSheet(){
@@ -366,12 +388,73 @@ export class DialogDeleteProject {
   templateUrl: 'dialog-manage-volunteers.html',
 })
 export class DialogManageVolunteers {
-  constructor(
-    public dialogRef: MatDialogRef<DialogManageVolunteers>){}
+  filteredNames: Observable<String[]>;
+  names: string[];
+  nameFilter= new FormControl('',Validators.required);
+  volunteers: {_id: string, name: string, email: string, state: string, show: boolean}[];
+  filteredVolunteers: Observable<{}[]>;
 
-  onClose(isRemove){
-    this.dialogRef.close(isRemove);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogManageVolunteers>){
+    this.names = this.data.volunteers.map(volunteer => volunteer.name);
+    this.volunteers = data.volunteers;
   }
+
+    ngOnInit():void{
+      this.filteredNames = this.nameFilter.valueChanges
+        .pipe(
+          startWith(''),
+          map(val=> this._filterEmails(val))
+      )
+      this.filteredVolunteers = this.nameFilter.valueChanges
+        .pipe(
+          startWith(''),
+          map(val=> this._filterVolunteers(val))
+      )
+    }
+
+    getBackgroundColor(state){
+      let res = "border-radius: 5px; ";
+      if(state == 'Aprovado')
+        return res+"background-color: #e6ffe6;"
+      if(state == 'Recusado')
+        return res+"background-color: #ffe6e6;"
+      return res;
+    }
+
+    private _filterVolunteers(value: string): {}[] {
+      const filterValue = value.toLowerCase();
+      return this.volunteers.filter((option, index) => {
+        return option.name.toLowerCase().includes(filterValue);
+      });
+    }
+  
+    private _filterEmails(value: string): String[] {
+      const filterValue = value.toLowerCase();
+      return this.names.filter(option => option.toLowerCase().includes(filterValue));
+    }
+
+    approveVolunteer(i){
+      this.volunteers[i].state = 'Aprovado';
+    }
+
+    disapproveVolunteer(i){
+      this.volunteers[i].state = 'Recusado';
+    }
+  
+    removeVolunteer(index){
+      this.volunteers.splice(index,1);
+      this.filteredVolunteers = this.filteredVolunteers.pipe(
+        startWith(''),
+       map(() => this._filterVolunteers(this.nameFilter.value))
+      );
+    }
+  
+    onClose(state){
+      if(state == 'save')
+        this.dialogRef.close(this.volunteers.map(elem => {return {userId: elem._id, estado: elem.state}}));
+      else
+        this.dialogRef.close(state);
+    }
 }
 
 @Component({
@@ -443,6 +526,5 @@ export class DialogAddManager{
     }else{
       this.dialogRef.close();
     }
-
   }
 }
