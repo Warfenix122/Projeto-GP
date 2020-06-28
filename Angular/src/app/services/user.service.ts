@@ -68,6 +68,15 @@ export class UserService {
     return this.http.post<String>('/api/currentUser', token);
   }
 
+  getUsers(ids){
+    console.log(ids);
+    if(ids == undefined)
+      ids = "";
+    return this.http.get<User[]>('/api/user', {
+      params: new HttpParams({ fromObject: { ids: ids } })
+    });
+  }
+
   getUser(id){
     return this.http.get<User>('/api/user/'+id);
   }

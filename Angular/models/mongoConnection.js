@@ -63,7 +63,7 @@ var ProjetoSchema = new Schema({
   formacoesNecessarias: [String],
   XemXTempo: String, // "1 vez por mes " etc..
   aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
-  gestores: [{ gestorId: mongoose.ObjectId }], //só podem ser externos
+  gestores: [mongoose.ObjectId], //só podem ser externos
   comentarios: [
     {
       comentario: String,
@@ -80,8 +80,9 @@ var ProjetoSchema = new Schema({
   dataFechoInscricoes: Date,
   dataComeco: Date,
   areasInteresse: [String], //Areas onde este projeto se enquadra
-  voluntarios: [mongoose.ObjectId],
-  fotoCapaId: mongoose.ObjectId
+  voluntarios: [{userId: mongoose.ObjectId, estado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"]}}],
+  fotoCapaId: mongoose.ObjectId,
+  restringido: Boolean,
 });
 
 

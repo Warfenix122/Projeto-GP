@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../models/projeto';
 import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfaces';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
+import { User } from '../../../models/utilizadores';
 
 @Injectable({
   providedIn: 'root',
@@ -51,6 +52,10 @@ export class ProjectService {
 
   uploadPhoto(formData) {
     return this.http.post<ImageResponse>('/api/file/uploadCapaFoto', formData);
+  }
+
+  getGestores(projectId){
+    return this.http.get<User[]>("api/project/gestores/"+projectId);
   }
 
   volunteer(projectId,voluntarioId){

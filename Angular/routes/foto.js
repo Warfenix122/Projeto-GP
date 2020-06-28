@@ -4,7 +4,6 @@ const express = require("express");
 var router = express.Router();
 
 
-//get one
 router.get('', (req, res) => {
   let fotoIds = req.query.ids;
   let type = req.query.type;

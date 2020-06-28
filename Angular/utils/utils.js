@@ -35,10 +35,17 @@ function issueJWT(user) {
 }
 
 function getCurrentUserId(token) {
-  console.log(jsonwebtoken.verify(token, PUB_KEY));
   var currentUser = jsonwebtoken.decode(token);
   return currentUser.sub;
 }
 
+function getCurrentUserRole(token){
+  var currentUser = jsonwebtoken.decode(token);
+  return currentUser.tipoMembro;
+}
+
+
+
 module.exports.issueJWT = issueJWT;
 module.exports.getCurrentUserId = getCurrentUserId;
+module.exports.getCurrentUserRole = getCurrentUserRole;

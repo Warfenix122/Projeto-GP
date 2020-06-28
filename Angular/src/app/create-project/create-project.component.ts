@@ -233,12 +233,10 @@ export class CreateProjectComponent implements OnInit {
         let responsavelId = res["UserID"];
         let XemXtempo = this.XemXtempo1.value + " em " + this.XemXtempo2.value;
         let atividades = [];
-        let gestoresIds = []//this.gestores.map((gestor) => { gestorId: gestor._id });
+        let gestoresIds = []
         let selectedAreas = this.selectedAreas;
-        for (let gestor in this.gestores) {
-          let id = this.gestores[gestor]._id;
-          gestoresIds.push({ gestorId: id });
-        }
+        gestoresIds = this.gestores.filter(gestor=>gestor._id);
+        console.log(gestoresIds);
         this.atividadesArr.controls.forEach(atividade => {
           let atividadeObj = atividade.value;
           let horas = parseInt(atividadeObj.horas.split(':')[0]);

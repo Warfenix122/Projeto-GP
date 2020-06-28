@@ -25,4 +25,17 @@ router.get('/:id', (req, res) => {
     User.findById(userId).then((user) => res.json(user));
 });
 
+router.get('', (req, res) => {
+    let usersId = req.query.ids;
+    if (usersId) {
+      User.find({ '_id': { $in: usersId }}, (err, users) => {
+        res.json(users);
+      })
+    } else {
+      User.find({}, (err, users) => {
+        res.json(users);
+      })
+    }
+  })
+
 module.exports = router;

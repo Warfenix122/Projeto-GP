@@ -7,10 +7,10 @@
           </button><br>
         </div>
         <div class="col-sm-4 text-right">
-          <button class="editActionButton" mat-raised-button color="primary" *ngIf="isManagerOrResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
+          <button class="editActionButton" mat-raised-button color="primary" *ngIf="isManager || isResponsible" (click)="editButtonClicked()" data-toggle="button" aria-pressed="false" autocomplete="off">
             <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon> {{isEditButtonToggled ? 'Cancelar' : 'Editar'}}
           </button><br>
-          <button mat-raised-button color="warn" *ngIf="isEditButtonToggled" class="mt-1 editActionButton" (click)="openDeleteProjectDialog()">
+          <button mat-raised-button color="warn" *ngIf="isEditButtonToggled && isResponsible" class="mt-1 editActionButton" (click)="openDeleteProjectDialog()">
             <mat-icon>delete_forever</mat-icon> Eliminar 
           </button><br>
           <button mat-raised-button *ngIf="isEditButtonToggled" class="mt-1 editActionButton" (click)="saveUpdatedProject()">
@@ -61,7 +61,7 @@
             <h4 *ngIf="!isEditButtonToggled" id="detalhes">Inscrições até:
               <h4 id="lista">{{project.dataFechoInscricoes|date:'shortDate'}}</h4>
             </h4>
-            <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
+            <mat-form-field appearance="fill" *ngIf="isEditButtonToggled && isResponsible" class="mat-inputs">
               <mat-label>Data de fecho das inscrições</mat-label>
               <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectApplicationsCloseDate')">
                 <mat-icon>{{isProjectApplicationsCloseDateReadonly ? 'edit' : 'check'}}</mat-icon>
@@ -189,7 +189,6 @@
                        [readonly]="isProjectAreasOfInterestReadonly">
               </mat-chip-list>
             </mat-form-field>
-
             <div *ngIf="!isEditButtonToggled" class="row justify-content-center">
                 <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success btn-lg" id="botao2" (click)="volunteer()">CANDIDATAR</button>
                 <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>

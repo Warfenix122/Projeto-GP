@@ -12,7 +12,6 @@ router.post("", (req, res) => {
     nome,
     responsavelId,
     resumo,
-    publicoAlvo,
     formacoesNecessarias,
     dataTermino,
     dataComeco,
@@ -25,20 +24,6 @@ router.post("", (req, res) => {
     atividades,
   } = req.body;
 
-  // PublicoAlvo.find({ descricao: publicoAlvo }).then((publicoAlvo) => {
-  //   if (publicoAlvo) {
-  //     existingPublicoAlvo = publicoAlvo;
-  //   } else {
-  //     const newPublicoAlvo = new PublicoAlvo({
-  //       descricao: publicoAlvo,
-  //       predefinido: false,
-  //     });
-  //     newPublicoAlvo.save().then((publicoAlvo) => {
-  //       publicoAlvo = publicoAlvo.id;
-  //     });
-  //   }
-  // });
-
   Project.findOne({ nome: nome }).then((project) => {
     if (project) {
       res.status(409).send("Já existe um projeto com esse nome");
@@ -50,7 +35,6 @@ router.post("", (req, res) => {
         formacoesNecessarias: formacoesNecessarias,
         XemXTempo: XemXTempo,
         gestores: gestoresIds,
-        formacoesNecessarias: formacao,
         atividades: atividades,
         vagas: nrVagas,
         projetoMes: false,
@@ -153,6 +137,15 @@ router.put('/candidatar/:id',(req,res)=>{
   }).catch((err)=>{
     console.log(err);
     res.status(404).json({success:false,msg:"Não existe um projeto com esse ID"})});
+});
+
+
+router.get("/gestores/:id",(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  Project.findOne({_id:projectId}).then(project=>{
+    User.find({'_id':{$in:project.gestores}}).then(users=>res.status(200).json({success:true,gestores:users}))
+    .catch(err=>res.status(404).json({success:false,err:err}));
+  }).catch(err=>res.status(500).json({success:false,err:err}));
 });
 
 module.exports = router;

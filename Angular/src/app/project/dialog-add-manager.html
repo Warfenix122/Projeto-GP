@@ -1,0 +1,38 @@
+<h1 mat-dialog-title color="primary">Adicionar Gestor</h1>
+<div mat-dialog-content style="width: 100%;">
+  <form>
+  <mat-form-field style="font-size: 18px; width: 100%;">
+      <mat-label>Email</mat-label>
+      <input matInput  type="primary" name="gestoremail" [formControl]="inputtedEmail"
+        placeholder="Introduza o email do gestor" [matAutocomplete]="autoGestor" />
+      <mat-autocomplete autoActiveFirstOption #autoGestor="matAutocomplete">
+        <mat-option *ngFor="let email of filteredEmails | async" [value]="email">
+          {{ email }}
+        </mat-option>
+      </mat-autocomplete>
+       <button mat-icon-button matSuffix (click)="addGestor()">
+        <mat-icon>add</mat-icon>
+       </button>
+    </mat-form-field>
+  </form>
+  <mat-list>
+    <div mat-subheader>Gestores Ativos no projeto</div>
+    <mat-list-item *ngFor="let gestor of gestores; let i = index">
+      <mat-icon mat-list-icon>engineering</mat-icon>
+      <span mat-line>{{gestor.nome}}</span>
+      <span mat-line>{{gestor.email}}</span>
+      <button mat-fab color="warn" (click)="removeGestor(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="onClose(false)">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="onClose(true)">
+    Guardar Alterações
+  </button>
+</div>

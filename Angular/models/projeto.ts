@@ -10,7 +10,7 @@ export class Project {
   formacoesNecessarias: [string];
   XemXTempo: string; // "1 vez por mes " etc..
   aprovado: { type: string }; //enum: ["Recusado", "Em Espera", "Aprovado"]
-  gestores: [{ gestorId: string }]; //só podem ser externos //mongoose.ObjectId
+  gestores: [String]; //só podem ser externos //mongoose.ObjectId
   comentarios: [
     {
       comentario: string,
@@ -28,5 +28,6 @@ export class Project {
   dataComeco: Date;
   areasInteresse: [string];
   fotoCapaId: string;
-  voluntarios: [ string ];
+  voluntarios: [ {userId: string, estado: string} ];
+  restringido: boolean;
 }
