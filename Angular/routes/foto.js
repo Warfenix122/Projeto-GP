@@ -14,17 +14,17 @@ router.get('', (req, res) => {
                 res.json(f);
             })
 
+        } else if (fotoIds == 'only_type') {
+            console.log('fotoIds :>> ', fotoIds);
+            Foto.find({ 'type': type }, (err, foto) => {
+                res.json(foto);
+            })
         } else {
             Foto.findOne({ '_id': fotoIds, 'type': type }, (err, foto) => {
                 res.json(foto);
             })
         }
 
-    } else if (fotoIds == 'only_type') {
-        console.log('fotIds :>> ', fotIds);
-        Foto.find({ 'type': type }, (err, foto) => {
-            res.json(foto);
-        })
     }
 })
 
