@@ -1,0 +1,18 @@
+<div *ngIf="projects" class="d-flex mt-3 flex-wrap">
+    <div class="d-flex mt-3 flex-wrap">
+        <div (click)="openProject(i)" *ngFor="let project of projects; let i = index" [attr.data-index]="i" class="card">
+            <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
+            <div class="card-body">
+                <h2 class="card-title">{{project.nome}}</h2>
+                <p class="card-text">{{project.resumo}}</p>
+                <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+                <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="projects.length==0">
+        Não está inscrito em nenhum projeto, explore os projetos existentes <a [routerLink]="['/projects']">aqui</a>
+    </div>
+</div>
