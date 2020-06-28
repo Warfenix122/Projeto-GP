@@ -28,7 +28,7 @@ export class FileService {
     var projId = formdata.values['projectId'];
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectCover(res['foto'], formdata).subscribe((res) => { })
+        this.updateProjectCover(res['fotoId'], formdata).subscribe((res) => { })
       });
     })
 
@@ -36,10 +36,11 @@ export class FileService {
   }
   updateProjectPhotoFiles(formdata) {
     formdata.append('type', 'projects');
-    var projId = formdata.values['projectId'];
+    var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectPhotos(res['foto'], formdata).subscribe((res) => { })
+        console.log('res :>> ', res);
+        this.updateProjectPhotos(res['fotoId'], projId).subscribe((res) => { })
       });
     })
 

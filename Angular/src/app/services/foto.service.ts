@@ -21,21 +21,34 @@ export class FotoService {
       resolveRef = resolve;
       rejectRef = reject;
     })
-
     //get fotos from Database
     this.getFotos(arrIds, type).subscribe((fotos) => {
+      console.log('fotos :>> ', fotos);
       var binary = '';
       var arr = [];
       //decode each foto
+      if (fotos) {
+        if (Array.isArray(fotos)) {
+          fotos.forEach((foto) => {
 
-      fotos.forEach((foto) => {
-        let obj = {
-          id: foto._id,
-          src: this.arrayBufferToBase64(foto.foto.data.data),
-          contentType: foto.foto.contentType
-        };
-        arr.push(obj);
-      });
+            let obj = {
+              id: foto._id,
+              src: this.arrayBufferToBase64(foto.foto.data.data),
+              contentType: foto.foto.contentType
+            };
+            arr.push(obj);
+          });
+        } else {
+          let obj = {
+            id: fotos['_id'],
+            src: this.arrayBufferToBase64(fotos['foto']['data']['data']),
+            contentType: fotos['foto']['contentType']
+          };
+          arr.push(obj);
+
+        }
+      }
+
       //return obj with success
       resolveRef(arr);
     }, (err) => {
@@ -52,8 +65,6 @@ export class FotoService {
     return window.btoa(binary);
   }
   getFotos(arrId, type) {
-    if (arrId == undefined)
-      arrId = "";
     return this.http.get<Foto[]>('/api/foto', {
       params: new HttpParams({ fromObject: { ids: arrId, type: type } })
     });
@@ -72,12 +83,14 @@ export class FotoService {
     })
 
     this.projectService.getProject(projectId).subscribe((p) => {
-      let fotos = [];
+      let fotos = new Array();
       p.fotosId.forEach((id) => {
-        fotos.push(id);
+        if (id) fotos.push(id);
       })
-      //returns a promise
-      resolveRef(this.getDecodedFotos(fotos, 'projects'));
+      if (fotos) { //returns a promise
+        resolveRef(this.getDecodedFotos(fotos, 'projects'));
+      }
+
     })
 
     return dataPromise;
