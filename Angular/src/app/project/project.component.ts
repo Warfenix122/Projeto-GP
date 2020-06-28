@@ -51,7 +51,8 @@ export class ProjectComponent implements OnInit {
   isProjectNecessaryFormationsReadonly: boolean = true;
   isProjectAreasOfInterestReadonly: boolean = true;
 
-  isManagerOrResponsible: boolean;
+  isManager: boolean;
+  isResponsible: boolean;
   project: Project;
   updatedProject: Project;
   id: string;
@@ -83,7 +84,8 @@ export class ProjectComponent implements OnInit {
           this.gestores = res["gestores"];
           this._userService.getCurrentUserId().subscribe(res => {
             this.currentUserId = res["UserID"];
-            this.isManagerOrResponsible = (this.project.responsavelId == this.currentUserId || this.project.gestores.includes(this.currentUserId));
+            this.isResponsible = this.project.responsavelId == this.currentUserId;
+            this.isManager = this.project.gestores.includes(this.currentUserId);
             this._authService.getRole().subscribe(res =>{
               this.role = res["Role"];
               if (this.project.voluntarios.filter(v => v.userId === this.currentUserId).length > 0) {
