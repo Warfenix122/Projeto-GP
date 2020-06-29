@@ -25,10 +25,10 @@ export class FileService {
 
   updateCoverPhoto(formdata) {
     formdata.append('type', 'projects');
-    var projId = formdata.values['projectId'];
+    var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectCover(res['fotoId'], formdata).subscribe((res) => { })
+        this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => { })
       });
     })
 
@@ -39,8 +39,7 @@ export class FileService {
     var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        console.log('res :>> ', res);
-        this.updateProjectPhotos(res['fotoId'], projId).subscribe((res) => { })
+        this.updateProjectPhotos(res['fotoId'], project._id).subscribe((res) => { })
       });
     })
 

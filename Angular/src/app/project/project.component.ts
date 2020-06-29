@@ -44,6 +44,7 @@ export class ProjectComponent implements OnInit {
   isEditButtonToggled: boolean = false;
   addPhotoResult: any;
   selectedPhotoFileName: string;
+  selectedCoverPhotoFileName: string;
   isAddingManagers: boolean = false;
 
   //edit inputs readonly or not
@@ -56,6 +57,7 @@ export class ProjectComponent implements OnInit {
   showEditProjectContact: boolean[] = [];
 
   projectPhotos: Array<any> = [];
+  coverPhoto: any = '';
   isManager: boolean;
   isResponsible: boolean;
   project: Project;
@@ -88,7 +90,13 @@ export class ProjectComponent implements OnInit {
 
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
-        this.projectPhotos = result;
+        if (result)
+          this.projectPhotos = result;
+      });
+
+
+      this.fotoService.getProjectCoverPhoto(project._id).then((result) => {
+        if (result) this.coverPhoto = result[0];
       });
 
 
@@ -194,6 +202,35 @@ export class ProjectComponent implements OnInit {
   }
 
   onFileSelected(event) {
+    let files = event.target.files;
+
+    if (files.length > 0) {
+      this.selectedCoverPhotoFileName = files[0].name;
+
+    }
+    const file = files[0]
+
+    const inputNode: any = document.querySelector('#cover');
+
+    const formdata = new FormData();
+    formdata.append('file', file, file.name);
+    formdata.append('projectId', this.id);
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.addPhotoResult = e.target.result;
+        console.log(e.target);
+      };
+      reader.onloadend = () => {
+        this.fileService.updateCoverPhoto(formdata);
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
+  }
+  onFilesSelected(event) {
     let files = event.target.files;
 
     if (files.length > 0) {
@@ -356,7 +393,10 @@ export class ProjectComponent implements OnInit {
   updateFavProject() {
     this.isFavProject = !this.isFavProject;
     this.addRemFavButtonText = this.isFavProject ? 'Remover dos favoritos' : 'Adicionar aos Favoritos';
-    this._userService.updateUserFavProject(this.isFavProject, this.user._id, this.project._id).subscribe();
+    this._userService.getCurrentUserId().subscribe((res) => {
+      this._userService.updateUserFavProject(this.isFavProject, res['UserID'], this.project._id).subscribe();
+
+    })
   }
 
   hoverFavButton(isOver) {

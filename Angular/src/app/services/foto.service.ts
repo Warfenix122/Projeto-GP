@@ -27,7 +27,6 @@ export class FotoService {
       var arr = [];
       //decode each foto
       if (fotos) {
-        console.log('fotos :>> ', fotos);
         if (Array.isArray(fotos)) {
           fotos.forEach((foto) => {
 
@@ -134,6 +133,22 @@ export class FotoService {
     return dataPromise;
   }
 
+  getProjectCoverPhoto(projectId): Promise<Array<any>> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Array<any>> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
+    this.projectService.getProject(projectId).subscribe((p) => {
+      resolveRef(this.getDecodedFotos(p.fotoCapaId, 'projects'));
+    })
+
+    return dataPromise;
+  }
 
   getUserPhoto(fotoId) {
     return this.getDecodedFotos(fotoId, 'users');

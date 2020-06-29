@@ -21,14 +21,15 @@ export class RegisteredProjectsComponent implements OnInit {
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       const user = res['user'];
       this.projectService.userRegisterProjects(user._id).subscribe(projects => {
-        projects.forEach(element => {
-          this.projectService.getProject(element['projetoId']).subscribe((elem) => {
-            this.projects.push(elem);
+        if (projects) {
+          projects.forEach(element => {
+            console.log('element :>> ', element['projetoId']);
+            this.projectService.getProject(element['projetoId']).subscribe((elem) => {
+              if (elem) { this.projects.push(elem); }
+            });
+
           });
-          this.fotoService.getAllDecodedProjectFotos().then((fotos) => {
-            this.fotos = fotos;
-          });
-        });
+        }
 
       });
     });
@@ -44,10 +45,4 @@ export class RegisteredProjectsComponent implements OnInit {
     }
   }
 
-  openProject(index) {
-    let projectId = this.projects[index]._id;
-    this.projectService.getProject(projectId).subscribe(project => {
-      //navigate to the project page passing the 'project' value
-    })
-  }
 }

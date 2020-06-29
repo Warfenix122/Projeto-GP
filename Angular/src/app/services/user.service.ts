@@ -68,26 +68,26 @@ export class UserService {
     return this.http.post<String>('/api/currentUser', token);
   }
 
-  getUsers(ids){
+  getUsers(ids) {
     console.log(ids);
-    if(ids == undefined)
+    if (ids == undefined)
       ids = "";
     return this.http.get<User[]>('/api/user', {
       params: new HttpParams({ fromObject: { ids: ids } })
     });
   }
 
-  getUser(id){
-    return this.http.get<User>('/api/user/'+id);
+  getUser(id) {
+    return this.http.get<User>('/api/user/' + id);
   }
 
   getVoluntariosExternos(): Observable<User[]> {
     return this.http.get<User[]>('/api/externos');
   }
 
-  updateUserFavProject(isAdd ,userId, projectId) {
+  updateUserFavProject(isAdd, userId, projectId) {
     let purpose = isAdd ? 'pushFavProject' : 'removeFavProject';
-    return this.http.put<User>('/api/user/'+userId, {projectId: projectId}, {params: new HttpParams().set('purpose', purpose)});
+    return this.http.put<User>('/api/user/' + userId, { projectId: projectId }, { params: new HttpParams().set('purpose', purpose) });
   }
 
 }

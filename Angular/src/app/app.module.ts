@@ -59,6 +59,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
@@ -95,7 +97,8 @@ import { RegisteredProjectsComponent } from './registered-projects/registered-pr
     MatDialogModule,
     MatCardModule,
     MatDialogModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatTabsModule
   ],
   declarations: [
     AppComponent,
