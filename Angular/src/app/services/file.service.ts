@@ -44,7 +44,11 @@ export class FileService {
     })
 
   }
-
+  updateCarouselPhoto(formdata) {
+    formdata.append('type', 'carousel');
+    this.uploadPhoto(formdata).subscribe((res) => {
+    });
+  }
 
   updateUserPhoto(fotoId, userId) {
     return this.http.put<User>('/api/file/updateUserPhoto/' + userId, { 'fotoId': fotoId });
@@ -68,5 +72,39 @@ export class FileService {
   deletePhoto(fotoId) {
     return this.http.delete('/api/file/deletePhoto/' + fotoId);
   }
+
+  deleteProjectCover(projectId) {
+    this.projectService.getProject(projectId).subscribe((res) => {
+      const fotoId = res.fotoCapaId;
+      const projId = res._id;
+      this.deletePhoto(fotoId).subscribe(() => {
+        return this.http.delete('/api/file/deleteCoverPhoto/' + projId + '/' + fotoId);
+      })
+
+    });
+  }
+
+
+  deleteProjectPhoto(projectId, fotoId) {
+    this.projectService.getProject(projectId).subscribe((res) => {
+      const id = res.fotosId.find(fotoId);
+      console.log('id :>> ', id);
+      const projId = res._id;
+      this.deletePhoto(fotoId).subscribe(() => {
+        return this.http.delete('/api/file/deleteProjectPhoto/' + projId + '/' + fotoId);
+      })
+    });
+  }
+
+  deleteProfilePhoto(userId) {
+    this.userService.getUser(userId).subscribe((res) => {
+      const fotoId = res.fotoPerfilId;
+      const id = res._id;
+      this.deletePhoto(fotoId).subscribe(() => {
+        return this.http.delete('/api/file/deleteProfilePhoto/' + id + '/' + fotoId);
+      });
+    });
+  }
+
 
 }

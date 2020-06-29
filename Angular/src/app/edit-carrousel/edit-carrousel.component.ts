@@ -10,6 +10,10 @@ import { FotoService } from '../services/foto.service';
 export class EditCarrouselComponent implements OnInit {
   file: any;
   fotos: Array<any> = [];
+
+  addPhotoResult: any;
+  selectedPhotoFileName: string;
+
   constructor(private fileService: FileService, private fotoService: FotoService, private _alertService: AlertService) { }
 
   ngOnInit(): void {
@@ -18,13 +22,11 @@ export class EditCarrouselComponent implements OnInit {
 
   getAllCarrouselPhotos() {
     this.fotoService.getAllDecodedCarouselFotos().then((fotos) => {
-      console.log('fotosqasxdcf :>> ', fotos);
       this.fotos = fotos;
     });
   }
 
-  getSrc(fotoId) {
-    const foto = this.fotos.find(elem => elem.id == fotoId);
+  getSrc(foto) {
     if (foto) {
       return 'data:' + foto.contentType + ';base64,' + foto.src;
     }
@@ -33,10 +35,6 @@ export class EditCarrouselComponent implements OnInit {
     }
   }
 
-
-  onFileChanged(event) {
-    this.file = event.target.files[0];
-  }
 
   onDelete(id) {
     this.fileService.deletePhoto(id).subscribe((res) => {
@@ -47,19 +45,37 @@ export class EditCarrouselComponent implements OnInit {
     });
   }
 
-  onUpload() {
-    const formData = new FormData();
-    formData.append('file', this.file, this.file.name);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const src = reader.result;
-      formData.append('type', 'carousel');
-      this.fileService.uploadPhoto(formData).subscribe((res) => {
-        this.getAllCarrouselPhotos();
-      });
-    };
-    reader.readAsDataURL(this.file);
 
+  onFileSelected(event) {
+    const files = event.target.files;
+
+    if (files.length > 0) {
+      this.selectedPhotoFileName = files[0].name;
+
+    }
+    const file = files[0];
+
+    const inputNode: any = document.querySelector('#fileCarousel');
+
+    const formdata = new FormData();
+    formdata.append('file', file, file.name);
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.addPhotoResult = e.target.result;
+        console.log(e.target);
+      };
+      reader.onloadend = () => {
+        this.fileService.updateCarouselPhoto(formdata);
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
   }
+
+
+
 }

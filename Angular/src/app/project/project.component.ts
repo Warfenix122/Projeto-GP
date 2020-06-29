@@ -97,6 +97,7 @@ export class ProjectComponent implements OnInit {
 
       this.fotoService.getProjectCoverPhoto(project._id).then((result) => {
         if (result) this.coverPhoto = result[0];
+        console.log('coverPhoto :>> ', this.coverPhoto);
       });
 
 
@@ -257,6 +258,17 @@ export class ProjectComponent implements OnInit {
       };
 
       reader.readAsArrayBuffer(inputNode.files[0]);
+    }
+  }
+
+  deleteCoverPhoto(coverId) {
+    if (coverId)
+      this.fileService.deleteProjectCover(this.id);
+  }
+
+  deletePhoto(fotoId){
+    if(fotoId){
+      this.fileService.deleteProjectPhoto(this.id, fotoId)
     }
   }
 

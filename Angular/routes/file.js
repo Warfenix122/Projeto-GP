@@ -2,10 +2,10 @@ const express = require("express");
 var router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const FotoCarrousel = require('../models/mongoConnection').FotoCarrousel;
 const User = require('../models/mongoConnection').Utilizadores;
 var multer = require('multer');
 const { Foto, Projeto } = require("../models/mongoConnection");
+const mongoose = require("mongoose");
 
 
 var storage = multer.diskStorage({
@@ -71,13 +71,51 @@ router.put("/updateProjectPhotos/:projectId", (req, res) => {
 
 
 router.delete("/deletePhoto/:id", (req, res) => {
-    Foto.deleteOne({ '_id': req.params.id }).then((err) => {
+    const id = mongoose.Types.ObjectId(req.params.id);
+    try {
+        Foto.deleteOne({ '_id': id }).then(() => {
+            res.status(200).json({ success: true, message: "sucesso" });
+        })
+    } catch (e) {
+        console.log('e :>> ', e);
+    }
+});
+
+router.delete("/deleteProfilePhoto/:userid/:fotoId", (req, res) => {
+    User.updateOne({ '_id': req.params.projectid }, { $unset: { 'fotoPerfilId': req.params.fotoId } }).then((err) => {
         if (err) {
             console.log('err :>> ', err);
             res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });
+        } else {
+            res.status(200).json({ success: true, message: "sucesso" });
+
+        }
+    })
+});
+
+router.delete("/deleteCoverPhoto/:projectid/:fotoId", (req, res) => {
+    Projeto.updateOne({ '_id': req.params.projectid }, { $unset: { 'fotoCapaId': req.params.fotoId } }).then((err) => {
+        if (err) {
+            console.log('err :>> ', err);
+            res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });
+        } else {
+            res.status(200).json({ success: true, message: "sucesso" });
+
         }
     });
-    res.status(200).json({ success: true, message: "sucesso" });
+});
+
+
+router.delete("/deleteProjectPhoto/:projectid/:fotoid", (req, res) => {
+    Projeto.updateOne({ '_id': req.params.projectid }, { $pull: { 'fotoIds': req.params.fotoId } }).then((err) => {
+        if (err) {
+            console.log('err :>> ', err);
+            res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });
+        } else {
+            res.status(200).json({ success: true, message: "sucesso" });
+
+        }
+    })
 });
 
 module.exports = router;

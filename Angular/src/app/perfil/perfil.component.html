@@ -41,6 +41,8 @@
                                 <h5 class="mt-1" [style.visibility]=" addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido:
                                     <b>{{selectedPhotoFileName}}</b></h5>
                                 <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*" id="file">
+                                <button mat-raised-button color="warn" (click)="onDelete()">Eliminar</button>
+
                             </form>
 
 

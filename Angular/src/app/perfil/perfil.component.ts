@@ -84,7 +84,6 @@ export class PerfilComponent implements OnInit {
 
   getProfilePhoto(fotoID) {
     this.fotoService.getUserPhoto(fotoID).then((fotos) => {
-      //fotos = [{id, src, contentType}]
       this.img.nativeElement.src = this.getSrc(fotos[0]);
     })
   }
@@ -115,6 +114,9 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  onDelete(){
+    this.fileService.deleteProfilePhoto(this.user._id)
+  }
 
   alterAreasInteresse() {
     this.saveAreas.nativeElement.style.display = 'block';
