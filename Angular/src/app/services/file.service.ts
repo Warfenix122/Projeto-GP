@@ -12,15 +12,26 @@ export class FileService {
 
   constructor(private http: HttpClient, private userService: UserService, private projectService: ProjectService) { }
 
-  updateProfilePhoto(formdata) {
+  updateProfilePhoto(formdata): Promise<User> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<User> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
     formdata.append('type', 'users')
     this.userService.getCurrentUserId().subscribe((userId) => {
       this.uploadPhoto(formdata).subscribe((res) => {
         this.updateUserPhoto(res['fotoId'], userId['UserID']).subscribe((res) => {
-          // do evento
-        });
+          resolveRef(res['user']);
+        }, (err) => rejectRef(err));
       });
     });
+
+    return dataPromise;
   }
 
   updateCoverPhoto(formdata) {
@@ -97,13 +108,29 @@ export class FileService {
   }
 
   deleteProfilePhoto(userId) {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<any> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
     this.userService.getUser(userId).subscribe((res) => {
       const fotoId = res.fotoPerfilId;
       const id = res._id;
       this.deletePhoto(fotoId).subscribe(() => {
-        return this.http.delete('/api/file/deleteProfilePhoto/' + id + '/' + fotoId);
+        this.http.delete('/api/file/deleteProfilePhoto/' + id).subscribe(res => {
+          let success = res['success'];
+          console.log(success);
+          if(success)
+            resolveRef();
+          else
+            rejectRef();
+        })
       });
     });
+    return dataPromise;
   }
 
 

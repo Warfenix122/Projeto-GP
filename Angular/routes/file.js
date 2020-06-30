@@ -82,7 +82,7 @@ router.delete("/deletePhoto/:id", (req, res) => {
 });
 
 router.delete("/deleteProfilePhoto/:userid/:fotoId", (req, res) => {
-    User.updateOne({ '_id': req.params.projectid }, { $unset: { 'fotoPerfilId': req.params.fotoId } }).then((err) => {
+    User.updateOne({ '_id': req.params.userid }, { $unset: { 'fotoPerfilId': req.params.fotoId } }).then((err) => {
         if (err) {
             console.log('err :>> ', err);
             res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });

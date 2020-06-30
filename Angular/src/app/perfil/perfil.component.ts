@@ -24,8 +24,11 @@ export class PerfilComponent implements OnInit {
 
   @ViewChild('image') img: ElementRef;
   @ViewChild('checkboxes') checkboxes: ElementRef;
-  @ViewChild('editAreas') editAreas: ElementRef;
   @ViewChild('saveAreas') saveAreas: ElementRef;
+
+  //buttonSupport
+  showEditAreasOfInterest: boolean = true;
+
   user: any = User;
   userInfo: any;
   existsImage: boolean = false;
@@ -40,7 +43,7 @@ export class PerfilComponent implements OnInit {
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
-  constructor(private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService) {
+  constructor(private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService, private elem: ElementRef) {
   }
 
 
@@ -73,6 +76,11 @@ export class PerfilComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(){
+    let element = this.elem.nativeElement.querySelector('.mat-tab-body-content');
+    element.style.overflowX = 'hidden';
+  }
+
   getSrc(foto) {
     if (foto) {
       return 'data:' + foto.contentType + ';base64,' + foto.src;
@@ -87,6 +95,7 @@ export class PerfilComponent implements OnInit {
       this.img.nativeElement.src = this.getSrc(fotos[0]);
     })
   }
+
   onFileSelected(event) {
     let files = event.target.files;
     if (files.length > 0) {
@@ -107,7 +116,10 @@ export class PerfilComponent implements OnInit {
       };
       reader.onloadend = () => {
         const src = reader.result;
-        this.fileService.updateProfilePhoto(formdata);
+        this.fileService.updateProfilePhoto(formdata).then(user => {
+          this.user.fotoPerfilId = user.fotoPerfilId;
+          this.getProfilePhoto(user.fotoPerfilId);
+        })
       };
 
       reader.readAsArrayBuffer(inputNode.files[0]);
@@ -115,16 +127,29 @@ export class PerfilComponent implements OnInit {
   }
 
   onDelete(){
-    this.fileService.deleteProfilePhoto(this.user._id)
+    let oldPhoto = this.user.fotoPerfilId;
+    this.userService.removeProfilePhoto(this.user._id).subscribe(() => {
+      this.fileService.deletePhoto(oldPhoto).subscribe(() => {
+        this.user.fotoPerfilId = null;
+        this.img.nativeElement.src = this.getSrc(undefined);
+      })
+    })
   }
 
   alterAreasInteresse() {
-    this.saveAreas.nativeElement.style.display = 'block';
-    this.editAreas.nativeElement.style.display = 'none';
-    this.form.controls['areas'].enable();
+    if(this.showEditAreasOfInterest){
+      this.saveAreas.nativeElement.style.display = 'block';
+      this.showEditAreasOfInterest = false;
+      this.form.controls['areas'].enable();
+    } else {
+      this.saveAreas.nativeElement.style.display = 'none';
+      this.showEditAreasOfInterest = true;
+      this.form.controls['areas'].disable();
+    }
   }
+
   saveAreasInteresse() {
-    this.editAreas.nativeElement.style.display = 'block';
+    this.showEditAreasOfInterest = true;
     this.saveAreas.nativeElement.style.display = 'none';
     const selectedAreas = this.selectedAreas;
     let user = this.user;
