@@ -44,8 +44,6 @@ function getCurrentUserRole(token){
   return currentUser.tipoMembro;
 }
 
-
-
 module.exports.issueJWT = issueJWT;
 module.exports.getCurrentUserId = getCurrentUserId;
 module.exports.getCurrentUserRole = getCurrentUserRole;

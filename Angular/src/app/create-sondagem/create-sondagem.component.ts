@@ -24,6 +24,10 @@ export class CreateSondagemComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSondagens()
+    // this.authService.getRole().subscribe(res =>{
+    //   if(res["Role"] !== "Gestor")
+    //     this.router.navigate(['unauthorized']);
+    // });
   }
 
   getSondagens() {
