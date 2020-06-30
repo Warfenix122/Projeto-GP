@@ -56,7 +56,7 @@ import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.componen
 import { FavoriteProjectComponent } from './favorite-project/favorite-project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
-import { SondagemComponent } from './sondagem/sondagem.component';
+import { SondagemComponent, DialogShowPoll } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -136,7 +136,8 @@ import { RegisteredProjectsComponent } from './registered-projects/registered-pr
     DialogRemoveContact,
     DialogAddManager,
     DialogManageVolunteers,
-    RegisteredProjectsComponent
+    RegisteredProjectsComponent,
+    DialogShowPoll
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
