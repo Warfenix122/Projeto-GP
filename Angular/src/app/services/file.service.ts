@@ -35,16 +35,26 @@ export class FileService {
   }
 
   updateCoverPhoto(formdata) {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Project> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
     formdata.append('type', 'projects');
     var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => { })
+        this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => {
+          resolveRef(res["project"])
+        }, (err) => rejectRef(err))
       });
     })
-
-
+    return dataPromise;
   }
+
   updateProjectPhotoFiles(formdata) {
     formdata.append('type', 'projects');
     var projId = formdata.get('projectId');
@@ -83,55 +93,4 @@ export class FileService {
   deletePhoto(fotoId) {
     return this.http.delete('/api/file/deletePhoto/' + fotoId);
   }
-
-  deleteProjectCover(projectId) {
-    this.projectService.getProject(projectId).subscribe((res) => {
-      const fotoId = res.fotoCapaId;
-      const projId = res._id;
-      this.deletePhoto(fotoId).subscribe(() => {
-        return this.http.delete('/api/file/deleteCoverPhoto/' + projId + '/' + fotoId);
-      })
-
-    });
-  }
-
-
-  deleteProjectPhoto(projectId, fotoId) {
-    this.projectService.getProject(projectId).subscribe((res) => {
-      const id = res.fotosId.find(fotoId);
-      console.log('id :>> ', id);
-      const projId = res._id;
-      this.deletePhoto(fotoId).subscribe(() => {
-        return this.http.delete('/api/file/deleteProjectPhoto/' + projId + '/' + fotoId);
-      })
-    });
-  }
-
-  deleteProfilePhoto(userId) {
-    let resolveRef;
-    let rejectRef;
-
-    //create promise
-    let dataPromise: Promise<any> = new Promise((resolve, reject) => {
-      resolveRef = resolve;
-      rejectRef = reject;
-    })
-    this.userService.getUser(userId).subscribe((res) => {
-      const fotoId = res.fotoPerfilId;
-      const id = res._id;
-      this.deletePhoto(fotoId).subscribe(() => {
-        this.http.delete('/api/file/deleteProfilePhoto/' + id).subscribe(res => {
-          let success = res['success'];
-          console.log(success);
-          if(success)
-            resolveRef();
-          else
-            rejectRef();
-        })
-      });
-    });
-    return dataPromise;
-  }
-
-
 }

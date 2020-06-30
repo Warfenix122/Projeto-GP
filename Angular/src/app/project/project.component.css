@@ -50,11 +50,15 @@
     height: 59%;
 }
 
-.image-body>.col-sm-8 {
+.image-body > .pl-0 {
+    margin-left: -50px;
+}
+
+.image-body>.col-sm-6 {
     padding-left: 7vw;
 }
 
-.image-header>.col-sm-8 {
+.image-header>.col-sm-6 {
     padding-left: 40px;
 }
 

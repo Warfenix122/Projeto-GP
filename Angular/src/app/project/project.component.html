@@ -1,5 +1,5 @@
 <div id="firstdiv" class="container" *ngIf="project">
-    <div class="container header" [ngStyle]="{'background-image':'url('+getSrc(coverPhoto)+')'}">
+    <div class="container header" [ngStyle]="coverPhoto != '' && coverPhoto != undefined ? {'background-image':'url('+getSrc(coverPhoto)+')'} : {'background-color':'#a6a6a6'}">
         <div class="row image-header justify-content-end">
             <div class="col-sm-8">
                 <button routerLink="/projects" mat-raised-button data-toggle="button" aria-pressed="false" autocomplete="off">
@@ -23,13 +23,18 @@
             </div>
         </div>
         <div class="row image-body">
-            <div *ngIf="!isEditButtonToggled" class="col-sm-8">
-                <h1 id="titulo">{{project.nome}}</h1>
-                <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
-                <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
-                <button (click)="updateFavProject()" (mouseover)="hoverFavButton(true)" (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning">
-          <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
-        </button>
+            <div class="col-sm-6">
+                <div *ngIf="!isEditButtonToggled">
+                    <h1 id="titulo">{{project.nome}}</h1>
+                    <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
+                    <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
+                    <button (click)="updateFavProject()" (mouseover)="hoverFavButton(true)" (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning">
+                        <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-6 pl-0">
+                <mat-spinner *ngIf="coverPhoto == undefined"></mat-spinner>
             </div>
         </div>
     </div>
@@ -199,9 +204,10 @@
       </button>
             <h5 class="mt-1" [style.visibility]="isEditButtonToggled && addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido: <b>{{selectedCoverPhotoFileName}}</b></h5>
             <input hidden (change)="onFileSelected($event)" #coverInput type="file" accept="image/*" id="cover">
-            <div *ngIf="isEditButtonToggled && coverPhoto" class="d-flex flex-wrap">
+            <div *ngIf="isEditButtonToggled && coverPhoto != ''" class="d-flex flex-wrap">
                 <mat-card>
-                    <img mat-card-image class="cardImage" style="margin-bottom: 0px;" [src]="getSrc(coverPhoto)">
+                    <img *ngIf="coverPhoto != undefined" mat-card-image class="cardImage" style="margin-bottom: 0px;" [src]="getSrc(coverPhoto)">
+                    <mat-spinner *ngIf="coverPhoto == undefined"></mat-spinner>
                     <mat-card-actions class="cardButtonActions text-center">
                         <button mat-raised-button color="warn" (click)="deleteCoverPhoto(coverPhoto.id)">Eliminar</button>
                     </mat-card-actions>

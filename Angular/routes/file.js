@@ -48,7 +48,6 @@ router.put("/updateUserPhoto/:userId", (req, res) => {
 
 })
 router.put("/updateProjectCover/:projectId", (req, res) => {
-    console.log('req.params.id :>> ', req.params.projectId);
     Projeto.findOne({ _id: req.params.projectId }).then((proj) => {
         proj.fotoCapaId = req.body.fotoId;
         proj.save().then((pr) => {

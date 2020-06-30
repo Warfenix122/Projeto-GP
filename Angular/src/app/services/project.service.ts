@@ -39,6 +39,14 @@ export class ProjectService {
     return this.http.get<Inscricao[]>('/api/project/registerProject/' + userId);
   }
 
+  removeCoverPhoto(id){
+    return this.http.put<Project>('/api/project/'+id, {fotoCapaId: null});
+  }
+
+  updateProjectPhotos(id, photos){
+    return this.http.put<Project>('/api/project/'+id, {fotosId: photos});
+  }
+
   editProject(id, obj){
     return this.http.put<Project>('/api/project/'+id, obj);
   }

@@ -57,7 +57,7 @@ export class ProjectComponent implements OnInit {
   showEditProjectContact: boolean[] = [];
 
   projectPhotos: Array<any> = [];
-  coverPhoto: any = '';
+  coverPhoto: any = undefined;
   isManager: boolean;
   isResponsible: boolean;
   project: Project;
@@ -83,7 +83,6 @@ export class ProjectComponent implements OnInit {
       this.id = params['id'];
     });
     this.projectService.getProject(this.id).subscribe(project => {
-      console.log(project.formacoesNecessarias);
       this.project = this.deepCopy(project) as Project;
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
@@ -96,8 +95,10 @@ export class ProjectComponent implements OnInit {
 
 
       this.fotoService.getProjectCoverPhoto(project._id).then((result) => {
-        if (result) this.coverPhoto = result[0];
-        console.log('coverPhoto :>> ', this.coverPhoto);
+        if (result)
+          this.coverPhoto = result[0];
+        if (!result[0])
+          this.coverPhoto = '';
       });
 
 
@@ -203,6 +204,7 @@ export class ProjectComponent implements OnInit {
   }
 
   onFileSelected(event) {
+    this.coverPhoto = undefined;
     let files = event.target.files;
 
     if (files.length > 0) {
@@ -225,7 +227,12 @@ export class ProjectComponent implements OnInit {
         console.log(e.target);
       };
       reader.onloadend = () => {
-        this.fileService.updateCoverPhoto(formdata);
+        this.fileService.updateCoverPhoto(formdata).then(updatedProject => {
+          this.fotoService.getProjectCoverPhoto(this.project._id).then((result) => {
+            if (result) this.coverPhoto = result[0];
+            if (!result[0]) this.coverPhoto = '';
+          });
+        })
       };
 
       reader.readAsArrayBuffer(inputNode.files[0]);
@@ -263,12 +270,22 @@ export class ProjectComponent implements OnInit {
 
   deleteCoverPhoto(coverId) {
     if (coverId)
-      this.fileService.deleteProjectCover(this.id);
+      this.projectService.removeCoverPhoto(this.project._id).subscribe(proj => {
+        this.fileService.deletePhoto(coverId).subscribe(res => {
+          this.project.fotoCapaId = null;
+          this.coverPhoto = '';
+        })
+      })
   }
 
   deletePhoto(fotoId){
     if(fotoId){
-      this.fileService.deleteProjectPhoto(this.id, fotoId)
+      let index = this.projectPhotos.findIndex(elem => elem == fotoId);
+      this.projectPhotos.splice(index, 1);
+      this.project.fotosId.splice(index, 1)
+      this.projectService.updateProjectPhotos(this.project._id, this.project.fotosId).subscribe(proj => {
+        this.fileService.deletePhoto(fotoId).subscribe();
+      })
     }
   }
 
