@@ -2,6 +2,16 @@
   width: 100%;
 }
 
+.next-step{
+  margin:0;
+  position: absolute;
+  width: 30%;
+  margin-top: 3%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 #add-atividade {
   float: right;
   margin-top: 1.5rem;
@@ -30,4 +40,8 @@
 }
 .center-column {
   margin-left: -15px;
+}
+
+.big-input{
+  width: 60%;
 }

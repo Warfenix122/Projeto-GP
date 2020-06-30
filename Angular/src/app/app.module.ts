@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -59,7 +60,7 @@ import { SondagemComponent } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact } from './project/project.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 
 import {AccordionModule} from 'primeng/accordion';     
 import {CarouselModule} from 'primeng/carousel';
@@ -96,8 +97,9 @@ import {CarouselModule} from 'primeng/carousel';
     MatListModule,
     MatRippleModule,
     MatDialogModule,
-    MatBottomSheetModule
-    ],
+    MatBottomSheetModule,
+    MatPaginatorModule
+  ],
   declarations: [
     AppComponent,
     NavComponent,
@@ -132,7 +134,9 @@ import {CarouselModule} from 'primeng/carousel';
     RegisteredProjectsComponent,
     BottomSheetSetting,
     DialogDeleteProject,
-    DialogRemoveContact
+    DialogRemoveContact,
+    DialogAddManager,
+    DialogManageVolunteers
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

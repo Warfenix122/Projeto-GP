@@ -14,7 +14,7 @@
   ],
   "generos": ["Masculino","Feminino","Outro"],
   "tipoUtilizadores": ["Voluntario Interno", "Voluntario Externo"],
-  "fomação": ["Estudante", "Administrativo", "Docente"],
+  "fomação": ["2.º ciclo", "3.º ciclo", " Ensino secundário", "Qualificação de nível pós-secundário não superior","Licenciatura", "Mestrado", "Doutoramento"],
   "distritos": [
     "Lisboa",
     "Porto",

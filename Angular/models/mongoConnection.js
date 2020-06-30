@@ -54,33 +54,29 @@ var FotoSchema = new Schema({
 })
 
 var ProjetoSchema = new Schema({
-    nome: String,
-    resumo: String,
-    responsavelId: mongoose.ObjectId,
-    // categorias: [{ categoriaId: mongoose.ObjectId }],
-    palavrasChave: [{ nome: String }],
-    contactos: [{ contacto: String, descricao: String }],
-    publicoAlvoId: mongoose.ObjectId,
-    formacoesNecessarias: [String],
-    XemXTempo: String, // "1 vez por mes " etc..
-    aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
-    gestores: [mongoose.ObjectId], //só podem ser externos
-    comentarios: [{
-        comentario: String,
-        utilizadorId: mongoose.ObjectId,
-        dataCriacao: Date,
-    }, ],
-    vagas: Number,
-    atividades: [{ descricao: String, dataAcontecimento: Date }],
-    fotosIds: [mongoose.ObjectId],
-    projetoMes: Boolean,
-    dataCriacao: Date,
-    dataTermino: Date,
-    dataFechoInscricoes: Date,
-    dataComeco: Date,
-    areasInteresse: [String], //Areas onde este projeto se enquadra
-    voluntarios: [mongoose.ObjectId],
-    fotoCapaId: mongoose.ObjectId
+  nome: String,
+  resumo: String,
+  responsavelId: mongoose.ObjectId,
+  palavrasChave: [{ nome: String }],
+  contactos: [{ contacto: String, descricao: String }],
+  publicoAlvoId: mongoose.ObjectId,
+  formacoesNecessarias: [String],
+  XemXTempo: String, // "1 vez por mes " etc..
+  aprovado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] },
+  gestores: [mongoose.ObjectId], //só podem ser externos
+  comentarios: [{comentario: String,utilizadorId: mongoose.ObjectId,dataCriacao: Date,},],
+  vagas: Number,
+  atividades: [{ descricao: String, dataAcontecimento: Date }],
+  ficheirosCaminho: [{ caminho: String }],
+  projetoMes: Boolean,
+  dataCriacao: Date,
+  dataTermino: Date,
+  dataFechoInscricoes: Date,
+  dataComeco: Date,
+  areasInteresse: [String], //Areas onde este projeto se enquadra
+  voluntarios: [{userId: mongoose.ObjectId, estado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"]}}],
+  fotoCapaId: mongoose.ObjectId,
+  restringido: Boolean,
 });
 
 

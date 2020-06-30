@@ -9,64 +9,49 @@ const { forEachChild } = require("typescript");
 
 
 router.post("", (req, res) => {
-    const {
-        nome,
-        responsavelId,
-        resumo,
-        publicoAlvo,
-        formacoesNecessarias,
-        dataTermino,
-        dataComeco,
-        formacao,
-        dataFechoInscricoes,
-        nrVagas,
-        gestoresIds,
-        XemXTempo,
-        selectedAreas,
-        atividades,
-    } = req.body;
+  const {
+    nome,
+    responsavelId,
+    resumo,
+    formacoesNecessarias,
+    dataTermino,
+    dataComeco,
+    dataFechoInscricoes,
+    nrVagas,
+    gestoresIds,
+    XemXTempo,
+    selectedAreas,
+    atividades,
+    restringido,
+  } = req.body;
 
-    // PublicoAlvo.find({ descricao: publicoAlvo }).then((publicoAlvo) => {
-    //   if (publicoAlvo) {
-    //     existingPublicoAlvo = publicoAlvo;
-    //   } else {
-    //     const newPublicoAlvo = new PublicoAlvo({
-    //       descricao: publicoAlvo,
-    //       predefinido: false,
-    //     });
-    //     newPublicoAlvo.save().then((publicoAlvo) => {
-    //       publicoAlvo = publicoAlvo.id;
-    //     });
-    //   }
-    // });
-
-    Project.findOne({ nome: nome }).then((project) => {
-        if (project) {
-            res.status(409).send("Já existe um projeto com esse nome");
-        } else {
-            const newProject = new Project({
-                nome: nome,
-                resumo: resumo,
-                responsavelId: responsavelId,
-                formacoesNecessarias: formacoesNecessarias,
-                XemXTempo: XemXTempo,
-                gestores: gestoresIds,
-                formacoesNecessarias: formacao,
-                atividades: atividades,
-                vagas: nrVagas,
-                projetoMes: false,
-                dataCriacao: Date.now(),
-                dataTermino: dataTermino,
-                dataFechoInscricoes: dataFechoInscricoes,
-                dataComeco: dataComeco,
-                areasInteresse: selectedAreas,
-                voluntarios: new Array(),
-            });
-            newProject.save().then((project) => {
-                res.status(200).json({ success: true, projetoId: project._id });
-            });
-        }
-    });
+  Project.findOne({ nome: nome }).then((project) => {
+    if (project) {
+      res.status(409).send("Já existe um projeto com esse nome");
+    } else {
+      const newProject = new Project({
+        nome: nome,
+        resumo: resumo,
+        responsavelId: responsavelId,
+        formacoesNecessarias: formacoesNecessarias,
+        XemXTempo: XemXTempo,
+        gestores: gestoresIds,
+        atividades: atividades,
+        vagas: nrVagas,
+        projetoMes: false,
+        dataCriacao: Date.now(),
+        dataTermino: dataTermino,
+        dataFechoInscricoes: dataFechoInscricoes,
+        dataComeco: dataComeco,
+        areasInteresse: selectedAreas,
+        voluntarios: new Array(),
+        restringido: restringido,
+      });
+      newProject.save().then((project) => {
+        res.status(200).json({ success: true, projetoId: project._id });
+      });
+    }
+  });
 });
 
 //update
