@@ -10,6 +10,7 @@ import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
 import { ProjectService } from '../services/project.service'
 import { ProjetoResponse } from 'models/responseInterfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-project',
@@ -38,7 +39,7 @@ export class CreateProjectComponent implements OnInit {
   daySelected:Boolean;
   criacao:Date;
 
-  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService) { }
+  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService, private router: Router) { }
 
   formInfo = this._fb.group({
     nome: new FormControl('', [Validators.required]),
@@ -63,14 +64,20 @@ export class CreateProjectComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this._userService.getVoluntariosExternos().subscribe(users => {
-      this.utilizadoresExternos = users;
-      this.emails = this.utilizadoresExternos.map(user => user.email);
-      this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
-        .pipe(
-          startWith(''),
-          map(value => this._filterUtilizadores(value))
-        );
+    this._authService.getRole().subscribe(res=>{
+      console.log(res);
+      if(res["role"]==="Gestor"){
+        this._userService.getVoluntariosExternos().subscribe(users => {
+        this.utilizadoresExternos = users;
+        this.emails = this.utilizadoresExternos.map(user => user.email);
+        this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
+          .pipe(
+            startWith(''),
+            map(value => this._filterUtilizadores(value))
+          );
+        });
+      }else
+        this.router.navigate(["unauthorized"]);
     });
   }
 
@@ -256,6 +263,7 @@ export class CreateProjectComponent implements OnInit {
         let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
         console.log(formBody);
         this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
+          console.log(res);
           if (this.file) {
             this.imgUpload(res.projetoId);
           }

@@ -15,13 +15,13 @@ router.post("", (req, res) => {
     formacoesNecessarias,
     dataTermino,
     dataComeco,
-    formacao,
     dataFechoInscricoes,
     nrVagas,
     gestoresIds,
     XemXTempo,
     selectedAreas,
     atividades,
+    restringido,
   } = req.body;
 
   Project.findOne({ nome: nome }).then((project) => {
@@ -44,6 +44,7 @@ router.post("", (req, res) => {
         dataComeco: dataComeco,
         areasInteresse: selectedAreas,
         voluntarios: new Array(),
+        restringido: restringido,
       });
       newProject.save().then((project) => {
         res.status(200).json({ success: true, projetoId: project._id });
