@@ -144,6 +144,35 @@ describe('Projetos', function(){
         });
     });
 
+    describe('Adicionar projeto favorito', function(){
+        it('Projeto adicionado aos favoritos', (done) => {
+            User.findOne({ _id: user._id}).then((user) => {
+                let fav = user["projetosFavoritos"];
+                fav.push(newProject._id);
+                user.save().then((updatedUser) => {
+                    assert.strictEqual(updatedUser["projetosFavoritos"].includes(newProject._id), true);
+                    done();
+                })
+            })
+        })
+    })
+
+    describe('Remover projeto favorito', function() {
+        it('Projeto removido com sucesso', (done) => {
+            User.findOne({ _id: user._id}).then((user) => {
+                let index = user["projetosFavoritos"].indexOf(newProject._id);
+                if (index > -1) {
+                    user["projetosFavoritos"].splice(index, 1);
+                }
+                user.save().then((updatedUser) => {
+                    assert.strictEqual(updatedUser["projetosFavoritos"].includes(newProject._id), false);
+                    done();
+                })
+            })
+            
+        })
+    })
+
     describe('Favoritos', function(){
         it('Projetos favoritos de um user', (done) => {
             User.findOne({ _id: user._id }).then((user) => {
@@ -196,5 +225,6 @@ describe('Projetos', function(){
             })
         });
     });
+
 });
 
