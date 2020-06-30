@@ -77,6 +77,10 @@ export class UserService {
     });
   }
 
+  getCurrentUserRole(token){
+    return this.http.get('/api/currentUserRole/'+token);
+  }
+
   getUser(id) {
     return this.http.get<User>('/api/user/' + id);
   }

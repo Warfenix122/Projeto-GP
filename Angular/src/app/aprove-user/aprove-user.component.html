@@ -1,3 +1,4 @@
+<h1 class="mt-5 text-center" *ngIf="emptyReturnMessage != undefined">{{emptyReturnMessage}}</h1>
 <div class="row mt-5">
   <div class="col-md-10 m-auto container">
     <div *ngFor="let utilizador of utilizadores; let i = index" class="row mt-2 justify-content-between ">
