@@ -10,6 +10,7 @@ import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
 import { ProjectService } from '../services/project.service'
 import { ProjetoResponse } from 'models/responseInterfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-project',
@@ -35,15 +36,17 @@ export class CreateProjectComponent implements OnInit {
   file: File = null;
   formErrors: [];
   validationMessages: [String];
+  daySelected:Boolean;
+  criacao:Date;
 
-
-  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService) { }
+  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService, private router: Router) { }
 
   formInfo = this._fb.group({
     nome: new FormControl('', [Validators.required]),
     resumo: new FormControl('', [Validators.required]),
     nrVagas: new FormControl('', [Validators.required]),
     necessarioFormacao: new FormControl(false),
+    restringido: new FormControl(false),
     formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
     gestoremail: new FormControl(''),
@@ -61,14 +64,20 @@ export class CreateProjectComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this._userService.getVoluntariosExternos().subscribe(users => {
-      this.utilizadoresExternos = users;
-      this.emails = this.utilizadoresExternos.map(user => user.email);
-      this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
-        .pipe(
-          startWith(''),
-          map(value => this._filterUtilizadores(value))
-        );
+    this._authService.getRole().subscribe(res=>{
+      console.log(res);
+      if(res["role"]==="Gestor"){
+        this._userService.getVoluntariosExternos().subscribe(users => {
+        this.utilizadoresExternos = users;
+        this.emails = this.utilizadoresExternos.map(user => user.email);
+        this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
+          .pipe(
+            startWith(''),
+            map(value => this._filterUtilizadores(value))
+          );
+        });
+      }else
+        this.router.navigate(["unauthorized"]);
     });
   }
 
@@ -148,15 +157,19 @@ export class CreateProjectComponent implements OnInit {
   }
 
   addAtividade() {
-    let dia = _moment(this.diaAtividade.value).toDate();
-    console.log(dia)
-    this.atividadesArr.push(this._fb.group({
-      descricao: new FormControl('', Validators.required),
-      //dataAcontecimento: new FormControl(''),
-      dia: new Date(dia.getFullYear(), dia.getMonth() + 1, dia.getDate(),),
-      horas: new FormControl('', Validators.required),
-    })
-    );
+    if(this.diaAtividade.touched){
+      this.daySelected=true;
+      let dia = _moment(this.diaAtividade.value).toDate();
+      this.atividadesArr.push(this._fb.group({
+        descricao: new FormControl('', Validators.required),
+        //dataAcontecimento: new FormControl(''),
+        dia: new Date(dia.getFullYear(), dia.getMonth() + 1, dia.getDate(),),
+        horas: new FormControl('', Validators.required),
+        })
+      );
+    }else{
+      this.daySelected=false;
+    }
   }
 
   removerAtividade(index): void {
@@ -165,8 +178,9 @@ export class CreateProjectComponent implements OnInit {
 
   calculateDaysBetween() {
     this.termino = this.dataTermino.value;
+    this.criacao = new Date();
     if (this.dataComeco.value !== '' && this.dataTermino.value !== '') {
-      this.diaAtividade.setValue(this.comeco);
+
       this._datesSet = true;
       this.daysBetween = [];
       let inicio = _moment(this.dataComeco.value);
@@ -176,8 +190,10 @@ export class CreateProjectComponent implements OnInit {
         for (let i = 0; i < diference; i++) {
           if (i === 0)
             this.daysBetween.push(inicio.toDate());
-          let newMoment = inicio.add(1, 'days').toDate();
-          this.daysBetween.push(newMoment);
+          else{
+            let newMoment = inicio.add(1, 'days').toDate();
+            this.daysBetween.push(newMoment);
+          }
         }
       } else {
         this.daysBetween.push(inicio.toDate());
@@ -247,6 +263,7 @@ export class CreateProjectComponent implements OnInit {
         let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
         console.log(formBody);
         this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
+          console.log(res);
           if (this.file) {
             this.imgUpload(res.projetoId);
           }

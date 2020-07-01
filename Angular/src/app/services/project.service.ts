@@ -60,6 +60,7 @@ export class ProjectService {
   }
 
   addProject(formBody): Observable<ProjetoResponse> {
+    console.log(formBody);
     return this.http.post<ProjetoResponse>('/api/project', formBody, this.httpOptions);
   }
 

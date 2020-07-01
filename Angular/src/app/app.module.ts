@@ -65,6 +65,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 
 import {AccordionModule} from 'primeng/accordion';     
 import {CarouselModule} from 'primeng/carousel';

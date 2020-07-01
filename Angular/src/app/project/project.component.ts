@@ -71,6 +71,7 @@ export class ProjectComponent implements OnInit {
   currentUserId: String;
   user: User;
   gestores: User[];
+
   externos: User[];
   newContactsSession: string = "";
   responsiveOptions;

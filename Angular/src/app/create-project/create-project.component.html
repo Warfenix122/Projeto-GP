@@ -4,8 +4,8 @@
     <form [formGroup]="formInfo" autocomplete="off">
       <div class="row">
         <div class="col-md-5">
-          <div class="form-group">
-            <label for="Nome">Nome</label>
+          <mat-form-field style="width: 100%; margin-left: -15px;">
+            <mat-label for="Nome">Nome</mat-label>
             <input
               type="text"
               id="nome"
@@ -13,89 +13,101 @@
               class="form-control"
               placeholder="Introduza o nome do projeto"
               formControlName="nome"
-              autocomplete="off"
+              matInput
             />
-            <div
-              *ngIf="nome.invalid && (nome.dirty || nome.touched)"
-              class="alert alert-danger"
+            <mat-error *ngIf="nome.hasError('required')"
+              >O nome é um campo obrigatorio</mat-error
             >
-              <div *ngIf="nome.errors.required">
-                O nome é um campo obrigatorio.
-              </div>
-            </div>
-          </div>
+          </mat-form-field>
         </div>
         <div class="col-md-5">
           <form class="d-flex justify-content-center">
-            <label for="file" *ngIf="this.file">{{ this.file.name }}</label>
-            <input
-              style="display: none;"
-              type="file"
-              accept="image/*"
-              (change)="onFileChanged($event.target.files)"
-              #fileInput
-            />
-            <button class="btn btn-dark" (click)="fileInput.click()">
-              Escolher Ficheiro <i class="far fa-image"></i>
-            </button>
+            <div class="col-sm-3">
+              <label for="file" style="margin-top: 50%;" *ngIf="this.file">{{
+                this.file.name
+              }}</label>
+            </div>
+            <div class="col-sm-3">
+              <input
+                style="display: none;"
+                type="file"
+                accept="image/*"
+                (change)="onFileChanged($event.target.files)"
+                #fileInput
+              />
+              <button
+                mat-raised-button
+                style="margin-top: 45%;"
+                color="primary"
+                (click)="fileInput.click()"
+              >
+                Escolher Ficheiro <i class="far fa-image"></i>
+              </button>
+            </div>
           </form>
         </div>
       </div>
-      <div class="form-group">
-        <label for="resumo">Resumo</label>
-        <textarea
-          id="resumo"
-          name="resumo"
-          class="form-control"
-          placeholder="Introduza um pequeno resumo do projeto"
-          formControlName="resumo"
-        ></textarea>
-        <div
-          *ngIf="resumo.invalid && (resumo.dirty || resumo.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="resumo.errors.required">
-            O resumo é um campo obrigatorio.
+      <div class="row">
+        <mat-form-field style="width: 70%;">
+          <mat-label for="resumo">Resumo</mat-label>
+          <textarea
+            id="resumo"
+            name="resumo"
+            class="form-control"
+            placeholder="Introduza um pequeno resumo do projeto"
+            formControlName="resumo"
+            matInput
+          ></textarea>
+          <mat-error *ngIf="resumo.hasError('required')"
+            >O resumo é um campo obrigatorio.</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field style="width: 40%;">
+          <mat-label for="nrVagas"
+            >Quantas vagas serão disponibilizadas?</mat-label
+          >
+          <input
+            type="number"
+            id="nrVagas"
+            name="nrVagas"
+            class="form-control"
+            matInput
+            formControlName="nrVagas"
+          />
+          <mat-error *ngIf="nrVagas.hasError('required')"
+            >O numero de vagas é um campo obrigatorio.</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle formControlName="necessarioFormacao" color="primary"
+            >O voluntario necessita de formação?
+          </mat-slide-toggle>
+          <div class="form-group" *ngIf="this.isFormacaoNecessaria.value">
+            <div class="col-md-6 center-column">
+              <mat-form-field>
+                <mat-label>Formacao</mat-label>
+                <mat-select [formControl]="formacao" multiple>
+                  <mat-option
+                    *ngFor="let formacao of formacoes"
+                    [value]="formacao"
+                    >{{ formacao }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="nrVagas">Quantas vagas serão disponibilizadas?</label>
-        <input
-          type="number"
-          id="nrVagas"
-          name="nrVagas"
-          class="form-control"
-          formControlName="nrVagas"
-        />
-        <div
-          *ngIf="nrVagas.invalid && (nrVagas.dirty || nrVagas.touched)"
-          class="alert alert-danger"
-        >
-          <div *ngIf="nrVagas.errors.required">
-            O numero de vagas é um campo obrigatorio.
-          </div>
+        <div class="col">
+          <mat-slide-toggle formControlName="restringido" color="primary">
+            Quer escolher os voluntarios que irão participar no projeto?
+          </mat-slide-toggle>
         </div>
       </div>
-      <mat-slide-toggle formControlName="necessarioFormacao" color="primary"
-        >O voluntario necessita de formação?</mat-slide-toggle
-      >
-      <div class="form-group" *ngIf="this.isFormacaoNecessaria.value">
-        <div class="col-md-6 center-column">
-          <!-- <label for="formacao">Formação</label> -->
-          <mat-form-field>
-            <mat-label>Formacao</mat-label>
-            <mat-select [formControl]="formacao" multiple>
-              <mat-option
-                *ngFor="let formacao of formacoes"
-                [value]="formacao"
-                >{{ formacao }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-6"></div>
-      </div>
+
       <div class="form-group">
         <label for="areas">Areas de Interesse:</label>
         <ul class="col-lg-10 list-unstyled" style="column-count: 2;">
@@ -110,7 +122,7 @@
                 [formControl]="control"
                 (change)="getSelectedAreas()"
                 name="{{ areas[i] }}"
-                color= "primary"
+                color="primary"
                 >{{ areas[i] }}</mat-checkbox
               >
             </div>
@@ -120,41 +132,46 @@
       <div class="form-group">
         <div class="row">
           <div class="col-md-7">
-            <label for="gestoremail">Adicionar Gestor</label>
-            <input
-              type="text"
-              placeholder="Introduza o email do sub-gestor"
-              class="form-control"
-              id="gestoremail"
-              name="gestoremail"
-              formControlName="gestoremail"
-              MatInput
-              [matAutocomplete]="autoGestor"
-            />
-            <mat-autocomplete #autoGestor="matAutocomplete">
-              <mat-option
-                *ngFor="let email of filteredEmails | async"
-                [value]="email"
-              >
-                {{ email }}
-              </mat-option>
-            </mat-autocomplete>
-          </div>
-          <div id="add-gestor" class="col-sm-1">
-            <button
-              class="btn btn-primary btn-add-gestor"
-              name="btn-add-gestor"
+            <mat-form-field class="big-input">
+              <mat-label for="gestoremail">Adicionar Gestor</mat-label>
+              <input
+                type="text"
+                matInput
+                placeholder="Introduza o email do sub-gestor"
+                class="form-control"
+                id="gestoremail"
+                name="gestoremail"
+                formControlName="gestoremail"
+                [matAutocomplete]="autoGestor"
+              />
+              <mat-autocomplete #autoGestor="matAutocomplete">
+                <mat-option
+                  *ngFor="let email of filteredEmails | async"
+                  [value]="email"
+                >
+                  {{ email }}
+                </mat-option>
+              </mat-autocomplete>
+              <button
+              mat-icon-button
+              color="primary"
+              style=" height:48px !important;
+              width:48px !important;"
+              matSuffix
               (click)="gestoresEscolhidos()"
             >
-              <i class="fas fa-plus-circle"></i>
+              <mat-icon style="font-size: 35px;">add_box</mat-icon>
             </button>
+            </mat-form-field>
           </div>
           <div class="col-sm-4">
             <button
               type="button"
-              class="btn btn-primary btn-add-gestor"
+              color="primary"
               data-toggle="modal"
               data-target="#exampleModal"
+              style="margin-top: 1.5rem;"
+              mat-raised-button
             >
               Mostrar Gestores adicionados
             </button>
@@ -162,7 +179,7 @@
         </div>
       </div>
     </form>
-    <button class="btn btn-primary btn-block" mat-button matStepperNext>
+    <button class="next-step" color="primary" mat-raised-button matStepperNext>
       Proximo Passo
     </button>
   </mat-step>
@@ -246,8 +263,8 @@
             <input
               matInput
               [matDatepicker]="dataFechoInscricoes"
-              [min]="comeco"
-              [max]="termino"
+              [min]="criacao"
+              [max]="comeco"
               formControlName="dataFechoInscricoes"
             />
             <mat-datepicker-toggle
@@ -260,19 +277,19 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-sm-3">
-              <label>Atividades:</label>
-              <select
-                class="form-control"
-                name="calendarização"
+            <div class="col-sm-3"><mat-form-field>
+                <mat-label>Atividades:</mat-label>
+              <mat-select
                 formControlName="diaAtividade"
               >
-                <option *ngFor="let date of daysBetween" [value]="date"
+                <mat-option *ngFor="let date of daysBetween" [value]="date"
                   >{{ date.getFullYear() }}/{{ date.getMonth() + 1 }}/{{
                     date.getDate()
-                  }}</option
+                  }}</mat-option
                 >
-              </select>
+              </mat-select>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!daySelected">Porfavor escolha o dia que pretende fazer as atividades</div>
             </div>
             <div class="col-md-8">
               <button
@@ -327,7 +344,9 @@
 
       <button
         type="submit"
-        class="btn btn-primary btn-block"
+        mat-raised-button
+        color="primary"
+        style="left: 50%;width: 20%;"
         (click)="postData()"
       >
         Submeter
