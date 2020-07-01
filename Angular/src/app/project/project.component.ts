@@ -337,7 +337,7 @@ export class ProjectComponent implements OnInit {
 
   volunteer() {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
-      console.log(res);
+      this.candidato=true;
     });
   }
 
@@ -398,7 +398,9 @@ export class ProjectComponent implements OnInit {
   }
 
   cancelVolunteer() {
-    this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(res => console.log(res));
+    this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(res =>{console.log(res)
+      this.candidato = false;
+    } );
   }
 
   updateFavProject() {

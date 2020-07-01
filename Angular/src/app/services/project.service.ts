@@ -65,7 +65,7 @@ export class ProjectService {
   }
 
   volunteer(projectId,voluntarioId){
-    let volId = {voluntarioId:voluntarioId}
+    let volId = {userId:voluntarioId}
     return this.http.put<ImageResponse>('/api/project/candidatar/'+projectId,volId);
   }
 

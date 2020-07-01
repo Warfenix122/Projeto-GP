@@ -70,7 +70,6 @@ router.put('/:id', (req, res) => {
 
 //get one
 router.get('/getProject/:id', (req, res) => {
-  console.log('entrou')
   let projectId = mongoose.Types.ObjectId(req.params.id);
   Project.findOne({ _id: projectId }).then((project) => {
     res.json(project);
@@ -112,14 +111,15 @@ router.put('/anularCandidatura/:id', (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
   let voluntarioId = req.body.voluntarioId;
   Project.findOne({ _id: projectId }).then((project) => {
-    let index;
+    let index = undefined;
     let voluntarios = project["voluntarios"]
     for (i = 0; i < voluntarios.length; i++) {
-      if (voluntarios[i].userId === voluntarioId) {
+      if (voluntarios[i].userId == voluntarioId) {
         index = i;
         break;
       }
     }
+    console.log(index);
     if (typeof Number(index)) {
       voluntarios.splice(index, 1);
       project.save().then(() => {
@@ -139,10 +139,7 @@ router.put('/anularCandidatura/:id', (req, res) => {
 
 router.put('/candidatar/:id', (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
-  let voluntarioId = req.body.voluntarioId;
-  console.log(req.body);
-  console.log(projectId)
-  console.log(voluntarioId);
+  let voluntarioId = req.body.userId;
   Project.findOne({ _id: projectId }).then((project) => {
     let vagas = project["vagas"]
     let voluntarios = project["voluntarios"];
@@ -150,7 +147,7 @@ router.put('/candidatar/:id', (req, res) => {
     if (project.restringido) {
       voluntario = { userId: voluntarioId, estado: "Em Espera" };
     } else
-      voluntario = { userId: voluntario, estado: "Aprovado" };
+      voluntario = { userId: voluntarioId, estado: "Aprovado" };
     if (voluntarios.length + 1 < vagas) {
       if (voluntario !== undefined) {
         voluntarios.push(voluntario);
