@@ -119,7 +119,6 @@ router.put('/anularCandidatura/:id', (req, res) => {
         break;
       }
     }
-    console.log(index);
     if (typeof Number(index)) {
       voluntarios.splice(index, 1);
       project.save().then(() => {
