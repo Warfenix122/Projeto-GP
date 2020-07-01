@@ -31,12 +31,6 @@
                             <form class="d-flex justify-content-center">
                                 <button mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher ficheiro <mat-icon>
                   insert_photo</mat-icon></button>
-                                <button *ngIf=" !addPhotoResult" mat-mini-fab color="primary" disabled>
-                <mat-icon>publish</mat-icon>
-              </button>
-                                <button *ngIf="addPhotoResult" mat-mini-fab color="primary">
-                <mat-icon>publish</mat-icon>
-                                </button>
                                 <button class="ml-4" mat-raised-button color="warn" (click)="onDelete()">Eliminar</button>
                                 <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*" id="file">
                                 

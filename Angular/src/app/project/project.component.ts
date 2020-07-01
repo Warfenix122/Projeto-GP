@@ -43,6 +43,7 @@ export class ProjectComponent implements OnInit {
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
   addPhotoResult: any;
+  addCoverPhotoResult: any;
   selectedPhotoFileName: string;
   selectedCoverPhotoFileName: string;
   isAddingManagers: boolean = false;
@@ -222,7 +223,7 @@ export class ProjectComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = (e: any) => {
-        this.addPhotoResult = e.target.result;
+        this.addCoverPhotoResult = e.target.result;
         console.log(e.target);
       };
       reader.onloadend = () => {
