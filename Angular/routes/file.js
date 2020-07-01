@@ -48,7 +48,6 @@ router.put("/updateUserPhoto/:userId", (req, res) => {
 
 })
 router.put("/updateProjectCover/:projectId", (req, res) => {
-    console.log('req.params.id :>> ', req.params.projectId);
     Projeto.findOne({ _id: req.params.projectId }).then((proj) => {
         proj.fotoCapaId = req.body.fotoId;
         proj.save().then((pr) => {
@@ -82,7 +81,7 @@ router.delete("/deletePhoto/:id", (req, res) => {
 });
 
 router.delete("/deleteProfilePhoto/:userid/:fotoId", (req, res) => {
-    User.updateOne({ '_id': req.params.projectid }, { $unset: { 'fotoPerfilId': req.params.fotoId } }).then((err) => {
+    User.updateOne({ '_id': req.params.userid }, { $unset: { 'fotoPerfilId': req.params.fotoId } }).then((err) => {
         if (err) {
             console.log('err :>> ', err);
             res.status(500).json({ success: false, message: 'Dificuldades a alterar imagem' });

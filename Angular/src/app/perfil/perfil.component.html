@@ -29,7 +29,7 @@
                                 <img style="max-width:150px" #image>
                             </div>
 
-                            <form class="d-flex justify-content-around">
+                            <form class="d-flex justify-content-center">
                                 <button mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher ficheiro <mat-icon>
                   insert_photo</mat-icon></button>
                                 <button *ngIf=" !addPhotoResult" mat-mini-fab color="primary" disabled>
@@ -37,23 +37,20 @@
               </button>
                                 <button *ngIf="addPhotoResult" mat-mini-fab color="primary">
                 <mat-icon>publish</mat-icon>
-              </button>
-                                <h5 class="mt-1" [style.visibility]=" addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido:
-                                    <b>{{selectedPhotoFileName}}</b></h5>
+                                </button>
+                                <button class="ml-4" mat-raised-button color="warn" (click)="onDelete()">Eliminar</button>
                                 <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*" id="file">
-                                <button mat-raised-button color="warn" (click)="onDelete()">Eliminar</button>
-
+                                
                             </form>
-
-
+                            <h5 class="mt-1 ml-5" [style.visibility]=" addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido:
+                                <b>{{selectedPhotoFileName}}</b></h5>
                         </div>
 
                     </div>
                     <hr>
                     <div>
                         <div class="d-flex align-items-center">
-                            <h2>Areas de Interesse</h2> <button class="btn btn-primary" (click)="alterAreasInteresse()" #editAreas>
-              Editar <i class="far fa-edit"></i></button>
+                            <h2>Areas de Interesse</h2> <button style="margin-top: -14px;" class="ml-2" mat-mini-fab color="primary" (click)="alterAreasInteresse()"><mat-icon>{{showEditAreasOfInterest ? 'edit' : 'close'}}</mat-icon></button>
                         </div>
                         <form [formGroup]="form">
                             <div>

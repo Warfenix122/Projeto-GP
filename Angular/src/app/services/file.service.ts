@@ -12,28 +12,49 @@ export class FileService {
 
   constructor(private http: HttpClient, private userService: UserService, private projectService: ProjectService) { }
 
-  updateProfilePhoto(formdata) {
+  updateProfilePhoto(formdata): Promise<User> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<User> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
     formdata.append('type', 'users')
     this.userService.getCurrentUserId().subscribe((userId) => {
       this.uploadPhoto(formdata).subscribe((res) => {
         this.updateUserPhoto(res['fotoId'], userId['UserID']).subscribe((res) => {
-          // do evento
-        });
+          resolveRef(res['user']);
+        }, (err) => rejectRef(err));
       });
     });
+
+    return dataPromise;
   }
 
   updateCoverPhoto(formdata) {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Project> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
     formdata.append('type', 'projects');
     var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => { })
+        this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => {
+          resolveRef(res["project"])
+        }, (err) => rejectRef(err))
       });
     })
-
-
+    return dataPromise;
   }
+
   updateProjectPhotoFiles(formdata) {
     formdata.append('type', 'projects');
     var projId = formdata.get('projectId');
@@ -72,39 +93,4 @@ export class FileService {
   deletePhoto(fotoId) {
     return this.http.delete('/api/file/deletePhoto/' + fotoId);
   }
-
-  deleteProjectCover(projectId) {
-    this.projectService.getProject(projectId).subscribe((res) => {
-      const fotoId = res.fotoCapaId;
-      const projId = res._id;
-      this.deletePhoto(fotoId).subscribe(() => {
-        return this.http.delete('/api/file/deleteCoverPhoto/' + projId + '/' + fotoId);
-      })
-
-    });
-  }
-
-
-  deleteProjectPhoto(projectId, fotoId) {
-    this.projectService.getProject(projectId).subscribe((res) => {
-      const id = res.fotosId.find(fotoId);
-      console.log('id :>> ', id);
-      const projId = res._id;
-      this.deletePhoto(fotoId).subscribe(() => {
-        return this.http.delete('/api/file/deleteProjectPhoto/' + projId + '/' + fotoId);
-      })
-    });
-  }
-
-  deleteProfilePhoto(userId) {
-    this.userService.getUser(userId).subscribe((res) => {
-      const fotoId = res.fotoPerfilId;
-      const id = res._id;
-      this.deletePhoto(fotoId).subscribe(() => {
-        return this.http.delete('/api/file/deleteProfilePhoto/' + id + '/' + fotoId);
-      });
-    });
-  }
-
-
 }

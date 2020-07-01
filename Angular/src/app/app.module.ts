@@ -24,6 +24,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -56,7 +57,7 @@ import { EditCarrouselComponent } from './edit-carrousel/edit-carrousel.componen
 import { FavoriteProjectComponent } from './favorite-project/favorite-project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
-import { SondagemComponent } from './sondagem/sondagem.component';
+import { SondagemComponent, DialogShowPoll } from './sondagem/sondagem.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -99,7 +100,8 @@ import { AproveProjectsComponent } from './aprove-projects/aprove-projects.compo
     MatCardModule,
     MatDialogModule,
     MatBottomSheetModule,
-    MatTabsModule
+    MatTabsModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     AppComponent,
@@ -138,7 +140,8 @@ import { AproveProjectsComponent } from './aprove-projects/aprove-projects.compo
     DialogAddManager,
     DialogManageVolunteers,
     RegisteredProjectsComponent,
-    AproveProjectsComponent
+    AproveProjectsComponent,
+    DialogShowPoll,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

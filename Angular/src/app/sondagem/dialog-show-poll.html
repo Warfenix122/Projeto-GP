@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>
+    {{chosenPoll.titulo != undefined ? chosenPoll.titulo : chosenPoll.descricao}}</h1>
+<div mat-dialog-content style="width: 100%;">
+    <form [formGroup]="pollForm">
+        <div id="lista" *ngFor="let opcao of opcoesArray.controls;let i = index">
+            <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="opcao" (change)="getSelectedOptions()" name="{{this.chosenPoll.opcoes[i]}}">
+                {{this.chosenPoll.opcoes[i]}}
+            </mat-checkbox>
+        </div>
+        <div>
+            <mat-checkbox labelPosition="after" class="col-md-5" name="outro" #check>Outro </mat-checkbox>
+        </div>
+        <mat-form-field *ngIf="check.checked" style="width: 100%;" class="example-full-width">
+            <mat-label>Leave a comment</mat-label>
+            <textarea [formControl]="outro" matInput placeholder="Indique outra razão"></textarea>
+          </mat-form-field>
+    </form>
+</div>
+
+<div mat-dialog-actions class="mt-1">
+  <button mat-raised-button color="warn" (click)="dialogRef.close(false)">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    Guardar Resposta
+  </button>
+</div>

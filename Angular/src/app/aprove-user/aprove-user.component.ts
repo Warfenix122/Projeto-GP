@@ -3,7 +3,7 @@ import { UserService } from '../services/user.service'
 import { User } from '../../../models/utilizadores'
 import { Router } from '@angular/router'
 import { AlertService } from '../services/alert.service';
-import {AuthService} from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
