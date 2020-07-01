@@ -9,23 +9,32 @@ import { AuthService } from '../services/auth.service';
 export class NavComponent implements AfterViewInit {
   @ViewChild('logout') logout: ElementRef;
   @ViewChild('logged') logged: ElementRef;
+  @ViewChild('isGestor') gestor: ElementRef;
   isGestor: boolean = false;
   constructor(private service: AuthService) {
     service.eventIsLoggedIn.subscribe(isLoggedIn => {
       if (isLoggedIn) {
+        this.service.getRole().subscribe((res) => {
+          if (res['Role'] === 'Gestor') {
+            console.log('res :>> ', res);
+            this.displayGestorInNav();
+          }
+        });
+        this.hideGestorNav();
         this.displayLoggedInNav();
+
       }
       else {
         this.displayLoggedOutNav();
+        this.hideGestorNav();
+
       }
     });
 
   }
 
   ngOnInit(): void {
-    this.service.getRole().subscribe((res) => {
-      if (res['Role'] === 'Gestor') { this.isGestor = true; }
-    });
+
 
   }
 
@@ -39,13 +48,35 @@ export class NavComponent implements AfterViewInit {
     this.logged.nativeElement.style.display = 'none';
   }
 
+  displayGestorInNav(): void {
+    this.gestor.nativeElement.style.display = 'block';
+  }
+
+  hideGestorNav(): void {
+    this.gestor.nativeElement.style.display = 'none';
+  }
+
+
+
   ngAfterViewInit(): void {
-    if (localStorage.getItem('token')) {
-      this.displayLoggedInNav();
-    }
-    else {
-      this.displayLoggedOutNav();
-    }
+    this.service.eventIsLoggedIn.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.service.getRole().subscribe((res) => {
+          if (res['Role'] === 'Gestor') {
+            this.displayGestorInNav();
+          }
+        });
+        this.hideGestorNav();
+        this.displayLoggedInNav();
+
+      }
+      else {
+        this.displayLoggedOutNav();
+        this.hideGestorNav();
+
+      }
+    });
+
   }
 
   logOut() {

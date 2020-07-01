@@ -15,22 +15,22 @@
             <li class="nav-item">
                 <a class="nav-link">Contactos</a>
             </li>
-            <li #aprove class="nav-item" *ngIf="isGestor">
+            <li class="nav-item" #isGestor [hidden]="!isGestor">
                 <a class="nav-link" [routerLink]="['/userAprove']">Aprovar Utilizador</a>
             </li>
-            <li #aprove class="nav-item" *ngIf="isGestor">
+            <li class="nav-item" #isGestor [hidden]="!isGestor">
                 <a class="nav-link" [routerLink]="['/projectsAprove']">Aprovar Projetos</a>
             </li>
-            <li class="nav-item dropdown" *ngIf="isGestor">
+            <li class="nav-item dropdown" #isGestor [hidden]="!isGestor">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Criar</a>
 
-                <div class="dropdown-menu" *ngIf="isGestor">
+                <div class="dropdown-menu" #isGestor [hidden]="!isGestor">
                     <a class="dropdown-item" [routerLink]="['/createGestor']">Gestores</a>
                     <a class="dropdown-item" [routerLink]="['/createSondagem']">Sondagens</a>
                     <a class="dropdown-item" [routerLink]="['/createProject']">Projeto</a>
                 </div>
             </li>
-            <li class="nav-item dropdown" *ngIf="isGestor">
+            <li class="nav-item dropdown" #isGestor [hidden]="!isGestor">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Editar</a>
 
                 <div class="dropdown-menu">
