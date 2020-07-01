@@ -62,20 +62,14 @@ import { CreateSondagemComponent } from './create-sondagem/create-sondagem.compo
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
 
-
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 
-import {AccordionModule} from 'primeng/accordion';     
-import {CarouselModule} from 'primeng/carousel';
 
 
 @NgModule({
 
   imports: [
-    AccordionModule,
-    CarouselModule,
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,

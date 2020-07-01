@@ -12,12 +12,12 @@ export class FotoService {
   constructor(private http: HttpClient, private projectService: ProjectService) { }
 
   //return promise with an object {id, src, contentType} or error
-  getDecodedFotos(arrIds, type): Promise<void> {
+  getDecodedFotos(arrIds, type): Promise<any> {
     let resolveRef;
     let rejectRef;
 
     //create promise
-    let dataPromise: Promise<void> = new Promise((resolve, reject) => {
+    let dataPromise: Promise<any> = new Promise((resolve, reject) => {
       resolveRef = resolve;
       rejectRef = reject;
     })

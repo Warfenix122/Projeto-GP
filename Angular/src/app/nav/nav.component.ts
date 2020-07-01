@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +11,7 @@ export class NavComponent implements AfterViewInit {
   @ViewChild('logout') logout: ElementRef;
   @ViewChild('logged') logged: ElementRef;
   isGestor: boolean = false;
-  constructor(private service: AuthService) {
+  constructor(private service: AuthService, private userService: UserService) {
     service.eventIsLoggedIn.subscribe(isLoggedIn => {
       if (isLoggedIn) {
         this.displayLoggedInNav();
@@ -23,10 +24,11 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.service.getRole().subscribe((res) => {
-      if (res['Role'] === 'Gestor') { this.isGestor = true; }
-    });
-
+    this.userService.getCurrentUserId().subscribe(res => {
+      this.userService.getUser(res["UserID"]).subscribe(user => {
+        if (user.tipoMembro === 'Gestor') { this.isGestor = true; }
+      })
+    })
   }
 
   displayLoggedInNav(): void {

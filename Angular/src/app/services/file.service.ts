@@ -56,14 +56,24 @@ export class FileService {
   }
 
   updateProjectPhotoFiles(formdata) {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Project> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
     formdata.append('type', 'projects');
     var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectPhotos(res['fotoId'], project._id).subscribe((res) => { })
+        this.updateProjectPhotos(res['fotoId'], project._id).subscribe((res) => {
+          resolveRef(res["project"])
+        }, (err) => rejectRef(err))
       });
     })
-
+    return dataPromise;
   }
   updateCarouselPhoto(formdata) {
     formdata.append('type', 'carousel');

@@ -44,6 +44,7 @@ export class ProjectComponent implements OnInit {
   // buttonSupports
   isFavProject: boolean = false;
   isEditButtonToggled: boolean = false;
+  addCoverPhotoResult: any;
   addPhotoResult: any;
   selectedPhotoFileName: string;
   selectedCoverPhotoFileName: string;
@@ -229,8 +230,7 @@ export class ProjectComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = (e: any) => {
-        this.addPhotoResult = e.target.result;
-        console.log(e.target);
+        this.addCoverPhotoResult = e.target.result;
       };
       reader.onloadend = () => {
         this.fileService.updateCoverPhoto(formdata).then(updatedProject => {
@@ -264,10 +264,16 @@ export class ProjectComponent implements OnInit {
 
       reader.onload = (e: any) => {
         this.addPhotoResult = e.target.result;
-        console.log(e.target);
       };
       reader.onloadend = () => {
-        this.fileService.updateProjectPhotoFiles(formdata);
+        this.fileService.updateProjectPhotoFiles(formdata).then(updatedProject => {
+          let newPhotoId = updatedProject.fotosId.find(elem => !this.project.fotosId.includes(elem))
+          console.log(updatedProject);
+          console.log(this.project);
+          this.fotoService.getDecodedFotos([newPhotoId], 'projects').then(result => {
+            if (result) this.projectPhotos.push(result[0]);
+          })
+        })
       };
 
       reader.readAsArrayBuffer(inputNode.files[0]);
@@ -361,7 +367,6 @@ export class ProjectComponent implements OnInit {
 
   volunteer() {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
-      console.log(res);
     });
   }
 
@@ -465,6 +470,7 @@ export class ProjectComponent implements OnInit {
       this.isProjectVacanciesReadonly = true;
       this.isProjectNecessaryFormationsReadonly = true;
       this.isProjectAreasOfInterestReadonly = true;
+      this.addCoverPhotoResult = undefined;
       this.addPhotoResult = undefined;
       this.showEditProjectContact = this.showEditProjectContact.map((elem, index) => {
         return false;
@@ -657,8 +663,6 @@ export class DialogAddManager {
       startWith(''),
       map(value => this._filterEmails(searchValue))
     );
-
-    console.log(this.emails.indexOf(searchValue));
   }
 
   private _filterEmails(value: string): String[] {

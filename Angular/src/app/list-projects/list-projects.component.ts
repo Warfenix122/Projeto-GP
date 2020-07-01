@@ -11,6 +11,7 @@ import statics from '../../assets/statics.json';
 import { Foto } from 'models/foto';
 import { filter } from 'rxjs/operators';
 import { $ } from 'protractor';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-list-projects',
@@ -44,11 +45,12 @@ export class ListProjectsComponent implements OnInit {
   filterState: string = 'hide';
   
   projectRoute: string = '';
+  userRole: any;
   projects: Array<Project> = [];
   filteredProjects: Array<Project> = [];
   fotos: Array<any> = [];
 
-  constructor(private projectService: ProjectService, private _alertService: AlertService, private fotoService: FotoService, ngbPopoverConfig: NgbPopoverConfig) {
+  constructor(private projectService: ProjectService, private _alertService: AlertService, private fotoService: FotoService, ngbPopoverConfig: NgbPopoverConfig, private userService: UserService) {
     ngbPopoverConfig.autoClose = 'outside';
   }
 
@@ -61,6 +63,11 @@ export class ListProjectsComponent implements OnInit {
       this.fotoService.getAllDecodedProjectFotos().then((fotos) => { //fotos = [{id, src, contentType}]
         this.fotos = fotos;
       });
+      this.userService.getCurrentUserId().subscribe(res => {
+        this.userService.getUser(res["UserID"]).subscribe(user => {
+          this.userRole = user.tipoMembro;
+        })
+      })
     });
   }
 

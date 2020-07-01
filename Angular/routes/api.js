@@ -300,9 +300,9 @@ router.post("/currentUser", (req, res) => {
     });
 });
 
-router.post("/currentUserRole", (req,res)=>{
-  if(req.body.token){
-    res.status(200).json({ success: true, role: utils.getCurrentUserRole(req.body.token)});
+router.get("/currentUserRole/:token", (req,res)=>{
+  if(req.params.token){
+    res.status(200).json({ success: true, role: utils.getCurrentUserRole(req.params.token)});
   }else
   res.status(400).json({
     success: false,
