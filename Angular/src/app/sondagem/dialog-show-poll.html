@@ -13,15 +13,15 @@
         <mat-form-field *ngIf="check.checked" style="width: 100%;" class="example-full-width">
             <mat-label>Leave a comment</mat-label>
             <textarea [formControl]="outro" matInput placeholder="Indique outra razão"></textarea>
-          </mat-form-field>
+        </mat-form-field>
     </form>
 </div>
 
 <div mat-dialog-actions class="mt-1">
-  <button mat-raised-button color="warn" (click)="dialogRef.close(false)">
+    <button mat-raised-button color="warn" (click)="dialogRef.close(false)">
     Cancelar
   </button>
-  <button mat-raised-button color="primary" (click)="onSubmit()">
+    <button mat-raised-button color="primary" (click)="onSubmit()">
     Guardar Resposta
   </button>
 </div>
