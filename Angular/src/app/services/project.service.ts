@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../../../models/projeto';
 import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfaces';
+import { Inscricao } from 'models/inscricao';
 import { Observable, from } from 'rxjs';
 import { User } from '../../../models/utilizadores';
 
@@ -34,11 +35,17 @@ export class ProjectService {
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
   }
 
+  userRegisterProjects(userId){
+    return this.http.get<Inscricao[]>('/api/project/registerProject/' + userId);
+  }
+
   editProject(id, obj){
     return this.http.put<Project>('/api/project/'+id, obj);
   }
 
-  //deleteProject(id)
+  deleteProject(id){
+    return this.http.delete<Project>('/api/project/'+id);
+  }
 
   getProject(id) {
     return this.http.get<Project>('/api/project/' + id);

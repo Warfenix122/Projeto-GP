@@ -12,26 +12,40 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./favorite-project.component.css']
 })
 export class FavoriteProjectComponent implements OnInit {
-  projects: Array<Project>;
-  noProjects = false;
+  projects: Array<Project> = [];
+  fotos: Array<any> = [];
   constructor(private projectService: ProjectService, private _alertService: AlertService, private userService: UserService) { }
 
+
   ngOnInit(): void {
-    this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
-      const user = res['user'];
-      this.projectService.userFavoriteProjects(user._id).subscribe(projects => {
-        if(projects){
-          this.projects = projects;
-        }else{
-          this.noProjects= true;
+    this.userService.getCurrentUserId().subscribe((res) => {
+      const user = res['UserID'];
+      this.projectService.userFavoriteProjects(user).subscribe(res => {
+        console.log('res :>> ', res);
+        const projects = res['projetos']
+        if (projects) {
+          projects.forEach(element => {
+
+            if (element) {
+              this.projectService.getProject(element).subscribe((elem) => {
+                if (elem) { this.projects.push(elem); }
+              });
+            }
+
+          });
         }
+
       });
     });
   }
-  openProject(index) {
-    let projectId = this.projects[index]._id;
-    this.projectService.getProject(projectId).subscribe(project => {
-      //navigate to the project page passing the 'project' value
-    })
+
+  getSrc(fotoId) {
+    const foto = this.fotos.find(elem => elem.id == fotoId);
+    if (foto) {
+      return 'data:' + foto.contentType + ';base64,' + foto.src;
+    }
+    else {
+      return "https://higuma.github.io/bootstrap-4-tutorial/img/286x180.svg";
+    }
   }
 }

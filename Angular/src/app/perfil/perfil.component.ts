@@ -35,6 +35,8 @@ export class PerfilComponent implements OnInit {
   form = this._fb.group({
     areas: '',
   });
+  addPhotoResult: any;
+  selectedPhotoFileName: string;
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
@@ -82,27 +84,40 @@ export class PerfilComponent implements OnInit {
 
   getProfilePhoto(fotoID) {
     this.fotoService.getUserPhoto(fotoID).then((fotos) => {
-      //fotos = [{id, src, contentType}]
       this.img.nativeElement.src = this.getSrc(fotos[0]);
     })
   }
-  onFileChanged(event) {
-    this.file = event.target.files[0];
+  onFileSelected(event) {
+    let files = event.target.files;
+    if (files.length > 0) {
+      this.file= files[0]
+      this.selectedPhotoFileName = files[0].name;
+    }
+
+    const inputNode: any = document.querySelector('#file');
+    const formdata = new FormData();
+    formdata.append('file', this.file, this.file.name);
+    if (typeof (FileReader) !== 'undefined') {
+
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.addPhotoResult = e.target.result;
+        console.log(e.target);
+      };
+      reader.onloadend = () => {
+        const src = reader.result;
+        this.fileService.updateProfilePhoto(formdata);
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
   }
 
-  onUpload() {
-    const formData = new FormData();
-    formData.append('email', this.user.email);
-    formData.append('file', this.file, this.file.name);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const src = reader.result;
-      this.fileService.updateProfilePhoto(formData);
-    };
-    reader.readAsDataURL(this.file);
-
+  onDelete(){
+    this.fileService.deleteProfilePhoto(this.user._id)
   }
+
   alterAreasInteresse() {
     this.saveAreas.nativeElement.style.display = 'block';
     this.editAreas.nativeElement.style.display = 'none';

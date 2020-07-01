@@ -21,21 +21,33 @@ export class FotoService {
       resolveRef = resolve;
       rejectRef = reject;
     })
-
     //get fotos from Database
     this.getFotos(arrIds, type).subscribe((fotos) => {
       var binary = '';
       var arr = [];
       //decode each foto
+      if (fotos) {
+        if (Array.isArray(fotos)) {
+          fotos.forEach((foto) => {
 
-      fotos.forEach((foto) => {
-        let obj = {
-          id: foto._id,
-          src: this.arrayBufferToBase64(foto.foto.data.data),
-          contentType: foto.foto.contentType
-        };
-        arr.push(obj);
-      });
+            let obj = {
+              id: foto._id,
+              src: this.arrayBufferToBase64(foto.foto.data.data),
+              contentType: foto.foto.contentType
+            };
+            arr.push(obj);
+          });
+        } else {
+          let obj = {
+            id: fotos['_id'],
+            src: this.arrayBufferToBase64(fotos['foto']['data']['data']),
+            contentType: fotos['foto']['contentType']
+          };
+          arr.push(obj);
+
+        }
+      }
+
       //return obj with success
       resolveRef(arr);
     }, (err) => {
@@ -52,13 +64,36 @@ export class FotoService {
     return window.btoa(binary);
   }
   getFotos(arrId, type) {
-    if (arrId == undefined)
-      arrId = "";
     return this.http.get<Foto[]>('/api/foto', {
       params: new HttpParams({ fromObject: { ids: arrId, type: type } })
     });
   }
 
+
+
+  geDecodedProjectFotos(projectId): Promise<Array<any>> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Array<any>> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
+    this.projectService.getProject(projectId).subscribe((p) => {
+      let fotos = new Array();
+      p.fotosId.forEach((id) => {
+        if (id) fotos.push(id);
+      })
+      if (fotos) { //returns a promise
+        resolveRef(this.getDecodedFotos(fotos, 'projects'));
+      }
+
+    })
+
+    return dataPromise;
+  }
   getAllDecodedProjectFotos(): Promise<Array<any>> {
     let resolveRef;
     let rejectRef;
@@ -92,12 +127,28 @@ export class FotoService {
     })
 
     //returns a promise
-    resolveRef(this.getDecodedFotos('', 'carousel'));
+    resolveRef(this.getDecodedFotos('only_type', 'carousel'));
 
 
     return dataPromise;
   }
 
+  getProjectCoverPhoto(projectId): Promise<Array<any>> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Array<any>> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
+    this.projectService.getProject(projectId).subscribe((p) => {
+      resolveRef(this.getDecodedFotos(p.fotoCapaId, 'projects'));
+    })
+
+    return dataPromise;
+  }
 
   getUserPhoto(fotoId) {
     return this.getDecodedFotos(fotoId, 'users');
