@@ -46,6 +46,7 @@ router.post("", (req, res) => {
         areasInteresse: selectedAreas,
         voluntarios: new Array(),
         restringido: restringido,
+        aprovado:"Em Espera",
       });
       newProject.save().then((project) => {
         res.status(200).json({ success: true, projetoId: project._id });
@@ -68,7 +69,8 @@ router.put('/:id', (req, res) => {
 });
 
 //get one
-router.get('/:id', (req, res) => {
+router.get('/getProject/:id', (req, res) => {
+  console.log('entrou')
   let projectId = mongoose.Types.ObjectId(req.params.id);
   Project.findOne({ _id: projectId }).then((project) => {
     res.json(project);
@@ -82,7 +84,7 @@ router.get('', (req, res) => {
   })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/getProject/:id', (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
   Project.findByIdAndDelete(projectId).then(project => res.json(project));
 })
@@ -178,5 +180,26 @@ router.get("/gestores/:id", (req, res) => {
       .catch(err => res.status(404).json({ success: false, err: err }));
   }).catch(err => res.status(500).json({ success: false, err: err }));
 });
+
+router.get('/pendingProjects',(req,res)=>{
+  Project.find({aprovado:"Em Espera"}).then((projects)=>{
+    res.status(200).json({success:true,projetos:projects});
+  }).catch((err)=>{
+    console.log(err);
+    res.status(500).json({success:false,msg:err});
+  });
+});
+
+router.put('/avaliarProjeto',(req,res)=>{
+  console.log(req.body);
+  let projectId = req.body.projectId;
+  let aprovado = req.body.aprovado;
+  Project.findOneAndUpdate({_id:projectId},{aprovado:aprovado},()=>{
+    res.status(200).json({success:true,msg:"Avaliação Completa"});
+  }).catch((err)=>{
+    console.log(err);
+    res.status(500).json({success:false,msg:err});
+  });
+})
 
 module.exports = router;

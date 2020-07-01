@@ -48,7 +48,7 @@ export class ProjectService {
   }
 
   getProject(id) {
-    return this.http.get<Project>('/api/project/' + id);
+    return this.http.get<Project>('/api/project/getProject/' + id);
   }
 
   addProject(formBody): Observable<ProjetoResponse> {
@@ -72,5 +72,13 @@ export class ProjectService {
   cancelVolunteer(projectId,voluntarioId){
     let volId = {voluntarioId:voluntarioId}
     return this.http.put<ImageResponse>('/api/project/anularCandidatura/'+projectId,volId);
+  }
+
+  getToAproveProjects(){
+    return this.http.get<Project[]>('api/project/pendingProjects');
+  }
+
+  aproveProject(formBody){
+    return this.http.put('api/project/avaliarProjeto',formBody);
   }
 }

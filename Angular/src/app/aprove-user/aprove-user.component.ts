@@ -18,7 +18,8 @@ export class AproveUserComponent implements OnInit {
 
   ngOnInit(): void {
     this._authService.getRole().subscribe(res =>{
-      if(res["Role"] !== "Gestor")
+      console.log(res);
+      if(res["role"] !== "Gestor")
         this.router.navigate(['unauthorized']);
     });
 

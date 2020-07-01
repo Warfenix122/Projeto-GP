@@ -90,4 +90,7 @@ export class UserService {
     return this.http.put<User>('/api/user/' + userId, { projectId: projectId }, { params: new HttpParams().set('purpose', purpose) });
   }
 
+  getUsersArray(users){
+    return this.http.post<User[]>('/api/getUsers',users);
+  };
 }

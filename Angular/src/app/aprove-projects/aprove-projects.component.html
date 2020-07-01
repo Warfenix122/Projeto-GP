@@ -1,0 +1,34 @@
+<h1>Aprovar Projetos</h1>
+<div *ngIf="projectTable.length > 0;else elseBlock">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ProjetoId</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Responsavel</th>
+        <th scope="col">Resumo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of projectTable; let i = index">
+        <td>{{ entry.project._id }}</td>
+        <td>{{ entry.project.nome }}</td>
+        <td>{{ entry.nome }}</td>
+        <td>{{ entry.project.resumo }}</td>
+        <button class="btn btn-success col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, 'Aprovado')">
+          <i class="fas fa-thumbs-up"></i>
+        </button>
+        <button class="btn btn-danger col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, 'Recusado')">
+          <i class="fas fa-thumbs-down"></i>
+        </button>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #elseBlock>
+  <div class="row justify-content-center">
+    <h1>Não existem projetos por avaliar</h1>
+  </div>
+
+</ng-template>
