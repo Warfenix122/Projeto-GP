@@ -144,8 +144,9 @@ export class ListProjectsComponent implements OnInit {
   applyFilters(){
     if(this.projectNameInputValue != "" || this.durationInputValue != "" || this.keyWordsBadges.length > 0 || this.areasOfInterestSelected.length > 0){
       this.filteredProjects = this.projects.filter(project => {
-        if((project.nome != undefined && this.projectNameInputValue != "" && project.nome.includes(this.projectNameInputValue)) ||
-          (project.XemXTempo != undefined && this.durationInputValue != "" && project.XemXTempo.includes(this.durationInputValue)) ||
+        console.log(project.nome);
+        if((project.nome != undefined && this.projectNameInputValue != "" && project.nome.toLocaleLowerCase().includes(this.projectNameInputValue.toLowerCase())) ||
+          (project.XemXTempo != undefined && this.durationInputValue != "" && project.XemXTempo.toLocaleLowerCase().includes(this.durationInputValue.toLowerCase())) ||
           (this.hasAtLeastOneKeyword(project.palavrasChave)) ||
           (this.hasAtLeastOneAreaOfInterest(project.areasInteresse))){
             return true;
