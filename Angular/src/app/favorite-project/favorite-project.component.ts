@@ -5,6 +5,7 @@ import { Project } from 'models/projeto';
 import { ThrowStmt } from '@angular/compiler';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
+import { FotoService } from '../services/foto.service';
 
 @Component({
   selector: 'app-favorite-project',

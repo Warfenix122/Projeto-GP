@@ -69,7 +69,6 @@ export class UserService {
   }
 
   getUsers(ids) {
-    console.log(ids);
     if (ids == undefined)
       ids = "";
     return this.http.get<User[]>('/api/user', {

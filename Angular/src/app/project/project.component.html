@@ -194,15 +194,9 @@
                 <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
             </div>
             <h2 *ngIf="isEditButtonToggled">Fotos de Capa</h2>
-            <button *ngIf="isEditButtonToggled" mat-raised-button class="mr-1" (click)="coverInput.click()">Escolher ficheiro
+            <button *ngIf="isEditButtonToggled" mat-raised-button class="mr-1" (click)="coverInput.click()">Escolher ficheiro e alterar
         <mat-icon>insert_photo</mat-icon></button>
-            <button *ngIf="isEditButtonToggled && !addPhotoResult" mat-mini-fab color="primary" disabled>
-        <mat-icon>publish</mat-icon>
-      </button>
-            <button *ngIf="isEditButtonToggled && addPhotoResult" mat-mini-fab color="primary">
-        <mat-icon>publish</mat-icon>
-      </button>
-            <h5 class="mt-1" [style.visibility]="isEditButtonToggled && addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido: <b>{{selectedCoverPhotoFileName}}</b></h5>
+            <h5 class="mt-1" [style.visibility]="isEditButtonToggled && addCoverPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido: <b>{{selectedCoverPhotoFileName}}</b></h5>
             <input hidden (change)="onFileSelected($event)" #coverInput type="file" accept="image/*" id="cover">
             <div *ngIf="isEditButtonToggled && coverPhoto != ''" class="d-flex flex-wrap">
                 <mat-card>
@@ -213,16 +207,17 @@
                     </mat-card-actions>
                 </mat-card>
 
-            </div>
+            </div><br>
             <h2 *ngIf="isEditButtonToggled">Fotos do projeto</h2>
-            <button *ngIf="isEditButtonToggled" mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher ficheiro
-        <mat-icon>insert_photo</mat-icon></button>
+            <button *ngIf="isEditButtonToggled" mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher ficheiro e adicionar
+                <mat-icon>insert_photo</mat-icon>
+            </button>
             <button *ngIf="isEditButtonToggled && !addPhotoResult" mat-mini-fab color="primary" disabled>
-        <mat-icon>publish</mat-icon>
-      </button>
+                <mat-icon>publish</mat-icon>
+            </button>
             <button *ngIf="isEditButtonToggled && addPhotoResult" mat-mini-fab color="primary">
-        <mat-icon>publish</mat-icon>
-      </button>
+                <mat-icon>publish</mat-icon>
+            </button>
             <h5 class="mt-1" [style.visibility]="isEditButtonToggled && addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido: <b>{{selectedPhotoFileName}}</b></h5>
             <input hidden (change)="onFilesSelected($event)" #fileInput type="file" accept="image/*" id="file">
             <div *ngIf="isEditButtonToggled" class="d-flex flex-wrap">

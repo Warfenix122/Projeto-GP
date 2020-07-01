@@ -1,4 +1,13 @@
-<h1 class="mt-4 mb-3">Projetos</h1>
+<div class="mt-4 mb-3 d-flex justify-content-between">
+    <div></div>
+    <div style="margin-left: 110px;">
+        <h1>Projetos</h1>
+    </div>
+    <div class="mt-auto mb-auto mr-2">
+        <button [style.visibility]="userRole != 'Voluntario Interno' ? 'visible' : 'hidden'" [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
+    </div>
+</div>
+
 <div id="divFilter" class="d-flex flex-wrap">
     <button (mouseover)="hoverFilterButton(true)" (click)="focusFilter()" (mouseout)="hoverFilterButton(false)" id="buttonFilter" type="button" class="btn btn-secondary mr-auto">
         <i [class]="iconFilterClass"></i> {{filterText}}

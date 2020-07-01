@@ -1,7 +1,6 @@
 export class Inscricao {
+  _id: string;
   utilizadorId: string;
   projetoId: string;
-  presente: Boolean;
-  avaliacao: [{ valor: Number, descricao: String }];
-  cancelado: Boolean;
+
 }
