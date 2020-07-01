@@ -88,7 +88,6 @@ export class ProjectComponent implements OnInit {
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
         if (result)
           this.projectPhotos = result;
