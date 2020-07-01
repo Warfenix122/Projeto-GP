@@ -166,11 +166,4 @@ export class ListProjectsComponent implements OnInit {
     else if(!isOver && !this.filterFocused)
       this.filterText = "";
   }
-
-  openProject(index) {
-    let projectId = this.projects[index]._id;
-    this.projectService.getProject(projectId).subscribe(project => {
-      //navigate to the project page passing the 'project' value
-    })
-  }
 }

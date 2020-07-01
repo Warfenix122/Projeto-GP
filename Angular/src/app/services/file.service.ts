@@ -12,39 +12,64 @@ export class FileService {
 
   constructor(private http: HttpClient, private userService: UserService, private projectService: ProjectService) { }
 
-  updateProfilePhoto(formdata) {
+  updateProfilePhoto(formdata): Promise<User> {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<User> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
+
     formdata.append('type', 'users')
     this.userService.getCurrentUserId().subscribe((userId) => {
       this.uploadPhoto(formdata).subscribe((res) => {
         this.updateUserPhoto(res['fotoId'], userId['UserID']).subscribe((res) => {
-          // do evento
-        });
+          resolveRef(res['user']);
+        }, (err) => rejectRef(err));
       });
     });
+
+    return dataPromise;
   }
 
   updateCoverPhoto(formdata) {
+    let resolveRef;
+    let rejectRef;
+
+    //create promise
+    let dataPromise: Promise<Project> = new Promise((resolve, reject) => {
+      resolveRef = resolve;
+      rejectRef = reject;
+    })
     formdata.append('type', 'projects');
-    var projId = formdata.values['projectId'];
+    var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectCover(res['foto'], formdata).subscribe((res) => { })
+        this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => {
+          resolveRef(res["project"])
+        }, (err) => rejectRef(err))
       });
     })
-
-
+    return dataPromise;
   }
+
   updateProjectPhotoFiles(formdata) {
     formdata.append('type', 'projects');
-    var projId = formdata.values['projectId'];
+    var projId = formdata.get('projectId');
     this.projectService.getProject(projId).subscribe((project) => {
       this.uploadPhoto(formdata).subscribe((res) => {
-        this.updateProjectPhotos(res['foto'], formdata).subscribe((res) => { })
+        this.updateProjectPhotos(res['fotoId'], project._id).subscribe((res) => { })
       });
     })
 
   }
-
+  updateCarouselPhoto(formdata) {
+    formdata.append('type', 'carousel');
+    this.uploadPhoto(formdata).subscribe((res) => {
+    });
+  }
 
   updateUserPhoto(fotoId, userId) {
     return this.http.put<User>('/api/file/updateUserPhoto/' + userId, { 'fotoId': fotoId });
@@ -68,5 +93,4 @@ export class FileService {
   deletePhoto(fotoId) {
     return this.http.delete('/api/file/deletePhoto/' + fotoId);
   }
-
 }

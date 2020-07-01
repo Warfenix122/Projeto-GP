@@ -1,6 +1,6 @@
-<div *ngIf="projects" class="d-flex mt-3 flex-wrap">
-    <div class="d-flex mt-3 flex-wrap">
-        <div (click)="openProject(i)" *ngFor="let project of projects; let i = index" [attr.data-index]="i" class="card">
+<div class="d-flex mt-3 flex-wrap">
+    <div *ngIf="projects" class="d-flex mt-3 flex-wrap">
+        <div [routerLink]="'/projects/'+projects[i]._id" *ngFor="let project of projects; let i = index" [attr.data-index]="i" class="card">
             <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
             <div class="card-body">
                 <h2 class="card-title">{{project.nome}}</h2>
@@ -13,6 +13,6 @@
 
 
     <div *ngIf="projects.length==0">
-        Não tem projetos favoritos, explore os projetos existentes <a [routerLink]="['/projects']">aqui</a>
+        Não está inscrito em nenhum projeto, explore os projetos existentes <a [routerLink]="['/projects']">aqui</a>
     </div>
 </div>

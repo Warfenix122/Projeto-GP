@@ -20,7 +20,7 @@ export class Project {
   ];
   vagas: number;
   atividades: [{ descricao: string, dataAcontecimento: Date }];
-  fotosIds: [string ];
+  fotosId: [ string ];
   projetoMes: boolean;
   dataCriacao: Date;
   dataTermino: Date;
@@ -28,5 +28,6 @@ export class Project {
   dataComeco: Date;
   areasInteresse: [string];
   fotoCapaId: string;
-  voluntarios: [ string ];
+  voluntarios: [ {userId: string, estado: string} ];
+  restringido: boolean;
 }

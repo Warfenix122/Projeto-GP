@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { FormBuilder, FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
 import { SondagemService } from '../services/sondagem.service';
 import { Sondagem } from 'models/sondagem';
 import { User } from 'models/utilizadores';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-sondagem',
@@ -11,76 +13,92 @@ import { User } from 'models/utilizadores';
   styleUrls: ['./sondagem.component.css']
 })
 export class SondagemComponent implements OnInit {
-  sondagens: Array<Sondagem> = undefined;
-  opcoes: Array<any>;
-  chosenSondagem: Sondagem;
-  selectedOptions: Array<String>;
-  selectedOptionError: Boolean;
+  polls: Array<Sondagem> = undefined;
   user: User;
-  constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService) { }
-  formSondagem = this._fb.group({
-    opcoes: this.addOpcoes(),
-    outro: new FormControl('')
-  });
-
-
-
+  constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, public dialog: MatDialog, private alertService: AlertService) { }
 
   ngOnInit(): void {
 
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       this.user = res['user']
-      this.sondagemService.getUnanseredSondagens(this.user._id).subscribe((sondagens) => {
-        if (sondagens) this.sondagens = sondagens;
+      this.sondagemService.getUnanseredSondagens(this.user._id).subscribe((polls) => {
+        if (polls) this.polls = polls;
         });
     });
   }
 
-  getSondagem(id) {
-    this.chosenSondagem = this.sondagens.find((e) => { if (e._id == id) return e });
-    this.formSondagem = this._fb.group({
+  openPollDialog(id){
+    let chosenPoll = this.polls.find((e) => { if (e._id == id) return e });
+    const dialogRef = this.dialog.open(DialogShowPoll, {
+      width: '400px',
+      data: { chosenPoll: chosenPoll, user: this.user }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result)
+        this.alertService.success("Resposta guardada com sucesso")
+    })
+  }
+}
+
+@Component({
+  selector: 'dialog-show-poll',
+  templateUrl: 'dialog-show-poll.html',
+})
+export class DialogShowPoll implements OnInit{
+  pollForm: FormGroup;
+  opcoes: Array<any>;
+  selectedOptions: Array<String>;
+  selectedOptionError: Boolean;
+  chosenPoll: Sondagem;
+  user: User;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogShowPoll>, public _fb: FormBuilder, private sondagemService: SondagemService) {
+    this.chosenPoll = data.chosenPoll;
+    this.user = data.user;
+  }
+
+  ngOnInit(){
+    this.pollForm = this._fb.group({
       opcoes: this.addOpcoes(),
       outro: new FormControl('')
     });
-
-
   }
 
   get outro() {
-    return <FormArray>this.formSondagem.get('outro');
+    return <FormArray>this.pollForm.get('outro');
 
   }
 
   get opcoesArray() {
-    return <FormArray>this.formSondagem.get('opcoes');
+    return <FormArray>this.pollForm.get('opcoes');
   }
 
-  getSelectedOptions() {
-    this.selectedOptions = [];
-    this.opcoesArray.controls.forEach((control, i) => {
-      if (control.value) {
-        this.selectedOptions.push(this.chosenSondagem.opcoes[i]);
-      }
-    });
-    this.selectedOptionError = this.selectedOptions.length > 0 ? false : true;
-
-  }
   addOpcoes() {
-    if (this.chosenSondagem) {
-      const arr = this.chosenSondagem.opcoes.map(element => {
+    if (this.chosenPoll) {
+      const arr = this.chosenPoll.opcoes.map(element => {
         return this._fb.control(false);
       });
       return this._fb.array(arr);
     }
   }
 
-
-
   onSubmit() {
-    if (this.formSondagem.valid) {
+    if (this.pollForm.valid) {
       const selected = this.selectedOptions;
-      const formbody = { ...this.formSondagem.value, 'options': selected, 'userId': this.user._id, 'sondagemId': this.chosenSondagem._id };
+      const formbody = { ...this.pollForm.value, 'options': selected, 'userId': this.user._id, 'sondagemId': this.chosenPoll._id };
       this.sondagemService.answerSondagem(formbody).subscribe(res => { })
+      this.dialogRef.close(true);
     }
+  }
+
+  getSelectedOptions() {
+    this.selectedOptions = [];
+    this.opcoesArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedOptions.push(this.chosenPoll.opcoes[i]);
+      }
+    });
+    this.selectedOptionError = this.selectedOptions.length > 0 ? false : true;
   }
 }

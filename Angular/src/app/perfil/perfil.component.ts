@@ -24,8 +24,11 @@ export class PerfilComponent implements OnInit {
 
   @ViewChild('image') img: ElementRef;
   @ViewChild('checkboxes') checkboxes: ElementRef;
-  @ViewChild('editAreas') editAreas: ElementRef;
   @ViewChild('saveAreas') saveAreas: ElementRef;
+
+  //buttonSupport
+  showEditAreasOfInterest: boolean = true;
+
   user: any = User;
   userInfo: any;
   existsImage: boolean = false;
@@ -35,10 +38,12 @@ export class PerfilComponent implements OnInit {
   form = this._fb.group({
     areas: '',
   });
+  addPhotoResult: any;
+  selectedPhotoFileName: string;
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
-  constructor(private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService) {
+  constructor(private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService, private elem: ElementRef) {
   }
 
 
@@ -71,6 +76,11 @@ export class PerfilComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(){
+    let element = this.elem.nativeElement.querySelector('.mat-tab-body-content');
+    element.style.overflowX = 'hidden';
+  }
+
   getSrc(foto) {
     if (foto) {
       return 'data:' + foto.contentType + ';base64,' + foto.src;
@@ -82,34 +92,64 @@ export class PerfilComponent implements OnInit {
 
   getProfilePhoto(fotoID) {
     this.fotoService.getUserPhoto(fotoID).then((fotos) => {
-      //fotos = [{id, src, contentType}]
       this.img.nativeElement.src = this.getSrc(fotos[0]);
     })
   }
-  onFileChanged(event) {
-    this.file = event.target.files[0];
+
+  onFileSelected(event) {
+    let files = event.target.files;
+    if (files.length > 0) {
+      this.file= files[0]
+      this.selectedPhotoFileName = files[0].name;
+    }
+
+    const inputNode: any = document.querySelector('#file');
+    const formdata = new FormData();
+    formdata.append('file', this.file, this.file.name);
+    if (typeof (FileReader) !== 'undefined') {
+
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.addPhotoResult = e.target.result;
+        console.log(e.target);
+      };
+      reader.onloadend = () => {
+        const src = reader.result;
+        this.fileService.updateProfilePhoto(formdata).then(user => {
+          this.user.fotoPerfilId = user.fotoPerfilId;
+          this.getProfilePhoto(user.fotoPerfilId);
+        })
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
   }
 
-  onUpload() {
-    const formData = new FormData();
-    formData.append('email', this.user.email);
-    formData.append('file', this.file, this.file.name);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const src = reader.result;
-      this.fileService.updateProfilePhoto(formData);
-    };
-    reader.readAsDataURL(this.file);
-
+  onDelete(){
+    let oldPhoto = this.user.fotoPerfilId;
+    this.userService.removeProfilePhoto(this.user._id).subscribe(() => {
+      this.fileService.deletePhoto(oldPhoto).subscribe(() => {
+        this.user.fotoPerfilId = null;
+        this.img.nativeElement.src = this.getSrc(undefined);
+      })
+    })
   }
+
   alterAreasInteresse() {
-    this.saveAreas.nativeElement.style.display = 'block';
-    this.editAreas.nativeElement.style.display = 'none';
-    this.form.controls['areas'].enable();
+    if(this.showEditAreasOfInterest){
+      this.saveAreas.nativeElement.style.display = 'block';
+      this.showEditAreasOfInterest = false;
+      this.form.controls['areas'].enable();
+    } else {
+      this.saveAreas.nativeElement.style.display = 'none';
+      this.showEditAreasOfInterest = true;
+      this.form.controls['areas'].disable();
+    }
   }
+
   saveAreasInteresse() {
-    this.editAreas.nativeElement.style.display = 'block';
+    this.showEditAreasOfInterest = true;
     this.saveAreas.nativeElement.style.display = 'none';
     const selectedAreas = this.selectedAreas;
     let user = this.user;

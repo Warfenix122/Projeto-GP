@@ -13,7 +13,6 @@ router.post("", (req, res) => {
         nome,
         responsavelId,
         resumo,
-        publicoAlvo,
         formacoesNecessarias,
         dataTermino,
         dataComeco,
@@ -26,20 +25,6 @@ router.post("", (req, res) => {
         atividades,
     } = req.body;
 
-    // PublicoAlvo.find({ descricao: publicoAlvo }).then((publicoAlvo) => {
-    //   if (publicoAlvo) {
-    //     existingPublicoAlvo = publicoAlvo;
-    //   } else {
-    //     const newPublicoAlvo = new PublicoAlvo({
-    //       descricao: publicoAlvo,
-    //       predefinido: false,
-    //     });
-    //     newPublicoAlvo.save().then((publicoAlvo) => {
-    //       publicoAlvo = publicoAlvo.id;
-    //     });
-    //   }
-    // });
-
     Project.findOne({ nome: nome }).then((project) => {
         if (project) {
             res.status(409).send("Já existe um projeto com esse nome");
@@ -51,7 +36,6 @@ router.post("", (req, res) => {
                 formacoesNecessarias: formacoesNecessarias,
                 XemXTempo: XemXTempo,
                 gestores: gestoresIds,
-                formacoesNecessarias: formacao,
                 atividades: atividades,
                 vagas: nrVagas,
                 projetoMes: false,
@@ -97,11 +81,26 @@ router.get('', (req, res) => {
     })
 })
 
+router.delete('/:id', (req, res) => {
+    let projectId = mongoose.Types.ObjectId(req.params.id);
+    Project.findByIdAndDelete(projectId).then(project => res.json(project));
+})
+
 //get favorits of user
 router.get('/favoriteProject/:userId', (req, res) => {
+    const u = req.params['userId']
+    let userId = mongoose.Types.ObjectId(u);
+
+    User.findById(userId).then((user) => {
+        res.json({ projetos: user.projetosFavoritos });
+
+    }).catch((err) => console.log(err));
+})
+
+router.get('/registerProject/:userId', (req, res) => {
     const u = req.params['userId'];
-    User.findOne({ _id: u }).then((user) => {
-        res.json(user.projetosFavoritos);
+    Inscricao.find({ utilizadorId: u }).then((inc) => {
+        res.json(inc)
 
     }).catch((err) => console.log(err));
 })
@@ -119,8 +118,7 @@ router.put('/anularCandidatura/:id', (req, res) => {
                 console.log(err);
                 res.status(500).json({ success: false, msg: "Falha a guardar Projeto" });
             });
-        } else
-            res.status(500).json({ success: false, msg: "Utilizador nao está inscrito" });
+        }
     }).catch((err) => {
         console.log(err);
         res.status(404).json({ success: false, msg: "Projeto Não encontrado" });

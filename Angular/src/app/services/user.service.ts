@@ -68,17 +68,34 @@ export class UserService {
     return this.http.post<String>('/api/currentUser', token);
   }
 
-  getUser(id){
-    return this.http.get<User>('/api/user/'+id);
+  getUsers(ids) {
+    console.log(ids);
+    if (ids == undefined)
+      ids = "";
+    return this.http.get<User[]>('/api/user', {
+      params: new HttpParams({ fromObject: { ids: ids } })
+    });
+  }
+
+  getCurrentUserRole(token){
+    return this.http.get('/api/currentUserRole/'+token);
+  }
+
+  getUser(id) {
+    return this.http.get<User>('/api/user/' + id);
   }
 
   getVoluntariosExternos(): Observable<User[]> {
     return this.http.get<User[]>('/api/externos');
   }
 
-  updateUserFavProject(isAdd ,userId, projectId) {
+  removeProfilePhoto(userId){
+    return this.http.put<User>('/api/user/'+userId, {fotoPerfilId: null});
+  }
+
+  updateUserFavProject(isAdd, userId, projectId) {
     let purpose = isAdd ? 'pushFavProject' : 'removeFavProject';
-    return this.http.put<User>('/api/user/'+userId, {projectId: projectId}, {params: new HttpParams().set('purpose', purpose)});
+    return this.http.put<User>('/api/user/' + userId, { projectId: projectId }, { params: new HttpParams().set('purpose', purpose) });
   }
 
 }

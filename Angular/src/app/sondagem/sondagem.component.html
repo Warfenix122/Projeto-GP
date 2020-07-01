@@ -1,53 +1,14 @@
 <div class="d-flex mt-3 flex-wrap">
-  <div *ngFor="let sondagem of this.sondagens; let i = index" [attr.data-index]="i" class="card">
-    <div class="card-body">
-      <h3 class="card-title">{{sondagem.titulo}}</h3>
-      <div class="card-text">{{sondagem.descricao}}</div>
-      <button (click)="getSondagem(sondagem._id)" type="button" class="btn btn-primary" data-toggle="modal"
-        data-target="#exampleModal">Responder</button>
+    <mat-card *ngFor="let poll of this.polls; let i = index" [attr.data-index]="i" class="pollCard mb-3">
+        <mat-card-header>
+          <mat-card-title>{{poll.titulo != undefined ? poll.titulo : 'Sem título'}}</mat-card-title>
+          <mat-card-subtitle>{{poll.descricao}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions class="text-center">
+            <button class="mb-2" mat-raised-button color="primary" (click)="openPollDialog(poll._id)">Responder</button>
+        </mat-card-actions>
+    </mat-card>
+    <div *ngIf="!polls">
+        Não existem sondagens para responder neste momento.
     </div>
-  </div>
-  <div *ngIf="!sondagens">
-    Não existem sondagens para responder neste momento.
-  </div>
-</div>
-
-<!--modals-->
-<div>
-  <div *ngIf="chosenSondagem" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel">{{chosenSondagem.descricao}}</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="formSondagem">
-            <div id="lista" *ngFor="let opcao of opcoesArray.controls;let i = index">
-              <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="opcao" (change)="getSelectedOptions()"
-                name="{{this.chosenSondagem.opcoes[i]}}">
-                {{this.chosenSondagem.opcoes[i]}}
-              </mat-checkbox>
-            </div>
-            <div>
-              <mat-checkbox labelPosition="after" class="col-md-5" name="outro" #check>Outro </mat-checkbox>
-            </div>
-            <div *ngIf="check.checked" style="width: max-content;">
-              <textarea [formControl]="outro" id="exampleFormControlTextarea1"
-                placeholder="Indique outra razão"></textarea>
-            </div>
-          </form>
-
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onSubmit()">Submeter</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
