@@ -72,9 +72,9 @@ router.post('/answer', (req, res) => {
       outraResposta: req.body['outro']
     })
 
-    newResp.save((err) => {
+    newResp.save((err, doc) => {
       if (err) res.json({ success: false, err: err });
-      res.status(200).json({ success: true })
+      res.status(200).json({ success: true, answer: doc })
     })
   } else {
     res.status(401).json({ success: true, message: 'No user given' });

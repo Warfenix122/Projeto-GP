@@ -6,6 +6,7 @@ import { Sondagem } from 'models/sondagem';
 import { User } from 'models/utilizadores';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from '../services/alert.service';
+import { RespostaSondagem } from 'models/respostaSondagem';
 
 @Component({
   selector: 'app-sondagem',
@@ -35,8 +36,14 @@ export class SondagemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result)
-        this.alertService.success("Resposta guardada com sucesso")
+      if(result){
+        this.sondagemService.answerSondagem(result).subscribe((res) => {
+          console.log(res);
+          let index = this.polls.findIndex(elem => elem._id == res["answer"].sondagemId);
+          this.polls.splice(index, 1);
+          this.alertService.success("Resposta guardada com sucesso");
+        })
+      }
     })
   }
 }
@@ -87,8 +94,7 @@ export class DialogShowPoll implements OnInit{
     if (this.pollForm.valid) {
       const selected = this.selectedOptions;
       const formbody = { ...this.pollForm.value, 'options': selected, 'userId': this.user._id, 'sondagemId': this.chosenPoll._id };
-      this.sondagemService.answerSondagem(formbody).subscribe(res => { })
-      this.dialogRef.close(true);
+      this.dialogRef.close(formbody);
     }
   }
 
