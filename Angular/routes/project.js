@@ -100,11 +100,11 @@ router.get('/favoriteProject/:userId', (req, res) => {
 })
 
 router.get('/registerProject/:userId', (req, res) => {
-  const u = req.params['userId'];
-  Inscricao.find({ utilizadorId: u }).then((inc) => {
-    res.json(inc)
-
+  const u = mongoose.Types.ObjectId(req.params['userId']);
+  Project.find({voluntarios:{$elemMatch:{userId:u}}}).then((proj) => {
+    res.status(200).json(proj);
   }).catch((err) => console.log(err));
+
 })
 
 router.put('/anularCandidatura/:id', (req, res) => {

@@ -21,13 +21,15 @@ export class RegisteredProjectsComponent implements OnInit {
     this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
       const user = res['user'];
       this.projectService.userRegisterProjects(user._id).subscribe(projects => {
+        console.log(projects);
         if (projects) {
           projects.forEach(element => {
-            console.log('element :>> ', element['projetoId']);
-            this.projectService.getProject(element['projetoId']).subscribe((elem) => {
+            if(element['_id'] !== undefined){
+              console.log('element :>> ', element['_id']);
+            this.projectService.getProject(element['_id']).subscribe((elem) => {
               if (elem) { this.projects.push(elem); }
             });
-
+            }
           });
         }
 

@@ -6,6 +6,7 @@ import { Inscricao } from 'models/inscricao';
 import { Observable, from } from 'rxjs';
 import { User } from '../../../models/utilizadores';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -36,7 +37,7 @@ export class ProjectService {
   }
 
   userRegisterProjects(userId){
-    return this.http.get<Inscricao[]>('/api/project/registerProject/' + userId);
+    return this.http.get<Project[]>('/api/project/registerProject/' + userId);
   }
 
   removeCoverPhoto(id){
