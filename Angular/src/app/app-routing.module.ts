@@ -17,7 +17,7 @@ import { ListProjectsComponent } from './list-projects/list-projects.component';
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { ProjectComponent } from './project/project.component';
-import {AproveProjectsComponent} from './aprove-projects/aprove-projects.component'
+import {AproveProjectsComponent} from './aprove-projects/aprove-projects.component';
 
 
 const routes: Routes = [
