@@ -75,7 +75,7 @@
                             <app-favorite-project></app-favorite-project>
                         </div>
                         <hr>
-                        <div class="container mt-5" id="register">
+                        <div class="container mt-5" id="register" *ngIf="user.tipoMembro === 'Voluntario Interno'">
                             <h2>Projetos Inscritos</h2>
                             <app-registered-projects></app-registered-projects>
                         </div>

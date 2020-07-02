@@ -28,10 +28,10 @@ export class CreateGestorComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // this.authService.getRole().subscribe(res =>{
-    //   if(res["Role"] !== "Gestor")
-    //     this.router.navigate(['unauthorized']);
-    // });
+    this.authService.getRole().subscribe(res =>{
+      if(res["Role"] !== "Gestor")
+        this.router.navigate(['unauthorized']);
+    });
   }
   postData() {
     if (this.formGestor.valid) {

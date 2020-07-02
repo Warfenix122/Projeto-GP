@@ -64,6 +64,10 @@ export class CreateProjectComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this._authService.getRole().subscribe(res =>{
+      if(res["Role"] !== "Gestor")
+        this.router.navigate(['unauthorized']);
+    });
     this._authService.getRole().subscribe(res=>{
       console.log(res);
       if(res["Role"]==="Gestor"){
