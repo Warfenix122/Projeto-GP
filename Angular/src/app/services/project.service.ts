@@ -49,7 +49,7 @@ export class ProjectService {
   }
 
   editProject(id, obj){
-    return this.http.put<Project>('/api/project/'+id, obj);
+    return this.http.put<Project>('/api/project/edit/'+id, obj);
   }
 
   deleteProject(id){

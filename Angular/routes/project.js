@@ -56,7 +56,7 @@ router.post("", (req, res) => {
 });
 
 //update
-router.put('/:id', (req, res) => {
+router.put('/edit/:id', (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
   project = Project.updateOne({ _id: projectId }, req.body, (err, doc) => {
     if (err) res.status(500).json({ success: false, msg: err.message });

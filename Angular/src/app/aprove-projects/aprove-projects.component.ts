@@ -5,7 +5,8 @@ import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { User } from 'models/utilizadores';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { EmailSenderService } from '../services/email-sender.service';
 
 @Component({
   selector: 'app-aprove-projects',
@@ -17,7 +18,9 @@ export class AproveProjectsComponent implements OnInit {
   public responsaveisArray: User[];
   public projectTable: any[] = new Array();
 
-  constructor(private _projectService: ProjectService, private _alertService: AlertService, private _userService: UserService, private _authService: AuthService, private router: Router) { }
+  constructor(private _projectService: ProjectService, private _alertService: AlertService,
+     private _userService: UserService, private _authService: AuthService,
+      private router: Router, private _emailService: EmailSenderService) { }
 
   ngOnInit(): void {
     this._authService.getRole().subscribe(res =>{
@@ -36,7 +39,8 @@ export class AproveProjectsComponent implements OnInit {
           this.projectsArray.filter(project => this.responsaveisArray.filter(element => {
             if (element._id === project.responsavelId) {
               let nome = element.nome
-              this.projectTable.push({ project, nome });
+              let email = element.email
+              this.projectTable.push({ project, nome , email});
               console.log(this.projectTable);
             }
           }));
@@ -44,9 +48,13 @@ export class AproveProjectsComponent implements OnInit {
       });
   }
 
-  avaliarProjeto(projectId, aprovacao) {
+  avaliarProjeto(projectId, email ,aprovacao) {
+    console.log(email)
     let body = { projectId: projectId, aprovado: aprovacao };
     this._projectService.aproveProject(body).subscribe((res) => {
+      if(aprovacao==="Aprovado"){
+        this._emailService.sendConfirmProjectEmail(email);
+      }
       this._alertService.success(res["msg"]);
     });
   }
