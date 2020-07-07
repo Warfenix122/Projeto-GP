@@ -100,4 +100,8 @@ export class UserService {
   getUsersArray(users){
     return this.http.post<User[]>('/api/getUsers',users);
   };
+  
+  getUserNome(utilizadorId){
+    return this.http.get('/api/getUserNome/'+utilizadorId);
+  }
 }

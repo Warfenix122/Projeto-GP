@@ -18,6 +18,9 @@ import { startWith, map } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
+import { EmailSenderService } from '../services/email-sender.service';
+import { Comment } from '../../../models/comment';
+
 
 export interface DialogData {
   contact: string;
@@ -72,10 +75,13 @@ export class ProjectComponent implements OnInit {
   gestores: User[];
   externos: User[];
   newContactsSession: string = "";
+  commentBody = new FormControl('');
+  comments: any[];
+  authenticated: Boolean;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
-    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService) { }
+    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService, private _emailService:EmailSenderService) { }
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
@@ -87,6 +93,12 @@ export class ProjectComponent implements OnInit {
       this.project = this.deepCopy(project) as Project;
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
+
+      this.projectService.getComments(this.id).subscribe((comments)=>{
+        this.comments = comments["comments"];
+        this.comments
+      })
+
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
         if (result)
@@ -105,6 +117,10 @@ export class ProjectComponent implements OnInit {
 
       this.projectService.getGestores(this.id).subscribe(res => {
         this.gestores = res["gestores"];
+        if(this._authService.isLoggedIn())
+          this.authenticated = true;
+        else
+          this.authenticated = false;
         this._userService.getCurrentUserId().subscribe(res => {
           this.currentUserId = res["UserID"];
           this.isResponsible = this.project.responsavelId == this.currentUserId;
@@ -356,6 +372,21 @@ export class ProjectComponent implements OnInit {
   volunteer() {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
       this.candidato=true;
+      this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
+        this._emailService.sendProjectGuidelinesEmail(user.email).subscribe();
+        // this._emailService.sendQRCodeEmail(this.id).subscribe(res=>{
+
+      // });
+      });
+    });
+  }
+
+  comment(){
+    let formbody = {comentario: this.commentBody.value,utilizadorId:this.currentUserId,dataCriacao: Date.now()};
+    console.log(formbody);
+    this.projectService.addComment(formbody,this.id).subscribe((res)=>{
+      console.log(res);
+      this.comments.push(formbody);
     });
   }
 
@@ -469,6 +500,14 @@ export class ProjectComponent implements OnInit {
   }
 
   saveUpdatedProject() {
+    if(this.updatedProject.dataComeco!==this.project.dataComeco
+      ||this.updatedProject.dataFechoInscricoes!==this.project.dataFechoInscricoes
+      ||this.updatedProject.dataTermino!==this.project.dataTermino){~
+        this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
+          this._emailService.sendChangesInProjectEmail(user);
+        });
+        this.gestores.forEach(elem => this._emailService.sendChangesInProjectEmail(elem.email));
+      }
     this.projectService.editProject(this.updatedProject._id, this.updatedProject).subscribe((updatedProject) => {
       this.project = this.deepCopy(updatedProject);
       this.isEditButtonToggled = !this.isEditButtonToggled;

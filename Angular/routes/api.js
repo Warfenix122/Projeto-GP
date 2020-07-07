@@ -14,6 +14,7 @@ const projectAPI = require('./project');
 const fotoAPI = require('./foto');
 const fileAPI = require('./file');
 const userAPI = require("./user");
+const mongoose =  require('mongoose');
 
 
 const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
@@ -321,5 +322,12 @@ router.post("/getUsers",(req,res)=>{
     res.status(500).json({success:false,msg:"Utilizadores não foi encontrado"});
   });
 });
+
+router.get("/getUserNome/:id",(req,res)=>{
+  let utilizadorId = mongoose.Types.ObjectId(req.params.id);
+  User.findOne({_id:utilizadorId}).then(user=>{
+    res.status(200).json({success:true, nome:user.nome});
+  }).catch(err => res.status(404).json({success:false,error: err}));
+})
 
 module.exports = router;

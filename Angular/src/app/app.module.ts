@@ -66,6 +66,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
+import { CommentComponent } from './comment/comment.component';
 
 
 @NgModule({
@@ -142,6 +143,7 @@ import { AproveProjectsComponent } from './aprove-projects/aprove-projects.compo
     RegisteredProjectsComponent,
     AproveProjectsComponent,
     DialogShowPoll,
+    CommentComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

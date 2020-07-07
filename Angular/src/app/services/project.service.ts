@@ -90,4 +90,12 @@ export class ProjectService {
   aproveProject(formBody){
     return this.http.put('api/project/avaliarProjeto',formBody);
   }
+
+  getComments(projectId){
+    return this.http.get<Comment[]>('/api/project/comments/'+projectId);
+  }
+
+  addComment(formBody,projectId){
+    return this.http.put('api/project/addComment/'+projectId,formBody);
+  }
 }

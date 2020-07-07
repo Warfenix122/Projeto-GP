@@ -187,15 +187,34 @@ router.get('/pendingProjects',(req,res)=>{
 });
 
 router.put('/avaliarProjeto',(req,res)=>{
-  console.log(req.body);
   let projectId = req.body.projectId;
   let aprovado = req.body.aprovado;
-  Project.findOneAndUpdate({_id:projectId},{aprovado:aprovado},()=>{
+  Project.findOneAndUpdate({_id:projectId},{aprovado:aprovado})
+  .then(()=>{
     res.status(200).json({success:true,msg:"Avaliação Completa"});
-  }).catch((err)=>{
-    console.log(err);
+  })
+  .catch((err)=>{    
+  	console.log(err);
     res.status(500).json({success:false,msg:err});
   });
 })
+
+router.get('/comments/:id',(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  console.log(projectId);
+  Project.findOne({_id:projectId}).then((project)=>{
+    console.log(project);
+    res.status(200).json({comments:project.comentarios});
+  }).catch(err=>res.status(500).json({msg:err}));
+});
+
+router.put('/addComment/:id',(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let comment = req.body.comentario;
+  let utilizadorId =  req.body.utilizadorId;
+  Project.findOneAndUpdate({_id:projectId},{$push:{"comentarios":{comentario:comment,utilizadorId: utilizadorId,dataCriacao:Date.now()}}}).then(()=>{
+    res.status(200).json({success:true,msg:"Obrigado por comentar!"});
+  }).catch(err=> res.status(500).json({success:false,msg:err}));
+});
 
 module.exports = router;
