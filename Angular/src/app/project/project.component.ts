@@ -378,8 +378,10 @@ export class ProjectComponent implements OnInit {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
       this.candidato=true;
       this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
-        this._emailService.sendProjectGuidelinesEmail(user.email).subscribe();
-        // this._emailService.sendQRCodeEmail(this.id).subscribe(res=>{
+        this._emailService.sendProjectGuidelinesEmail(user.email).subscribe(res=>{
+                                                                                              //Email here
+        });    
+        // this._emailService.sendQRCodeEmail(this.id).subscribe(res=>{               //Email Here
 
       // });
       });
@@ -512,9 +514,11 @@ export class ProjectComponent implements OnInit {
   saveUpdatedProject() {
     if(this.updatedProject.dataComeco!==this.project.dataComeco
       ||this.updatedProject.dataFechoInscricoes!==this.project.dataFechoInscricoes
-      ||this.updatedProject.dataTermino!==this.project.dataTermino){~
+      ||this.updatedProject.dataTermino!==this.project.dataTermino){
         this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
-          this._emailService.sendChangesInProjectEmail(user);
+          this._emailService.sendChangesInProjectEmail(user).subscribe(res=>{                       //Email here
+
+          });                       
         });
         this.gestores.forEach(elem => this._emailService.sendChangesInProjectEmail(elem.email));
       }
