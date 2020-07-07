@@ -278,7 +278,7 @@
         </div>
         <div class="col-3">
             <h1 class="titulo2">Comentarios</h1>
-            <div *ngIf="authenticated">
+            <div *ngIf="isAuthenticated">
                 <mat-form-field  style="width: 28rem;">
                     <mat-label>Comente</mat-label>
                     <textarea matInput [formControl]="commentBody" rows="4" cols="120"></textarea>
@@ -286,9 +286,8 @@
                 <button mat-stroked-button color="primary" (click)="comment()" style="margin-left:22rem">Comentar</button>
             </div>
             
-            
             <div style="margin-top:1.5rem" *ngFor="let comment of comments; let i= index">
-                <app-comment [comment]="comment"></app-comment>
+                <app-comment [comment]="comment" (removeComment)="removeComment(i,comment._id)" [currentUserId]="currentUserId" [isModerator]="isModerator"></app-comment>
             </div>
             
         </div>

@@ -77,7 +77,8 @@ export class ProjectComponent implements OnInit {
   newContactsSession: string = "";
   commentBody = new FormControl('');
   comments: any[];
-  authenticated: Boolean;
+  isAuthenticated: Boolean;
+  isModerator: Boolean = false;
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
@@ -94,10 +95,7 @@ export class ProjectComponent implements OnInit {
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-      this.projectService.getComments(this.id).subscribe((comments)=>{
-        this.comments = comments["comments"];
-        this.comments
-      })
+      
 
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
@@ -118,13 +116,16 @@ export class ProjectComponent implements OnInit {
       this.projectService.getGestores(this.id).subscribe(res => {
         this.gestores = res["gestores"];
         if(this._authService.isLoggedIn())
-          this.authenticated = true;
+          this.isAuthenticated = true;
         else
-          this.authenticated = false;
+          this.isAuthenticated = false;
         this._userService.getCurrentUserId().subscribe(res => {
           this.currentUserId = res["UserID"];
+          console.log(this.currentUserId);
           this.isResponsible = this.project.responsavelId == this.currentUserId;
           this.isManager = this.project.gestores.includes(this.currentUserId);
+          if(this.isResponsible || this.isManager)
+            this.isModerator = true;
           this._authService.getRole().subscribe(res => {
             this.role = res["Role"];
             if (this.project.voluntarios.filter(v => v.userId === this.currentUserId).length > 0) {
@@ -137,6 +138,9 @@ export class ProjectComponent implements OnInit {
               } else {
                 this.isFavProject = false;
               }
+              this.projectService.getComments(this.id).subscribe((comments)=>{
+                this.comments = comments["comments"];
+              });
             });
           });
           this._userService.getVoluntariosExternos().subscribe(users => {
@@ -145,6 +149,7 @@ export class ProjectComponent implements OnInit {
         });
       });
     });
+    
   }
 
   getSrc(foto) {
@@ -385,8 +390,13 @@ export class ProjectComponent implements OnInit {
     let formbody = {comentario: this.commentBody.value,utilizadorId:this.currentUserId,dataCriacao: Date.now()};
     console.log(formbody);
     this.projectService.addComment(formbody,this.id).subscribe((res)=>{
-      console.log(res);
-      this.comments.push(formbody);
+      this.comments.push(res["insertedComment"]);
+    });
+  }
+
+  removeComment(index,commentId){
+    this.projectService.removeComment(this.id,commentId).subscribe(res=>{
+      this.comments.splice(index,1);
     });
   }
 

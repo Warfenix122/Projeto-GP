@@ -3,4 +3,7 @@
         <mat-card-title>{{nome}}</mat-card-title>
     </mat-card-header>
     <mat-card-content><p>{{comment.comentario}}</p></mat-card-content>
+    <mat-card-actions *ngIf="isModerator || canRemove">
+        <button mat-stroked-button color="warn" (click)="removeComment.emit(comment._id)">Remover</button>
+    </mat-card-actions>
 </mat-card>

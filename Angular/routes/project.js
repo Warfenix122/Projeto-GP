@@ -201,9 +201,7 @@ router.put('/avaliarProjeto',(req,res)=>{
 
 router.get('/comments/:id',(req,res)=>{
   let projectId = mongoose.Types.ObjectId(req.params.id);
-  console.log(projectId);
   Project.findOne({_id:projectId}).then((project)=>{
-    console.log(project);
     res.status(200).json({comments:project.comentarios});
   }).catch(err=>res.status(500).json({msg:err}));
 });
@@ -212,9 +210,23 @@ router.put('/addComment/:id',(req,res)=>{
   let projectId = mongoose.Types.ObjectId(req.params.id);
   let comment = req.body.comentario;
   let utilizadorId =  req.body.utilizadorId;
-  Project.findOneAndUpdate({_id:projectId},{$push:{"comentarios":{comentario:comment,utilizadorId: utilizadorId,dataCriacao:Date.now()}}}).then(()=>{
-    res.status(200).json({success:true,msg:"Obrigado por comentar!"});
+  Project.findOne({_id:projectId}).then((project)=>{
+    project.comentarios.push({comentario: comment,utilizadorId: utilizadorId,dataCriacao:Date.now()});
+    let comentario = project.comentarios[project.comentarios.length-1];
+    project.save();
+    res.status(200).json({success:true,msg:"Obrigado por comentar!",insertedComment:comentario});
   }).catch(err=> res.status(500).json({success:false,msg:err}));
 });
+
+router.put('/removeComment/:id',(req,res)=>{
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let commentId = req.body.commentId;
+  console.log(commentId);
+  Project.updateOne({_id:projectId},{$pull:{"comentarios":{_id:commentId}}})
+  .then(project=>{
+    res.status(200).json({success:true,msg:"Comentario removido com sucesso"});
+  })
+  .catch(err=> res.status(500).json({success:false,msg:err}))
+})
 
 module.exports = router;

@@ -98,4 +98,9 @@ export class ProjectService {
   addComment(formBody,projectId){
     return this.http.put('api/project/addComment/'+projectId,formBody);
   }
+
+  removeComment(projectId,commentId){
+    let body = {commentId: commentId};
+    return this.http.put('api/project/removeComment/'+projectId,body);
+  }
 }
