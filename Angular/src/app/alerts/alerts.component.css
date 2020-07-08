@@ -1,6 +1,5 @@
 #alert{
-    position: fixed;
-    width: fit-content;
-    left: 25%;
+    /* position: fixed; */
+    width: 100%;
     text-align: center;
 }

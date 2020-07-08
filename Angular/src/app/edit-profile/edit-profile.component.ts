@@ -24,6 +24,7 @@ export class EditProfileComponent implements OnInit {
   distritos: string[] = statics.distritos;
   concelhos: string[] = statics.Concelhos;
   generos: string[] = statics.generos;
+  minAge: Date;
 
   constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
@@ -68,9 +69,8 @@ export class EditProfileComponent implements OnInit {
     }, (err) => {
       this._alertService.error(err.error.msg);
     });
-
-
-
+    let currentDate = new Date();
+    this.minAge = new Date(currentDate.getFullYear()-18,currentDate.getMonth()-1,currentDate.getDate());
   }
 
   get numeroTelefone() {
@@ -89,7 +89,13 @@ export class EditProfileComponent implements OnInit {
     return this.formProfile.get('nome');
   }
 
+  get distrito(){
+    return this.formProfile.get('distrito');
+  }
 
+  get concelho(){
+    return this.formProfile.get('concelho');
+  }
 
   private _filterConcelho(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -114,7 +120,7 @@ export class EditProfileComponent implements OnInit {
         }
       }
 
-      formbody['email'] = this.email.nativeElement.innerHTML;
+      formbody['email'] = this.user.email;
       this.userService.editUser(formbody).subscribe((res) => {
         this._alertService.success("Alterações Guardadas!");
       }, (err) => {

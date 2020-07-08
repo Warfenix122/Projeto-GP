@@ -13,11 +13,12 @@ export class TelephoneValidatorDirective implements Validator {
   validate(control: AbstractControl): { [key: string]: any } | null {
     if (control.value) {
       console.log('control.value :>> ', control.value);
-
+      console.log('control.value.type:>>', typeof(control.value));
       if (!Number.isInteger(parseInt(control.value, 10))) {
         return { 'integer': true };
       }
-      if (control.value.length != 9) {
+      if (control.value < 99999999 && control.value > 1000000000) {
+        console.log(true);
         return { 'length': true }; // return object if the validation is not passed.
       }
       return null; // return null if validation is passed.
