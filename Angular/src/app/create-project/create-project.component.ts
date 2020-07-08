@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 import { ProjectService } from '../services/project.service'
 import { ProjetoResponse } from 'models/responseInterfaces';
 import { Router } from '@angular/router';
+import { FotoService } from '../services/foto.service';
 
 @Component({
   selector: 'app-create-project',
@@ -38,18 +39,23 @@ export class CreateProjectComponent implements OnInit {
   validationMessages: [String];
   daySelected:Boolean;
   criacao:Date;
+  imgPath;
+  imgUrl: any;
 
-  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService, private _projectService: ProjectService, private _authService: AuthService, private router: Router) { }
+
+  constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService,
+     private _projectService: ProjectService, private _authService: AuthService, private router: Router,
+     private _fotoService: FotoService) { }
 
   formInfo = this._fb.group({
     nome: new FormControl('', [Validators.required]),
     resumo: new FormControl('', [Validators.required]),
-    nrVagas: new FormControl('', [Validators.required]),
+    nrVagas: new FormControl('', [Validators.required,Validators.min(1)]),
     necessarioFormacao: new FormControl(false),
     restringido: new FormControl(false),
     formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
-    gestoremail: new FormControl(''),
+    gestoremail: new FormControl('',[Validators.email]),
   });
 
   formDatas = this._fb.group({
@@ -235,8 +241,20 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  onFileChanged(files: FileList) {
+
+  onFileSelected(files: FileList) {
     this.file = files.item(0);
+    
+    let mimeType = files.item(0).type;
+    if(mimeType.match(/image\/*/)==null){
+      return;
+    }
+
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = (_event)=>{
+      this.imgUrl = reader.result;
+    }
   }
 
   addAreasInteresseControls() {
@@ -249,14 +267,12 @@ export class CreateProjectComponent implements OnInit {
   postData() {
     if (this.formInfo.valid && this.formDatas.valid && this.dataTermino.valid && this.dataComeco.valid && this.dataFechoInscricoes.valid) {
       this._userService.getCurrentUserId().subscribe((res) => {
-        console.log(res["UserID"]);
         let responsavelId = res["UserID"];
         let XemXtempo = this.XemXtempo1.value + " em " + this.XemXtempo2.value;
         let atividades = [];
         let gestoresIds = []
         let selectedAreas = this.selectedAreas;
         gestoresIds = this.gestores.filter(gestor=>gestor._id);
-        console.log(gestoresIds);
         this.atividadesArr.controls.forEach(atividade => {
           let atividadeObj = atividade.value;
           let horas = parseInt(atividadeObj.horas.split(':')[0]);
@@ -265,7 +281,6 @@ export class CreateProjectComponent implements OnInit {
           atividades.push({ descricao: atividadeObj.descricao, dataAcontecimento: data });
         });
         let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
-        console.log(formBody);
         this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
           console.log(res);
           if (this.file) {
@@ -286,7 +301,6 @@ export class CreateProjectComponent implements OnInit {
     const formData = new FormData();
     formData.append('projetoId', id);
     formData.append('file', this.file, this.file.name);
-
     const reader = new FileReader();
     const userservice = this._projectService;
     const alert = this._alertService;

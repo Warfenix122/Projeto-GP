@@ -12,6 +12,10 @@
   transform: translate(-50%, -50%);
 }
 
+.reAlign{
+  padding-left: -15px !important;
+}
+
 #add-atividade {
   float: right;
   margin-top: 1.5rem;
