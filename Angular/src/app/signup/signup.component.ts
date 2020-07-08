@@ -29,6 +29,8 @@ export class SignupComponent implements OnInit {
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
+
+  minAge: Date;
   constructor(private userService: UserService, private authService: AuthService, private emailService: EmailSenderService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
 
@@ -66,6 +68,8 @@ export class SignupComponent implements OnInit {
         startWith(''),
         map(value => this._filterDistrito(value))
       );
+      let currentDate = new Date();
+      this.minAge = new Date(currentDate.getFullYear()-18,currentDate.getMonth()-1,currentDate.getDate());
   }
 
   private _filterConcelho(value: string): string[] {

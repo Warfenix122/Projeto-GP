@@ -11,6 +11,17 @@ form{
   margin-left: 20%;
 }
 
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin-left: 25%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
 input{
   width: 100%;
 }

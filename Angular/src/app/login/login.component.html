@@ -1,23 +1,32 @@
 <div class="row d-flex justify-content-center">
   <div class="col-md-5 m-auto shadow-sm p-3 mb-5 bg-white rounded">
 
-    <form [formGroup]="formLogin">
-      <div class="form-group">
-        <label for="email">Email</label>
+    <form [formGroup]="formLogin" class="example-form">
+      <div class="row form-group">
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input type="email" placeholder="Introduza o Email" matInput [formControl]="email">
+          <mat-error *ngIf="email.hasError('required') && email.touched">O email é um campo obrigatorio.</mat-error>
+        </mat-form-field>
+        <!-- <label for="email">Email</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
           formControlName="email" />
         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
           <div *ngIf="email.errors.required">
             O email é um campo obrigatorio.
           </div>
-        </div>
+        </div> -->
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Create Password"
-          formControlName="password" />
+      <div class="row form-group">
+        <mat-form-field class="example-full-width">
+          <mat-label>Password</mat-label>
+          <input type="password" placeholder="Password" matInput [formControl]="password"/>
+        </mat-form-field>
+        <!-- <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder=""
+          formControlName="password" /> -->
       </div>
-      <button type="submit" class="btn btn-primary btn-block" (click)="postData()">
+      <button type="submit" mat-raised-button color="primary" style="width: 25%;left: 35%;" (click)="postData()">
         Login
       </button>
       <hr>

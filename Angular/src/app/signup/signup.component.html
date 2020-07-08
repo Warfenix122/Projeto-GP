@@ -1,168 +1,179 @@
-<div class="row mt-5">
-  <div class="col-md-10 m-auto">
-    <!-- {{ formRegisto.value | json }} -->
-    <!-- <form [formGroup]="formRegisto" (ngSubmit)="postData()"> -->
+<div class="container p-5 m-10">
     <mat-horizontal-stepper labelPosition="bottom">
       <mat-step label="Email & Password" [stepControl]="formRegisto">
-        <form [formGroup]="formRegisto">
+        <form [formGroup]="formRegisto" class="example-form">
           <div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" email-comp id="email" name="email" class="form-control" placeholder="Enter Email"
-                formControlName="email" />
-              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                <div *ngIf="email.errors.required">
-                  O Email é um campo obrigatorio.
-                </div>
-                <div *ngIf="email.errors['domain']">
-                  O email tem de ter um dominio
-                </div>
-                <div *ngIf="email.errors['end']">
-                  O email tem de terminar em ".com" ou em ".pt"
-                </div>
-              </div>
+            <div class="row form-group">
+              <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  type="email"
+                  required
+                  email-comp
+                  id="email"
+                  name="email"
+                  placeholder="Enter Email"
+                  [formControl]="email"
+                />
+                <mat-error *ngIf="email.hasError('required')"
+                  >O email é um campo obrigatorio</mat-error
+                >
+                <mat-error *ngIf="email.hasError('domain')"
+                  >O email tem de ter um dominio</mat-error
+                >
+                <mat-error *ngIf="email.hasError('end')"
+                  >O email tem de terminar em ".com" ou em ".pt"</mat-error
+                >
+              </mat-form-field>
             </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Create Password"
-                formControlName="password" password-comp />
-              <div *ngIf="password.invalid &&(password.dirty || password.touched)" class="alert alert-danger">
-                <div *ngIf="password.errors.required">
-                  A password é um campo obrigatorio.
-                </div>
-                <div *ngIf="password.errors['integer']">
-                  A password tem de conter pelo menos um numero
-                </div>
-                <div *ngIf="password.errors['upper']">
-                  A password tem de conter pelo menos uma letra maiuscula
-                </div>
-                <div *ngIf="password.errors['length']">
-                  A password tem de ter pelo menos 8 digitos
-                </div>
-              </div>
+            <div class="row form-group">
+              <mat-form-field class="example-full-width">
+                <mat-label>Create Password</mat-label>
+                <input
+                  matInput
+                  type="password"
+                  required
+                  password-comp
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                  [formControl]="password"
+                />
+                <mat-error *ngIf="password.hasError('required')"
+                  >A password é um campo obrigatorio.</mat-error
+                >
+                <mat-error *ngIf="password.hasError('integer')"
+                  >A password tem de conter pelo menos um numero</mat-error
+                >
+                <mat-error *ngIf="password.hasError('upper')"
+                  >A password tem de conter pelo menos uma letra
+                  maiuscula</mat-error
+                >
+                <mat-error *ngIf="password.hasError('length')"
+                  >A password tem de ter pelo menos 8 digitos</mat-error
+                >
+              </mat-form-field>
             </div>
-            <div class="form-group">
-              <label for="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                class="form-control"
-                placeholder="Confirm Password"
-                formControlName="confirmPassword"
-                compare="password"
-              />
-              <div
-                *ngIf="
-                  confirmPassword.invalid &&
-                  (confirmPassword.dirty || confirmPassword.touched)
-                "
-                class="alert alert-danger"
-              >
-                <div *ngIf="confirmPassword.errors.required">
-                  A password de confirmação é um campo obrigatorio.
-                </div>
-                <div *ngIf="confirmPassword.errors['compare']">
-                  As passwords têm de ser iguais.
-                </div>
-              </div>
+            <div class="row form-group">
+              <mat-form-field class="example-full-width">
+                <mat-label>Create Password</mat-label>
+                <input
+                  matInput
+                  type="password"
+                  required
+                  password-comp
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirme a Password"
+                  compare="password"
+                  [formControl]="confirmPassword"
+                />
+                <mat-error *ngIf="confirmPassword.hasError('required')"
+                  >O confirmar password é um campo obrigatorio.</mat-error
+                >
+                <mat-error *ngIf="confirmPassword.hasError('compare')"
+                  >As passwords têm de ser iguais.</mat-error
+                >
+              </mat-form-field>
             </div>
             <hr />
           </div>
-          <button class="btn btn-primary btn-block" mat-button matStepperNext>
+        </form>
+        <div class="row">
+          <button mat-raised-button color="primary" matStepperNext style="left:45%;width:15%;">
             Continuar
           </button>
-        </form>
+        </div>
       </mat-step>
       <mat-step label="Utilizador" [stepControl]="formInformacao">
-        <form [formGroup]="formInformacao">
-          <div class="form-group">
-            <label for="nome">Primeiro e Ultimo Nome</label>
-            <input type="text" id="nome" nome-comp name="nome" required class="form-control"
-              placeholder="Introduza o seu nome" formControlName="nome" />
-            <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
-              <div *ngIf="nome.errors.required">
-                O nome é um campo obrigatorio.
-              </div>
-              <div *ngIf="(nome.errors['length'] || nome.errors['space']) ">
-                Deve inserir o primeiro e ultimo nome.
-              </div>
-            </div>
+        <form [formGroup]="formInformacao" class="example-form">
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Primeiro e Ultimo Nome</mat-label>
+              <input
+                matInput
+                type="text"
+                required
+                id="nome"
+                name="nome"
+                nome-comp
+                placeholder="Primeiro Ultimo"
+                [formControl]="nome"
+              />
+              <mat-error *ngIf="nome.hasError('required')"
+                >O nome é um campo obrigatorio.</mat-error
+              >
+              <mat-error
+                *ngIf="nome.hasError('space') "
+                >Deve inserir o primeiro e ultimo nome.</mat-error
+              >
+            </mat-form-field>
           </div>
-          <div class="form-group">
-            <mat-form-field>
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
               <mat-label>Genero</mat-label>
               <mat-select [formControl]="genero">
                 <mat-option *ngFor="let genero of generos" [value]="genero">{{
                   genero
                 }}</mat-option>
               </mat-select>
-            </mat-form-field>
-            <!-- <label for="genero">Genero</label>
-            <select
-              class="form-control"
-              id="genero"
-              name="genero"
-              formControlName="genero"
-            >
-              <option
-                *ngFor="let genero of generos; let i = index"
-                [ngValue]="genero"
-                >{{ genero }}</option
+              <mat-error *ngIf="genero.hasError('required')"
+                >Tem de selecionar um genero</mat-error
               >
-            </select> -->
-            <div
-              *ngIf="genero.invalid && (genero.dirty || genero.touched)"
-              class="alert alert-danger"
-            >
-              <div *ngIf="genero.errors.required">
-                Tem de selecionar um genero
-              </div>
-            </div>
+            </mat-form-field>
           </div>
-          <div class="form-group">
-            <label for="dataNascimento">Data de Nascimento</label>
-            <input type="date" date-comp id="dataNascimento" name="dataNascimento" class="form-control"
-              placeholder="Introduza a data de nascimento" formControlName="dataNascimento" />
-            <div *ngIf="dataNascimento.invalid &&(dataNascimento.dirty || dataNascimento.touched)"
-              class="alert alert-danger">
-              <div *ngIf="dataNascimento.errors.required">
-                A data de nascimento é um campo obrigatorio.
-              </div>
-              <div *ngIf="(dataNascimento.errors['year']) ">
-                Deve de ter pelo menos 18 anos.
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="numeroTelefone">Numero de Telemóvel</label>
-            <input type="tel" phone id="numeroTelefone" name="numeroTelefone" class="form-control"
-              placeholder="Introduza o Numero de Telefone" formControlName="numeroTelefone" />
-            <div *ngIf="numeroTelefone.invalid &&(numeroTelefone.dirty || numeroTelefone.touched)"
-              class="alert alert-danger">
-              <div *ngIf="numeroTelefone.errors.required">
-                O numero de telemóvel é um campo obrigatorio.
-              </div>
-              <div *ngIf="numeroTelefone.errors['integer']">
-                O numero de telemóvel não pode conter letras nem espaços
-              </div>
-              <div *ngIf="numeroTelefone.errors['length']">
-                O numero de telemóvel tem de ter 9 digitos
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="distrito">Distrito</label>
+          <div class="row form-group">
+          <mat-form-field class="example-full-width">
+            <mat-label>Data de Nascimento</mat-label>
             <input
+              matInput
+              date-comp
+              [formControl]="dataNascimento"
+              matstartDate
+              [max]="minAge"
+              [matDatepicker]="dataNascimentoPicker"
+            />
+            <mat-datepicker-toggle
+              [for]="dataNascimentoPicker"
+              matSuffix
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #dataNascimentoPicker
+              [startAt]="dataNascimento"
+            ></mat-datepicker>
+            <mat-error *ngIf="dataNascimento.hasError('year')"
+              >É necessario ter 18 anos</mat-error
+            >
+          </mat-form-field>
+          </div>
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Numero de Telemóvel</mat-label>
+              <input 
+              type="number"
+              phone
+              id="numeroTelefone"
+              name="numeroTelefone"
+              matInput
+              placeholder="Introduza o Numero de Telefone"
+              formControlName="numeroTelefone">
+              <mat-error *ngIf="numeroTelefone.hasError('required')">O numero de telefone é um campo obrigatório</mat-error>
+              <mat-error *ngIf="numeroTelefone.hasError('length')">O numero de telemóvel tem de ter 9 digitos</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Distrito</mat-label>
+              <input
               type="text"
               placeholder="Escolha um Distrito"
-              class="form-control"
               id="distrito"
               name="distrito"
               formControlName="distrito"
-              MatInput
+              matInput
               [matAutocomplete]="autoDistrito"
-            />
+            /> 
             <mat-autocomplete #autoDistrito="matAutocomplete">
               <mat-option
                 *ngFor="let distrito of filteredDistritos | async"
@@ -171,17 +182,19 @@
                 {{ distrito }}
               </mat-option>
             </mat-autocomplete>
+            </mat-form-field>
           </div>
-          <div class="form-group">
-            <label for="concelho">Concelho</label>
-            <input
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Concelho</mat-label>
+              <input
               type="text"
               placeholder="Escolha um Concelho"
               class="form-control"
               id="concelho"
               name="concelho"
               formControlName="concelho"
-              MatInput
+              matInput
               [matAutocomplete]="autoConcelho"
             />
             <mat-autocomplete #autoConcelho="matAutocomplete">
@@ -192,17 +205,19 @@
                 {{ concelho }}
               </mat-option>
             </mat-autocomplete>
+            </mat-form-field>
           </div>
-          <hr />
-          <button class="btn btn-primary btn-block" mat-button matStepperNext>
+        </form>
+        <div class="row">
+          <button mat-raised-button color="primary" matStepperNext style="left:45%;width:15%;">
             Continuar
           </button>
-        </form>
+        </div>
       </mat-step>
       <mat-step label="Informações" [stepControl]="formPreferencias">
-        <form [formGroup]="formPreferencias">
-          <div>
-            <mat-form-field>
+        <form [formGroup]="formPreferencias" class="example-form">
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
               <mat-label>Tipo de Membro:</mat-label>
               <mat-select [formControl]="tipoMembro">
                 <mat-option
@@ -211,34 +226,12 @@
                   >{{ tipoMembro }}</mat-option
                 >
               </mat-select>
+              <mat-error *ngIf="tipoMembro.hasError('required')">O tipo de membro tem de ser selecionado</mat-error>
             </mat-form-field>
-            <!-- <label for="tipoMembro">Tipo de membro:</label>
-            <select
-              class="form-control"
-              id="tipoMembro"
-              name="tipoMembro"
-              formControlName="tipoMembro"
-            >
-              <option
-                *ngFor="let tipo of tiposMembro; let i = index"
-                [ngValue]="tipo"
-                >{{ tipo }}</option
-              >
-            </select> -->
-            <div
-              *ngIf="
-                tipoMembro.invalid && (tipoMembro.dirty || tipoMembro.touched)
-              "
-              class="alert alert-danger"
-            >
-              <div *ngIf="tipoMembro.errors.required">
-                O tipo membro tem de ser selecionado
-              </div>
-            </div>
             <div class="col">
               <div *ngIf="tipoMembro.value === 'Voluntario Interno'">
                 <div class="row">
-                  <mat-form-field>
+                  <mat-form-field class="example-full-width">
                     <mat-label>Escola</mat-label>
                     <mat-select [formControl]="escola">
                       <mat-option
@@ -248,23 +241,10 @@
                       >
                     </mat-select>
                   </mat-form-field>
-                  <!-- <label for="escola">Escola</label>
-                  <select
-                    class="form-control"
-                    id="escola"
-                    name="escola"
-                    formControlName="escola"
-                  >
-                    <option
-                      *ngFor="let escola of escolas; let i = index"
-                      [ngValue]="escola"
-                      >{{ escola }}</option
-                    >
-                  </select> -->
                 </div>
                 <div class="row">
-                  <mat-form-field>
-                    <mat-label>Formacao</mat-label>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Qual é o seu nivel de formação mais elevado?</mat-label>
                     <mat-select [formControl]="formacao">
                       <mat-option
                         *ngFor="let formacao of formacoes"
@@ -281,13 +261,22 @@
             <label for="AreasInteresse">Areas de Interesse:</label>
 
             <ul class="col-lg-10 list-unstyled" style="column-count: 2;">
-              <li id="lista" *ngFor="let control of areasArray.controls; let i = index">
+              <li
+                id="lista"
+                *ngFor="let control of areasArray.controls; let i = index"
+              >
                 <div class="row d-flex justify-content-between">
-                  <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
-                    (change)="getSelectedAreas()" name="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
+                  <mat-checkbox
+                    labelPosition="after"
+                    class="col-md-5"
+                    [formControl]="control"
+                    (change)="getSelectedAreas()"
+                    name="{{ areas[i] }}"
+                    color="primary"
+                    >{{ areas[i] }}</mat-checkbox
+                  >
                 </div>
               </li>
-              <!-- </div> -->
             </ul>
           </div>
           <div class="align-items-center">
@@ -296,6 +285,7 @@
               formGroupName="RGPD"
               name="RGPD"
               (change)="RGPDchecked($event)"
+              color="primary"
               >Li a aceito a Política de Privacidade e Proteção de
               Dados</mat-checkbox
             >
@@ -309,18 +299,15 @@
               </div>
             </div>
           </div>
-          <button
-            type="submit"
-            class="btn btn-primary btn-block"
-            (click)="postData()"
-          >
-            Registar
-          </button>
+          <div class="row">
+            <button mat-raised-button color="primary" matStepperNext style="left:45%;width:35%;" (click)="postData()">
+              Registar
+            </button>
+          </div>
+
         </form>
       </mat-step>
     </mat-horizontal-stepper>
-    <!-- </form> -->
-  </div>
 </div>
 <script>
   (function () {

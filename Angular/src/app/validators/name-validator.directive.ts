@@ -17,10 +17,11 @@ export class NameValidatorDirective implements Validator {
       if (!String(control.value).includes(' ')) {
         return { 'space': true };
       } else if (!name[0]) {
-        return { 'space': true };
+        console.log('problem primeiro');
+        return { 'primeiro': true };
       } else if (name[1] === '') {
         console.log('object :>> ');
-        return { 'space': true };
+        return { 'segundo': true };
       }
 
 
