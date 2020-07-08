@@ -4,13 +4,14 @@ import { UserService } from './user.service';
 import { User } from '../../../models/utilizadores';
 import { Project } from 'models/projeto';
 import { ProjectService } from './project.service';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileService {
 
-  constructor(private http: HttpClient, private userService: UserService, private projectService: ProjectService) { }
+  constructor(private http: HttpClient, private userService: UserService, private projectService: ProjectService, private _alertService:AlertService) { }
 
   updateProfilePhoto(formdata): Promise<User> {
     let resolveRef;
@@ -49,7 +50,11 @@ export class FileService {
       this.uploadPhoto(formdata).subscribe((res) => {
         this.updateProjectCover(res['fotoId'], project._id).subscribe((res) => {
           resolveRef(res["project"])
-        }, (err) => rejectRef(err))
+          this._alertService.success("Foto alterada com sucesso");
+        }, (err) => {
+          rejectRef(err)
+          this._alertService.error("Não foi possivel alterar a foto");
+        })
       });
     })
     return dataPromise;
@@ -70,7 +75,11 @@ export class FileService {
       this.uploadPhoto(formdata).subscribe((res) => {
         this.updateProjectPhotos(res['fotoId'], project._id).subscribe((res) => {
           resolveRef(res["project"])
-        }, (err) => rejectRef(err))
+          this._alertService.success("Foto alterada com sucesso");
+        }, (err) => {
+          rejectRef(err)
+          this._alertService.error("Não foi possivel alterar a foto");
+        })
       });
     })
     return dataPromise;

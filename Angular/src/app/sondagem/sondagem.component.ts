@@ -42,11 +42,12 @@ export class SondagemComponent implements OnInit {
           let index = this.polls.findIndex(elem => elem._id == res["answer"].sondagemId);
           this.polls.splice(index, 1);
           this.alertService.success("Resposta guardada com sucesso");
-        })
+        }, err => this.alertService.error(err["error"].msg));
       }
     })
   }
 }
+
 
 @Component({
   selector: 'dialog-show-poll',
@@ -60,7 +61,7 @@ export class DialogShowPoll implements OnInit{
   chosenPoll: Sondagem;
   user: User;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogShowPoll>, public _fb: FormBuilder, private sondagemService: SondagemService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogShowPoll>, public _fb: FormBuilder, private sondagemService: SondagemService,private _alertService:AlertService) {
     this.chosenPoll = data.chosenPoll;
     this.user = data.user;
   }

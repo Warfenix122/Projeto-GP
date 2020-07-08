@@ -35,6 +35,7 @@ export class AlterPasswordComponent implements OnInit {
         password: this.formPassword.value['password']
       };
       this.userService.alterPassword(formbody).subscribe((res) => {
+        this._alertService.success("Palavra passe alterada");
         //this._emailService.sendRecoverPasswordEmail(res["user"].email,);          //Email aqui
         this.router.navigate(['/profile']);
       }, (err) => {

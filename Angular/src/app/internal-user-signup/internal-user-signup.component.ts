@@ -30,11 +30,12 @@ export class InternalUserSignupComponent implements OnInit {
       let pass = this.generatepassword(this.formIPS.value.email);
       let formbody = { ... this.formIPS.value, password: pass, tipoMembro: "Voluntario Interno" };
       this.service.register(formbody).subscribe((res) => {
-
+        this._alertService.success("Utilizador Registado");
         // Send Email
         this.emailService.sendConfirmationEmail(formbody.email, formbody.nome).subscribe((response) => {
+          this.router.navigate(['login']);
         }, (err) => {
-          this._alertService.error(err.error.msg);
+          this._alertService.error(err["error"].msg);
         });
 
 

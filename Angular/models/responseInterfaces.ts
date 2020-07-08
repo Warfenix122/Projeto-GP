@@ -1,9 +1,9 @@
 export interface ProjetoResponse {
   success: boolean,
-  projetoId: String,
+  projetoId: string,
 }
 
 export interface ImageResponse {
   success: boolean,
-  msg: String
+  msg: string
 }

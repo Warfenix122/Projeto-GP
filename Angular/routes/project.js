@@ -59,7 +59,7 @@ router.post("", (req, res) => {
 router.put('/edit/:id', (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
   project = Project.updateOne({ _id: projectId }, req.body, (err, doc) => {
-    if (err) res.status(500).json({ success: false, msg: err.message });
+    if (err) res.status(500).json({ success: false, msg: "Projeto Não encontrado" });
     else {
       Project.findOne({ _id: projectId }).then((project) => {
         res.json(project);
@@ -147,7 +147,7 @@ router.put('/candidatar/:id', (req, res) => {
       voluntario = { userId: voluntarioId, estado: "Em Espera" };
     } else
       voluntario = { userId: voluntarioId, estado: "Aprovado" };
-    if (voluntarios.length + 1 < vagas) {
+    if (voluntarios.length < vagas) {
       if (voluntario !== undefined) {
         voluntarios.push(voluntario);
         project.save().then(() => {
@@ -195,7 +195,7 @@ router.put('/avaliarProjeto',(req,res)=>{
   })
   .catch((err)=>{    
   	console.log(err);
-    res.status(500).json({success:false,msg:err});
+    res.status(500).json({success:false,msg:"Não foi possivel avaliar o projeto"});
   });
 })
 
@@ -226,7 +226,7 @@ router.put('/removeComment/:id',(req,res)=>{
   .then(project=>{
     res.status(200).json({success:true,msg:"Comentario removido com sucesso"});
   })
-  .catch(err=> res.status(500).json({success:false,msg:err}))
+  .catch(err=> res.status(500).json({success:false,msg:"Projeto Não foi encontrado"}))
 })
 
 module.exports = router;

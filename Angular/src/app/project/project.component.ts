@@ -377,6 +377,7 @@ export class ProjectComponent implements OnInit {
   volunteer() {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
       this.candidato=true;
+      this.alertService.success(res["msg"]);
       this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
         this._emailService.sendProjectGuidelinesEmail(user.email).subscribe(res=>{
                                                                                               //Email here
@@ -385,6 +386,8 @@ export class ProjectComponent implements OnInit {
 
       // });
       });
+    },(err)=>{
+      this.alertService.warning(err["error"].msg);
     });
   }
 
@@ -393,12 +396,16 @@ export class ProjectComponent implements OnInit {
     console.log(formbody);
     this.projectService.addComment(formbody,this.id).subscribe((res)=>{
       this.comments.push(res["insertedComment"]);
-    });
+      this.alertService.success("Comentario Adicionado");
+    },(err)=> this.alertService.warning(err["error"].msg));
   }
 
   removeComment(index,commentId){
     this.projectService.removeComment(this.id,commentId).subscribe(res=>{
       this.comments.splice(index,1);
+      this.alertService.success(res["msg"]);
+    },(err)=>{
+      this.alertService.warning(err["error"].msg);
     });
   }
 
@@ -461,6 +468,9 @@ export class ProjectComponent implements OnInit {
   cancelVolunteer() {
     this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(res =>{console.log(res)
       this.candidato = false;
+      this.alertService.success(res["msg"]);
+    },(err)=>{
+      this.alertService.warning(err["error"].msg);
     } );
   }
 
@@ -468,8 +478,9 @@ export class ProjectComponent implements OnInit {
     this.isFavProject = !this.isFavProject;
     this.addRemFavButtonText = this.isFavProject ? 'Remover dos favoritos' : 'Adicionar aos Favoritos';
     this._userService.getCurrentUserId().subscribe((res) => {
-      this._userService.updateUserFavProject(this.isFavProject, res['UserID'], this.project._id).subscribe();
-
+      this._userService.updateUserFavProject(this.isFavProject, res['UserID'], this.project._id).subscribe(( )=>{
+        this.alertService.success("Projeto Adicionado aos favoritos");
+      }, err=> this.alertService.success("Não foi possivel adicionar o projeto aos favoritos"));
     })
   }
 
@@ -526,7 +537,7 @@ export class ProjectComponent implements OnInit {
       this.project = this.deepCopy(updatedProject);
       this.isEditButtonToggled = !this.isEditButtonToggled;
       this.alertService.success("Projeto atualizado com sucesso");
-    });
+    }, err=> this.alertService.warning(err["error"].msg));
   }
 
   deleteProject() {

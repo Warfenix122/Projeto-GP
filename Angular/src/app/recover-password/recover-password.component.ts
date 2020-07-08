@@ -32,6 +32,7 @@ export class RecoverPasswordComponent implements OnInit {
       this.service.alterPassword(formbody).subscribe((res) => {
         // Send Email
         this.emailService.sendRecoverPasswordEmail(formbody.email, pass).subscribe((responnse) => {
+          this._alertService.success("A password foi enviada para o seu email");
         }, (err) => {
           this._alertService.error(err.error.msg);
         });

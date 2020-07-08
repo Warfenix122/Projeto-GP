@@ -282,7 +282,7 @@ export class CreateProjectComponent implements OnInit {
         });
         let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
         this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
-          console.log(res);
+          this._alertService.success("Projeto criado com sucesso!");
           if (this.file) {
             this.imgUpload(res.projetoId);
           }

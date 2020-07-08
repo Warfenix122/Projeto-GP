@@ -50,7 +50,7 @@ export class AproveUserComponent implements OnInit {
       this.removeUser(user);
       this._alertService.success("Utilizador Aprovado!");
 
-    });
+    },err=> this._alertService.warning(err["error"].msg));
   }
 
 }

@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.valid) {
       this.service.login(this.formLogin.value).subscribe((res) => {
         this.authService.setLocalStorage(res);
+        this._alertService.success("Login bem sucedido");
         this.router.navigate(["/"]);
       }, (err) => {
         console.log(err);

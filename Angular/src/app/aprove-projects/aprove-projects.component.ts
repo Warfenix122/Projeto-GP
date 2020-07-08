@@ -56,6 +56,6 @@ export class AproveProjectsComponent implements OnInit {
         this._emailService.sendConfirmProjectEmail(email).subscribe();        //Email here
       }
       this._alertService.success(res["msg"]);
-    });
+    },err=> this._alertService.warning(err["error"].msg));
   }
 }
