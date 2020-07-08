@@ -5,8 +5,6 @@
         <mat-label>Email</mat-label>
         <input matInput disabled type="text" #email value="{{ user.email }}" />
       </mat-form-field>
-      <!-- <label class="col-md-4">Email</label>
-      <span class="col-md-4" #email name="email"></span> -->
     </div>
     <div class="row form-group">
       <mat-form-field class="example-full-width">
@@ -26,29 +24,6 @@
           >Deve inserir o primeiro e ultimo nome</mat-error
         >
       </mat-form-field>
-      <!-- <label class="col-md-4" for="nome">Primeiro e Ultimo Nome</label>
-      <input
-        type="text"
-        id="nome"
-        nome-comp
-        name="nome"
-        required
-        class="form-control col-md-4"
-        placeholder="Introduza o seu nome"
-        formControlName="nome"
-      /> -->
-
-      <!-- <div
-        *ngIf="nome.invalid && (nome.dirty || nome.touched)"
-        class="alert alert-danger"
-      >
-        <div *ngIf="nome.errors.required">
-          O nome é um campo obrigatorio.
-        </div>
-        <div *ngIf="nome.errors['length'] || nome.errors['space']">
-          Deve inserir o primeiro e ultimo nome.
-        </div>
-      </div> -->
     </div>
     <div class="row form-group">
       <mat-form-field class="example-full-width">
@@ -58,29 +33,7 @@
             genero
           }}</mat-option>
         </mat-select>
-        <!-- <mat-error *ngIf="genero.hasError()"></mat-error> -->
       </mat-form-field>
-      <!-- <label class="col-md-4" for="genero">Genero</label>
-      <select
-        class="form-control col-md-4"
-        id="genero"
-        name="genero"
-        formControlName="genero"
-      >
-        <option
-          *ngFor="let genero of generos; let i = index"
-          [ngValue]="genero"
-          >{{ genero }}</option
-        >
-      </select>
-      <div
-        *ngIf="genero.invalid && (genero.dirty || genero.touched)"
-        class="alert alert-danger"
-      >
-        <div *ngIf="genero.errors.required">
-          Tem de selecionar um genero
-        </div>
-      </div> -->
     </div>
     <div class="row form-group">
       <mat-form-field class="example-full-width">
@@ -105,30 +58,6 @@
           >É necessario ter 18 anos</mat-error
         >
       </mat-form-field>
-      <!-- <label class="col-md-4" for="dataNascimento">Data de Nascimento</label>
-      <input
-        type="date"
-        date-comp
-        id="dataNascimento"
-        name="dataNascimento"
-        class="form-control col-md-4"
-        placeholder="Introduza a data de nascimento"
-        formControlName="dataNascimento"
-      />
-      <div
-        *ngIf="
-          dataNascimento.invalid &&
-          (dataNascimento.dirty || dataNascimento.touched)
-        "
-        class="alert alert-danger"
-      >
-        <div *ngIf="dataNascimento.errors.required">
-          A data de nascimento é um campo obrigatorio.
-        </div>
-        <div *ngIf="dataNascimento.errors['year']">
-          Deve de ter pelo menos 18 anos.
-        </div>
-      </div> -->
     </div>
     <div class="row form-group">
       <mat-form-field class="example-full-width">
@@ -147,33 +76,6 @@
           >O numero de telemóvel não pode conter letras nem espaços</mat-error
         >
       </mat-form-field>
-      <!-- <label class="col-md-4" for="numeroTelefone">Numero de Telemóvel</label>
-      <input
-        type="tel"
-        phone
-        id="numeroTelefone"
-        name="numeroTelefone"
-        class="form-control col-md-4"
-        placeholder="Introduza o Numero de Telefone"
-        formControlName="numeroTelefone"
-      />
-      <div
-        *ngIf="
-          numeroTelefone.invalid &&
-          (numeroTelefone.dirty || numeroTelefone.touched)
-        "
-        class="alert alert-danger"
-      >
-        <div *ngIf="numeroTelefone.errors.required">
-          O numero de telemóvel é um campo obrigatorio.
-        </div>
-        <div *ngIf="numeroTelefone.errors['integer']">
-          O numero de telemóvel não pode conter letras nem espaços
-        </div>
-        <div *ngIf="numeroTelefone.errors['length']">
-          O numero de telemóvel tem de ter 9 digitos
-        </div>
-      </div> -->
     </div>
     <div class="row form-group">
       <mat-form-field class="example-full-width">
@@ -231,8 +133,6 @@
           value="{{ user.tipoMembro }}"
         />
       </mat-form-field>
-      <!-- <label class="col-md-4">Tipo de Utilizador</label>
-      <span class="col-md-4" name="tipoMembro" #tipoMembro></span> -->
     </div>
 
     <div class="row">
@@ -246,8 +146,6 @@
           value="{{ user.dataCriacao }}"
         />
       </mat-form-field>
-      <!-- <label class="col-md-4">Data de Criação de Conta</label>
-      <span class="col-md-4" name="dataCriacao" #dataCriacao></span> -->
     </div>
   </form>
   <div class="row">
