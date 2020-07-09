@@ -9,6 +9,7 @@ import { FotoService } from '../services/foto.service';
 import { UserService } from '../services/user.service';
 import { environment } from 'src/environments/environment';
 import { ThrowStmt } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chose-top',
@@ -51,7 +52,8 @@ export class ChoseTopComponent implements OnInit {
   @ViewChild('todoList') topList: ElementRef;
 
   constructor(private projectService: ProjectService, private _alertService: AlertService, private fotoService: FotoService,
-    ngbPopoverConfig: NgbPopoverConfig, private userService: UserService) {
+    ngbPopoverConfig: NgbPopoverConfig, private userService: UserService,
+    private router:Router) {
     ngbPopoverConfig.autoClose = 'outside';
   }
 
@@ -115,9 +117,15 @@ export class ChoseTopComponent implements OnInit {
       this.topProjects.forEach((element,i,arr) => {
         console.log('i :>> ', i);
         this.projectService.getProject(element._id).subscribe((proj) => {
-          this.projectService.markAsTop(proj._id, i+1).subscribe((res) => {});
+          this.projectService.markAsTop(proj._id, i+1).subscribe((res) => {
+            this._alertService.success(res["msg"]);
+            this.router.navigate(['']);
+          },err=>{
+            this._alertService.error(err["error"].msg);
+          });
+        },err=>{
+          this._alertService.error(err["error"].msg);
         });
-
       });
     }else {
       this._alertService.error("Só pode guardar 3 projetos");
