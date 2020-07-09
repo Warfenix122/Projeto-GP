@@ -6,8 +6,7 @@ const { Faq } = require("../models/mongoConnection");
 router.get('/', (req, res) => {
     Faq.find({}).then((faqs) => {
       res.json(faqs);
-    }).catch(err);
-
+    }).catch(err=>console.log(err));
 })
 
 module.exports = router;
