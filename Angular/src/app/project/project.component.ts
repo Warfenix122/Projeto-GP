@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, Inject } from '@angular/core';
+import { Component, OnInit, Renderer2, Inject, ElementRef, ViewChild } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'models/projeto';
@@ -27,6 +27,9 @@ import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { Comment } from '../../../models/comment';
+
+import * as fileSaver from 'file-saver';
+import * as qrcode from 'qrcode-generator';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -91,23 +94,9 @@ export class ProjectComponent implements OnInit {
   isAuthenticated: Boolean;
   isModerator: Boolean = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private projectService: ProjectService,
-    public datepipe: DatePipe,
-    private renderer: Renderer2,
-    private _userService: UserService,
-    private _authService: AuthService,
-    private iconRegistry: MatIconRegistry,
-    private _snackBar: MatSnackBar,
-    public dialog: MatDialog,
-    private alertService: AlertService,
-    private router: Router,
-    private _bottomSheet: MatBottomSheet,
-    private fotoService: FotoService,
-    private fileService: FileService,
-    private _emailService: EmailSenderService
-  ) {}
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
+    private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
+    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService, private _emailService: EmailSenderService) { }
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
@@ -118,9 +107,10 @@ export class ProjectComponent implements OnInit {
     this.projectService.getProject(this.id).subscribe((project) => {
       this.project = this.deepCopy(project) as Project;
       this.updatedProject = this.deepCopy(project) as Project;
-      this.updatedProject.contactos.forEach(
-        (elem, index) => (this.showEditProjectContact[index] = false)
-      );
+      this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
+
+
+
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
         if (result) this.projectPhotos = result;
@@ -175,6 +165,14 @@ export class ProjectComponent implements OnInit {
           });
         });
       });
+    });
+
+  }
+  writeFile() {
+    this.projectService.writeFile(this.project._id).subscribe((response) => {
+      let blob: any = new Blob([JSON.stringify(response['data'])], { type: 'text/json; charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      fileSaver.saveAs(blob, 'participantes.json');
     });
   }
 
@@ -326,7 +324,7 @@ export class ProjectComponent implements OnInit {
 
   deletePhoto(fotoId) {
     if (fotoId) {
-      let index = this.projectPhotos.findIndex((elem) => elem == fotoId);
+      let index = this.projectPhotos.findIndex(elem => elem == fotoId);
       this.projectPhotos.splice(index, 1);
       this.project.fotosId.splice(index, 1);
       this.projectService

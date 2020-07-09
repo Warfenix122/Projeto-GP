@@ -22,8 +22,6 @@ export class CommentComponent implements OnInit {
   ngOnInit(): void {
     this._userService.getUserNome(this.comment.utilizadorId).subscribe(res=> {
       this.nome = res["nome"];
-      console.log(this.currentUserId);
-      console.log(this.isModerator);
       if(this.comment.utilizadorId === this.currentUserId)
         this.canRemove =true;
     });

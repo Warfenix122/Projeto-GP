@@ -23,10 +23,16 @@
         <div class="col">
             <div class="card border-secondary">
                 <div class="inner ">
-                    <img class="card-img front" #firstPlaceImg src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image">
-                    <div class="card-body back text-center">
-                        <h2 class="card-title">Titulo</h2>
-                        <p class="card-text">Area de Interesse</p>
+                    <div class="example-box card">
+                        <img class=" card-img front" [src]="getSrc(project1.fotoCapaId)" alt="Card image cap">
+                        <div class="card-body  back text-center">
+                            <h2 class="card-title">{{project1.nome}}</h2>
+                            <p class="card-text">{{project1.resumo}}</p>
+                            <p><span *ngFor="let keyword of project1.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+                                <span *ngFor="let areaOfInterest of project1.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span></p>
+                            <button class="btn btn-outline-dark" [routerLink]="'/projects/'+project1._id">Ver Mais</button>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,10 +43,16 @@
         <div class="col">
             <div class="card border-secondary">
                 <div class="inner">
-                    <img class="card-img front" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image">
-                    <div class="card-body back text-center">
-                        <h2 class="card-title">Titulo</h2>
-                        <p class="card-text">Area de Interesse</p>
+                    <div class="example-box card">
+                        <img class=" card-img front" [src]="getSrc(project2.fotoCapaId)" alt="Card image cap">
+                        <div class="card-body  back text-center">
+                            <h2 class="card-title">{{project2.nome}}</h2>
+                            <p class="card-text">{{project2.resumo}}</p>
+                            <p> <span *ngFor="let keyword of project2.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+                                <span *ngFor="let areaOfInterest of project2.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span></p>
+                            <button class="btn btn-outline-dark" [routerLink]="'/projects/'+project2._id">Ver Mais</button>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -49,12 +61,18 @@
 
         </div>
         <div class="col">
-            <div class="card  border-secondary">
+            <div class="card border-secondary">
                 <div class="inner">
-                    <img #thirdPlaceImg class="card-img front" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image">
-                    <div class="card-body back text-center">
-                        <h2 class="card-title">Titulo</h2>
-                        <p class="card-text">Area de Interesse</p>
+                    <div class="example-box card">
+                        <img class=" card-img front" [src]="getSrc(project3.fotoCapaId)" alt="Card image cap">
+                        <div class="card-body  back text-center">
+                            <h2 class="card-title">{{project3.nome}}</h2>
+                            <p class="card-text">{{project3.resumo}}</p>
+                            <p><span *ngFor="let keyword of project3.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+                                <span *ngFor="let areaOfInterest of project3.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span></p>
+
+                            <button class="btn btn-outline-dark" [routerLink]="'/projects/'+project3._id">Ver Mais</button>
+                        </div>
                     </div>
                 </div>
             </div>

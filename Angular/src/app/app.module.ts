@@ -20,8 +20,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -61,12 +62,14 @@ import { SondagemComponent, DialogShowPoll } from './sondagem/sondagem.component
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { DragDropModule, DragDrop } from '@angular/cdk/drag-drop';
 
 
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
 import { CommentComponent } from './comment/comment.component';
+import { ChoseTopComponent } from './chose-top/chose-top.component';
 
 
 @NgModule({
@@ -102,6 +105,8 @@ import { CommentComponent } from './comment/comment.component';
     MatDialogModule,
     MatBottomSheetModule,
     MatTabsModule,
+    DragDropModule,
+    MatGridListModule,
     MatProgressSpinnerModule
   ],
   declarations: [
@@ -144,6 +149,7 @@ import { CommentComponent } from './comment/comment.component';
     AproveProjectsComponent,
     DialogShowPoll,
     CommentComponent,
+    ChoseTopComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
