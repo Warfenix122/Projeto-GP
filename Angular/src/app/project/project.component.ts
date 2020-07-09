@@ -21,6 +21,7 @@ import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { Comment } from '../../../models/comment';
 
+import * as fileSaver from 'file-saver';
 
 export interface DialogData {
   contact: string;
@@ -151,7 +152,15 @@ export class ProjectComponent implements OnInit {
     });
 
   }
-
+  writeFile() {
+    this.projectService.writeFile(this.project._id).subscribe((response) => {
+      console.log('responsefiledata :>> ', response);
+      let blob: any = new Blob([JSON.stringify(response['data'])], { type: 'text/json; charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+       fileSaver.saveAs(blob, 'employees.json');
+    }), error => console.log('Error downloading the file'),
+      () => console.info('File downloaded successfully');
+  }
   getSrc(foto) {
     if (foto) {
       return 'data:' + foto.contentType + ';base64,' + foto.src;

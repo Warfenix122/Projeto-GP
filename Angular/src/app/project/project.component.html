@@ -260,9 +260,11 @@
 
         </mat-tab>
         <mat-tab *ngIf=" isModerator " label="Inscritos">
-            <button mat-raised-button color="primary" onclick="generateFileWithVolunteers()">Exportar Voluntarios</button>
-            <li class="button mat-stroked-button" color=" primary "><a href="../../assets/apk/app-debug.apk" download="app.apk"> Download App</a></li>
-            <div> INSERIR VOLUNTARIOS INSCRITOS AQUI</div>
+            <button mat-raised-button color="primary" (click)="writeFile()">Exportar Voluntarios</button>
+            <li class="button mat-stroked-button " color=" primary "><a href="../../assets/apk/app-debug.apk " download="app.apk "> Download App</a></li>
         </mat-tab>
+        <!--POR AQUI ESTA MERDA WORKINGS-->
+
+
     </mat-tab-group>
 </div>

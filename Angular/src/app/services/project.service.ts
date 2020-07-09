@@ -36,24 +36,24 @@ export class ProjectService {
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
   }
 
-  userRegisterProjects(userId){
+  userRegisterProjects(userId) {
     return this.http.get<Project[]>('/api/project/registerProject/' + userId);
   }
 
-  removeCoverPhoto(id){
-    return this.http.put<Project>('/api/project/'+id, {fotoCapaId: null});
+  removeCoverPhoto(id) {
+    return this.http.put<Project>('/api/project/' + id, { fotoCapaId: null });
   }
 
-  updateProjectPhotos(id, photos){
-    return this.http.put<Project>('/api/project/'+id, {fotosId: photos});
+  updateProjectPhotos(id, photos) {
+    return this.http.put<Project>('/api/project/' + id, { fotosId: photos });
   }
 
-  editProject(id, obj){
-    return this.http.put<Project>('/api/project/edit/'+id, obj);
+  editProject(id, obj) {
+    return this.http.put<Project>('/api/project/edit/' + id, obj);
   }
 
-  deleteProject(id){
-    return this.http.delete<Project>('/api/project/'+id);
+  deleteProject(id) {
+    return this.http.delete<Project>('/api/project/' + id);
   }
 
   getProject(id) {
@@ -69,38 +69,42 @@ export class ProjectService {
     return this.http.post<ImageResponse>('/api/file/uploadCapaFoto', formData);
   }
 
-  getGestores(projectId){
-    return this.http.get<User[]>("api/project/gestores/"+projectId);
+  getGestores(projectId) {
+    return this.http.get<User[]>("api/project/gestores/" + projectId);
   }
 
-  volunteer(projectId,voluntarioId){
-    let volId = {userId:voluntarioId}
-    return this.http.put<ImageResponse>('/api/project/candidatar/'+projectId,volId);
+  volunteer(projectId, voluntarioId) {
+    let volId = { userId: voluntarioId }
+    return this.http.put<ImageResponse>('/api/project/candidatar/' + projectId, volId);
   }
 
-  cancelVolunteer(projectId,voluntarioId){
-    let volId = {voluntarioId:voluntarioId}
-    return this.http.put<ImageResponse>('/api/project/anularCandidatura/'+projectId,volId);
+  cancelVolunteer(projectId, voluntarioId) {
+    let volId = { voluntarioId: voluntarioId }
+    return this.http.put<ImageResponse>('/api/project/anularCandidatura/' + projectId, volId);
   }
 
-  getToAproveProjects(){
+  getToAproveProjects() {
     return this.http.get<Project[]>('api/project/pendingProjects');
   }
 
-  aproveProject(formBody){
-    return this.http.put('api/project/avaliarProjeto',formBody);
+  aproveProject(formBody) {
+    return this.http.put('api/project/avaliarProjeto', formBody);
   }
 
-  getComments(projectId){
-    return this.http.get<Comment[]>('/api/project/comments/'+projectId);
+  getComments(projectId) {
+    return this.http.get<Comment[]>('/api/project/comments/' + projectId);
   }
 
-  addComment(formBody,projectId){
-    return this.http.put('api/project/addComment/'+projectId,formBody);
+  addComment(formBody, projectId) {
+    return this.http.put('api/project/addComment/' + projectId, formBody);
   }
 
-  removeComment(projectId,commentId){
-    let body = {commentId: commentId};
-    return this.http.put('api/project/removeComment/'+projectId,body);
+  removeComment(projectId, commentId) {
+    let body = { commentId: commentId };
+    return this.http.put('api/project/removeComment/' + projectId, body);
+  }
+
+  writeFile(projectId) {
+    return this.http.get<JSON>('/api/project/writeFile/' + projectId);
   }
 }
