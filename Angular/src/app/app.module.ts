@@ -67,6 +67,8 @@ import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemove
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
 import { CommentComponent } from './comment/comment.component';
+import { FaqsComponent } from './faqs/faqs.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 
 @NgModule({
@@ -144,6 +146,8 @@ import { CommentComponent } from './comment/comment.component';
     AproveProjectsComponent,
     DialogShowPoll,
     CommentComponent,
+    FaqsComponent,
+    ContactsComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

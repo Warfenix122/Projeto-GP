@@ -104,6 +104,11 @@ var RespostaSchema = new Schema({
     outraResposta: String
 })
 
+var FaqSchema = new Schema({
+    pergunta: String,
+    resposta: String
+})
+
 const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
 const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");
 const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
@@ -113,6 +118,7 @@ const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
 const Sondagem = mongoose.model("Sondagem", SondagemSchema, "Sondagem");
 const Resposta = mongoose.model("Resposta", RespostaSchema, "Resposta");
+const Faq = mongoose.model("Faq", FaqSchema, "Faq");
 
 module.exports = {
     Utilizadores: Utilizadores,
@@ -123,5 +129,6 @@ module.exports = {
     Projeto: Projeto,
     Foto: Foto,
     Sondagem: Sondagem,
-    Resposta: Resposta
+    Resposta: Resposta,
+    Faq : Faq
 };

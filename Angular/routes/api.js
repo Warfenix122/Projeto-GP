@@ -14,6 +14,7 @@ const projectAPI = require('./project');
 const fotoAPI = require('./foto');
 const fileAPI = require('./file');
 const userAPI = require("./user");
+const faqAPI = require("./faq");
 const mongoose =  require('mongoose');
 
 
@@ -25,6 +26,7 @@ router.use("/user", userAPI);
 router.use("/foto", fotoAPI);
 router.use("/file", fileAPI);
 router.use('/sondagem', sondagemAPI);
+router.use('/faq', faqAPI);
 
 router.get(
   "/protected",

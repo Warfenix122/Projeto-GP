@@ -1,0 +1,43 @@
+<div class="container">
+<h1 id="faq">FAQ'S</h1>
+</div>
+
+
+<!-- List group -->
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <div class="list-group" id="myList" role="tablist" >
+          <div *ngFor="let faq of faqs">
+            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">{{faq.pergunta}}</a>
+          </div>
+          
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">pergunta 2</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">pergunta 3</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">pergunta 4</a>
+      </div>
+    </div>
+  
+    <!-- Tab panes -->
+    <div class="col-9">
+      <div class="tab-content">
+        <div class="tab-pane active pergunta" id="home" role="tabpanel">
+          <h2>Pergunta 1</h2>
+          <p> resposta pergunta 1</p>
+        </div>
+        <div class="tab-pane" id="profile" role="tabpanel">
+          <h2>Pergunta 2</h2>
+          <p> resposta pergunta 2</p>
+        </div>
+        <div class="tab-pane" id="messages" role="tabpanel">
+          <h2>Pergunta 3</h2>
+          <p> resposta pergunta 3</p></div>
+        <div class="tab-pane" id="settings" role="tabpanel">
+          <h2>Pergunta 4</h2>
+          <p> resposta pergunta 4</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
