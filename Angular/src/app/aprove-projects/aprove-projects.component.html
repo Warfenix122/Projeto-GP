@@ -15,10 +15,10 @@
         <td>{{ entry.project.nome }}</td>
         <td>{{ entry.nome }}</td>
         <td>{{ entry.project.resumo }}</td>
-        <button class="btn btn-success col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, entry.email,'Aprovado')">
+        <button class="btn btn-success col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, i,entry.email,'Aprovado')">
           <i class="fas fa-thumbs-up"></i>
         </button>
-        <button class="btn btn-danger col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, entry.email, 'Recusado')">
+        <button class="btn btn-danger col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, i,entry.email, 'Recusado')">
           <i class="fas fa-thumbs-down"></i>
         </button>
       </tr>

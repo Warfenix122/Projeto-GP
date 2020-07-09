@@ -48,13 +48,14 @@ export class AproveProjectsComponent implements OnInit {
       });
   }
 
-  avaliarProjeto(projectId, email ,aprovacao) {
+  avaliarProjeto(projectId, index,email ,aprovacao) {
     console.log(email)
     let body = { projectId: projectId, aprovado: aprovacao };
     this._projectService.aproveProject(body).subscribe((res) => {
       if(aprovacao==="Aprovado"){
         this._emailService.sendConfirmProjectEmail(email).subscribe();        //Email here
       }
+      this.projectTable.splice(index,1);
       this._alertService.success(res["msg"]);
     },err=> this._alertService.warning(err["error"].msg));
   }
