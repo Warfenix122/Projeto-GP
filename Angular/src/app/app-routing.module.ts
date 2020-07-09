@@ -18,6 +18,7 @@ import { CreateSondagemComponent } from './create-sondagem/create-sondagem.compo
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { ProjectComponent } from './project/project.component';
 import {AproveProjectsComponent} from './aprove-projects/aprove-projects.component';
+import { ChoseTopComponent } from './chose-top/chose-top.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'createSondagem', component: CreateSondagemComponent },
   { path: 'createGestor', component: CreateGestorComponent },
   { path: 'projects/:id', component: ProjectComponent},
+  { path: 'pickTop3', component: ChoseTopComponent},
   { path: 'api/confirmAccount/:email', component: LoginComponent }
 ];
 
