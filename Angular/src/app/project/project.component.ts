@@ -29,7 +29,6 @@ import { EmailSenderService } from '../services/email-sender.service';
 import { Comment } from '../../../models/comment';
 
 import * as fileSaver from 'file-saver';
-import * as qrcode from 'qrcode-generator';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
