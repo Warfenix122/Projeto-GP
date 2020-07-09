@@ -1,0 +1,39 @@
+<div class="example-container mt-5">
+    <h1>Top 3 de Projetos</h1>
+    <hr>
+    <h4>Organize os projetos nesta lista pela ordem que pretende apresentar.
+        <p>O projeto mais à esquerda será o projeto mais popular</p>
+        <p>So pode escolher 3 projetos para guardar</p>
+    </h4>
+    <button mat-raised-button color="primary" (click)="saveTop()">Guardar</button>
+    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="topProjects" [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let project of topProjects; let i = index" [attr.data-index]="i" class="card" cdkDrag>
+            <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
+            <div class="card-body">
+                <h2 class="card-title">{{project.nome}}</h2>
+                <p class="card-text">{{project.resumo}}</p>
+                <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+                <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div>
+    <h2>Projetos Exitentes</h2>
+    <p>Arraste os projetos que deseje para a secção acima e guarde-os!</p>
+
+    <div class="d-flex mt-3 flex-wrap" cdkDropListGroup>
+        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="projects" [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let project of projects; let i = index" [attr.data-index]="i" class="card" cdkDrag>
+                <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
+                <div class="card-body">
+                    <h2 class="card-title">{{project.nome}}</h2>
+                    <p class="card-text">{{project.resumo}}</p>
+                    <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+                    <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

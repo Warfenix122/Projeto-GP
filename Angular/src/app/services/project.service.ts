@@ -107,4 +107,11 @@ export class ProjectService {
   writeFile(projectId) {
     return this.http.get<JSON>('/api/project/writeFile/' + projectId);
   }
+
+  markAsTop(id, position){
+    return this.http.get<Project>('/api/project/markTop/' + id+"/"+position);
+  }
+  dismarkAsTop(id){
+    return this.http.get<Project>('/api/project/dismarkTop/' + id);
+  }
 }

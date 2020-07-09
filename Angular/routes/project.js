@@ -245,6 +245,31 @@ router.get('/writeFile/:id', (req, res) => {
     })
 
 });
+router.get('/markTop/:id/:position', (req, res) => {
+    let projectId = req.params.id;
+    let position = req.params.position;
+    Project.findOne({ "_id": projectId }).then((project) => {
+        project.projetoMes = { state: true, position: position };
+        project.save()
+        res.status(200).json({ success: true, msg: "Projeto Marcado como top!", project: project });
+
+    }).catch((err) => {
+        res.status(500).json({ success: false, msg: err });
+    })
+
+});
+router.get('/dismarkTop/:id', (req, res) => {
+    let projectId = req.params.id;
+    Project.findOne({ "_id": projectId }).then((project) => {
+        project.projetoMes = { state: false };
+        project.save()
+        res.status(200).json({ success: true, msg: "Projeto desarcado como top!", project: project });
+
+    }).catch((err) => {
+        res.status(500).json({ success: false, msg: err });
+    })
+
+});
 async function processArray(array) {
     var data = [];
     for (const elem of array) {
@@ -258,4 +283,5 @@ async function processArray(array) {
     }
     return data
 }
+
 module.exports = router;
