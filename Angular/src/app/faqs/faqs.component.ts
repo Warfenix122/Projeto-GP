@@ -26,16 +26,18 @@ export class FaqsComponent implements OnInit {
   constructor(private faqService: FaqService, private alertService: AlertService, private _userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
-    this.faqService.getFaqs().subscribe((faqs) => {
-      this.faqs = faqs;
-    })
-
     this._userService.getCurrentUserId().subscribe(res => {
       this.currentUserId = res["UserID"];
       this._userService.getUser(this.currentUserId).subscribe((user: User) => {
         this.user = user;
+        console.log(this.user)
+        this.faqService.getFaqs().subscribe((faqs) => {
+          this.faqs = faqs;
+        })
       });
     });
+
+    
   }
 
   getFaqId(i){
@@ -48,7 +50,7 @@ export class FaqsComponent implements OnInit {
     this.faqService.deleteFaq(this.faqId).subscribe((deletedFaq) => {
       this.alertService.success("Faq eliminada com sucesso");
       this.faqs.splice(index,1);
-      this.router.navigate(['/faqs']);
+      //this.router.navigate(['/faqs']);
     })
   }
 

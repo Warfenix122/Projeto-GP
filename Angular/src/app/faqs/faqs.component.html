@@ -16,7 +16,7 @@
                           (closed)="panelOpenState = false" (click)="getFaqId(i)">
         
         <mat-expansion-panel-header>
-          <div *ngIf="user.tipoMembro === 'Gestor'">
+          <div *ngIf="user.tipoMembro == 'Gestor'">
             <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq(i)">
               <mat-icon>highlight_off</mat-icon>
             </button>
