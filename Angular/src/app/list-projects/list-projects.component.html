@@ -36,11 +36,11 @@
                   {{areasOfInterestSelected.length}} Áreas de interesse
                 </button>
                 <div class="dropdown-menu" (click)="$event.stopPropagation()" aria-labelledby="dropdownMenuButton">
-                  <a (click)="clickAreaOfInterest(areaOfInterest.area, i)" *ngFor="let areaOfInterest of areasOfInterest; let i = index" [attr.data-index]="i" class="dropdown-item">
+                    <a (click)="clickAreaOfInterest(areaOfInterest.area, i)" *ngFor="let areaOfInterest of areasOfInterest; let i = index" [attr.data-index]="i" class="dropdown-item">
                       {{areaOfInterest.area}} <i class="fas fa-check" [style.visibility]="areaOfInterest.checked ? 'visible' : 'hidden'"></i>
                     </a>
                 </div>
-              </div>
+            </div>
         </div>
         <div class="divider"></div>
         <div class="input-group-sm">
@@ -62,6 +62,5 @@
             <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
             <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
         </div>
-    </div> 
+    </div>
 </div>
-

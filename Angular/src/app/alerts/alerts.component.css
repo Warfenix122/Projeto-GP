@@ -1,0 +1,6 @@
+#alert{
+    position: fixed;
+    width: fit-content;
+    left: 25%;
+    text-align: center;
+}

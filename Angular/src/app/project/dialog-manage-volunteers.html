@@ -1,40 +1,25 @@
-<button class="mb-3" mat-raised-button (click)="onClose('back')">
-    <mat-icon>arrow_back</mat-icon> Voltar
-</button>
-<h1 mat-dialog-title color="primary">
-    Gerir voluntários do Projeto</h1>
-<div mat-dialog-content style="width: 100%;">
-  <form>
-  <mat-form-field style="font-size: 18px; width: 100%;">
-      <mat-label>Procurar por nome</mat-label>
-      <input cdkFocusInitial matInput type="primary" name="nameFilter" [formControl]="nameFilter"
-        placeholder="Introduza o nome do voluntário" />
-    </mat-form-field>
-  </form>
-  <mat-list>
-    <div mat-subheader>Voluntários no projeto</div>
-    <mat-list-item *ngFor="let volunteer of filteredVolunteers | async; let i = index" [attr.index]="i" matTooltipPosition="before" [matTooltip]="volunteer.state" [style]="getBackgroundColor(volunteer.state)">
-        <mat-icon mat-list-icon>person</mat-icon>
-        <span mat-line>{{volunteer.name}}</span>
-        <span mat-line>{{volunteer.email}}</span>
-        <button class="mr-1" mat-mini-fab color="primary" *ngIf="volunteer.state != 'Aprovado'" matTooltip="Aprovar" (click)="approveVolunteer(i)">
+<div style="width: 100%;">
+    <form>
+        <mat-form-field style="font-size: 18px; width: 100%;">
+            <mat-label>Procurar por nome</mat-label>
+            <input cdkFocusInitial matInput type="primary" name="nameFilter" [formControl]="nameFilter" placeholder="Introduza o nome do voluntário" />
+        </mat-form-field>
+    </form>
+    <mat-list>
+        <div mat-subheader>Voluntários no projeto</div>
+        <mat-list-item *ngFor="let volunteer of filteredVolunteers | async; let i = index" [attr.index]="i" matTooltipPosition="before" [matTooltip]="volunteer['state']" [style]="getBackgroundColor(volunteer['state'])">
+            <mat-icon mat-list-icon>person</mat-icon>
+            <span mat-line>{{volunteer['name']}}</span>
+            <span mat-line>{{volunteer['email']}}</span>
+            <button class="mr-1" mat-mini-fab color="primary" *ngIf="volunteer['state'] != 'Aprovado'" matTooltip="Aprovar" (click)="approveVolunteer(i)">
             <mat-icon>thumb_up</mat-icon>
         </button>
-        <button class="mr-1" mat-mini-fab color="primary" *ngIf="volunteer.state != 'Recusado'" matTooltip="Recusar" (click)="disapproveVolunteer(i)">
+            <button class="mr-1" mat-mini-fab color="primary" *ngIf="volunteer['state'] != 'Recusado'" matTooltip="Recusar" (click)="disapproveVolunteer(i)">
             <mat-icon>thumb_down</mat-icon>
         </button>
-        <button mat-mini-fab color="warn" matTooltip="Remover" (click)="removeVolunteer(i)">
+            <button mat-mini-fab color="warn" matTooltip="Remover" (click)="removeVolunteer(i)">
             <mat-icon>delete</mat-icon>
         </button>
-    </mat-list-item>
-  </mat-list>
-</div>
-
-<div mat-dialog-actions class="mt-1">
-  <button mat-raised-button color="warn" (click)="onClose('cancel')">
-    Cancelar
-  </button>
-  <button mat-raised-button color="primary" (click)="onClose('save')">
-    Guardar Alterações
-  </button>
+        </mat-list-item>
+    </mat-list>
 </div>

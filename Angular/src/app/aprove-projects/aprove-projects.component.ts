@@ -53,7 +53,7 @@ export class AproveProjectsComponent implements OnInit {
     let body = { projectId: projectId, aprovado: aprovacao };
     this._projectService.aproveProject(body).subscribe((res) => {
       if(aprovacao==="Aprovado"){
-        this._emailService.sendConfirmProjectEmail(email);
+        this._emailService.sendConfirmProjectEmail(email).subscribe();        //Email here
       }
       this._alertService.success(res["msg"]);
     });

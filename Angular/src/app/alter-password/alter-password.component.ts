@@ -16,7 +16,7 @@ import { AlertService } from '../services/alert.service';
 })
 export class AlterPasswordComponent implements OnInit {
 
-  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) { }
+  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService, private _emailService: EmailSenderService) { }
 
 
   formPassword = this._fb.group({
@@ -35,6 +35,7 @@ export class AlterPasswordComponent implements OnInit {
         password: this.formPassword.value['password']
       };
       this.userService.alterPassword(formbody).subscribe((res) => {
+        //this._emailService.sendRecoverPasswordEmail(res["user"].email,);          //Email aqui
         this.router.navigate(['/profile']);
       }, (err) => {
         this._alertService.error("Não preencheu todos os campos obrigatórios");

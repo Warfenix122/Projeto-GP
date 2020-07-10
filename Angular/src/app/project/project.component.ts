@@ -23,6 +23,11 @@ import { Comment } from '../../../models/comment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
+import * as fileSaver from 'file-saver';
+import * as qrcode from 'qrcode-generator';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export interface DialogData {
   contact: string;
@@ -84,7 +89,7 @@ export class ProjectComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
-    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService, private _emailService:EmailSenderService) { }
+    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService, private _emailService: EmailSenderService) { }
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
@@ -97,7 +102,7 @@ export class ProjectComponent implements OnInit {
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-      
+
 
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
@@ -117,7 +122,7 @@ export class ProjectComponent implements OnInit {
 
       this.projectService.getGestores(this.id).subscribe(res => {
         this.gestores = res["gestores"];
-        if(this._authService.isLoggedIn())
+        if (this._authService.isLoggedIn())
           this.isAuthenticated = true;
         else
           this.isAuthenticated = false;
@@ -126,7 +131,7 @@ export class ProjectComponent implements OnInit {
           console.log(this.currentUserId);
           this.isResponsible = this.project.responsavelId == this.currentUserId;
           this.isManager = this.project.gestores.includes(this.currentUserId);
-          if(this.isResponsible || this.isManager)
+          if (this.isResponsible || this.isManager)
             this.isModerator = true;
           this._authService.getRole().subscribe(res => {
             this.role = res["Role"];
@@ -140,7 +145,7 @@ export class ProjectComponent implements OnInit {
               } else {
                 this.isFavProject = false;
               }
-              this.projectService.getComments(this.id).subscribe((comments)=>{
+              this.projectService.getComments(this.id).subscribe((comments) => {
                 this.comments = comments["comments"];
               });
             });
@@ -151,7 +156,14 @@ export class ProjectComponent implements OnInit {
         });
       });
     });
-    
+
+  }
+  writeFile() {
+    this.projectService.writeFile(this.project._id).subscribe((response) => {
+      let blob: any = new Blob([JSON.stringify(response['data'])], { type: 'text/json; charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      fileSaver.saveAs(blob, 'participantes.json');
+    });
   }
 
   openVolunteersDialog(){
@@ -315,8 +327,8 @@ export class ProjectComponent implements OnInit {
       })
   }
 
-  deletePhoto(fotoId){
-    if(fotoId){
+  deletePhoto(fotoId) {
+    if (fotoId) {
       let index = this.projectPhotos.findIndex(elem => elem == fotoId);
       this.projectPhotos.splice(index, 1);
       this.project.fotosId.splice(index, 1)
@@ -392,27 +404,31 @@ export class ProjectComponent implements OnInit {
 
   volunteer() {
     this.projectService.volunteer(this.id, this.currentUserId).subscribe(res => {
-      this.candidato=true;
-      this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
-        this._emailService.sendProjectGuidelinesEmail(user.email).subscribe();
-        // this._emailService.sendQRCodeEmail(this.id).subscribe(res=>{
+      this.candidato = true;
+      this._userService.getUser(this.currentUserId).subscribe((user: User) => {
+        this._emailService.sendProjectGuidelinesEmail(user.email).subscribe(res => {
+          //Email here
+        });
+        // this._emailService.sendQRCodeEmail(this.id).subscribe(res=>{               //Email Here
 
-      // });
+        // });
       });
     });
   }
 
-  comment(){
-    let formbody = {comentario: this.commentBody.value,utilizadorId:this.currentUserId,dataCriacao: Date.now()};
+  comment() {
+    let formbody = { comentario: this.commentBody.value, utilizadorId: this.currentUserId, dataCriacao: Date.now() };
     console.log(formbody);
-    this.projectService.addComment(formbody,this.id).subscribe((res)=>{
+    this.projectService.addComment(formbody, this.id).subscribe((res) => {
+      this.alertService.success("Comentário adicionado");
+      this.commentBody.reset();
       this.comments.push(res["insertedComment"]);
     });
   }
 
-  removeComment(index,commentId){
-    this.projectService.removeComment(this.id,commentId).subscribe(res=>{
-      this.comments.splice(index,1);
+  removeComment(index, commentId) {
+    this.projectService.removeComment(this.id, commentId).subscribe(res => {
+      this.comments.splice(index, 1);
     });
   }
 
@@ -473,9 +489,10 @@ export class ProjectComponent implements OnInit {
   }
 
   cancelVolunteer() {
-    this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(res =>{console.log(res)
+    this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(res => {
+      console.log(res)
       this.candidato = false;
-    } );
+    });
   }
 
   updateFavProject() {
@@ -526,14 +543,16 @@ export class ProjectComponent implements OnInit {
   }
 
   saveUpdatedProject() {
-    if(this.updatedProject.dataComeco!==this.project.dataComeco
-      ||this.updatedProject.dataFechoInscricoes!==this.project.dataFechoInscricoes
-      ||this.updatedProject.dataTermino!==this.project.dataTermino){~
-        this._userService.getUser(this.currentUserId).subscribe((user:User)=>{
-          this._emailService.sendChangesInProjectEmail(user);
+    if (this.updatedProject.dataComeco !== this.project.dataComeco
+      || this.updatedProject.dataFechoInscricoes !== this.project.dataFechoInscricoes
+      || this.updatedProject.dataTermino !== this.project.dataTermino) {
+      this._userService.getUser(this.currentUserId).subscribe((user: User) => {
+        this._emailService.sendChangesInProjectEmail(user).subscribe(res => {                       //Email here
+
         });
-        this.gestores.forEach(elem => this._emailService.sendChangesInProjectEmail(elem.email));
-      }
+      });
+      this.gestores.forEach(elem => this._emailService.sendChangesInProjectEmail(elem.email));
+    }
     this.projectService.editProject(this.updatedProject._id, this.updatedProject).subscribe((updatedProject) => {
       this.project = this.deepCopy(updatedProject);
       this.isEditButtonToggled = !this.isEditButtonToggled;

@@ -21,7 +21,7 @@ export class Project {
   vagas: number;
   atividades: [{ descricao: string, dataAcontecimento: Date }];
   fotosId: [ string ];
-  projetoMes: boolean;
+  projetoMes: {state : boolean, position: number};
   dataCriacao: Date;
   dataTermino: Date;
   dataFechoInscricoes: Date;
