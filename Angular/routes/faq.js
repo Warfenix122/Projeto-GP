@@ -20,7 +20,7 @@ router.put('/addFaq', (req, res) => {
         resposta: resposta,
       });
       newFaq.save().then(() => {
-        res.status(200).json({ success: true });
+        res.status(200).json({ success: true, faqId: newFaq._id });
       });
 })
 

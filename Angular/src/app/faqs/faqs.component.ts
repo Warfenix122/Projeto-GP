@@ -62,7 +62,7 @@ export class FaqsComponent implements OnInit {
       pergunta: this.editedPergunta,
       resposta: this.editedResposta
     }
-    this.faqService.editFaq()
+    this.faqService.editFaq( this.faqId, obj)
   }
 
   addFaq(){
@@ -70,9 +70,11 @@ export class FaqsComponent implements OnInit {
       pergunta: this.newPergunta,
       resposta: this.newResposta
     }
-    this.faqService.addFaq(obj).subscribe(() => {
+    
+    this.faqService.addFaq(obj).subscribe((res) => {
+      res["faqId"];
       this.alertService.success("Faq criada com sucesso");
-      this.router.navigate(['/faqs']);
+      this.faqs.push({_id:res["faqId"] ,pergunta: this.newPergunta, resposta: this.newResposta});
     });
   }
 
