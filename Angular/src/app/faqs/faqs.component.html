@@ -4,7 +4,7 @@
 
 <div>
   
-      <div id="addbutton" >
+      <div id="addbutton" *ngIf="user.tipoMembro == 'Gestor'" >
         <button mat-icon-button color="primary" aria-label="Example icon button with a plus one icon" data-toggle="modal" data-target="#addModal" >
           <mat-icon>add</mat-icon> Adicionar
         </button>
@@ -16,7 +16,7 @@
                           (closed)="panelOpenState = false" (click)="getFaqId(i)">
         
         <mat-expansion-panel-header>
-          <div *ngIf="user.tipoMembro == 'Voluntario Interno'">
+          <div *ngIf="user.tipoMembro == 'Gestor'">
             <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" data-toggle="modal" data-target="#editModal">
               <mat-icon>edit</mat-icon>
             </button>
