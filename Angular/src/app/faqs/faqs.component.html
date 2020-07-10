@@ -17,7 +17,7 @@
         
         <mat-expansion-panel-header>
           <div *ngIf="user.tipoMembro == 'Gestor'">
-            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" data-toggle="modal" data-target="#editModal">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="getFaqId(i)" data-toggle="modal" data-target="#editModal">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq(faq._id,i)">
@@ -104,7 +104,7 @@
       </div>
       <div class="modal-footer">
         <button mat-button color="warn" data-dismiss="modal">Fechar</button>
-        <button mat-raised-button color="primary" (click)="editFaq()" >Guardar</button>
+        <button mat-raised-button color="primary" (click)="editFaq()" data-dismiss="modal">Guardar</button>
         
       </div>
     </div>

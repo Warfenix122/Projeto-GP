@@ -297,6 +297,10 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
+  showGuardarAlert(){
+    this._alertService.success("Alterações guardadas");
+  }
+
   imgUpload(id) {
     const formData = new FormData();
     formData.append('projetoId', id);

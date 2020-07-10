@@ -47,6 +47,8 @@ export class FaqsComponent implements OnInit {
   getFaqId(i){
     this.index = i;
     this.faqId = this.faqs[i]._id;
+    this.editedPergunta = this.faqs[i].pergunta;
+    this.editedResposta = this.faqs[i].resposta;
   }
 
   deleteFaq(faqId,index) {
@@ -76,9 +78,7 @@ export class FaqsComponent implements OnInit {
             elem.resposta = this.editedResposta;
             elem.pergunta = this.newPergunta;
           }
-
         }
-        
       })
     })
   }
