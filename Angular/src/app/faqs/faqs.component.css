@@ -11,3 +11,15 @@
 #addbutton{
     align-items: right;
 }
+
+.example-form {
+    min-width: 150px;
+    max-width: 300px;
+    width: 100%;
+    font-size: 14px;
+    margin-left: 5rem;;
+}
+
+.example-full-width {
+    width: 100%;
+}

@@ -51,24 +51,25 @@
       <div class="modal-body">
         
         <form class="example-form">
-          <mat-form-field class="example-full-width">
-            <mat-label>Escreva a pergunta</mat-label>
-            <input matInput placeholder="Como crio uma conta?" [(ngModel)]="newPergunta" [ngModelOptions]="{standalone: true}" >
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <mat-label>Escreva a resposta</mat-label>
-            <input matInput placeholder="Tem de se registar" [(ngModel)]="newResposta" [ngModelOptions]="{standalone: true}">
-          </mat-form-field>
-      
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Escreva a pergunta</mat-label>
+              <input matInput placeholder="Como crio uma conta?" [(ngModel)]="newPergunta" [ngModelOptions]="{standalone: true}" >
+            </mat-form-field>
+          </div>
+          <div class="row form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Escreva a resposta</mat-label>
+              <textarea matInput placeholder="Resposta" [(ngModel)]="newResposta" [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+          </div>
           <div class="modal-footer">
             <button mat-button color="warn" data-dismiss="modal">Fechar</button>
             <button mat-raised-button color="primary" (click)="addFaq()" data-dismiss="modal">Criar</button>
             
           </div>
-        </form>
-        
+        </form> 
       </div>
-      
     </div>
   </div>
 </div>
@@ -87,18 +88,18 @@
       <div class="modal-body">
         
         <form class="example-form">
-          
+          <div class="row">
             <mat-form-field class="example-full-width">
-              <mat-label>Nova pergunta</mat-label>
+              <mat-label style="font-size: 14px;">Nova pergunta</mat-label>
               <input matInput placeholder="" [(ngModel)]="editedPergunta" [ngModelOptions]="{standalone: true}"  >
             </mat-form-field>
-          
-          
-          <mat-form-field class="example-full-width">
-            <mat-label>Nova Resposta</mat-label>
-            <input matInput placeholder="" [(ngModel)]="editedResposta" [ngModelOptions]="{standalone: true}" >
-          </mat-form-field>
-      
+          </div>
+          <div class="row">
+            <mat-form-field class="example-full-width">
+              <mat-label style="font-size: 14px;">Nova Resposta</mat-label>
+              <textarea matInput placeholder=""  [(ngModel)]="editedResposta" [ngModelOptions]="{standalone: true}" ></textarea>
+            </mat-form-field>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
