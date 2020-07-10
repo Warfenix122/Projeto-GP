@@ -69,7 +69,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { ChartsModule } from 'ng2-charts';
 
 
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers, DialogVolunteers } from './project/project.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
 import { CommentComponent } from './comment/comment.component';
@@ -111,7 +111,7 @@ import { ChoseTopComponent } from './chose-top/chose-top.component';
     MatTabsModule,
     ChartsModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
     DragDropModule,
     MatGridListModule,
     MatProgressSpinnerModule
@@ -158,7 +158,6 @@ import { ChoseTopComponent } from './chose-top/chose-top.component';
     CommentComponent,
     DialogRemovePoll,
     DialogSondagem,
-    DialogVolunteers
     ChoseTopComponent,
   ],
   providers: [{

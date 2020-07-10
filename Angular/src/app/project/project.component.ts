@@ -87,6 +87,13 @@ export class ProjectComponent implements OnInit {
   isAuthenticated: Boolean;
   isModerator: Boolean = false;
 
+  //Volunteers
+  volunteers: User[];
+  displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao'];
+  dataSource;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
     public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService, private _emailService: EmailSenderService) { }
@@ -102,7 +109,7 @@ export class ProjectComponent implements OnInit {
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-
+      this.getApprovedVolunteers();
 
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
@@ -166,18 +173,16 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  openVolunteersDialog(){
+  getApprovedVolunteers(){
     let volunteersApproved = this.project.voluntarios.map(volunteer => {
       if(volunteer.estado == "Aprovado")
         return volunteer.userId;
     });
     this._userService.getUsers(volunteersApproved).subscribe(users =>{
-      const dialogRef = this.dialog.open(DialogVolunteers, {
-        width: '1300px',
-        data: { volunteers: users }
-      });
+      this.volunteers = users;
+      this.dataSource = new MatTableDataSource<User>(this.volunteers);
+      this.dataSource.paginator = this.paginator;
     })
-    
   }
 
   getSrc(foto) {
@@ -616,29 +621,6 @@ export class DialogDeleteProject {
   onClose(isRemove) {
     this.dialogRef.close(isRemove);
   }
-}
-
-@Component({
-  selector: 'dialog-volunteers',
-  templateUrl: 'dialog-volunteers.html',
-})
-export class DialogVolunteers {
-  volunteers: Array<User>;
-  displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao']
-  dataSource;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogVolunteers>) {
-      this.volunteers = data.volunteers;
-      this.dataSource = new MatTableDataSource<User>(this.volunteers)
-      console.log(this.volunteers);
-    }
-
-    ngOnInit() {
-      this.dataSource.paginator = this.paginator;
-    }
 }
 
 @Component({
