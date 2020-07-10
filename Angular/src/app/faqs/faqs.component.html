@@ -5,7 +5,7 @@
 <div>
   
       <div id="addbutton" >
-        <button mat-icon-button color="primary" aria-label="Example icon button with a plus one icon" (click)="addFaq()" data-toggle="modal" data-target="#exampleModal" >
+        <button mat-icon-button color="primary" aria-label="Example icon button with a plus one icon" data-toggle="modal" data-target="#addModal" >
           <mat-icon>add</mat-icon> Adicionar
         </button>
       </div>
@@ -16,7 +16,10 @@
                           (closed)="panelOpenState = false" (click)="getFaqId(i)">
         
         <mat-expansion-panel-header>
-          <div *ngIf="user.tipoMembro == 'Gestor'">
+          <div *ngIf="user.tipoMembro == 'Voluntario Interno'">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" data-toggle="modal" data-target="#editModal">
+              <mat-icon>edit</mat-icon>
+            </button>
             <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq()">
               <mat-icon>highlight_off</mat-icon>
             </button>
@@ -35,22 +38,70 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal add-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header" >
-        <h5 class="modal-title" id="exampleModalLabel">{{faqs[index]}}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Crie uma nova FAQ</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Escreva a pergunta</mat-label>
+            <input matInput placeholder="Como crio uma conta?" [(ngModel)]="newPergunta" [ngModelOptions]="{standalone: true}" >
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Escreva a resposta</mat-label>
+            <input matInput placeholder="Tem de se registar" [(ngModel)]="newResposta" [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+      
+          <div class="modal-footer">
+            <button mat-button color="warn" data-dismiss="modal">Fechar</button>
+            <button mat-raised-button color="primary" (click)="addFaq()" data-dismiss="modal">Criar</button>
+            
+          </div>
+        </form>
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal edit-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel">Edite a FAQ</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Escreva a pergunta</mat-label>
+            <input matInput placeholder="Como crio uma conta?" value="blabla" >
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Escreva a resposta</mat-label>
+            <input matInput placeholder="Tem de se registar" value="bla" >
+          </mat-form-field>
+      
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button mat-button color="warn" data-dismiss="modal">Fechar</button>
+        <button mat-raised-button color="primary">Guardar</button>
+        
       </div>
     </div>
   </div>

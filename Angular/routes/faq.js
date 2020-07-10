@@ -11,10 +11,9 @@ router.get('/', (req, res) => {
 
 //adicionar faq
 router.put('/addFaq', (req, res) => {
-    const {
-        pergunta,
-        resposta,
-    } = req.body;
+  console.log(req.body);
+  var pergunta = req.body.pergunta;
+  var resposta = req.body.resposta;
 
     const newFaq = new Faq({
         pergunta: pergunta,

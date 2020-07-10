@@ -21,6 +21,8 @@ export class FaqsComponent implements OnInit {
   user: User;
   currentUserId: string;
   index: number;
+  newPergunta: string;
+  newResposta: string;
 
 
   constructor(private faqService: FaqService, private alertService: AlertService, private _userService: UserService, private router: Router) {}
@@ -44,12 +46,11 @@ export class FaqsComponent implements OnInit {
   getFaqId(i){
     this.index = i;
     this.faqId = this.faqs[i]._id;
-    console.log(this.faqId);
   }
 
   deleteFaq() {
     this.faqService.deleteFaq(this.faqId).subscribe((deletedFaq) => {
-      //this.router.navigate(['/faqs']);
+      this.router.navigate(['/faqs']);
       this.alertService.success("Faq eliminada com sucesso");
     })
   }
@@ -59,7 +60,14 @@ export class FaqsComponent implements OnInit {
   }*/
 
   addFaq(){
-    
+    let obj = {
+      pergunta: this.newPergunta,
+      resposta: this.newResposta
+    }
+    this.faqService.addFaq(obj).subscribe(() => {
+      this.router.navigate(['/faqs']);
+      this.alertService.success("Faq criada com sucesso");
+    });
   }
 
 }
