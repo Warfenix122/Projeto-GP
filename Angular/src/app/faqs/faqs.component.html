@@ -16,11 +16,11 @@
                           (closed)="panelOpenState = false" (click)="getFaqId(i)">
         
         <mat-expansion-panel-header>
-          <div *ngIf="user.tipoMembro == 'Voluntario Interno'">
+          <div *ngIf="user.tipoMembro == 'Gestor'">
             <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" data-toggle="modal" data-target="#editModal">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq(i)">
+            <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq(faq._id,i)">
               <mat-icon>highlight_off</mat-icon>
             </button>
           </div>

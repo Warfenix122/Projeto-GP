@@ -39,6 +39,7 @@ router.put('/edit/:id', (req, res) => {
 
 //apagar faq
 router.delete('/delete/:id', (req, res) => {
+  console.log(req.params.id);
     let faqId = mongoose.Types.ObjectId(req.params.id);
     Faq.findByIdAndDelete(faqId).then(faq => res.json(faq));
 })
