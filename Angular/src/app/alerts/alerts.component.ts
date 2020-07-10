@@ -30,7 +30,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
         this.message = message;
       });
     this.alertService.getAlert().pipe(
-      debounceTime(2500)
+      debounceTime(7500)
     ).subscribe(() => this.message = undefined);
   }
 

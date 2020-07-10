@@ -53,14 +53,21 @@
                 <div class="container mt-5">
                     <h1>Sondagens Existentes</h1>
                     <div class="d-flex mt-3 flex-wrap">
-                        <div *ngFor="let sondagem of this.sondagens; let i = index" [attr.data-index]="i" class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">{{sondagem.titulo}}</h3>
-                                <h5 class="card-text">{{sondagem.descricao}}</h5>
-                            </div>
-                        </div>
-                        <div *ngIf="!sondagens">
-                            Não existem sondagens para responder neste momento.
+                        <mat-card *ngFor="let sondagem of this.sondagens; let i = index" [attr.data-index]="i" (click)="pollClicked(i, $event)">
+                            <mat-card-header>
+                              <mat-card-title>{{sondagem.titulo != undefined ? sondagem.titulo : 'Sem título'}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                              <p>
+                                {{sondagem.descricao}}
+                              </p>
+                            </mat-card-content>
+                            <mat-card-actions class="text-center">
+                              <button mat-raised-button color="warn" (click)="clickDeletePoll(i, $event)">Eliminar</button>
+                            </mat-card-actions>
+                          </mat-card>
+                          <div *ngIf="!sondagens">
+                            Não existem sondagens neste momento.
                         </div>
                     </div>
                 </div>

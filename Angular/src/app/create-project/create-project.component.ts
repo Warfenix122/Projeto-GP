@@ -244,7 +244,7 @@ export class CreateProjectComponent implements OnInit {
 
   onFileSelected(files: FileList) {
     this.file = files.item(0);
-    
+
     let mimeType = files.item(0).type;
     if(mimeType.match(/image\/*/)==null){
       return;
@@ -286,6 +286,8 @@ export class CreateProjectComponent implements OnInit {
           if (this.file) {
             this.imgUpload(res.projetoId);
           }
+          this._alertService.success("Projeto criado com sucesso", true);
+          this.router.navigate(['projects/'+res.projetoId]);
         });
       });
 

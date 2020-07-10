@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Sondagem } from 'models/sondagem';
 import { SondagemService } from '../services/sondagem.service';
 import { FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
 import { identifierName } from '@angular/compiler';
 import { AlertService } from '../services/alert.service';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { DialogDeleteProject } from '../project/project.component';
 
 @Component({
   selector: 'app-create-sondagem',
@@ -14,7 +18,10 @@ import { AlertService } from '../services/alert.service';
 export class CreateSondagemComponent implements OnInit {
   sondagens: Array<Sondagem>;
 
-  constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, private alertService: AlertService) { }
+  constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, private alertService: AlertService, public dialog: MatDialog) {
+    
+   }
+
   formSondagem = this._fb.group({
     titulo: new FormControl('', Validators.required),
     descricao: new FormControl('', Validators.required),
@@ -110,6 +117,66 @@ export class CreateSondagemComponent implements OnInit {
       this.alertService.error("Formilario invalido")
 
     }
+  }
+
+  pollClicked(index, event){
+    console.log(event);
+    if(event.target.localName == "button" || event.target.parentNode.localName == "button"){} else {
+      let poll = this.sondagens[index];
+      const dialogRef = this.dialog.open(DialogSondagem, {
+        width: '400px',
+        data: poll
+      });
+    }
+  }
+
+  clickDeletePoll(index, event){
+    console.log(event);
+    let poll = this.sondagens[index];
+    const dialogRef = this.dialog.open(DialogRemovePoll, {
+      width: '700px',
+      data: {poll: poll}
+    });
+  }
+
+}
+
+@Component({
+  selector: 'dialog-sondagem',
+  templateUrl: 'dialog-sondagem.html',
+})
+export class DialogSondagem {
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+  ];
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogSondagem>) {
+    
+  }
+
+}
+
+@Component({
+  selector: 'dialog-remove-poll',
+  templateUrl: 'dialog-remove-poll.html',
+})
+export class DialogRemovePoll {
+  poll: Sondagem;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogRemovePoll>) {
+    this.poll = data.poll;
+  }
+
+  deletePoll(){
+
   }
 
 }

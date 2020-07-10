@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, Inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'models/projeto';
@@ -26,7 +26,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
-import { Comment } from '../../../models/comment';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
 import * as fileSaver from 'file-saver';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -92,10 +93,22 @@ export class ProjectComponent implements OnInit {
   comments: any[];
   isAuthenticated: Boolean;
   isModerator: Boolean = false;
+  panelOpenState = false;
+
+  //Volunteers
+  volunteers: Array<User> = [];
+  candidates: Array<User> = [];
+  displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao', 'actions'];
+  dataSource: MatTableDataSource<User>;
+  dataSourceCandidates: MatTableDataSource<User>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginatorCandidates: MatPaginator;
+
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
-    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService, private fileService: FileService, private _emailService: EmailSenderService) { }
+    public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService,
+     private fileService: FileService, private _emailService: EmailSenderService) { }
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
@@ -108,7 +121,8 @@ export class ProjectComponent implements OnInit {
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
 
-
+      this.getApprovedVolunteers();
+      this.getCandidateVolunteers();
 
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
@@ -173,6 +187,81 @@ export class ProjectComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       fileSaver.saveAs(blob, 'participantes.json');
     });
+  }
+
+  approveCandidate(user){
+    let id = user._id;
+    this.project.voluntarios = this.project.voluntarios.map(volunteer => {
+      if(volunteer.userId == id)
+        volunteer.estado = "Aprovado";
+      return volunteer;
+    })
+    console.log(this.volunteers);
+    this.volunteers.push(user);
+    this.dataSource._updateChangeSubscription();
+    let index = this.candidates.findIndex(candidate => candidate._id == id)
+    this.candidates.splice(index, 1);
+    this.dataSourceCandidates._updateChangeSubscription();
+    this.projectService.editProject(this.project._id, {voluntarios: this.project.voluntarios}).subscribe();
+  }
+
+  disapproveCandidate(user){
+    let id = user._id;
+    let index = this.project.voluntarios.findIndex(volunteer => volunteer.userId == id);
+    this.project.voluntarios.splice(index, 1);
+    index = this.candidates.findIndex(candidate => candidate._id == id)
+    this.candidates.splice(index, 1);
+    this.dataSourceCandidates._updateChangeSubscription();
+    this.projectService.editProject(this.project._id, {voluntarios: this.project.voluntarios}).subscribe();
+  }
+
+  getCandidateVolunteers(){
+    let candidates = this.project.voluntarios.map(volunteer => {
+      if(volunteer.estado == "Em Espera")
+        return volunteer.userId;
+    });
+    if(candidates != undefined && candidates.length > 0)
+      this._userService.getUsers(candidates).subscribe(users =>{
+        if(users != null)
+          this.candidates = users;
+        else
+          this.candidates = [];
+        this.dataSourceCandidates = new MatTableDataSource<User>(this.candidates);
+        this.dataSourceCandidates.paginator = this.paginatorCandidates;
+    })
+  }
+
+  getApprovedVolunteers(){
+    let volunteersApproved = this.project.voluntarios.map(volunteer => {
+      if(volunteer.estado == "Aprovado")
+        return volunteer.userId;
+    });
+    if(volunteersApproved != undefined && volunteersApproved.length > 0)
+      this._userService.getUsers(volunteersApproved).subscribe(users =>{
+        if(users != null)
+          this.volunteers = users;
+        else
+          this.volunteers = [];
+        this.dataSource = new MatTableDataSource<User>(this.volunteers);
+        this.dataSource.paginator = this.paginator;
+    })
+  }
+
+  /*approveVolunteer(i) {
+    this.volunteers[i].estado = 'Aprovado';
+  }
+
+  disapproveVolunteer(i) {
+    this.volunteers[i].state = 'Recusado';
+  }*/
+
+  removeVolunteer(user: User) {
+    let index = this.project.voluntarios.findIndex(volunteer => volunteer.userId == user._id)
+    this.project.voluntarios.splice(index, 1);
+    index = this.volunteers.findIndex(volunteer => volunteer._id == user._id)
+    this.volunteers.splice(index, 1);
+    this.dataSource._updateChangeSubscription();
+    this.projectService.editProject(this.project._id, {voluntarios: this.project.voluntarios}).subscribe();
   }
 
   getSrc(foto) {
@@ -350,43 +439,6 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  openManageVolunteersDialog() {
-    let volunteers = [];
-    let usersId = [];
-    this.project.voluntarios.forEach((elem) => {
-      usersId.push(elem.userId);
-    });
-    this._userService.getUsers(usersId).subscribe((users) => {
-      users.forEach((user) => {
-        volunteers.push({
-          _id: user._id,
-          name: user.nome,
-          email: user.email,
-          state: this.project.voluntarios.find(
-            (elem) => elem.userId == user._id
-          ).estado,
-        });
-      });
-      const dialogRef = this.dialog.open(DialogManageVolunteers, {
-        width: '600px',
-        data: { volunteers: volunteers },
-      });
-
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result == 'back') this.openSettingsBottomSheet();
-        else if (result != 'close')
-          this.projectService
-            .editProject(this.project._id, { voluntarios: result })
-            .subscribe((updatedProject) => {
-              this.project.voluntarios = updatedProject.voluntarios;
-              this.alertService.success(
-                'Alterações aos voluntários guardadas com sucesso'
-              );
-            });
-      });
-    });
-  }
-
   openSettingsBottomSheet() {
     const bottomSheetRef = this._bottomSheet.open(BottomSheetSetting, {
       data: {},
@@ -396,9 +448,6 @@ export class ProjectComponent implements OnInit {
       switch (option) {
         case 'managers':
           this.openAddManagerDialog();
-          break;
-        case 'volunteers':
-          this.openManageVolunteersDialog();
           break;
       }
     });
@@ -694,90 +743,6 @@ export class DialogDeleteProject {
 
   onClose(isRemove) {
     this.dialogRef.close(isRemove);
-  }
-}
-
-@Component({
-  selector: 'dialog-manage-volunteers',
-  templateUrl: 'dialog-manage-volunteers.html',
-})
-export class DialogManageVolunteers {
-  filteredNames: Observable<String[]>;
-  names: string[];
-  nameFilter = new FormControl('', Validators.required);
-  volunteers: {
-    _id: string;
-    name: string;
-    email: string;
-    state: string;
-    show: boolean;
-  }[];
-  filteredVolunteers: Observable<{}[]>;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<DialogManageVolunteers>
-  ) {
-    this.names = this.data.volunteers.map((volunteer) => volunteer.name);
-    this.volunteers = data.volunteers;
-  }
-
-  ngOnInit(): void {
-    this.filteredNames = this.nameFilter.valueChanges.pipe(
-      startWith(''),
-      map((val) => this._filterEmails(val))
-    );
-    this.filteredVolunteers = this.nameFilter.valueChanges.pipe(
-      startWith(''),
-      map((val) => this._filterVolunteers(val))
-    );
-  }
-
-  getBackgroundColor(state) {
-    let res = 'border-radius: 5px; ';
-    if (state == 'Aprovado') return res + 'background-color: #e6ffe6;';
-    if (state == 'Recusado') return res + 'background-color: #ffe6e6;';
-    return res;
-  }
-
-  private _filterVolunteers(value: string): {}[] {
-    const filterValue = value.toLowerCase();
-    return this.volunteers.filter((option, index) => {
-      return option.name.toLowerCase().includes(filterValue);
-    });
-  }
-
-  private _filterEmails(value: string): String[] {
-    const filterValue = value.toLowerCase();
-    return this.names.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
-  }
-
-  approveVolunteer(i) {
-    this.volunteers[i].state = 'Aprovado';
-  }
-
-  disapproveVolunteer(i) {
-    this.volunteers[i].state = 'Recusado';
-  }
-
-  removeVolunteer(index) {
-    this.volunteers.splice(index, 1);
-    this.filteredVolunteers = this.filteredVolunteers.pipe(
-      startWith(''),
-      map(() => this._filterVolunteers(this.nameFilter.value))
-    );
-  }
-
-  onClose(state) {
-    if (state == 'save')
-      this.dialogRef.close(
-        this.volunteers.map((elem) => {
-          return { userId: elem._id, estado: elem.state };
-        })
-      );
-    else this.dialogRef.close(state);
   }
 }
 

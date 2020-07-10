@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Eliminar Sondagem</h1>
+<div mat-dialog-content>
+  <p class="text-danger">ATENÇÃO!! ESTÁS A ELIMINAR UMA SONDAGEM!!!</p>
+  <p>Tens a certeza que queres remover a seguinte sondagem?</p>
+
+  <mat-form-field>
+    <p>{{poll.titulo != undefined ? "Título: "+poll.titulo : "Sem título"}}</p>
+    <p>Descricao: {{poll.descricao}}</p>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="mb-1">
+    <button mat-raised-button color="primary" [mat-dialog-close]="" cdkFocusInitial>Não</button>
+    <button mat-raised-button color="warn" (click)="deletePoll()">Sim</button>
+</div>
