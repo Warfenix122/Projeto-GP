@@ -221,7 +221,6 @@ router.put('/addComment/:id', (req, res) => {
 router.put('/removeComment/:id', (req, res) => {
     let projectId = mongoose.Types.ObjectId(req.params.id);
     let commentId = req.body.commentId;
-    console.log(commentId);
     Project.updateOne({ _id: projectId }, { $pull: { "comentarios": { _id: commentId } } })
         .then(project => {
             res.status(200).json({ success: true, msg: "Comentario removido com sucesso" });

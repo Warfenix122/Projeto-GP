@@ -97,7 +97,6 @@ var SondagemSchema = new Schema({
 });
 
 var RespostaSchema = new Schema({
-    respostaId: mongoose.ObjectId,
     userId: mongoose.ObjectId,
     sondagemId: mongoose.ObjectId,
     opcoes: [String],

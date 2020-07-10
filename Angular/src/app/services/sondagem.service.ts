@@ -31,9 +31,16 @@ export class SondagemService {
     return this.http.get<Sondagem[]>('/api/sondagem/unanswered/' + userId);
   }
 
+  deleteSondagem(id){
+    return this.http.delete<Sondagem>('/api/sondagem/'+id);
+  }
 
   getSondagemById(id) {
     return this.http.get<Sondagem>('/api/sondagem/' + id);
+  }
+
+  getAnswersFromPoll(pollId){
+    return this.http.get<RespostaSondagem[]>('/api/sondagem/'+pollId+'/answers')
   }
 
   answerSondagem(formbody) {
