@@ -14,6 +14,11 @@
                     <mat-icon>{{isEditButtonToggled ? 'cancel' : 'edit'}}</mat-icon>
                     {{isEditButtonToggled ? 'Cancelar' : 'Editar'}}
                 </button><br>
+                <button class="mt-1" mat-raised-button color="primary" *ngIf="isManager || isResponsible"
+                    (click)="openVolunteersDialog()" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon>accessibility</mat-icon>
+                    Voluntários
+                </button><br>
                 <button mat-raised-button color="warn" *ngIf="isEditButtonToggled && isResponsible"
                     class="mt-1 editActionButton" (click)="openDeleteProjectDialog()">
                     <mat-icon>delete_forever</mat-icon> Eliminar

@@ -58,12 +58,16 @@ import { FavoriteProjectComponent } from './favorite-project/favorite-project.co
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SondagemComponent, DialogShowPoll } from './sondagem/sondagem.component';
-import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
+import { CreateSondagemComponent, DialogRemovePoll, DialogSondagem } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
+import { ChartsModule } from 'ng2-charts';
 
 
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers, DialogVolunteers } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
 import { CommentComponent } from './comment/comment.component';
@@ -102,7 +106,10 @@ import { CommentComponent } from './comment/comment.component';
     MatDialogModule,
     MatBottomSheetModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ChartsModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   declarations: [
     AppComponent,
@@ -144,6 +151,9 @@ import { CommentComponent } from './comment/comment.component';
     AproveProjectsComponent,
     DialogShowPoll,
     CommentComponent,
+    DialogRemovePoll,
+    DialogSondagem,
+    DialogVolunteers
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

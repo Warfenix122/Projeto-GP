@@ -249,14 +249,12 @@ export class CreateProjectComponent implements OnInit {
   postData() {
     if (this.formInfo.valid && this.formDatas.valid && this.dataTermino.valid && this.dataComeco.valid && this.dataFechoInscricoes.valid) {
       this._userService.getCurrentUserId().subscribe((res) => {
-        console.log(res["UserID"]);
         let responsavelId = res["UserID"];
         let XemXtempo = this.XemXtempo1.value + " em " + this.XemXtempo2.value;
         let atividades = [];
         let gestoresIds = []
         let selectedAreas = this.selectedAreas;
         gestoresIds = this.gestores.filter(gestor=>gestor._id);
-        console.log(gestoresIds);
         this.atividadesArr.controls.forEach(atividade => {
           let atividadeObj = atividade.value;
           let horas = parseInt(atividadeObj.horas.split(':')[0]);
@@ -265,12 +263,12 @@ export class CreateProjectComponent implements OnInit {
           atividades.push({ descricao: atividadeObj.descricao, dataAcontecimento: data });
         });
         let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
-        console.log(formBody);
         this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
-          console.log(res);
           if (this.file) {
             this.imgUpload(res.projetoId);
           }
+          this._alertService.success("Projeto criado com sucesso", true);
+          this.router.navigate(['projects/'+res.projetoId]);
         });
       });
 

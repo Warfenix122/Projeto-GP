@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, Inject } from '@angular/core';
+import { Component, OnInit, Renderer2, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'models/projeto';
@@ -20,6 +20,8 @@ import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { Comment } from '../../../models/comment';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
 
 export interface DialogData {
@@ -149,6 +151,20 @@ export class ProjectComponent implements OnInit {
         });
       });
     });
+    
+  }
+
+  openVolunteersDialog(){
+    let volunteersApproved = this.project.voluntarios.map(volunteer => {
+      if(volunteer.estado == "Aprovado")
+        return volunteer.userId;
+    });
+    this._userService.getUsers(volunteersApproved).subscribe(users =>{
+      const dialogRef = this.dialog.open(DialogVolunteers, {
+        width: '1300px',
+        data: { volunteers: users }
+      });
+    })
     
   }
 
@@ -581,6 +597,29 @@ export class DialogDeleteProject {
   onClose(isRemove) {
     this.dialogRef.close(isRemove);
   }
+}
+
+@Component({
+  selector: 'dialog-volunteers',
+  templateUrl: 'dialog-volunteers.html',
+})
+export class DialogVolunteers {
+  volunteers: Array<User>;
+  displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao']
+  dataSource;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogVolunteers>) {
+      this.volunteers = data.volunteers;
+      this.dataSource = new MatTableDataSource<User>(this.volunteers)
+      console.log(this.volunteers);
+    }
+
+    ngOnInit() {
+      this.dataSource.paginator = this.paginator;
+    }
 }
 
 @Component({
