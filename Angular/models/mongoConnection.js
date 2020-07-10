@@ -1,21 +1,6 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var EntidadeSchema = new Schema({
-    predefinido: Boolean,
-    nome: String,
-});
-
-var CategoriaProjetoSchema = new Schema({
-    predefinido: Boolean,
-    nome: String,
-});
-
-var PublicoAlvoSchema = new Schema({
-    descricao: String,
-    predefinido: Boolean,
-});
-
 var UtilizadorSchema = new Schema({
     email: String,
     password: String,
@@ -79,16 +64,6 @@ var ProjetoSchema = new Schema({
     restringido: Boolean,
 });
 
-
-
-var InscricaoSchema = new Schema({
-    utilizadorId: mongoose.ObjectId,
-    projetoId: mongoose.ObjectId,
-    presente: Boolean,
-    avaliacao: [{ valor: Number, descricao: String }],
-    cancelado: Boolean,
-});
-
 var SondagemSchema = new Schema({
     sondagemId: mongoose.ObjectId,
     titulo: String,
@@ -110,10 +85,6 @@ var FaqSchema = new Schema({
 })
 
 const Utilizadores = mongoose.model("Utilizador", UtilizadorSchema, "Utilizador");
-const Entidade = mongoose.model("Entidade", EntidadeSchema, "Entidade");
-const Inscricao = mongoose.model("Inscricao", InscricaoSchema, "Inscricao");
-const CategoriaProjeto = mongoose.model("CategoriaProjeto", CategoriaProjetoSchema, "CategoriaProjeto");
-const PublicoAlvo = mongoose.model("PublicoAlvo", PublicoAlvoSchema, "PublicoAlvo");
 const Projeto = mongoose.model("Projeto", ProjetoSchema, "Projeto");
 const Foto = mongoose.model('Foto', FotoSchema, 'Foto');
 const Sondagem = mongoose.model("Sondagem", SondagemSchema, "Sondagem");
@@ -122,10 +93,6 @@ const Faq = mongoose.model("Faq", FaqSchema, "Faq");
 
 module.exports = {
     Utilizadores: Utilizadores,
-    Entidade: Entidade,
-    Inscricao: Inscricao,
-    CategoriaProjeto: CategoriaProjeto,
-    PublicoAlvo: PublicoAlvo,
     Projeto: Projeto,
     Foto: Foto,
     Sondagem: Sondagem,
