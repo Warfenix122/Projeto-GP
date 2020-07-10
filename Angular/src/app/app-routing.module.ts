@@ -19,6 +19,8 @@ import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { ProjectComponent } from './project/project.component';
 import {AproveProjectsComponent} from './aprove-projects/aprove-projects.component';
 import { ChoseTopComponent } from './chose-top/chose-top.component';
+import { FaqsComponent } from './faqs/faqs.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 
 const routes: Routes = [
@@ -43,7 +45,9 @@ const routes: Routes = [
   { path: 'createGestor', component: CreateGestorComponent },
   { path: 'projects/:id', component: ProjectComponent},
   { path: 'pickTop3', component: ChoseTopComponent},
-  { path: 'api/confirmAccount/:email', component: LoginComponent }
+  { path: 'api/confirmAccount/:email', component: LoginComponent },
+  { path: 'faqs', component: FaqsComponent},
+  { path: 'contacts', component: ContactsComponent},
 ];
 
 @NgModule({

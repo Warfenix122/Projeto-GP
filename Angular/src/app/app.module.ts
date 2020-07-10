@@ -63,6 +63,7 @@ import { CreateSondagemComponent } from './create-sondagem/create-sondagem.compo
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DragDropModule, DragDrop } from '@angular/cdk/drag-drop';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
@@ -70,6 +71,8 @@ import { RegisteredProjectsComponent } from './registered-projects/registered-pr
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
 import { CommentComponent } from './comment/comment.component';
 import { ChoseTopComponent } from './chose-top/chose-top.component';
+import { FaqsComponent } from './faqs/faqs.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 
 @NgModule({
@@ -107,7 +110,8 @@ import { ChoseTopComponent } from './chose-top/chose-top.component';
     MatTabsModule,
     DragDropModule,
     MatGridListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   declarations: [
     AppComponent,
@@ -150,6 +154,8 @@ import { ChoseTopComponent } from './chose-top/chose-top.component';
     DialogShowPoll,
     CommentComponent,
     ChoseTopComponent,
+    FaqsComponent,
+    ContactsComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

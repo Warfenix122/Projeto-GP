@@ -5,7 +5,7 @@ export class User {
   private password: string;
   public numeroTelefone: number;
   public dataNascimento: Date;
-  public tipoMembro: String;
+  public tipoMembro: string;
   aprovado: Boolean;
   entidades: [number];
   dataCriacao: Date;
