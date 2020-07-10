@@ -17,7 +17,7 @@ export class TelephoneValidatorDirective implements Validator {
       if (!Number.isInteger(parseInt(control.value, 10))) {
         return { 'integer': true };
       }
-      if (control.value < 99999999 && control.value > 1000000000) {
+      if (control.value < 99999999 || control.value > 1000000000) {
         console.log(true);
         return { 'length': true }; // return object if the validation is not passed.
       }
