@@ -232,7 +232,7 @@ router.put('/removeComment/:id', (req, res) => {
 router.get('/writeFile/:id', (req, res) => {
     let projectId = req.params.id;
     Project.findOne({ "_id": projectId }).then((project) => {
-        var voluntarios = project['voluntarios'];
+        var voluntarios = project['voluntarios'].filter(vol => vol.estado==="Aprovado");
         let data = [];
         if (voluntarios) {
             processArray(voluntarios).then(data => {

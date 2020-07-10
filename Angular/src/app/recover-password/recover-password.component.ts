@@ -16,7 +16,7 @@ export class RecoverPasswordComponent implements OnInit {
   }
 
   formIPS = this._fb.group({
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required,Validators.email]),
   });
   ngOnInit(): void {
   }

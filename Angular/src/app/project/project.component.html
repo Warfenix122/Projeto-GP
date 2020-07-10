@@ -215,8 +215,28 @@
                 </mat-card>
 
             </div><br>
+            <!-- <h2 *ngIf="isEditButtonToggled">Fotos do projeto</h2>
+            <button *ngIf="isEditButtonToggled" mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher
+        ficheiro e adicionar
+        <mat-icon>insert_photo</mat-icon>
+      </button>
+            <button *ngIf="isEditButtonToggled && !addPhotoResult" mat-mini-fab color="primary" disabled>
+        <mat-icon>publish</mat-icon>
+      </button>
+            <button *ngIf="isEditButtonToggled && addPhotoResult" mat-mini-fab color="primary">
+        <mat-icon>publish</mat-icon>
+      </button>
+            <h5 class="mt-1" [style.visibility]="isEditButtonToggled && addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido: <b>{{selectedPhotoFileName}}</b></h5>
+            <input hidden (change)="onFilesSelected($event)" #fileInput type="file" accept="image/*" id="file">
+            <div *ngIf="isEditButtonToggled" class="d-flex flex-wrap">
+                <mat-card *ngFor="let photo of projectPhotos; let i = index" [attr.index]="i" [class]="i+1 % 3 ? 'cardGallery mb-1' : 'cardGallery mb-1 mr-1'">
+                    <img mat-card-image class="cardImage" style="margin-bottom: 0px;" [src]="getSrc(photo)">
+                    <mat-card-actions class="cardButtonActions text-center">
+                        <button mat-raised-button color="warn" (click)="deletePhoto(photo.id)">Eliminar</button>
+                    </mat-card-actions>
+                </mat-card>
 
-
+            </div> -->
         </mat-tab>
 
         <mat-tab label="Comentários">
@@ -226,7 +246,7 @@
                     <mat-label>Comente</mat-label>
                     <textarea matInput [formControl]="commentBody" rows="4" cols="120"></textarea>
                 </mat-form-field>
-                <button mat-stroked-button color="primary" (click)="comment()" style="margin-left:22rem">Comentar</button>
+                <button mat-stroked-button color="primary" (click)="comment()" style="margin-left:2rem">Comentar</button>
             </div>
 
             <div style="margin-top:1.5rem" *ngFor="let comment of comments; let i= index">
