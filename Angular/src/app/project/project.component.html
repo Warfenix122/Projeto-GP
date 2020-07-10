@@ -260,9 +260,9 @@
 
         </mat-tab>
         <mat-tab *ngIf=" isModerator " label="Inscritos">
-            <button mat-raised-button color="primary" (click)="writeFile()">Exportar Voluntarios</button>
+            <button mat-raised-button class="mt-3 mr-2" color="primary" (click)="writeFile()">Exportar Voluntarios</button>
             <li class="button mat-stroked-button " color=" primary "><a href="../../assets/apk/app-debug.apk " download="app.apk "> Download App</a></li>
-            <div class="mat-elevation-z8">
+            <div class="mat-elevation-z8 mt-3">
                 <table style="width: 100%;" mat-table [dataSource]="dataSource">
               
                   <!-- Position Column -->
