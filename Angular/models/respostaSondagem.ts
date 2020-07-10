@@ -1,7 +1,7 @@
 export class RespostaSondagem{
     _id: string;
-    utilizadorId: string;
+    userId: string;
     sondagemId: string;
-    opcoesEscolhidas: [number];
+    opcoes: [string];
     outraResposta: string
 }

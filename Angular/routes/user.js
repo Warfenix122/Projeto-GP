@@ -27,7 +27,6 @@ router.get('/:id', (req, res) => {
 
 router.get('', (req, res) => {
     let usersId = req.query.ids;
-    console.log(usersId);
     if (usersId) {
         User.find({ '_id': { $in: usersId } }, (err, users) => {
             res.json(users);

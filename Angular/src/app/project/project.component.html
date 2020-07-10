@@ -405,8 +405,116 @@
 
 
         </mat-tab>
-        <!--POR AQUI ESTA MERDA WORKINGS-->
+        <mat-tab *ngIf=" isModerator " label="Presenças">
+            <form class="d-flex justify-content-center mt-4 mb-2">
+                <button mat-raised-button class="mr-1 mb-3" color="primary" (click)="fileInput.click()">Escolher ficheiro com as presenças<mat-icon class="ml-1">
+                    text_snippet</mat-icon></button>
+                <input hidden (change)="onPresencesFileSelected($event)" #fileInput type="file" accept="" id="presencesFile">
+            </form>
+            <mat-accordion>
 
+                <mat-expansion-panel style="background-color: #ccffcc;">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Voluntários que estiveram presentes
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="mat-elevation-z8">
+                        <table style="width: 100%;" mat-table [dataSource]="dataSourcePresentVolunteers">
+                    
+                        <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef> Nome </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef> Email </th>
+                        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="dataNascimento">
+                        <th mat-header-cell *matHeaderCellDef> Data de Nascimento </th>
+                        <td mat-cell *matCellDef="let element"> {{element.dataNascimento}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="distrito">
+                        <th mat-header-cell *matHeaderCellDef> Distrito </th>
+                        <td mat-cell *matCellDef="let element"> {{element.distrito}} </td>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="concelho">
+                        <th mat-header-cell *matHeaderCellDef> Concelho </th>
+                        <td mat-cell *matCellDef="let element"> {{element.concelho}} </td>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="escola">
+                        <th mat-header-cell *matHeaderCellDef> Escola </th>
+                        <td mat-cell *matCellDef="let element"> {{element.escola}} </td>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="formacao">
+                        <th mat-header-cell *matHeaderCellDef> Formacao </th>
+                        <td mat-cell *matCellDef="let element"> {{element.formacao}} </td>
+                        </ng-container>
+                    
+                        <tr mat-header-row *matHeaderRowDef="displayedPresentColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedPresentColumns;"></tr>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel style="background-color: #ffcccc;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Voluntários que não estiveram presentes
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="mat-elevation-z8">
+                    <table style="width: 100%;" mat-table [dataSource]="dataSourceNonPresentVolunteers">
+                
+                    <ng-container matColumnDef="nome">
+                    <th mat-header-cell *matHeaderCellDef> Nome </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="dataNascimento">
+                    <th mat-header-cell *matHeaderCellDef> Data de Nascimento </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dataNascimento}} </td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="distrito">
+                    <th mat-header-cell *matHeaderCellDef> Distrito </th>
+                    <td mat-cell *matCellDef="let element"> {{element.distrito}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="concelho">
+                    <th mat-header-cell *matHeaderCellDef> Concelho </th>
+                    <td mat-cell *matCellDef="let element"> {{element.concelho}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="escola">
+                    <th mat-header-cell *matHeaderCellDef> Escola </th>
+                    <td mat-cell *matCellDef="let element"> {{element.escola}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="formacao">
+                    <th mat-header-cell *matHeaderCellDef> Formacao </th>
+                    <td mat-cell *matCellDef="let element"> {{element.formacao}} </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedPresentColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedPresentColumns;"></tr>
+                </table>
+                </div>
+                </mat-expansion-panel>
+
+                </mat-accordion>
+        </mat-tab>
 
     </mat-tab-group>
 </div>

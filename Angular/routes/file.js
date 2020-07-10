@@ -57,7 +57,6 @@ router.put("/updateProjectCover/:projectId", (req, res) => {
 
 })
 router.put("/updateProjectPhotos/:projectId", (req, res) => {
-    console.log(req.params.projectId);
     Projeto.findOne({ _id: req.params.projectId }).then((proj) => {
         if(proj.fotosId == undefined)
             proj.fotosId = [];

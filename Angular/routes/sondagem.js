@@ -82,4 +82,16 @@ router.post('/answer', (req, res) => {
 
 })
 
+router.get('/:id/answers', (req, res) => {
+  let pollId = mongoose.Types.ObjectId(req.params.id);
+  Resposta.find({sondagemId: {$in: [pollId]}}, (err, answers) => {
+    res.json(answers);
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  let id = mongoose.Types.ObjectId(req.params.id);
+  Sondagem.findByIdAndDelete(id).then(sondagem => res.json(sondagem));
+})
+
 module.exports = router;

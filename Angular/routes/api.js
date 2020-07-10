@@ -300,16 +300,13 @@ router.post("/currentUserRole", (req, res) => {
         });
 });
 
-router.post("/getUsers", (req, res) => {
-    console.log(req.body);
-    let users = req.body.users;
-    console.log(users);
-    User.find({ _id: { $in: users } }).then((users) => {
-        console.log(users);
-        res.status(200).json({ success: true, users: users, msg: "Utilizadores retornado com sucesso" });
-    }).catch(err => {
-        res.status(500).json({ success: false, msg: "Utilizadores não foi encontrado" });
-    });
+router.post("/getUsers",(req,res)=>{
+  let users = req.body.users;
+  User.find({_id: {$in:users}}).then((users)=>{
+    res.status(200).json({success:true,users:users,msg:"Utilizadores retornado com sucesso"});
+  }).catch(err=>{
+    res.status(500).json({success:false,msg:"Utilizadores não foi encontrado"});
+  });
 });
 
 router.get("/getUserNome/:id", (req, res) => {

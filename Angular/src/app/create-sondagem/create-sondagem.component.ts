@@ -9,6 +9,8 @@ import { identifierName } from '@angular/compiler';
 import { AlertService } from '../services/alert.service';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { DialogDeleteProject } from '../project/project.component';
+import { RespostaSondagem } from 'models/respostaSondagem';
+import { User } from 'models/utilizadores';
 
 @Component({
   selector: 'app-create-sondagem',
@@ -120,23 +122,38 @@ export class CreateSondagemComponent implements OnInit {
   }
 
   pollClicked(index, event){
-    console.log(event);
     if(event.target.localName == "button" || event.target.parentNode.localName == "button"){} else {
       let poll = this.sondagens[index];
-      const dialogRef = this.dialog.open(DialogSondagem, {
-        width: '400px',
-        data: poll
-      });
+        this.sondagemService.getAnswersFromPoll(poll._id).subscribe(answers => {
+          let usersId = answers.map(answer => {
+            return answer.userId;
+          })
+          this.userService.getUsers(usersId).subscribe(users => {
+            console.log(users);
+            const dialogRef = this.dialog.open(DialogSondagem, {
+              width: '1200px',
+              data: {poll: poll, answers: answers, users: users}
+            });
+          })
+      })
     }
   }
 
   clickDeletePoll(index, event){
-    console.log(event);
     let poll = this.sondagens[index];
     const dialogRef = this.dialog.open(DialogRemovePoll, {
       width: '700px',
       data: {poll: poll}
     });
+
+    dialogRef.afterClosed().subscribe(isDelete => {
+      if(isDelete)
+        this.sondagemService.deleteSondagem(poll._id).subscribe(deletedPoll => {
+          let i = this.sondagens.findIndex(polll => polll._id == poll._id);
+          this.sondagens.splice(i, 1);
+          this.alertService.success("Sondagem eliminada com sucesso");
+        })
+    })
   }
 
 }
@@ -149,18 +166,49 @@ export class DialogSondagem {
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
+  public barChartData: ChartDataSets[];
 
-  public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-  ];
+  poll: Sondagem;
+  chosenOptions: Array<number> = [];
+  users: Array<User>;
+  answers: Array<RespostaSondagem> = [];
+  otherAnswers: Array<any> = [];
+  totalAnswers: number = 0;
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogSondagem>) {
-    
+    this.poll = data.poll;
+    this.chosenOptions = this.poll.opcoes.map(poll => {return 0});
+    this.users = data.users;
+    this.answers = data.answers;
+
+    this.barChartLabels = this.poll.opcoes;
+
+    this.totalAnswers = this.answers.length;
+
+    this.answers.forEach(answer => {
+      let options = answer.opcoes;
+      if(options != undefined)
+        options.forEach(option => {
+          let i = this.poll.opcoes.findIndex(elem => elem == option);
+          this.chosenOptions[i]++;
+        })
+
+      let otherAnswer = answer.outraResposta;
+      if(otherAnswer != undefined && otherAnswer.length > 0)
+        this.otherAnswers.push({
+          text: otherAnswer,
+          writer: this.users.find(user => user._id == answer.userId).nome
+        });
+    })
+    console.log(this.chosenOptions);
+    this.barChartData = [
+      { data: this.chosenOptions, label: 'Número de utilizadores que escolheu a opção' }
+    ];
   }
 
 }
@@ -174,9 +222,4 @@ export class DialogRemovePoll {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogRemovePoll>) {
     this.poll = data.poll;
   }
-
-  deletePoll(){
-
-  }
-
 }
