@@ -18,6 +18,7 @@ export class FaqsComponent implements OnInit {
   faqs: Array<Faq> = [];
   panelOpenState = false;
   faqId: string;
+  currentFaq: Faq;
   user: User;
   currentUserId: string;
   index: number;
@@ -40,7 +41,6 @@ export class FaqsComponent implements OnInit {
         })
       });
     });
-
     
   }
 
@@ -62,7 +62,25 @@ export class FaqsComponent implements OnInit {
       pergunta: this.editedPergunta,
       resposta: this.editedResposta
     }
-    this.faqService.editFaq( this.faqId, obj)
+    this.faqService.editFaq( this.faqId, obj).subscribe((res) => {
+      this.alertService.success("Faq alterada com sucesso");
+      this.faqs.forEach((elem) => {
+        if(elem._id == this.faqId){
+          if(elem.pergunta != "" && elem.resposta != ""){
+            elem.pergunta = this.editedPergunta;
+            elem.resposta = this.editedResposta;
+          }else if(elem.pergunta != "" && elem.resposta == ""){
+            elem.pergunta = this.editedPergunta;
+            elem.resposta = this.newResposta;
+          } else {
+            elem.resposta = this.editedResposta;
+            elem.pergunta = this.newPergunta;
+          }
+
+        }
+        
+      })
+    })
   }
 
   addFaq(){
