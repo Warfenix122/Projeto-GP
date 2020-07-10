@@ -4,6 +4,10 @@
     margin-top: 16px;
 }
 
-h2 {
-    text-align: center !important;
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+}
+
+#addbutton{
+    align-items: right;
 }

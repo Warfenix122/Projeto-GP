@@ -1,0 +1,18 @@
+#contacts {
+    padding-top: 10px;
+    padding-bottom: 50px;
+    margin-top: 16px;
+}
+
+iframe{
+    margin-top: 30px !important ;
+}
+
+#nome{
+    text-align: right !important;
+}
+
+#morada{
+    margin-top: 50px;
+    text-align: center;
+}

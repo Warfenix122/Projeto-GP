@@ -2,42 +2,56 @@
 <h1 id="faq">FAQ'S</h1>
 </div>
 
-
-<!-- List group -->
-<div class="container">
-  <div class="row">
-    <div class="col-3">
-      <div class="list-group" id="myList" role="tablist" >
-          <div *ngFor="let faq of faqs">
-            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">{{faq.pergunta}}</a>
+<div>
+  
+      <div id="addbutton" >
+        <button mat-icon-button color="primary" aria-label="Example icon button with a plus one icon" (click)="addFaq()" data-toggle="modal" data-target="#exampleModal" >
+          <mat-icon>add</mat-icon> Adicionar
+        </button>
+      </div>
+   
+  <mat-accordion>
+    <div *ngFor="let faq of faqs; let i = index" [attr.data-index]="i" >
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                          (closed)="panelOpenState = false" (click)="getFaqId(i)">
+        
+        <mat-expansion-panel-header>
+          <div *ngIf="user.tipoMembro == 'Gestor'">
+            <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq()">
+              <mat-icon>highlight_off</mat-icon>
+            </button>
           </div>
           
-          <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">pergunta 2</a>
-          <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">pergunta 3</a>
-          <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">pergunta 4</a>
-      </div>
+          <mat-panel-title>
+            {{faq.pergunta}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>{{faq.resposta}}</p>
+        
+      </mat-expansion-panel>
     </div>
-  
-    <!-- Tab panes -->
-    <div class="col-9">
-      <div class="tab-content">
-        <div class="tab-pane active pergunta" id="home" role="tabpanel">
-          <h2>Pergunta 1</h2>
-          <p> resposta pergunta 1</p>
-        </div>
-        <div class="tab-pane" id="profile" role="tabpanel">
-          <h2>Pergunta 2</h2>
-          <p> resposta pergunta 2</p>
-        </div>
-        <div class="tab-pane" id="messages" role="tabpanel">
-          <h2>Pergunta 3</h2>
-          <p> resposta pergunta 3</p></div>
-        <div class="tab-pane" id="settings" role="tabpanel">
-          <h2>Pergunta 4</h2>
-          <p> resposta pergunta 4</p>
-        </div>
-      </div>
-    </div>
+  </mat-accordion>
+</div>
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel">{{faqs[index]}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>

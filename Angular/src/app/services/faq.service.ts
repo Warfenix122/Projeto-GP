@@ -13,5 +13,16 @@ export class FaqService {
     return this.http.get<Faq[]>('/api/faq');
   }
 
+  addFaq(obj){
+    return this.http.put<Faq>('/api/faq/addFaq', obj);
+  }
+
+  editFaq(id, obj){
+    return this.http.put<Faq>('/api/faq/edit/'+id, obj);
+  }
+
+  deleteFaq(id){
+    return this.http.delete<Faq>('/api/faq/delete/'+id);
+  }
 
 }

@@ -61,6 +61,7 @@ import { SondagemComponent, DialogShowPoll } from './sondagem/sondagem.component
 import { CreateSondagemComponent } from './create-sondagem/create-sondagem.component';
 import { CreateGestorComponent } from './create-gestor/create-gestor.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
@@ -104,7 +105,8 @@ import { ContactsComponent } from './contacts/contacts.component';
     MatDialogModule,
     MatBottomSheetModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   declarations: [
     AppComponent,
