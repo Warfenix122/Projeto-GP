@@ -1,111 +1,181 @@
 <div class="container">
-<h1 id="faq">FAQ'S</h1>
+  <h1 id="faq">FAQ'S</h1>
 </div>
 
 <div>
-  
-      <div id="addbutton" *ngIf="user.tipoMembro == 'Gestor'" >
-        <button mat-icon-button color="primary" aria-label="Example icon button with a plus one icon" data-toggle="modal" data-target="#addModal" >
-          <mat-icon>add</mat-icon> Adicionar
-        </button>
-      </div>
-   
+  <div id="addbutton" >
+    <button
+      *ngIf="user.tipoMembro === 'Gestor'"
+      mat-icon-button
+      color="primary"
+      aria-label="Example icon button with a plus one icon"
+      data-toggle="modal"
+      data-target="#addModal"
+    >
+      <mat-icon>add</mat-icon> Adicionar
+    </button>
+  </div>
+
   <mat-accordion>
-    <div *ngFor="let faq of faqs; let i = index" [attr.data-index]="i" >
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                          (closed)="panelOpenState = false" (click)="getFaqId(i)">
-        
+    <div *ngFor="let faq of faqs; let i = index" [attr.data-index]="i">
+      <mat-expansion-panel
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+        (click)="getFaqId(i)"
+      >
         <mat-expansion-panel-header>
           <div *ngIf="user.tipoMembro == 'Gestor'">
-            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="getFaqId(i)" data-toggle="modal" data-target="#editModal">
+            <button
+              mat-icon-button
+              color="primary"
+              aria-label="Example icon button with a home icon"
+              (click)="getFaqId(i)"
+              data-toggle="modal"
+              data-target="#editModal"
+            >
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon" (click)="deleteFaq(faq._id,i)">
+            <button
+              mat-icon-button
+              color="warn"
+              aria-label="Example icon button with a heart icon"
+              (click)="deleteFaq(faq._id, i)"
+            >
               <mat-icon>highlight_off</mat-icon>
             </button>
           </div>
-          
+
           <mat-panel-title>
-            {{faq.pergunta}}
+            {{ faq.pergunta }}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <p>{{faq.resposta}}</p>
-        
+        <p>{{ faq.resposta }}</p>
       </mat-expansion-panel>
     </div>
   </mat-accordion>
 </div>
 
-
-
 <!-- Modal add-->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header" >
+      <div class="modal-header">
         <h3 class="modal-title" id="exampleModalLabel">Crie uma nova FAQ</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        
         <form class="example-form">
           <div class="row form-group">
             <mat-form-field class="example-full-width">
               <mat-label>Escreva a pergunta</mat-label>
-              <input matInput placeholder="Como crio uma conta?" [(ngModel)]="newPergunta" [ngModelOptions]="{standalone: true}" >
+              <input
+                matInput
+                placeholder="Como crio uma conta?"
+                [(ngModel)]="newPergunta"
+                [ngModelOptions]="{ standalone: true }"
+              />
             </mat-form-field>
           </div>
           <div class="row form-group">
             <mat-form-field class="example-full-width">
               <mat-label>Escreva a resposta</mat-label>
-              <textarea matInput placeholder="Resposta" [(ngModel)]="newResposta" [ngModelOptions]="{standalone: true}"></textarea>
+              <textarea
+                matInput
+                placeholder="Resposta"
+                [(ngModel)]="newResposta"
+                [ngModelOptions]="{ standalone: true }"
+              ></textarea>
             </mat-form-field>
           </div>
           <div class="modal-footer">
             <button mat-button color="warn" data-dismiss="modal">Fechar</button>
-            <button mat-raised-button color="primary" (click)="addFaq()" data-dismiss="modal">Criar</button>
-            
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addFaq()"
+              data-dismiss="modal"
+            >
+              Criar
+            </button>
           </div>
-        </form> 
+        </form>
       </div>
     </div>
   </div>
 </div>
 
-
 <!-- Modal edit-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header" >
+      <div class="modal-header">
         <h3 class="modal-title" id="exampleModalLabel">Edite a FAQ</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        
         <form class="example-form">
           <div class="row">
             <mat-form-field class="example-full-width">
               <mat-label style="font-size: 14px;">Nova pergunta</mat-label>
-              <input matInput placeholder="" [(ngModel)]="editedPergunta" [ngModelOptions]="{standalone: true}"  >
+              <input
+                matInput
+                placeholder=""
+                [(ngModel)]="editedPergunta"
+                [ngModelOptions]="{ standalone: true }"
+              />
             </mat-form-field>
           </div>
           <div class="row">
             <mat-form-field class="example-full-width">
               <mat-label style="font-size: 14px;">Nova Resposta</mat-label>
-              <textarea matInput placeholder=""  [(ngModel)]="editedResposta" [ngModelOptions]="{standalone: true}" ></textarea>
+              <textarea
+                matInput
+                placeholder=""
+                [(ngModel)]="editedResposta"
+                [ngModelOptions]="{ standalone: true }"
+              ></textarea>
             </mat-form-field>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button mat-button color="warn" data-dismiss="modal">Fechar</button>
-        <button mat-raised-button color="primary" (click)="editFaq()" data-dismiss="modal">Guardar</button>
-        
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="editFaq()"
+          data-dismiss="modal"
+        >
+          Guardar
+        </button>
       </div>
     </div>
   </div>
