@@ -53,7 +53,7 @@ export class ProjectService {
   }
 
   deleteProject(id) {
-    return this.http.delete<Project>('/api/project/' + id);
+    return this.http.delete<Project>('/api/project/getProject/' + id);
   }
 
   getProject(id) {
