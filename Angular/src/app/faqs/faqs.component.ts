@@ -49,8 +49,8 @@ export class FaqsComponent implements OnInit {
     this.faqId = this.faqs[i]._id;
   }
 
-  deleteFaq(index) {
-    this.faqService.deleteFaq(this.faqId).subscribe((deletedFaq) => {
+  deleteFaq(faqId,index) {
+    this.faqService.deleteFaq(faqId).subscribe((deletedFaq) => {
       this.alertService.success("Faq eliminada com sucesso");
       this.faqs.splice(index,1);
       //this.router.navigate(['/faqs']);
@@ -72,7 +72,6 @@ export class FaqsComponent implements OnInit {
     }
     
     this.faqService.addFaq(obj).subscribe((res) => {
-      res["faqId"];
       this.alertService.success("Faq criada com sucesso");
       this.faqs.push({_id:res["faqId"] ,pergunta: this.newPergunta, resposta: this.newResposta});
     });
