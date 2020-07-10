@@ -29,28 +29,28 @@ export class InternalUserSignupComponent implements OnInit {
     if (this.formIPS.valid) {
       let pass = this.generatepassword(this.formIPS.value.email);
       let formbody = { ... this.formIPS.value, password: pass, tipoMembro: "Voluntario Interno" };
+      if(formbody.email.includes(".ips.pt")){
       this.service.register(formbody).subscribe((res) => {
-        this._alertService.success("Utilizador Registado");
+        this._alertService.success("Password enviada para o seu email");
         // Send Email
-        this.emailService.sendConfirmationEmail(formbody.email, formbody.nome).subscribe((response) => {
+
           this.router.navigate(['login']);
+        this.emailService.sendRecoverPasswordEmail(formbody.email, pass).subscribe((responnse) => {
         }, (err) => {
-          this._alertService.error(err["error"].msg);
-        });
-
-
-        this.emailService.sendEmail(formbody.email, "Password", "Password: " + pass).subscribe((responnse) => {
-        }, (err) => {
-          this._alertService.error(err.error.msg);
+          this._alertService.error(err.error.message);
         });
 
 
         // REDIRECT
         this.router.navigate(['login']);
       }, (err) => {
-        this._alertService.error(err.error.msg);
+        this._alertService.error(err.error.message);
       });
-    } else {
+    }else{
+      this._alertService.error("O email que inseriu não é um email institucional!");
+
+    }
+  } else {
       this._alertService.error("Formulário Invalido");
     }
   }
