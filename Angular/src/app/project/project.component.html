@@ -405,8 +405,13 @@
 
             
         </mat-tab>
-        <!--POR AQUI ESTA MERDA WORKINGS-->
-
+        <mat-tab *ngIf=" isModerator " label="Presenças">
+            <form class="d-flex justify-content-center mt-4 mb-2">
+                <button mat-raised-button class="mr-1" color="primary" (click)="fileInput.click()">Escolher ficheiro com as presenças<mat-icon class="ml-1">
+                    text_snippet</mat-icon></button>
+                <input hidden (change)="onPresencesFileSelected($event)" #fileInput type="file" accept="" id="presencesFile">
+            </form>
+        </mat-tab>
 
     </mat-tab-group>
 </div>

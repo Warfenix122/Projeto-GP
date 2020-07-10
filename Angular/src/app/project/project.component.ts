@@ -20,7 +20,8 @@ import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+const csvToJson = require('csvtojson');
 
 import * as fileSaver from 'file-saver';
 import * as qrcode from 'qrcode-generator';
@@ -325,6 +326,31 @@ export class ProjectComponent implements OnInit {
     });
   }
 
+  onPresencesFileSelected(event) {
+    let files = event.target.files;
+
+    if (files.length > 0) {
+      //this.selectedCoverPhotoFileName = files[0].name;
+
+    }
+    const file = files[0]
+
+    const inputNode: any = document.querySelector('#presencesFile');
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        console.log(e);
+      };
+      reader.onloadend = (progressEvent) => {
+        console.log(progressEvent)
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
+  }
+
   onFileSelected(event) {
     this.coverPhoto = undefined;
     let files = event.target.files;
@@ -360,6 +386,7 @@ export class ProjectComponent implements OnInit {
       reader.readAsArrayBuffer(inputNode.files[0]);
     }
   }
+
   onFilesSelected(event) {
     let files = event.target.files;
 
