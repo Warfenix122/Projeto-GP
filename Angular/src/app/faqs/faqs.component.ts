@@ -34,11 +34,8 @@ export class FaqsComponent implements OnInit {
       this.currentUserId = res["UserID"];
       this._userService.getUser(this.currentUserId).subscribe((user: User) => {
         this.user = user;
-      })
-    })
-
-
-
+      });
+    });
   }
 
   getFaqId(i){
@@ -47,10 +44,11 @@ export class FaqsComponent implements OnInit {
     console.log(this.faqId);
   }
 
-  deleteFaq() {
+  deleteFaq(index) {
     this.faqService.deleteFaq(this.faqId).subscribe((deletedFaq) => {
-      //this.router.navigate(['/faqs']);
       this.alertService.success("Faq eliminada com sucesso");
+      this.faqs.splice(index,1);
+      this.router.navigate(['/faqs']);
     })
   }
 
