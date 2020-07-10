@@ -38,8 +38,11 @@ export class AuthService {
   }
 
   getRole(): Observable<String> {
-    let token = { token: localStorage.getItem('token').split(' ')[1] };
-    return this.http.post<String>("/api/currentUserRole",token);
+    if(localStorage.getItem('token')){
+      let token = { token: localStorage.getItem('token').split(' ')[1] };
+      return this.http.post<String>("/api/currentUserRole",token);
+    }
+    
   }
 
   getExpiration() {

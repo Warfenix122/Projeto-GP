@@ -20,7 +20,7 @@
     <h1>Top 3 Projetos</h1>
 
     <div class="row mt-5">
-        <div class="col">
+        <div class="col" *ngIf="project1">
             <div class="card border-secondary">
                 <div class="inner ">
                     <div class="example-box card">
@@ -40,7 +40,7 @@
                 <img style="height: 90px; width: 90px;" src="assets/img/first-place.png"> </div>
 
         </div>
-        <div class="col">
+        <div class="col" *ngIf="project2">
             <div class="card border-secondary">
                 <div class="inner">
                     <div class="example-box card">
@@ -60,7 +60,7 @@
                 <img #secondPlaceImg style="height: 90px; width: 90px;" src="assets/img/second-place.png"> </div>
 
         </div>
-        <div class="col">
+        <div class="col" *ngIf="project3">
             <div class="card border-secondary">
                 <div class="inner">
                     <div class="example-box card">
@@ -78,7 +78,6 @@
             </div>
             <div class="badge" style="height: 90px; width: 90px;">
                 <img style="height: 90px; width: 90px;" src="assets/img/third-place.png"> </div>
-
         </div>
     </div>
 </div>
