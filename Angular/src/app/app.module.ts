@@ -65,11 +65,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DragDropModule, DragDrop } from '@angular/cdk/drag-drop';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { ChartsModule } from 'ng2-charts';
 
 
-import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager, DialogManageVolunteers } from './project/project.component';
+import { ProjectComponent, BottomSheetSetting, DialogDeleteProject, DialogRemoveContact, DialogAddManager } from './project/project.component';
 import { RegisteredProjectsComponent } from './registered-projects/registered-projects.component';
 import { AproveProjectsComponent } from './aprove-projects/aprove-projects.component';
 import { CommentComponent } from './comment/comment.component';
@@ -114,7 +115,8 @@ import { ChoseTopComponent } from './chose-top/chose-top.component';
     MatPaginatorModule,
     DragDropModule,
     MatGridListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   declarations: [
     AppComponent,
@@ -151,7 +153,6 @@ import { ChoseTopComponent } from './chose-top/chose-top.component';
     DialogDeleteProject,
     DialogRemoveContact,
     DialogAddManager,
-    DialogManageVolunteers,
     RegisteredProjectsComponent,
     AproveProjectsComponent,
     DialogShowPoll,

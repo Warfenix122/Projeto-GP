@@ -28,6 +28,6 @@ export class Project {
   dataComeco: Date;
   areasInteresse: [string];
   fotoCapaId: string;
-  voluntarios: [ {userId: string, estado: string} ];
+  voluntarios: {userId: string, estado: string}[];
   restringido: boolean;
 }
