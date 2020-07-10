@@ -83,9 +83,11 @@ export class FotoService {
 
     this.projectService.getProject(projectId).subscribe((p) => {
       let fotos = new Array();
-      p.fotosId.forEach((id) => {
-        if (id) fotos.push(id);
-      })
+      if(p.fotosId){
+        p.fotosId.forEach((id) => {
+          if (id) fotos.push(id);
+        })
+      }
       if (fotos) { //returns a promise
         resolveRef(this.getDecodedFotos(fotos, 'projects'));
       }
