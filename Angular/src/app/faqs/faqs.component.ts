@@ -35,13 +35,11 @@ export class FaqsComponent implements OnInit {
       this.currentUserId = res["UserID"];
       this._userService.getUser(this.currentUserId).subscribe((user: User) => {
         this.user = user;
-        console.log(this.user)
-        this.faqService.getFaqs().subscribe((faqs) => {
-          this.faqs = faqs;
-        })
       });
     });
-    
+    this.faqService.getFaqs().subscribe((faqs) => {
+      this.faqs = faqs;
+    });
   }
 
   getFaqId(i){

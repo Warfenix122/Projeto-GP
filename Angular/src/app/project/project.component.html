@@ -28,7 +28,7 @@
                     <h1 id="titulo">{{project.nome}}</h1>
                     <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success" (click)="volunteer()">CANDIDATAR</button>
                     <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg" (click)="cancelVolunteer()">Cancelar Candidatura</button>
-                    <button (click)="updateFavProject()" (mouseover)="hoverFavButton(true)" (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning">
+                    <button *ngIf="isAuthenticated" (click)="updateFavProject()" (mouseover)="hoverFavButton(true)" (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning">
             <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
           </button>
                 </div>
