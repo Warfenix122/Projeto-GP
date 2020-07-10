@@ -1,13 +1,31 @@
 <h1 mat-dialog-title>Sondagem</h1>
-<div mat-dialog-content>
-    <canvas baseChart 
-    [datasets]="barChartData"
-    [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [plugins]="barChartPlugins"
-    [legend]="barChartLegend"
-    [chartType]="barChartType">
-  </canvas>
+<h3>Número total de respostas: <b>{{totalAnswers}}</b></h3>
+<div mat-dialog-content class="container">
+  <div class="row">
+    <div class="col-8">
+      <canvas baseChart 
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [chartType]="barChartType">
+      </canvas>
+    </div>
+    <div class="col-4" style="overflow: auto;">
+      <mat-list>
+        <div mat-subheader>Outras respostas</div>
+        <mat-list-item *ngFor="let otherAnswer of otherAnswers">
+          <mat-icon mat-list-icon>title</mat-icon>
+          <div mat-line>{{otherAnswer.text}}</div>
+          <div mat-line> {{otherAnswer.writer}} </div>
+        </mat-list-item>
+        <mat-list-item *ngIf="otherAnswers.length == 0">
+          <div mat-line>Não existem outras respostas</div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
 </div>
 <div mat-dialog-actions>
   

@@ -15,7 +15,6 @@ router.get('', (req, res) => {
             })
 
         } else if (fotoIds == 'only_type') {
-            console.log('fotoIds :>> ', fotoIds);
             Foto.find({ 'type': type }, (err, foto) => {
                 res.json(foto);
             })

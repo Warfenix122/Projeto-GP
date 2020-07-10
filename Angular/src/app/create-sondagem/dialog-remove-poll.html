@@ -9,6 +9,6 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions class="mb-1">
-    <button mat-raised-button color="primary" [mat-dialog-close]="" cdkFocusInitial>Não</button>
-    <button mat-raised-button color="warn" (click)="deletePoll()">Sim</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="false" cdkFocusInitial>Não</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">Sim</button>
 </div>

@@ -27,7 +27,7 @@ import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
 import * as fileSaver from 'file-saver';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -98,9 +98,15 @@ export class ProjectComponent implements OnInit {
   //Volunteers
   volunteers: Array<User> = [];
   candidates: Array<User> = [];
+  presentVolunteers: Array<User> = [];
+  nonPresentVolunteers: Array<User> = [];
   displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao', 'actions'];
+  displayedPresentColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao'];
+
   dataSource: MatTableDataSource<User>;
   dataSourceCandidates: MatTableDataSource<User>;
+  dataSourcePresentVolunteers: MatTableDataSource<User>;
+  dataSourceNonPresentVolunteers: MatTableDataSource<User>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatPaginator, {static: true}) paginatorCandidates: MatPaginator;
 
@@ -112,7 +118,6 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
-
     this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
@@ -123,6 +128,8 @@ export class ProjectComponent implements OnInit {
 
       this.getApprovedVolunteers();
       this.getCandidateVolunteers();
+      this.dataSourcePresentVolunteers = new MatTableDataSource<User>(this.presentVolunteers);
+      this.dataSourceNonPresentVolunteers = new MatTableDataSource<User>(this.nonPresentVolunteers);
 
 
       this.fotoService.geDecodedProjectFotos(project._id).then((result) => {
@@ -247,14 +254,6 @@ export class ProjectComponent implements OnInit {
     })
   }
 
-  /*approveVolunteer(i) {
-    this.volunteers[i].estado = 'Aprovado';
-  }
-
-  disapproveVolunteer(i) {
-    this.volunteers[i].state = 'Recusado';
-  }*/
-
   removeVolunteer(user: User) {
     let index = this.project.voluntarios.findIndex(volunteer => volunteer.userId == user._id)
     this.project.voluntarios.splice(index, 1);
@@ -333,6 +332,59 @@ export class ProjectComponent implements OnInit {
     });
   }
 
+  loadPresences(usersId){
+    if(usersId == undefined || usersId == null || usersId.length == 0)
+      return;
+
+    this.presentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined);
+    this.nonPresentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined);
+    this.dataSourcePresentVolunteers = new MatTableDataSource<User>(this.presentVolunteers);
+    this.dataSourceNonPresentVolunteers = new MatTableDataSource<User>(this.nonPresentVolunteers);
+    this.dataSourcePresentVolunteers._updateChangeSubscription();
+    this.dataSourceNonPresentVolunteers._updateChangeSubscription();
+  }
+
+  onPresencesFileSelected(event) {
+    let files = event.target.files;
+    let cols = [];
+    let results = [];
+
+    if (files.length > 0) {
+      //this.selectedCoverPhotoFileName = files[0].name;
+
+    }
+    const file = files[0]
+
+    const inputNode: any = document.querySelector('#presencesFile');
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        let result = reader.result.toString();
+        console.log(result.split('\n'));
+        let rows = result.split('\n');
+        rows.forEach((row, index) => {
+          let cells = row.split(',');
+          if(index == 0){
+            cols = cells;
+          } else {
+            cells.forEach((cell, cellIndex) => {
+              if(cols[cellIndex] == '"Id"'){
+                cell = cell.substring(1, cell.length-1);
+                results.push(cell);
+              }
+            })
+          }
+        })
+        results.pop();
+        this.loadPresences(results);
+      };
+
+      reader.readAsBinaryString(inputNode.files[0]);
+    }
+  }
+
   onFileSelected(event) {
     this.coverPhoto = undefined;
     let files = event.target.files;
@@ -369,6 +421,7 @@ export class ProjectComponent implements OnInit {
       reader.readAsArrayBuffer(inputNode.files[0]);
     }
   }
+
   onFilesSelected(event) {
     let files = event.target.files;
 
