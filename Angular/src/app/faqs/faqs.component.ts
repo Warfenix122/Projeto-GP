@@ -31,14 +31,15 @@ export class FaqsComponent implements OnInit {
   constructor(private faqService: FaqService, private alertService: AlertService, private _userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
-    this._userService.getCurrentUserId().subscribe(res => {
-      this.currentUserId = res["UserID"];
-      this._userService.getUser(this.currentUserId).subscribe((user: User) => {
-        this.user = user;
-      });
-    });
+    // this._userService.getCurrentUserId().subscribe(res => {
+    //   this.currentUserId = res["UserID"];
+    //   this._userService.getUser(this.currentUserId).subscribe((user: User) => {
+    //     this.user = user;
+    //   });
+    // });
     this.faqService.getFaqs().subscribe((faqs) => {
       this.faqs = faqs;
+      console.log(faqs);
     });
   }
 

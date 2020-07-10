@@ -42,7 +42,7 @@ export class AuthService {
       let token = { token: localStorage.getItem('token').split(' ')[1] };
       return this.http.post<String>("/api/currentUserRole",token);
     }
-    
+    return null
   }
 
   getExpiration() {

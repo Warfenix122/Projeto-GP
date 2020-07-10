@@ -5,7 +5,7 @@
 <div>
   <div id="addbutton" >
     <button
-      *ngIf="user.tipoMembro === 'Gestor'"
+      *ngIf="user && user.tipoMembro === 'Gestor'"
       mat-icon-button
       color="primary"
       aria-label="Example icon button with a plus one icon"
@@ -24,7 +24,7 @@
         (click)="getFaqId(i)"
       >
         <mat-expansion-panel-header>
-          <div *ngIf="user.tipoMembro == 'Gestor'">
+          <div *ngIf="user && user.tipoMembro == 'Gestor'">
             <button
               mat-icon-button
               color="primary"
