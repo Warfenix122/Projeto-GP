@@ -146,47 +146,18 @@ export class ProjectComponent implements OnInit {
         if (this._authService.isLoggedIn()) this.isAuthenticated = true;
         else this.isAuthenticated = false;
         this._userService.getCurrentUserId().subscribe((res) => {
-          this.currentUserId = res['UserID'];
-          console.log(this.currentUserId);
-          this.isResponsible = this.project.responsavelId == this.currentUserId;
-          this.isManager = this.project.gestores.includes(this.currentUserId);
-          if (this.isResponsible || this.isManager) this.isModerator = true;
-          this._authService.getRole().subscribe((res) => {
-            this.role = res['Role'];
-            if (
-              this.project.voluntarios.filter(
-                (v) => v.userId === this.currentUserId
-              ).length > 0
-            ) {
-              this.candidato = true;
-            }
-            this._userService
-              .getUser(this.currentUserId)
-              .subscribe((user: User) => {
-                this.user = user;
-                if (
-                  this.user.projetosFavoritos.find(
-                    (projeto) => projeto == this.id
-                  )
-                ) {
-                  this.isFavProject = true;
-                } else {
-                  this.isFavProject = false;
-                }
-                this.projectService
+          if(res !== null){
+
+          }
+          
+        });
+      });
+    });
+    this.projectService
                   .getComments(this.id)
                   .subscribe((comments) => {
                     this.comments = comments['comments'];
                   });
-              });
-          });
-          this._userService.getVoluntariosExternos().subscribe((users) => {
-            this.externos = users;
-          });
-        });
-      });
-    });
-
   }
   writeFile() {
     this.projectService.writeFile(this.project._id).subscribe((response) => {

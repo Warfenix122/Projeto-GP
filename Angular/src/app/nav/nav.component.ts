@@ -32,10 +32,11 @@ export class NavComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.service.getRole().subscribe((res) => {
-      if (res['Role'] === 'Gestor') { this.isGestor = true; }
-    });
-
+    if(this.service.isLoggedIn()){
+      this.service.getRole().subscribe((res) => {
+        if (res['Role'] === 'Gestor') { this.isGestor = true; }
+      });
+    }
   }
 
   displayLoggedInNav(): void {

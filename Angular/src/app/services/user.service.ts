@@ -2,6 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core'
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../../models/utilizadores';
+import {AuthService} from './auth.service';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ export class UserService {
   @Output() profileLoaded: EventEmitter<boolean> = new EventEmitter();
   @Output() photoUploaded: EventEmitter<string> = new EventEmitter();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _authService: AuthService) { }
 
   profile(token) {
     return this.http.post('/api/profile', { authorization: token }, {
@@ -64,8 +65,11 @@ export class UserService {
   }
 
   getCurrentUserId(): Observable<String> {
-    let token = { token: localStorage.getItem('token').split(' ')[1] };
+    if(this._authService.isLoggedIn()){
+      let token = { token: localStorage.getItem('token').split(' ')[1] };
     return this.http.post<String>('/api/currentUser', token);
+    }
+    return null
   }
 
   getUsers(ids) {
