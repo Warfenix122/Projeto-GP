@@ -24,7 +24,12 @@ router.get('/:id', (req, res) => {
     let userId = mongoose.Types.ObjectId(req.params.id);
     User.findById(userId).then((user) => res.json(user));
 });
-
+router.get('/gestores', (req, res) => {
+  User.find({ tipoMembro: "Gestor" }).then((users) =>
+    res.status(200).json({ success: true, gestores: users })
+  )
+    .catch((err) => res.status(404).json({ success: false, err: err }));
+});
 router.get('', (req, res) => {
     let usersId = req.query.ids;
     if (usersId) {

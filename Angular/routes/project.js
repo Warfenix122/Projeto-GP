@@ -217,12 +217,7 @@ router.get("/gestores/:id", (req, res) => {
   })
     .catch((err) => res.status(500).json({ success: false, err: err }));
 });
-router.get('/gestores', (req, res) => {
-  User.find({ tipoMembro: "Gestor" }).then((users) =>
-    res.status(200).json({ success: true, gestores: users })
-  )
-    .catch((err) => res.status(404).json({ success: false, err: err }));
-});
+
 
 router.get("/pendingProjects", (req, res) => {
   Project.find({ aprovado: "Em Espera" })
