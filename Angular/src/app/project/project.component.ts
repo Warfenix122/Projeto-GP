@@ -544,7 +544,7 @@ export class ProjectComponent implements OnInit {
       (res) => {
         this.comments.push(res['insertedComment']);
         this.alertService.success('Comentario Adicionado');
-        this.commentBody.reset()
+        this.commentBody.reset();
       },
       (err) => this.alertService.warning(err['error'].msg)
     );

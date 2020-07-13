@@ -118,7 +118,6 @@ export class ChoseTopComponent implements OnInit {
         this.projectService.getProject(element._id).subscribe((proj) => {
           this.projectService.markAsTop(proj._id, i + 1).subscribe((res) => {
             this._alertService.success(res["msg"]);
-            this.router.navigate(['']);
           }, err => {
             this._alertService.error(err["error"].msg);
           });
