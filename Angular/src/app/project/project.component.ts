@@ -141,7 +141,8 @@ export class ProjectComponent implements OnInit {
         if (!result[0]) this.coverPhoto = '';
       });
 
-      this.projectService.getGestores(this.id).subscribe((res) => {
+      this.projectService.getProjectGestores(this.id).subscribe((res) => {
+        console.log('res :>> ', res);
         this.gestores = res['gestores'];
         if (this._authService.isLoggedIn()) this.isAuthenticated = true;
         else this.isAuthenticated = false;

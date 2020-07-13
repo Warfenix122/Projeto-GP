@@ -69,8 +69,11 @@ export class ProjectService {
     return this.http.post<ImageResponse>('/api/file/uploadCapaFoto', formData);
   }
 
-  getGestores(projectId) {
+  getProjectGestores(projectId) {
     return this.http.get<User[]>("api/project/gestores/" + projectId);
+  }
+  getGestores() {
+    return this.http.get<User[]>("api/project/gestores" );
   }
 
   volunteer(projectId, voluntarioId) {

@@ -37,25 +37,25 @@ export class CreateProjectComponent implements OnInit {
   file: File = null;
   formErrors: [];
   validationMessages: [String];
-  daySelected:Boolean;
-  criacao:Date;
+  daySelected: Boolean;
+  criacao: Date;
   imgPath;
   imgUrl: any;
 
 
   constructor(private _fb: FormBuilder, private _userService: UserService, private _alertService: AlertService,
-     private _projectService: ProjectService, private _authService: AuthService, private router: Router,
-     private _fotoService: FotoService) { }
+    private _projectService: ProjectService, private _authService: AuthService, private router: Router,
+    private _fotoService: FotoService) { }
 
   formInfo = this._fb.group({
     nome: new FormControl('', [Validators.required]),
     resumo: new FormControl('', [Validators.required]),
-    nrVagas: new FormControl('', [Validators.required,Validators.min(1)]),
+    nrVagas: new FormControl('', [Validators.required, Validators.min(1)]),
     necessarioFormacao: new FormControl(false),
     restringido: new FormControl(false),
     formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
-    gestoremail: new FormControl('',[Validators.email]),
+    gestoremail: new FormControl('', [Validators.email]),
   });
 
   formDatas = this._fb.group({
@@ -70,23 +70,21 @@ export class CreateProjectComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this._authService.getRole().subscribe(res =>{
-      if(res["Role"] !== "Gestor")
-        this.router.navigate(['unauthorized']);
-    });
-    this._authService.getRole().subscribe(res=>{
-      if(res["Role"]==="Gestor"){
+
+    this._authService.getRole().subscribe(res => {
+      if (res["Role"] !== "Voluntario Interno") {
         this._userService.getVoluntariosExternos().subscribe(users => {
-        this.utilizadoresExternos = users;
-        this.emails = this.utilizadoresExternos.map(user => user.email);
-        this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this._filterUtilizadores(value))
-          );
+          this.utilizadoresExternos = users;
+          this.emails = this.utilizadoresExternos.map(user => user.email);
+          this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
+            .pipe(
+              startWith(''),
+              map(value => this._filterUtilizadores(value))
+            );
         });
-      }else
+      } else {
         this.router.navigate(["unauthorized"]);
+      }
     });
   }
 
@@ -166,18 +164,18 @@ export class CreateProjectComponent implements OnInit {
   }
 
   addAtividade() {
-    if(this.diaAtividade.touched){
-      this.daySelected=true;
+    if (this.diaAtividade.touched) {
+      this.daySelected = true;
       let dia = _moment(this.diaAtividade.value).toDate();
       this.atividadesArr.push(this._fb.group({
         descricao: new FormControl('', Validators.required),
         //dataAcontecimento: new FormControl(''),
         dia: new Date(dia.getFullYear(), dia.getMonth() + 1, dia.getDate(),),
         horas: new FormControl('', Validators.required),
-        })
+      })
       );
-    }else{
-      this.daySelected=false;
+    } else {
+      this.daySelected = false;
     }
   }
 
@@ -199,7 +197,7 @@ export class CreateProjectComponent implements OnInit {
         for (let i = 0; i < diference; i++) {
           if (i === 0)
             this.daysBetween.push(inicio.toDate());
-          else{
+          else {
             let newMoment = inicio.add(1, 'days').toDate();
             this.daysBetween.push(newMoment);
           }
@@ -245,13 +243,13 @@ export class CreateProjectComponent implements OnInit {
     this.file = files.item(0);
 
     let mimeType = files.item(0).type;
-    if(mimeType.match(/image\/*/)==null){
+    if (mimeType.match(/image\/*/) == null) {
       return;
     }
 
     let reader = new FileReader();
     reader.readAsDataURL(this.file);
-    reader.onload = (_event)=>{
+    reader.onload = (_event) => {
       this.imgUrl = reader.result;
     }
   }
@@ -271,7 +269,7 @@ export class CreateProjectComponent implements OnInit {
         let atividades = [];
         let gestoresIds = []
         let selectedAreas = this.selectedAreas;
-        gestoresIds = this.gestores.filter(gestor=>gestor._id);
+        gestoresIds = this.gestores.filter(gestor => gestor._id);
         this.atividadesArr.controls.forEach(atividade => {
           let atividadeObj = atividade.value;
           let horas = parseInt(atividadeObj.horas.split(':')[0]);
@@ -286,7 +284,7 @@ export class CreateProjectComponent implements OnInit {
             this.imgUpload(res.projetoId);
           }
           this._alertService.success("Projeto criado com sucesso", true);
-          this.router.navigate(['projects/'+res.projetoId]);
+          this.router.navigate(['projects/' + res.projetoId]);
         });
       });
 
@@ -298,7 +296,7 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  showGuardarAlert(){
+  showGuardarAlert() {
     this._alertService.success("Alterações guardadas");
   }
 
