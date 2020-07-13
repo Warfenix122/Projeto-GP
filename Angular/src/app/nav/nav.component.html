@@ -1,67 +1,69 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" [routerLink]="['/']"><img src="assets/img/small_logo.png"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span>
-</button>
-    <div class="collapse navbar-collapse row justify-content-between" id="navbarNav">
+<nav  class="navbar navbar-expand-lg ">
+  <a class="navbar-brand" [routerLink]="['/']"><img src="assets/img/IPS_black.png" style="max-width:30px;max-height: 30px;"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse row justify-content-between" id="navbarNav">
 
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/projects']">Projetos </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/faqs']">FAQ's</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/contacts']">Contactos</a>
-            </li>
-            <li #aprove class="nav-item dropdown" *ngIf="isGestor">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Aprovar</a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/projects']">Projetos </a>
+      </li>
+      <li class="nav-item"  *ngIf="isGestor"> <a class="nav-link" [routerLink]="['/createSondagem']">Sondagens</a></li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/faqs']">FAQ's</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/contacts']">Contactos</a>
+      </li>
+      <li #aprove class="nav-item dropdown" *ngIf="isGestor">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Aprovar</a>
 
-                <div class="dropdown-menu" *ngIf="isGestor">
-                    <a class="dropdown-item" [routerLink]="['/userAprove']">Utilizadores</a>
-                    <a class="dropdown-item" [routerLink]="['/projectsAprove']">Projetos</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown" *ngIf="isGestor">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Criar</a>
-
-                <div class="dropdown-menu" *ngIf="isGestor">
-                    <a class="dropdown-item" [routerLink]="['/createGestor']">Gestores</a>
-                    <a class="dropdown-item" [routerLink]="['/createSondagem']">Sondagens</a>
-                    <a class="dropdown-item" [routerLink]="['/createProject']">Projeto</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown" *ngIf="isGestor">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Editar</a>
-
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" [routerLink]="['/editCarrosel']">Carrousel</a>
-                    <a class="dropdown-item" [routerLink]="['/pickTop3']">Top 3 Projetos</a>
-                </div>
-            </li>
-        </ul>
-        <div #logout>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/signup']">Registar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/login']">Login</a>
-                </li>
-            </ul>
-
+        <div class="dropdown-menu mt-2" *ngIf="isGestor">
+          <a class="dropdown-item" [routerLink]="['/userAprove']">Utilizadores</a>
+          <a class="dropdown-item" [routerLink]="['/projectsAprove']">Projetos</a>
         </div>
-        <div #logged>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/profile']">Perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="logOut()">Logout</a>
-                </li>
-            </ul>
+      </li>
+      <li class="nav-item dropdown" *ngIf="isGestor">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Criar</a>
 
+        <div class="dropdown-menu mt-2" *ngIf="isGestor">
+          <a class="dropdown-item" [routerLink]="['/createGestor']">Gestores</a>
+          <a class="dropdown-item" [routerLink]="['/createProject']">Projeto</a>
         </div>
+      </li>
+      <li class="nav-item dropdown" *ngIf="isGestor">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Editar Conteudos</a>
+
+        <div class="dropdown-menu mt-2" *ngIf="isGestor">
+          <a class="dropdown-item" [routerLink]="['/editCarrosel']">Carrousel</a>
+          <a class="dropdown-item" [routerLink]="['/pickTop3']">Top 3 Projetos</a>
+        </div>
+      </li>
+
+    </ul>
+    <div #logout>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/signup']">Registar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/login']">Login</a>
+        </li>
+      </ul>
+
     </div>
+    <div #logged>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile']">Perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="logOut()">Logout</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
 </nav>

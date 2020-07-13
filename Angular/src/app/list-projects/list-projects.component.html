@@ -1,10 +1,9 @@
 <div class="mt-4 mb-3 d-flex justify-content-between">
     <div></div>
-    <div style="margin-left: 110px;">
-        <h1>Projetos</h1>
-    </div>
+        <h1 class="text-center">Projetos</h1>
+
     <div class="mt-auto mb-auto mr-2">
-        <button [style.visibility]="userRole == 'Voluntario Interno' ? 'hidden' : 'visible'" [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
+        <button [style.visibility]="userRole == 'Voluntario Interno' || !userRole ? 'hidden' : 'visible'" [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
     </div>
 </div>
 

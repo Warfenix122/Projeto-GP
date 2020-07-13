@@ -1,8 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-h1,
-h2,
-h3 {
-    font-family: Lato, serif;
-    text-transform: uppercase;
+* {
+    font-family: Roboto, Open-Sans, Arial;
+}
+h1,h2,h3{
+   text-transform: capitalize;
+}
+*::selection{
+  background-color: #8e7dbed2;
 }

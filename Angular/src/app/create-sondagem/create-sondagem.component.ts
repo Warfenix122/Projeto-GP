@@ -22,7 +22,7 @@ export class CreateSondagemComponent implements OnInit {
 
   constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, private alertService: AlertService, public dialog: MatDialog) {
 
-   }
+  }
 
   formSondagem = this._fb.group({
     titulo: new FormControl('', Validators.required),
@@ -118,32 +118,31 @@ export class CreateSondagemComponent implements OnInit {
     }
   }
 
-  pollClicked(index, event){
-    if(event.target.localName == "button" || event.target.parentNode.localName == "button"){} else {
+  pollClicked(index, event) {
       let poll = this.sondagens[index];
-        this.sondagemService.getAnswersFromPoll(poll._id).subscribe(answers => {
-          let usersId = answers.map(answer => {
-            return answer.userId;
-          })
-          this.userService.getUsers(usersId).subscribe(users => {
-            const dialogRef = this.dialog.open(DialogSondagem, {
-              width: '1200px',
-              data: {poll: poll, answers: answers, users: users}
-            });
-          })
+      this.sondagemService.getAnswersFromPoll(poll._id).subscribe(answers => {
+        let usersId = answers.map(answer => {
+          return answer.userId;
+        })
+        this.userService.getUsers(usersId).subscribe(users => {
+          const dialogRef = this.dialog.open(DialogSondagem, {
+            width: '1200px',
+            data: { poll: poll, answers: answers, users: users }
+          });
+        })
       })
-    }
+
   }
 
-  clickDeletePoll(index, event){
+  clickDeletePoll(index, event) {
     let poll = this.sondagens[index];
     const dialogRef = this.dialog.open(DialogRemovePoll, {
       width: '700px',
-      data: {poll: poll}
+      data: { poll: poll }
     });
 
     dialogRef.afterClosed().subscribe(isDelete => {
-      if(isDelete)
+      if (isDelete)
         this.sondagemService.deleteSondagem(poll._id).subscribe(deletedPoll => {
           let i = this.sondagens.findIndex(polll => polll._id == poll._id);
           this.sondagens.splice(i, 1);
@@ -178,7 +177,7 @@ export class DialogSondagem {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogSondagem>) {
     this.poll = data.poll;
-    this.chosenOptions = this.poll.opcoes.map(poll => {return 0});
+    this.chosenOptions = this.poll.opcoes.map(poll => { return 0 });
     this.users = data.users;
     this.answers = data.answers;
 
@@ -188,14 +187,14 @@ export class DialogSondagem {
 
     this.answers.forEach(answer => {
       let options = answer.opcoes;
-      if(options != undefined)
+      if (options != undefined)
         options.forEach(option => {
           let i = this.poll.opcoes.findIndex(elem => elem == option);
           this.chosenOptions[i]++;
         })
 
       let otherAnswer = answer.outraResposta;
-      if(otherAnswer != undefined && otherAnswer.length > 0)
+      if (otherAnswer != undefined && otherAnswer.length > 0)
         this.otherAnswers.push({
           text: otherAnswer,
           writer: this.users.find(user => user._id == answer.userId).nome

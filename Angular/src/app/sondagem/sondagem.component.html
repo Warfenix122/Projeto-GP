@@ -8,7 +8,7 @@
             <button class="mb-2" mat-raised-button color="primary" (click)="openPollDialog(poll._id)">Responder</button>
         </mat-card-actions>
     </mat-card>
-    <div *ngIf="!polls">
+    <div *ngIf="polls.length<=0">
         Não existem sondagens para responder neste momento.
     </div>
 </div>
