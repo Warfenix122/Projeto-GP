@@ -3,24 +3,33 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">ProjetoId</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Responsavel</th>
+        <th scope="col">Nome do Projeto</th>
         <th scope="col">Resumo</th>
+        <th scope="col">Responsavel</th>
+        <th scope="col">Data de Realização</th>
+        <th scope="col">Inscrições Restringidas</th>
+
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let entry of projectTable; let i = index">
-        <td>{{ entry.project._id }}</td>
         <td>{{ entry.project.nome }}</td>
-        <td>{{ entry.nome }}</td>
         <td>{{ entry.project.resumo }}</td>
-        <button class="btn btn-success col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, i,entry.email,'Aprovado')">
+        <td>{{ entry.nome }}</td>
+        <td>{{ entry.project.dataComeco }}</td>
+        <td>{{ entry.project.restringido? 'Sim': 'Não' }}</td>
+
+        <button class="btn btn-success col-sm-4 button-spacing"
+          (click)="avaliarProjeto(entry.project._id, i,entry.email,'Aprovado')">
           <i class="fas fa-thumbs-up"></i>
         </button>
-        <button class="btn btn-danger col-sm-4 button-spacing" (click)="avaliarProjeto(entry.project._id, i,entry.email, 'Recusado')">
+        <button class="btn btn-danger col-sm-4 button-spacing"
+          (click)="avaliarProjeto(entry.project._id, i,entry.email, 'Recusado')">
           <i class="fas fa-thumbs-down"></i>
         </button>
+        <a class="btn btn-light col-sm-4 button-spacing" [routerLink]="'/projects/'+entry.project._id">
+          <i class="far fa-eye"></i>
+        </a>
       </tr>
     </tbody>
   </table>

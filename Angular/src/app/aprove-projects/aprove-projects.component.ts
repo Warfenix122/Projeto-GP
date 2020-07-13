@@ -31,7 +31,6 @@ export class AproveProjectsComponent implements OnInit {
       .getToAproveProjects()
       .subscribe((res) => {
         this.projectsArray = res["projetos"];
-        console.log(this.projectsArray);
         let responsaveisId = { users: this.projectsArray.map(project => project.responsavelId) };
         this._userService.getUsersArray(responsaveisId).subscribe(res => {
           this.responsaveisArray = res["users"];

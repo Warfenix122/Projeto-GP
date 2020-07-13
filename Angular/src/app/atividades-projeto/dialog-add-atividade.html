@@ -1,4 +1,4 @@
-<h1 mat-dialog-title color="primary">Adicionar Gestor</h1>
+<h1 mat-dialog-title color="primary">Adicionar Atividade</h1>
 <div mat-dialog-content style="width: 100%;">
     <form [formGroup]="formAdd" style="min-width: 150px;max-width: 500px;width: 100%;">
         <!-- <div class="row" style="margin-left: 13rem;"> -->
@@ -22,11 +22,11 @@
                 <input type="time" matInput [formControl]="addHoras">
             </mat-form-field>
         <!-- </div> -->
-        
+
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button color="warn" (click)="onClose(false)">
+    <button mat-raised-button color="warn" (click)="onClose(true)">
       Cancelar
     </button>
     <button mat-raised-button color="primary" (click)="onClose(true)">

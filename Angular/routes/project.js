@@ -37,7 +37,7 @@ router.post("", (req, res) => {
         gestores: gestoresIds,
         atividades: atividades,
         vagas: nrVagas,
-        projetoMes: false,
+        projetoMes: { state: false },
         dataCriacao: Date.now(),
         dataTermino: dataTermino,
         dataFechoInscricoes: dataFechoInscricoes,
@@ -83,8 +83,8 @@ router.get("", (req, res) => {
   });
 });
 
-router.get("/aprovedProjects",(req,res)=>{
-  Project.find({aprovado:"Aprovado"}).then(projects=>{
+router.get("/aprovedProjects", (req, res) => {
+  Project.find({ aprovado: "Aprovado" }).then(projects => {
     res.status(200).json(projects);
   })
 })
@@ -375,34 +375,34 @@ router.put("/atividades/:id", (req, res) => {
         "atividades.$.dataAcontecimento": dataAcontecimento,
       },
     }
-  ).then(project=>{
-      res.status(200).json({success:true,msg:"Atividade Alterada com sucesso"});
-  }).catch(err=>{
-      res.status(404).json({success:false,msg:"Atividade não encontrada"})
+  ).then(project => {
+    res.status(200).json({ success: true, msg: "Atividade Alterada com sucesso" });
+  }).catch(err => {
+    res.status(404).json({ success: false, msg: "Atividade não encontrada" })
   });
 });
 
-router.put("/atividades/remover/:id",(req,res)=>{
-    let projectId = mongoose.Types.ObjectId(req.params.id);
-    let atividadeId = req.body.atividadeId;
-    console.log(req.body);
-    Project.findByIdAndUpdate({_id:projectId},{$pull:{atividades: {_id:atividadeId}}}).
-    then(projeto =>{
-      res.status(200).json({success:true,msg:"Atividade Apagada com sucesso"})
-    }).catch(err=>{
-      res.status(404).json({success:false,msg:"Não foi possivel encontrar a Atividade"});
+router.put("/atividades/remover/:id", (req, res) => {
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let atividadeId = req.body.atividadeId;
+  console.log(req.body);
+  Project.findByIdAndUpdate({ _id: projectId }, { $pull: { atividades: { _id: atividadeId } } }).
+    then(projeto => {
+      res.status(200).json({ success: true, msg: "Atividade Apagada com sucesso" })
+    }).catch(err => {
+      res.status(404).json({ success: false, msg: "Não foi possivel encontrar a Atividade" });
     });
 });
 
-router.post("/atividades/:id",(req,res)=>{
-    let projectId = mongoose.Types.ObjectId(req.params.id);
-    let atividade = {descricao:req.body.descricao,dataAcontecimento:req.body.dataAcontecimento};
-    console.log(req.body)
-    Project.findOneAndUpdate({_id:projectId},{$push:{atividades:atividade}}).then(project=>{
-        res.status(200).json({success:true,msg:"Atividade adicionada com sucesso"});
-    }).catch(err=>{
-        res.status(404).json({success:false,msg:err});
-    });
+router.post("/atividades/:id", (req, res) => {
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let atividade = { descricao: req.body.descricao, dataAcontecimento: req.body.dataAcontecimento };
+  console.log(req.body)
+  Project.findOneAndUpdate({ _id: projectId }, { $push: { atividades: atividade } }).then(project => {
+    res.status(200).json({ success: true, msg: "Atividade adicionada com sucesso" });
+  }).catch(err => {
+    res.status(404).json({ success: false, msg: err });
+  });
 });
 
 async function processArray(array) {

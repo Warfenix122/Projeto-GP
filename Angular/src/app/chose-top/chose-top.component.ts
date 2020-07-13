@@ -53,7 +53,7 @@ export class ChoseTopComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private _alertService: AlertService, private fotoService: FotoService,
     ngbPopoverConfig: NgbPopoverConfig, private userService: UserService,
-    private router:Router) {
+    private router: Router) {
     ngbPopoverConfig.autoClose = 'outside';
   }
 
@@ -63,6 +63,7 @@ export class ChoseTopComponent implements OnInit {
     });
     this.projectService.projects().subscribe(projects => {
       this.projects = projects.filter((elem) => {
+        console.log('elem :>> ', elem);
         if (!elem.projetoMes.state) {
           return elem
         }
@@ -78,7 +79,7 @@ export class ChoseTopComponent implements OnInit {
 
       this.topProjects = projects.filter((elem) => {
         if (elem.projetoMes.state) {
-          return elem
+          return elem;
         }
       });
 
@@ -112,22 +113,21 @@ export class ChoseTopComponent implements OnInit {
   saveTop() {
     if (this.topProjects.length <= 3) {
       this.projects.forEach((elem) => {
-        this.projectService.dismarkAsTop(elem._id).subscribe((res) => {});
+        this.projectService.dismarkAsTop(elem._id).subscribe((res) => { });
       });
-      this.topProjects.forEach((element,i,arr) => {
-        console.log('i :>> ', i);
+      this.topProjects.forEach((element, i, arr) => {
         this.projectService.getProject(element._id).subscribe((proj) => {
-          this.projectService.markAsTop(proj._id, i+1).subscribe((res) => {
+          this.projectService.markAsTop(proj._id, i + 1).subscribe((res) => {
             this._alertService.success(res["msg"]);
             this.router.navigate(['']);
-          },err=>{
+          }, err => {
             this._alertService.error(err["error"].msg);
           });
-        },err=>{
+        }, err => {
           this._alertService.error(err["error"].msg);
         });
       });
-    }else {
+    } else {
       this._alertService.error("Só pode guardar 3 projetos");
     }
   }
