@@ -316,4 +316,14 @@ router.get("/getUserNome/:id", (req, res) => {
     }).catch(err => res.status(404).json({ success: false, error: err }));
 })
 
+router.get("/gestores",(req,res)=>{
+    User.find({tipoMembro:"Gestor"})
+    .then(gestores=>{
+        res.json(gestores);
+    })
+    .catch(err=>{
+        res.json(err);
+    })
+})
+
 module.exports = router;

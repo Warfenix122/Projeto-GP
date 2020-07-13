@@ -30,10 +30,11 @@
       <div class="col-sm-6">
         <div *ngIf="!isEditButtonToggled">
           <h1 id="titulo">{{project.nome}}</h1>
-          <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success"
+          <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" mat-raised-button color="primary"
             (click)="volunteer()">CANDIDATAR</button>
-          <button *ngIf="candidato===true" type="button" class="btn btn-warning btn-lg"
+          <button *ngIf="candidato===true" type="button" mat-raised-button color="warn"
             (click)="cancelVolunteer()">Cancelar Candidatura</button>
+            <button mat-raised-button *ngIf="project.voluntarios.length===project.vagas && role=== 'Voluntario Interno'" color="warn">Sem vagas</button>
           <button *ngIf="isAuthenticated" (click)="updateFavProject()" (mouseover)="hoverFavButton(true)"
             (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning">
             <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
@@ -248,16 +249,15 @@
     </mat-tab>
 
     <mat-tab label="Comentários">
-      <h1 class="titulo2">Comentarios</h1>
       <div *ngIf="isAuthenticated">
-        <mat-form-field style="width: 28rem;">
+        <mat-form-field style="width: 28rem;margin-left: 17rem;">
           <mat-label>Comente</mat-label>
           <textarea matInput [formControl]="commentBody" rows="4" cols="120"></textarea>
         </mat-form-field>
         <button mat-stroked-button color="primary" (click)="comment()" style="margin-left:2rem">Comentar</button>
       </div>
 
-      <div style="margin-top:1.5rem" *ngFor="let comment of comments; let i= index">
+      <div style="margin-top:1.5rem; margin-left: 20rem;" *ngFor="let comment of comments; let i= index">
         <div *ngIf="isEditButtonToggled">
           <app-comment [comment]="comment" (removeComment)="removeComment(i,comment._id)"
             [currentUserId]="currentUserId" [isModerator]="isModerator"></app-comment>

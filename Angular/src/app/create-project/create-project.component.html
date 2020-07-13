@@ -75,7 +75,7 @@
             <mat-form-field class="big-input">
               <mat-label for="gestoremail">Adicionar Gestor</mat-label>
               <input type="text" matInput placeholder="Introduza o email do sub-gestor" class="form-control"
-                id="gestoremail" name="gestoremail" formControlName="gestoremail" [matAutocomplete]="autoGestor" />
+                id="gestoremail" name="gestoremail" [formControl]="gestorEmail" [matAutocomplete]="autoGestor" />
               <mat-autocomplete #autoGestor="matAutocomplete">
                 <mat-option *ngFor="let email of filteredEmails | async" [value]="email">
                   {{ email }}

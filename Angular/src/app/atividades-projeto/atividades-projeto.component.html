@@ -1,15 +1,15 @@
 <div class="container">
-  <mat-list>
-    <mat-list-item style="margin-top: 8.5rem;" *ngFor="let atividade of atividades let i = index">
-      <mat-card style="width: 50%; margin-left: 15rem;">
+  <mat-grid-list cols="4" rowHeight="1:1">
+    <mat-grid-tile  *ngFor="let atividade of atividades let i = index">
+      <mat-card >
         <mat-card-header>
-          <mat-card-title style="margin-left: 11rem;">{{ atividade.dataAcontecimento.getDate() }}/{{
+          <mat-card-title >{{ atividade.dataAcontecimento.getDate() }}/{{
             atividade.dataAcontecimento.getMonth()+1
           }}/{{ atividade.dataAcontecimento.getFullYear() }}</mat-card-title>
-          <mat-card-subtitle style="margin-left: 13rem;">
+          <mat-card-subtitle >
             {{atividade.dataAcontecimento.getHours()}}:{{atividade.dataAcontecimento.getMinutes()}}</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content style="margin-left: 7rem;">
+        <mat-card-content >
           {{atividade.descricao}}
         </mat-card-content>
         <mat-card-actions *ngIf="isEditButtonClicked">
@@ -21,8 +21,17 @@
           </button>
         </mat-card-actions>
       </mat-card>
-    </mat-list-item>
-  </mat-list>
-  <button mat-raised-button color="primary" style="width: 40%; margin-top: 5rem; margin-left: 30%;"
+    </mat-grid-tile>
+  </mat-grid-list>
+  <button *ngIf="isEditButtonClicked" mat-raised-button color="primary" style="width: 40%; margin-top: 5rem; margin-left: 30%;"
     (click)="openAddAtividadeDialog()">Adicionar Atividade</button>
 </div>
+
+<!-- style="margin-top: 8.5rem;"
+style="width: 50%; margin-left: 15rem;"
+
+style="margin-left: 11rem;"
+
+style="margin-left: 13rem;"
+
+style="margin-left: 7rem;" -->

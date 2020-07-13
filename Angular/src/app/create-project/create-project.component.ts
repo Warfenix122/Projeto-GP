@@ -74,20 +74,19 @@ export class CreateProjectComponent implements OnInit {
     this._authService.getRole().subscribe(res => {
       if (res["Role"] !== "Voluntario Interno") {
         this._userService.getVoluntariosExternos().subscribe(users => {
-          this.utilizadoresExternos = users;
           this._userService.getGestores().subscribe((res) => {
-            this.utilizadoresExternos.push(res["gestores"]);
-
-          })
-        });
-        this.emails = this.utilizadoresExternos.map(user => user.email);
-        this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
+            console.log(res);
+            this.utilizadoresExternos = users.concat(res);
+            console.log(this.utilizadoresExternos);
+            this.emails = this.utilizadoresExternos.map(user => user.email);
+            this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
           .pipe(
             startWith(''),
             map(value => this._filterUtilizadores(value))
           );
-
-
+          })
+        });
+        
       } else {
         this.router.navigate(["unauthorized"]);
       }

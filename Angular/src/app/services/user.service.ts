@@ -47,7 +47,7 @@ export class UserService {
     });
   }
   getGestores() {
-    return this.http.get<User[]>("api/gestores" );
+    return this.http.get<User[]>("api/gestores");
   }
 
   getDisaprovedUsers(): Observable<User[]> {
