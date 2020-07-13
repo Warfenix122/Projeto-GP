@@ -5,6 +5,7 @@ import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfac
 import { Inscricao } from 'models/inscricao';
 import { Observable, from } from 'rxjs';
 import { User } from '../../../models/utilizadores';
+import {Atividade} from '../../../models/atividade';
 
 
 @Injectable({
@@ -30,7 +31,7 @@ export class ProjectService {
   }
 
   projects() {
-    return this.http.get<Project[]>('/api/project');
+    return this.http.get<Project[]>('/api/project/aprovedProjects');
   }
   userFavoriteProjects(userId) {
     return this.http.get<Project[]>('/api/project/favoriteProject/' + userId);
@@ -113,5 +114,23 @@ export class ProjectService {
   }
   dismarkAsTop(id){
     return this.http.get<Project>('/api/project/dismarkTop/' + id);
+  }
+
+  getAtividades(id){
+    return this.http.get<Atividade[]>('/api/project/atividades/'+id);
+  }
+  
+  removerAtividades(id,atividadeId){
+    let atId = {atividadeId:atividadeId};
+    return this.http.put<ImageResponse>('/api/project/atividades/remover/'+id,atId);
+  }
+
+  addAtividade(id,atividade){
+    console.log(atividade);
+    return this.http.post('/api/project/atividades/'+id,atividade);
+  }
+  
+  editAtividade(id,atividade){
+    return this.http.put('/api/project/atividades/'+id,atividade);
   }
 }

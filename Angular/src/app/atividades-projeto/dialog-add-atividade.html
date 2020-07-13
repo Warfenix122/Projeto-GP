@@ -1,0 +1,35 @@
+<h1 mat-dialog-title color="primary">Adicionar Gestor</h1>
+<div mat-dialog-content style="width: 100%;">
+    <form [formGroup]="formAdd" style="min-width: 150px;max-width: 500px;width: 100%;">
+        <!-- <div class="row" style="margin-left: 13rem;"> -->
+            <mat-form-field style="width: 65%;margin-left: 12rem;">
+                <mat-label>Descrição da sua atividade</mat-label>
+                <input type="text" matInput [formControl]="addDescricao">
+            </mat-form-field>
+        <!-- </div> -->
+        <!-- <div class="row" style="margin-left: 13rem; width: 100%;"> -->
+            <mat-form-field style="width: 65%;margin-left: 12rem;">
+                <mat-label>Qual dos dias do projeto será realizada?</mat-label>
+                <input matInput [matDatepicker]="addDataPicker" [min]="dataInicio" [max]="dataTermino"
+                  [formControl]="addData" />
+                <mat-datepicker-toggle [for]="addDataPicker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #addDataPicker></mat-datepicker>
+            </mat-form-field>
+        <!-- </div> -->
+        <!-- <div class="row" style="margin-left: 13rem;"> -->
+            <mat-form-field style="width: 65%;margin-left: 12rem;font-size: 20px;">
+                <mat-label>A que horas a atividade irá decorrer</mat-label>
+                <input type="time" matInput [formControl]="addHoras">
+            </mat-form-field>
+        <!-- </div> -->
+        
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose(false)">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onClose(true)">
+      Guardar Alterações
+    </button>
+</div>

@@ -77,6 +77,9 @@ import { CommentComponent } from './comment/comment.component';
 import { ChoseTopComponent } from './chose-top/chose-top.component';
 import { FaqsComponent } from './faqs/faqs.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { AtividadesProjetoComponent } from './atividades-projeto/atividades-projeto.component';
+import {DialogAddAtividade} from './atividades-projeto/atividades-projeto.component';
+import {DialogEditAtividade} from './atividades-projeto/atividades-projeto.component';
 
 
 @NgModule({
@@ -164,6 +167,9 @@ import { ContactsComponent } from './contacts/contacts.component';
     ChoseTopComponent,
     FaqsComponent,
     ContactsComponent,
+    AtividadesProjetoComponent,
+    DialogAddAtividade,
+    DialogEditAtividade
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

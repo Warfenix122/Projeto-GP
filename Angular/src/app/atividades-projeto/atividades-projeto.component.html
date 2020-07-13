@@ -1,0 +1,27 @@
+<div class="container">
+  <mat-list>
+    <mat-list-item
+      style="margin-top: 8.5rem;"
+      *ngFor="let atividade of atividades let i = index"
+    >
+      <mat-card style="width: 50%; margin-left: 15rem;">
+        <mat-card-header>
+            <mat-card-title style="margin-left: 11rem;"
+          >{{ atividade.dataAcontecimento.getDate() }}/{{
+            atividade.dataAcontecimento.getMonth() - 1
+          }}/{{ atividade.dataAcontecimento.getFullYear() }}</mat-card-title
+        >
+        <mat-card-subtitle style="margin-left: 13rem;">{{atividade.dataAcontecimento.getHours()}}:{{atividade.dataAcontecimento.getMinutes()}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content style="margin-left: 7rem;">
+            {{atividade.descricao}}
+        </mat-card-content>
+        <mat-card-actions *ngIf="isEditButtonClicked">
+            <button mat-raised-button color="primary" (click)="openEditManagerDialog(i,atividade)"><mat-icon>edit</mat-icon></button>
+            <button mat-button color="warn" (click)="removerAtividade(atividade._id,i)"><mat-icon>delete</mat-icon></button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-list-item>
+  </mat-list>
+  <button mat-raised-button color="primary" style="width: 40%; margin-top: 5rem; margin-left: 30%;" (click)="openAddAtividadeDialog()">Adicionar Atividade</button>
+</div>

@@ -180,6 +180,7 @@
                     <h5 class="badge badge-primary row" id="areasInteresse">{{a}}</h5>
                 </div>
             </h4>
+            
             <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs mt-3">
                 <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectAreasOfInterest')">
           <mat-icon>{{isProjectAreasOfInterestReadonly ? 'edit' : 'check'}}</mat-icon>
@@ -237,6 +238,7 @@
                 </mat-card>
 
             </div> -->
+            <app-atividades-projeto [projectId]="id" [isEditButtonClicked]="isEditButtonToggled" [dataInicio]="project.dataComeco" [dataTermino]="project.dataTermino" ></app-atividades-projeto>
         </mat-tab>
 
         <mat-tab label="Comentários">
@@ -515,6 +517,9 @@
 
                 </mat-accordion>
         </mat-tab>
+        <!-- <mat-tab label="Atividades">
+            
+        </mat-tab> -->
 
     </mat-tab-group>
 </div>
