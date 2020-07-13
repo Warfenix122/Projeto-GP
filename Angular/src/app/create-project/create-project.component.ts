@@ -82,6 +82,10 @@ export class CreateProjectComponent implements OnInit {
               map(value => this._filterUtilizadores(value))
             );
         });
+        this._userService.getGestores().subscribe((res)=>{
+          this.utilizadoresExternos.push(res["gestores"]);
+
+        })
       } else {
         this.router.navigate(["unauthorized"]);
       }

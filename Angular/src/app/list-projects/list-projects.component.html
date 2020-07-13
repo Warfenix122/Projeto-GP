@@ -4,7 +4,7 @@
         <h1>Projetos</h1>
     </div>
     <div class="mt-auto mb-auto mr-2">
-        <button [style.visibility]="userRole == 'Gestor' ? 'visible' : 'hidden'" [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
+        <button [style.visibility]="userRole == 'Voluntario Interno' ? 'hidden' : 'visible'" [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
     </div>
 </div>
 

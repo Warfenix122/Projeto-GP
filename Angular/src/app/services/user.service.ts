@@ -46,6 +46,9 @@ export class UserService {
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
+  getGestores() {
+    return this.http.get<User[]>("api/gestores" );
+  }
 
   getDisaprovedUsers(): Observable<User[]> {
     return this.http.get<User[]>("/api/userAprove")
@@ -104,7 +107,7 @@ export class UserService {
   getUsersArray(users){
     return this.http.post<User[]>('/api/getUsers',users);
   };
-  
+
   getUserNome(utilizadorId){
     return this.http.get('/api/getUserNome/'+utilizadorId);
   }

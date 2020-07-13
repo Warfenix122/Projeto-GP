@@ -72,9 +72,6 @@ export class ProjectService {
   getProjectGestores(projectId) {
     return this.http.get<User[]>("api/project/gestores/" + projectId);
   }
-  getGestores() {
-    return this.http.get<User[]>("api/project/gestores" );
-  }
 
   volunteer(projectId, voluntarioId) {
     let volId = { userId: voluntarioId }
