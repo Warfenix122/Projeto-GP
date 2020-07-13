@@ -43,7 +43,7 @@ export class ListProjectsComponent implements OnInit {
 
   //animations
   filterState: string = 'hide';
-  
+
   projectRoute: string = '';
   userRole: any;
   projects: Array<Project> = [];
@@ -144,7 +144,6 @@ export class ListProjectsComponent implements OnInit {
   applyFilters(){
     if(this.projectNameInputValue != "" || this.durationInputValue != "" || this.keyWordsBadges.length > 0 || this.areasOfInterestSelected.length > 0){
       this.filteredProjects = this.projects.filter(project => {
-        console.log(project.nome);
         if((project.nome != undefined && this.projectNameInputValue != "" && project.nome.toLocaleLowerCase().includes(this.projectNameInputValue.toLowerCase())) ||
           (project.XemXTempo != undefined && this.durationInputValue != "" && project.XemXTempo.toLocaleLowerCase().includes(this.durationInputValue.toLowerCase())) ||
           (this.hasAtLeastOneKeyword(project.palavrasChave)) ||

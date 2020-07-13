@@ -38,7 +38,6 @@ export class SondagemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.sondagemService.answerSondagem(result).subscribe((res) => {
-          console.log(res);
           let index = this.polls.findIndex(elem => elem._id == res["answer"].sondagemId);
           this.polls.splice(index, 1);
           this.alertService.success("Resposta guardada com sucesso");

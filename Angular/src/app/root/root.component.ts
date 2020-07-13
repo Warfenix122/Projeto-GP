@@ -11,9 +11,7 @@ export class RootComponent implements OnInit {
 
   ngOnInit() {
     this.rootService.getApiData().subscribe((res)=>{
-      console.log('response is ', res);
     },(error)=>{
-      console.log('error is ', error);
     });
   }
 

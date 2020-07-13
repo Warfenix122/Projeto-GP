@@ -66,7 +66,6 @@ export class EditCarrouselComponent implements OnInit {
 
       reader.onload = (e: any) => {
         this.addPhotoResult = e.target.result;
-        console.log(e.target);
       };
       reader.onloadend = () => {
         this.fileService.updateCarouselPhoto(formdata);

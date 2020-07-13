@@ -34,13 +34,11 @@ export class AproveProjectsComponent implements OnInit {
         let responsaveisId = { users: this.projectsArray.map(project => project.responsavelId) };
         this._userService.getUsersArray(responsaveisId).subscribe(res => {
           this.responsaveisArray = res["users"];
-          console.log(this.responsaveisArray);
           this.projectsArray.filter(project => this.responsaveisArray.filter(element => {
             if (element._id === project.responsavelId) {
               let nome = element.nome
               let email = element.email
               this.projectTable.push({ project, nome , email});
-              console.log(this.projectTable);
             }
           }));
         });
@@ -48,7 +46,6 @@ export class AproveProjectsComponent implements OnInit {
   }
 
   avaliarProjeto(projectId, index,email ,aprovacao) {
-    console.log(email)
     let body = { projectId: projectId, aprovado: aprovacao };
     this._projectService.aproveProject(body).subscribe((res) => {
       if(aprovacao==="Aprovado"){

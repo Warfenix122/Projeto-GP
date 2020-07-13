@@ -147,7 +147,6 @@ export class ProjectComponent implements OnInit {
         else this.isAuthenticated = false;
         this._userService.getCurrentUserId().subscribe((res) => {
           this.currentUserId = res['UserID'];
-          console.log(this.currentUserId);
           this.isResponsible = this.project.responsavelId == this.currentUserId;
           this.isManager = this.project.gestores.includes(this.currentUserId);
           if (this.isResponsible || this.isManager) this.isModerator = true;
@@ -202,7 +201,6 @@ export class ProjectComponent implements OnInit {
         volunteer.estado = "Aprovado";
       return volunteer;
     })
-    console.log(this.volunteers);
     this.volunteers.push(user);
     this.dataSource._updateChangeSubscription();
     let index = this.candidates.findIndex(candidate => candidate._id == id)
@@ -361,7 +359,6 @@ export class ProjectComponent implements OnInit {
 
       reader.onload = () => {
         let result = reader.result.toString();
-        console.log(result.split('\n'));
         let rows = result.split('\n');
         rows.forEach((row, index) => {
           let cells = row.split(',');
@@ -404,7 +401,6 @@ export class ProjectComponent implements OnInit {
 
       reader.onload = (e: any) => {
         this.addCoverPhotoResult = e.target.result;
-        console.log(e.target);
       };
       reader.onloadend = () => {
         this.fileService.updateCoverPhoto(formdata).then((updatedProject) => {
@@ -440,7 +436,6 @@ export class ProjectComponent implements OnInit {
 
       reader.onload = (e: any) => {
         this.addPhotoResult = e.target.result;
-        console.log(e.target);
       };
       reader.onloadend = () => {
         this.fileService.updateProjectPhotoFiles(formdata);
@@ -544,7 +539,6 @@ export class ProjectComponent implements OnInit {
       utilizadorId: this.currentUserId,
       dataCriacao: Date.now(),
     };
-    console.log(formbody);
     this.projectService.addComment(formbody, this.id).subscribe(
       (res) => {
         this.comments.push(res['insertedComment']);
@@ -625,7 +619,6 @@ export class ProjectComponent implements OnInit {
   cancelVolunteer() {
     this.projectService.cancelVolunteer(this.id, this.currentUserId).subscribe(
       (res) => {
-        console.log(res);
         this.candidato = false;
         this.alertService.success(res['msg']);
       },
@@ -842,7 +835,6 @@ export class DialogAddManager {
       map((value) => this._filterEmails(searchValue))
     );
 
-    console.log(this.emails.indexOf(searchValue));
   }
 
   private _filterEmails(value: string): String[] {

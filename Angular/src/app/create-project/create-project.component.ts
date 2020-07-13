@@ -75,7 +75,6 @@ export class CreateProjectComponent implements OnInit {
         this.router.navigate(['unauthorized']);
     });
     this._authService.getRole().subscribe(res=>{
-      console.log(res);
       if(res["Role"]==="Gestor"){
         this._userService.getVoluntariosExternos().subscribe(users => {
         this.utilizadoresExternos = users;

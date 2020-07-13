@@ -21,7 +21,7 @@ export class CreateSondagemComponent implements OnInit {
   sondagens: Array<Sondagem>;
 
   constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, private alertService: AlertService, public dialog: MatDialog) {
-    
+
    }
 
   formSondagem = this._fb.group({
@@ -63,7 +63,6 @@ export class CreateSondagemComponent implements OnInit {
     let optionsDiv = document.getElementById('options');
     optionsDiv.innerHTML = '';
     let options = numberOptions.value;
-    console.log('options :>> ', options);
     for (let index = 0; index < options; index++) {
       let row = document.createElement('div');
       row.className = "row";
@@ -98,9 +97,7 @@ export class CreateSondagemComponent implements OnInit {
     const options = this.getOptions();
 
     if (options.length > 0 && this.formSondagem.valid) {
-      console.log('options :>> ', options);
       const form = { ...this.formSondagem.value, "opcao": options }
-      console.log('form :>> ', form);
       this.sondagemService.createSondagem(form).subscribe(res => {
         if (res) {
           this.getSondagens();
@@ -129,7 +126,6 @@ export class CreateSondagemComponent implements OnInit {
             return answer.userId;
           })
           this.userService.getUsers(usersId).subscribe(users => {
-            console.log(users);
             const dialogRef = this.dialog.open(DialogSondagem, {
               width: '1200px',
               data: {poll: poll, answers: answers, users: users}
@@ -205,7 +201,6 @@ export class DialogSondagem {
           writer: this.users.find(user => user._id == answer.userId).nome
         });
     })
-    console.log(this.chosenOptions);
     this.barChartData = [
       { data: this.chosenOptions, label: 'Número de utilizadores que escolheu a opção' }
     ];

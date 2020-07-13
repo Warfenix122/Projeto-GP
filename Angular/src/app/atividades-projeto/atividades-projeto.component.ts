@@ -22,7 +22,6 @@ export class AtividadesProjetoComponent implements OnInit {
 
   removerAtividade(atividadeId,index){
     this._projectService.removerAtividades(this.projectId,atividadeId).subscribe(res=>{
-      console.log(res);
       if(res["success"]===true){
         this.atividades.splice(index,1);
         this._alertService.success(res["msg"]);
@@ -30,7 +29,7 @@ export class AtividadesProjetoComponent implements OnInit {
         this._alertService.error(res["msg"]);
       }
     });
-    
+
   }
 
   ngOnInit(): void {
@@ -119,9 +118,8 @@ export class DialogAddAtividade {
       let horas = this.addHoras.value.split(":");
       dataDia.setHours(horas[0]);
       dataDia.setMinutes(horas[1]);
-      
+
       let atividade = {descricao:this.addDescricao.value,dataAcontecimento:dataDia};
-      console.log(atividade);
       this.dialogRef.close(atividade);
     }
   }
@@ -159,7 +157,7 @@ export class DialogEditAtividade {
     this.editHoras.setValue(this.horas);
   }
 
-  
+
 
   get editDescricao(){
     return this.formEdit.get("editDescricao");
@@ -179,7 +177,7 @@ export class DialogEditAtividade {
       let horas = this.editHoras.value.split(":");
       dataDia.setHours(horas[0]);
       dataDia.setMinutes(horas[1]);
-      
+
       let atividade = {_id:this.atividadeId,descricao:this.editDescricao.value,dataAcontecimento:dataDia};
 
       this.dialogRef.close(atividade);

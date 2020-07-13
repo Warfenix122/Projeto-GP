@@ -22,7 +22,6 @@ export class FaqService {
   }
 
   deleteFaq(id){
-    console.log(id);
     return this.http.delete<Faq>('/api/faq/delete/'+id);
   }
 

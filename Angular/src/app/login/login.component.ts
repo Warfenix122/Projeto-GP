@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
         this._alertService.success("Login bem sucedido");
         this.router.navigate(["/"]);
       }, (err) => {
-        console.log(err);
         this._alertService.error(err.error.message);
       });
 

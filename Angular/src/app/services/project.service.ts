@@ -62,7 +62,6 @@ export class ProjectService {
   }
 
   addProject(formBody): Observable<ProjetoResponse> {
-    console.log(formBody);
     return this.http.post<ProjetoResponse>('/api/project', formBody, this.httpOptions);
   }
 
@@ -119,17 +118,16 @@ export class ProjectService {
   getAtividades(id){
     return this.http.get<Atividade[]>('/api/project/atividades/'+id);
   }
-  
+
   removerAtividades(id,atividadeId){
     let atId = {atividadeId:atividadeId};
     return this.http.put<ImageResponse>('/api/project/atividades/remover/'+id,atId);
   }
 
   addAtividade(id,atividade){
-    console.log(atividade);
     return this.http.post('/api/project/atividades/'+id,atividade);
   }
-  
+
   editAtividade(id,atividade){
     return this.http.put('/api/project/atividades/'+id,atividade);
   }

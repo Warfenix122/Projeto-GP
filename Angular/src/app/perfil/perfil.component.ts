@@ -112,7 +112,6 @@ export class PerfilComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.addPhotoResult = e.target.result;
-        console.log(e.target);
       };
       reader.onloadend = () => {
         const src = reader.result;

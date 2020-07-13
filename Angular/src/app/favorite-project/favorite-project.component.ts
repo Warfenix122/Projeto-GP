@@ -22,7 +22,6 @@ export class FavoriteProjectComponent implements OnInit {
     this.userService.getCurrentUserId().subscribe((res) => {
       const user = res['UserID'];
       this.projectService.userFavoriteProjects(user).subscribe(res => {
-        console.log('res :>> ', res);
         const projects = res['projetos']
         if (projects) {
           projects.forEach(element => {

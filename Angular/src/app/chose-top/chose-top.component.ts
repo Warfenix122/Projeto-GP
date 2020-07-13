@@ -63,7 +63,6 @@ export class ChoseTopComponent implements OnInit {
     });
     this.projectService.projects().subscribe(projects => {
       this.projects = projects.filter((elem) => {
-        console.log('elem :>> ', elem);
         if (!elem.projetoMes.state) {
           return elem
         }
