@@ -1,4 +1,5 @@
-<div class="container p-5 m-10">
+<div class="container ">
+  <h1 class="text-center">Registar</h1>
     <mat-horizontal-stepper labelPosition="bottom">
       <mat-step label="Email & Password" [stepControl]="formRegisto">
         <form [formGroup]="formRegisto" class="example-form">
@@ -150,7 +151,7 @@
           <div class="row form-group">
             <mat-form-field class="example-full-width">
               <mat-label>Numero de Telemóvel</mat-label>
-              <input 
+              <input
               type="number"
               phone
               id="numeroTelefone"
@@ -173,7 +174,7 @@
               formControlName="distrito"
               matInput
               [matAutocomplete]="autoDistrito"
-            /> 
+            />
             <mat-autocomplete #autoDistrito="matAutocomplete">
               <mat-option
                 *ngFor="let distrito of filteredDistritos | async"

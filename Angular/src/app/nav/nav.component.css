@@ -1,5 +1,5 @@
 .navbar{
-  background-color: #8E7DBE;
+  background-color: #a2e1e3;
 }
 nav a{
 text-decoration: none;
@@ -10,10 +10,10 @@ text-decoration: none;
 color: black;
 }
 .dropdown-menu{
-  background-color: #8e7dbe8b;
+  background-color: #a2e1e3cb;
 
 }
 .dropdown-menu a:hover{
-  background-color: #8E7DBE;
+  background-color: #a2e1e3;
 
 }
