@@ -1,16 +1,34 @@
 <h1 class="mt-5 text-center" *ngIf="emptyReturnMessage != undefined">{{emptyReturnMessage}}</h1>
-<div class="row mt-5">
-  <div class="col-md-10 m-auto container">
-    <div *ngFor="let utilizador of utilizadores; let i = index" class="row mt-2 justify-content-between ">
-      <div class="col-6"> {{utilizador.nome}} | {{utilizador.email}} </div>
-      <div class="col-2 ">
-        <button class="btn btn-success" id="aproveButton"
-          (click)="avaliarUtilizador(utilizador,'Aprovado')">Aprovar</button>
-      </div>
-      <div class="col-2 ">
-        <button class=" btn btn-danger" id="recuseButton"
-          (click)="avaliarUtilizador(utilizador,'Recusado')">Recusar</button>
-      </div>
-    </div>
-  </div>
+<div id="divCenter">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let utilizador of utilizadores; let i = index">
+        <td>{{utilizador.nome}}</td>
+        <td>{{utilizador.email}}</td>
+        <div class="container">
+          <div class="row row-cols-5">
+            <div class="col" id="divButton">
+              <button class="btn btn-success" 
+                (click)="avaliarUtilizador(utilizador,'Aprovado')"><i class="fas fa-thumbs-up"></i></button>
+            </div>
+            <div class="col" id="divButton">
+              <button class="btn btn-danger"
+                (click)="avaliarUtilizador(utilizador,'Recusado')"><i class="fas fa-thumbs-down"></i></button>
+            </div>
+          </div>
+        </div>
+      </tr>
+    </tbody>
+  </table>
+  
 </div>
+
+
+
+

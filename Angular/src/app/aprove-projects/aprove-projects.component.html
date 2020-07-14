@@ -18,18 +18,28 @@
         <td>{{ entry.nome }}</td>
         <td>{{ entry.project.dataComeco }}</td>
         <td>{{ entry.project.restringido? 'Sim': 'Não' }}</td>
-
-        <button class="btn btn-success col-sm-4 button-spacing"
-          (click)="avaliarProjeto(entry.project._id, i,entry.email,'Aprovado')">
-          <i class="fas fa-thumbs-up"></i>
-        </button>
-        <button class="btn btn-danger col-sm-4 button-spacing"
-          (click)="avaliarProjeto(entry.project._id, i,entry.email, 'Recusado')">
-          <i class="fas fa-thumbs-down"></i>
-        </button>
-        <a class="btn btn-light col-sm-4 button-spacing" [routerLink]="'/projects/'+entry.project._id">
-          <i class="far fa-eye"></i>
-        </a>
+        <div class="container">
+          <div class="row ">
+            <div class="col-sm" id="divButton">
+              <button class="btn btn-success "
+              (click)="avaliarProjeto(entry.project._id, i,entry.email,'Aprovado')">
+              <i class="fas fa-thumbs-up"></i>
+            </button>
+            </div>
+            <div class="col-sm"  id="divButton">
+              <button class="btn btn-danger "
+              (click)="avaliarProjeto(entry.project._id, i,entry.email, 'Recusado')">
+              <i class="fas fa-thumbs-down"></i>
+            </button>
+            </div>
+            <div class="col-sm" id="divButton">
+              <a class="btn btn-light " [routerLink]="'/projects/'+entry.project._id">
+                <i class="far fa-eye"></i>
+              </a>
+            </div>
+            
+          </div>
+        </div>
       </tr>
     </tbody>
   </table>
