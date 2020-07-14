@@ -8,7 +8,8 @@
           <div class="d-flex mt-3 flex-wrap">
             <mat-card *ngFor="let sondagem of this.sondagens; let i = index" [attr.data-index]="i">
               <mat-card-header>
-                <mat-card-title class="text-center">{{sondagem.titulo != undefined ? sondagem.titulo : 'Sem título'}}</mat-card-title>
+                <mat-card-title class="text-center">{{sondagem.titulo != undefined ? sondagem.titulo : 'Sem título'}}
+                </mat-card-title>
               </mat-card-header>
               <mat-card-content>
                 <p>
@@ -16,7 +17,8 @@
                 </p>
               </mat-card-content>
               <mat-card-actions class="text-center">
-                <button mat-raised-button color="primary" class="m-2" (click)="pollClicked(i, $event)">Ver dados</button>
+                <button mat-raised-button color="primary" class="m-2" (click)="pollClicked(i, $event)">Ver
+                  dados</button>
 
                 <button mat-raised-button color="warn" (click)="clickDeletePoll(i, $event)">Eliminar</button>
               </mat-card-actions>
@@ -28,51 +30,63 @@
         </div>
       </mat-tab>
       <mat-tab label="Criar">
-        <div class=" container active m-5 ">
+        <div class="container p-5 m-10" >
           <form [formGroup]="formSondagem">
+
+
             <div class="row form-group">
-
-              <label class="col-md-4" for="titulo">Titulo</label>
-              <input type="text" id="titulo" name="titulo" required class="col-md-4 form-control"
-                placeholder="titulo da Sondagem" formControlName="titulo" />
-              <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)" class="alert alert-danger">
-                <div *ngIf="titulo.errors.required">
-                  O titulo é um campo obrigatorio.
-                </div>
-
-              </div>
+              <mat-form-field class="example-full-width">
+                <mat-label>Título</mat-label>
+                <input matInput required nome-comp type="text" name="titulo" [formControl]="titulo" />
+                <mat-error *ngIf="titulo.hasError('required') && titulo.touched">O título é um campo obrigatorio
+                </mat-error>
+              </mat-form-field>
             </div>
+
+
             <div class="row form-group">
-              <label class="col-md-4" for="descricao">Descrição</label>
-              <textarea id="descricao" name="descricao" required class="col-md-4 form-control"
-                placeholder="Descrição da Sondagem" formControlName="descricao"></textarea>
-
-              <div *ngIf="descricao.invalid && (descricao.dirty || descricao.touched)" class="alert alert-danger">
-                <div *ngIf="descricao.errors.required">
-                  A descrição é um campo obrigatorio.
-                </div>
-
-              </div>
+              <mat-form-field class="example-full-width">
+                <mat-label>Descrição</mat-label>
+                <input matInput required nome-comp type="text" name="descricao" [formControl]="descricao" />
+                <mat-error *ngIf="titulo.hasError('required') && titulo.touched">A descrição é um campo obrigatorio
+                </mat-error>
+              </mat-form-field>
             </div>
+
             <div class="row">
-              <div class="col-md-4">
-                <label class="" for="numberOption">Numero de Opções</label>
+              <div class="col-md-8">
+
+                <mat-form-field class="example-full-width">
+                  
+                      <mat-label>Número de Opções </mat-label>
+                      <input matInput required nome-comp type="number" name="numberOptions" #numberOptions min="0" max="20"/>
+                      <mat-error *ngIf="titulo.hasError('required') && titulo.touched">O número de opções é um campo obrigatorio
+                      </mat-error>
+
+                </mat-form-field>
                 <button type="button" class="btn btn-secondary btn-circle" data-toggle="tooltip" data-placement="top"
-                  title="A opção 'Outro' assim como o campo de texto para explicar uma opção serão
-           adicionados automaticamente"><i class="far fa-question-circle"></i>
+                        title="A opção 'Outro' assim como o campo de texto para explicar uma opção serão
+                        adicionados automaticamente"><i class="far fa-question-circle"></i>
                 </button>
+                <button (click)='createOption(numberOptions)' class="btn btn-info">Criar Opções</button>
+                
               </div>
-              <input class="col-md-2" type="number" #numberOptions min="0" max="20" />
-              <button (click)='createOption(numberOptions)' class="btn btn-info">Criar Opções</button>
+              
 
             </div>
 
             <div id="options">
 
             </div>
-            <button type="button" class="btn btn-primary" (click)="onSubmit()">Submeter</button>
 
           </form>
+          <div class="row">
+            <div class="col-md-5" style="left: 32%;">
+              <button mat-raised-button color="primary" (click)="onSubmit()">
+                Submeter
+              </button>
+            </div>
+          </div>
         </div>
       </mat-tab>
 
