@@ -1,8 +1,16 @@
-<h1>Criar conta de Gestor</h1>
+<!-- <h1>Criar conta de Gestor</h1>
 <div class="container p-5 m-10">
   <form [formGroup]="formGestor">
     <div>
       <div class="row form-group">
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input matInput disabled type="text" #email  />
+        </mat-form-field>
+
+
+
+
         <label class="col-md-4" for="email">Email</label>
         <input type="email" email-comp id="email" name="email" class="form-control  col-md-4" placeholder="Enter Email"
           formControlName="email" />
@@ -102,4 +110,104 @@
     </div>
 
   </form>
+</div> -->
+
+
+<div class="container p-5 m-10">
+  <form [formGroup]="formGestor" class="example-form">
+    <div class="row form-group">
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          required
+          email-comp
+          id="email"
+          name="email"
+          placeholder="Enter Email"
+          [formControl]="email"
+        />
+        <!-- <mat-error *ngIf="email.hasError('required')"
+          >O email é um campo obrigatorio</mat-error
+        >
+        <mat-error *ngIf="email.hasError('domain')"
+          >O email tem de ter um dominio</mat-error
+        >
+        <mat-error *ngIf="email.hasError('end')"
+          >O email tem de terminar em ".com" ou em ".pt"</mat-error
+        > -->
+      </mat-form-field>
+    </div>
+    
+    <div class="row form-group">
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input matInput password-comp [formControl]="" type="password" #password />
+        <mat-error *ngIf="password.">A password é um campo obrigatorio.</mat-error>
+        <mat-error *ngIf="password.hasError('integer')">A password tem de conter pelo menos um numero</mat-error>
+        <mat-error *ngIf="password.hasError('upper')">A password tem de conter pelo menos uma letra
+          maiuscula</mat-error>
+        <mat-error *ngIf="password.hasError('length')">A password tem de ter pelo menos 8 digitos</mat-error>
+        </mat-form-field> 
+    </div>
+
+    <div class="row form-group">
+      <mat-form-field class="example-full-width">
+        <mat-label>Confirmar Password</mat-label>
+        <input
+          matInput
+          type="password"
+          required
+          password-comp
+          placeholder="Confirme a Password"
+          compare="password"
+          [formControl]="confirmPassword"
+        />
+        <!-- <mat-error *ngIf="confirmPassword.hasError('required')"
+          >O confirmar password é um campo obrigatorio.</mat-error
+        >
+        <mat-error *ngIf="confirmPassword.hasError('compare')"
+          >As passwords têm de ser iguais.</mat-error
+        > -->
+      </mat-form-field>
+    </div>
+
+    <div class="row form-group">
+      <mat-form-field class="example-full-width">
+        <mat-label>Primeiro e Ultimo nome</mat-label>
+        <input matInput required nome-comp type="text" name="nome" [formControl]="nome" />
+        <mat-error *ngIf="nome.hasError('required') && nome.touched">O nome é um campo obrigatorio</mat-error>
+        <mat-error *ngIf="nome.hasError('length') || nome.hasError('space')">Deve inserir o primeiro e ultimo nome
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row form-group">
+      <mat-form-field class="example-full-width">
+        <mat-label>Data de Nascimento</mat-label>
+        <input matInput date-comp [formControl]="dataNascimento" [matDatepicker]="dataNascimentoPicker" />
+        <mat-datepicker-toggle [for]="dataNascimentoPicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #dataNascimentoPicker [startAt]="dataNascimento"></mat-datepicker>
+
+      </mat-form-field>
+    </div>
+    <div class="row form-group">
+      <mat-form-field class="example-full-width">
+        <mat-label>Numero de Telemóvel</mat-label>
+        <input matInput type="number" phone placeholder="Introduza o Numero de Telefone"
+          [formControl]="numeroTelefone" />
+        <mat-error *ngIf="numeroTelefone.hasError('length')">O numero de telemóvel tem de ter 9 digitos</mat-error>
+        <mat-error *ngIf="numeroTelefone.hasError('integer')">O numero de telemóvel não pode conter letras nem espaços
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-5" style="left: 32%;">
+      <button mat-raised-button color="primary" (click)="postData()">
+        Criar Gestor
+      </button>
+    </div>
+  </div>
 </div>

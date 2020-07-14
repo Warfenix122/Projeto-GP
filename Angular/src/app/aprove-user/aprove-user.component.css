@@ -1,6 +1,9 @@
-#aproveButton{
-  margin-left: 10em;
+
+#divButton{
+  padding-left: 0px;
+  padding-right: 0px;
 }
-#recuseButton{
-  margin-left: 1em;
+
+#divCenter{
+  text-align: center;
 }
