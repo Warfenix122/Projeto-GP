@@ -137,11 +137,9 @@ export class PerfilComponent implements OnInit {
 
   alterAreasInteresse() {
     if(this.showEditAreasOfInterest){
-      this.saveAreas.nativeElement.style.display = 'block';
       this.showEditAreasOfInterest = false;
       this.form.controls['areas'].enable();
     } else {
-      this.saveAreas.nativeElement.style.display = 'none';
       this.showEditAreasOfInterest = true;
       this.form.controls['areas'].disable();
     }
