@@ -122,9 +122,9 @@ export class ProjectComponent implements OnInit {
   selectedAreasError: Boolean
 
   formacoesNecessarias: [string];
-  formacoes: Array<String> = statics.fomação;
+  formacoes: Array<string> = statics.fomação;
   formacoesArr = this._fb.group({
-    formacao: '',
+    formacoes: '',
   })
   @ViewChild('checkboxesFormacoes') checkboxesFormacoes: ElementRef;
 
@@ -154,8 +154,9 @@ export class ProjectComponent implements OnInit {
         areas: this.addAreasInteresseControls(this.project.areasInteresse),
       });
 
+      console.log(this.project);
       this.formacoesArr = this._fb.group({
-        formacao: this.addFormacoesNecessariasControls(this.project.formacoesNecessarias),
+        formacoes: this.addFormacoesNecessariasControls(this.project.formacoesNecessarias),
       })
 
       this.getApprovedVolunteers();
@@ -253,8 +254,8 @@ export class ProjectComponent implements OnInit {
     return <FormArray>this.form.get('areas');
   }
 
-  get formacao(){
-    return <FormArray>this.formacoesArr.get('formacao');
+  get formacoesArray(){
+    return <FormArray>this.formacoesArr.get('formacoes');
   }
 
   getSelectedAreas() {
@@ -276,12 +277,12 @@ export class ProjectComponent implements OnInit {
     if(this.formacoesNecessarias.includes('')){
       this.formacoesNecessarias.splice(0,1);
     }
-    
-    this.formacao.controls.forEach((control,i) => {
+    this.formacoesArray.controls.forEach((control,i) => {
       if(control.value){
-        this.formacoes.push(this.formacoes[i]);
+        this.formacoesNecessarias.push(this.formacoes[i]);
       }
     });
+    console.log(this.formacoesNecessarias);
     this.updatedProject.formacoesNecessarias = this.formacoesNecessarias;
   }
 

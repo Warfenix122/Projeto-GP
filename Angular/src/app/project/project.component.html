@@ -201,19 +201,18 @@
         <div class="d-flex align-items-center">
           <h2>Formações Necessárias</h2>
         </div>
-        <form [formGroup]="form">
+        <form [formGroup]="formacoesArr">
           <div>
             <ul class="m-5 col-lg-10 list-unstyled" style="column-count: 2;">
-              <li *ngFor="let control of formacao.controls; let i = index" #checkboxesFormacoes>
+              <li *ngFor="let control of formacoesArray.controls; let i = index" #checkboxesFormacoes>
                 <div>
                   <div class="row">
                     <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
-                      (change)="getSelectedFormacoes()">{{ formacoes[i] }}</mat-checkbox>
+                      (change)="getSelectedFormacoes()" id="{{formacoes[i]}}">{{ formacoes[i] }}</mat-checkbox>
 
                   </div>
                 </div>
               </li>
-              <!-- </div> -->
             </ul>
           </div>
         </form>
