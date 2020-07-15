@@ -41,7 +41,6 @@ export class CreateGestorComponent implements OnInit {
       let formbody = { ...this.formGestor.value, tipoMembro: 'Gestor' };
       this.userService.register(formbody).subscribe((res) => {
         this._alertService.success("Conta criada com sucesso!");
-        this.emailService.sendConfirmationEmail(formbody.email, formbody.nome);
       }, (err) => {
         if (err.statusText == "Conflict") {
           this._alertService.error("Já existe um utilizador com esse email. Por favor use outro email para continuar.");

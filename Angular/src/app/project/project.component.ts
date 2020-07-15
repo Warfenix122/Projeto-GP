@@ -29,7 +29,7 @@ import { EmailSenderService } from '../services/email-sender.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import statics from '../../assets/statics.json';
-import {FormBuilder,FormArray} from '@angular/forms';
+import { FormBuilder, FormArray } from '@angular/forms';
 
 
 import * as fileSaver from 'file-saver';
@@ -105,13 +105,13 @@ export class ProjectComponent implements OnInit {
   nonPresentVolunteers: Array<User> = [];
   displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao', 'actions'];
   displayedPresentColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao'];
-  
+
   dataSource: MatTableDataSource<User>;
   dataSourceCandidates: MatTableDataSource<User>;
   dataSourcePresentVolunteers: MatTableDataSource<User>;
   dataSourceNonPresentVolunteers: MatTableDataSource<User>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatPaginator, {static: true}) paginatorCandidates: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginatorCandidates: MatPaginator;
 
   areas: Array<string> = statics.areas;
   selectedAreas: [string];
@@ -132,14 +132,13 @@ export class ProjectComponent implements OnInit {
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
     public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService,
-     private fileService: FileService, private _emailService: EmailSenderService,private _fb:FormBuilder) { }
+    private fileService: FileService, private _emailService: EmailSenderService, private _fb: FormBuilder) { }
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
     this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
-
 
     for (const are of statics.areas) {
       this.form.controls['areas'].disable();
@@ -215,10 +214,10 @@ export class ProjectComponent implements OnInit {
       });
     });
     this.projectService
-                  .getComments(this.id)
-                  .subscribe((comments) => {
-                    this.comments = comments['comments'];
-                  });
+      .getComments(this.id)
+      .subscribe((comments) => {
+        this.comments = comments['comments'];
+      });
   }
   writeFile() {
     this.projectService.writeFile(this.project._id).subscribe((response) => {
@@ -239,11 +238,11 @@ export class ProjectComponent implements OnInit {
     return this._fb.array(arr);
   }
 
-  addFormacoesNecessariasControls(formacoesProjeto){
-    let arr = this.formacoes.map(element=>{
-      if(formacoesProjeto.includes(element)){
+  addFormacoesNecessariasControls(formacoesProjeto) {
+    let arr = this.formacoes.map(element => {
+      if (formacoesProjeto.includes(element)) {
         return this._fb.control(true);
-      }else{
+      } else {
         return this._fb.control(false);
       }
     });
@@ -254,14 +253,14 @@ export class ProjectComponent implements OnInit {
     return <FormArray>this.form.get('areas');
   }
 
-  get formacoesArray(){
+  get formacoesArray() {
     return <FormArray>this.formacoesArr.get('formacoes');
   }
 
   getSelectedAreas() {
     this.selectedAreas = ['']
-    if(this.selectedAreas.includes('')){
-      this.selectedAreas.splice(0,1);
+    if (this.selectedAreas.includes('')) {
+      this.selectedAreas.splice(0, 1);
     }
     this.areasArray.controls.forEach((control, i) => {
       if (control.value) {
@@ -272,13 +271,13 @@ export class ProjectComponent implements OnInit {
     this.selectedAreasError = this.selectedAreas.length > 0 ? false : true;
   }
 
-  getSelectedFormacoes(){
+  getSelectedFormacoes() {
     this.formacoesNecessarias = [''];
-    if(this.formacoesNecessarias.includes('')){
-      this.formacoesNecessarias.splice(0,1);
+    if (this.formacoesNecessarias.includes('')) {
+      this.formacoesNecessarias.splice(0, 1);
     }
-    this.formacoesArray.controls.forEach((control,i) => {
-      if(control.value){
+    this.formacoesArray.controls.forEach((control, i) => {
+      if (control.value) {
         this.formacoesNecessarias.push(this.formacoes[i]);
       }
     });
@@ -286,10 +285,10 @@ export class ProjectComponent implements OnInit {
     this.updatedProject.formacoesNecessarias = this.formacoesNecessarias;
   }
 
-  approveCandidate(user){
+  approveCandidate(user) {
     let id = user._id;
     this.project.voluntarios = this.project.voluntarios.map(volunteer => {
-      if(volunteer.userId == id)
+      if (volunteer.userId == id)
         volunteer.estado = "Aprovado";
       return volunteer;
     })
@@ -298,49 +297,49 @@ export class ProjectComponent implements OnInit {
     let index = this.candidates.findIndex(candidate => candidate._id == id)
     this.candidates.splice(index, 1);
     this.dataSourceCandidates._updateChangeSubscription();
-    this.projectService.editProject(this.project._id, {voluntarios: this.project.voluntarios}).subscribe();
+    this.projectService.editProject(this.project._id, { voluntarios: this.project.voluntarios }).subscribe();
   }
 
-  disapproveCandidate(user){
+  disapproveCandidate(user) {
     let id = user._id;
     let index = this.project.voluntarios.findIndex(volunteer => volunteer.userId == id);
     this.project.voluntarios.splice(index, 1);
     index = this.candidates.findIndex(candidate => candidate._id == id)
     this.candidates.splice(index, 1);
     this.dataSourceCandidates._updateChangeSubscription();
-    this.projectService.editProject(this.project._id, {voluntarios: this.project.voluntarios}).subscribe();
+    this.projectService.editProject(this.project._id, { voluntarios: this.project.voluntarios }).subscribe();
   }
 
-  getCandidateVolunteers(){
+  getCandidateVolunteers() {
     let candidates = this.project.voluntarios.map(volunteer => {
-      if(volunteer.estado == "Em Espera")
+      if (volunteer.estado == "Em Espera")
         return volunteer.userId;
     });
-    if(candidates != undefined && candidates.length > 0)
-      this._userService.getUsers(candidates).subscribe(users =>{
-        if(users != null)
+    if (candidates != undefined && candidates.length > 0)
+      this._userService.getUsers(candidates).subscribe(users => {
+        if (users != null)
           this.candidates = users;
         else
           this.candidates = [];
         this.dataSourceCandidates = new MatTableDataSource<User>(this.candidates);
         this.dataSourceCandidates.paginator = this.paginatorCandidates;
-    })
+      })
   }
 
-  getApprovedVolunteers(){
+  getApprovedVolunteers() {
     let volunteersApproved = this.project.voluntarios.map(volunteer => {
-      if(volunteer.estado == "Aprovado")
+      if (volunteer.estado == "Aprovado")
         return volunteer.userId;
     });
-    if(volunteersApproved != undefined && volunteersApproved.length > 0)
-      this._userService.getUsers(volunteersApproved).subscribe(users =>{
-        if(users != null)
+    if (volunteersApproved != undefined && volunteersApproved.length > 0)
+      this._userService.getUsers(volunteersApproved).subscribe(users => {
+        if (users != null)
           this.volunteers = users;
         else
           this.volunteers = [];
         this.dataSource = new MatTableDataSource<User>(this.volunteers);
         this.dataSource.paginator = this.paginator;
-    })
+      })
   }
 
   removeVolunteer(user: User) {
@@ -349,7 +348,7 @@ export class ProjectComponent implements OnInit {
     index = this.volunteers.findIndex(volunteer => volunteer._id == user._id)
     this.volunteers.splice(index, 1);
     this.dataSource._updateChangeSubscription();
-    this.projectService.editProject(this.project._id, {voluntarios: this.project.voluntarios}).subscribe();
+    this.projectService.editProject(this.project._id, { voluntarios: this.project.voluntarios }).subscribe();
   }
 
   getSrc(foto) {
@@ -395,6 +394,8 @@ export class ProjectComponent implements OnInit {
   openSnackBar(message: string, action: string, duration: number) {
     this._snackBar.open(message, action, {
       duration: duration,
+      panelClass: ['mat-toolbar', 'mat-primary']
+
     });
   }
 
@@ -421,8 +422,8 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  loadPresences(usersId){
-    if(usersId == undefined || usersId == null || usersId.length == 0)
+  loadPresences(usersId) {
+    if (usersId == undefined || usersId == null || usersId.length == 0)
       return;
 
     this.presentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined);
@@ -454,12 +455,12 @@ export class ProjectComponent implements OnInit {
         let rows = result.split('\n');
         rows.forEach((row, index) => {
           let cells = row.split(',');
-          if(index == 0){
+          if (index == 0) {
             cols = cells;
           } else {
             cells.forEach((cell, cellIndex) => {
-              if(cols[cellIndex] == '"Id"'){
-                cell = cell.substring(1, cell.length-1);
+              if (cols[cellIndex] == '"Id"') {
+                cell = cell.substring(1, cell.length - 1);
                 results.push(cell);
               }
             })
@@ -615,7 +616,7 @@ export class ProjectComponent implements OnInit {
             pdf.getBase64((data) => {
               this._emailService
                 .sendQRCodeEmail(this.user.email, data)
-                .subscribe((res) => {});
+                .subscribe((res) => { });
             });
           });
       },
@@ -735,7 +736,6 @@ export class ProjectComponent implements OnInit {
         )
         .subscribe(
           () => {
-            this.alertService.success('Projeto Adicionado aos favoritos');
           },
           (err) =>
             this.alertService.success(
@@ -796,7 +796,7 @@ export class ProjectComponent implements OnInit {
     if (
       this.updatedProject.dataComeco !== this.project.dataComeco ||
       this.updatedProject.dataFechoInscricoes !==
-        this.project.dataFechoInscricoes ||
+      this.project.dataFechoInscricoes ||
       this.updatedProject.dataTermino !== this.project.dataTermino
     ) {
       this._userService.getUser(this.currentUserId).subscribe((user: User) => {
@@ -865,7 +865,7 @@ export class DialogRemoveContact {
   constructor(
     public dialogRef: MatDialogRef<DialogRemoveContact>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) { }
 
   onClose(isRemove) {
     this.dialogRef.close(isRemove);
@@ -877,7 +877,7 @@ export class DialogRemoveContact {
   templateUrl: 'dialog-delete-project.html',
 })
 export class DialogDeleteProject {
-  constructor(public dialogRef: MatDialogRef<DialogDeleteProject>) {}
+  constructor(public dialogRef: MatDialogRef<DialogDeleteProject>) { }
 
   onClose(isRemove) {
     this.dialogRef.close(isRemove);
@@ -889,7 +889,7 @@ export class DialogDeleteProject {
   templateUrl: 'bottom-sheet-settings.html',
 })
 export class BottomSheetSetting {
-  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetSetting>) {}
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetSetting>) { }
 
   closeSettings(option) {
     this._bottomSheetRef.dismiss(option);
