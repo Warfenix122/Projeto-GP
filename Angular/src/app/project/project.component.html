@@ -160,10 +160,6 @@
               <!-- </div> -->
             </ul>
           </div>
-
-          <!-- <button style="display: none;" class="btn btn-success" type="submit" (click)="saveAreasInteresse()"
-            #saveAreas> Guardar
-            Alterações <i class="far fa-edit"></i></button> -->
         </form>
       </div>
       <h4 id="detalhes" *ngIf="!isEditButtonToggled &&  project.formacoesNecessarias.length>0" class="row">Formações
@@ -172,7 +168,7 @@
           <h4 class="col">{{f}} </h4>
         </div>
       </h4>
-      <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
+      <!-- <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
         <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectNecessaryFormations')">
           <mat-icon>{{isProjectNecessaryFormationsReadonly ? 'edit' : 'check'}}</mat-icon>
         </button>
@@ -187,7 +183,41 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
             (matChipInputTokenEnd)="addNecessaryFormation($event)" [readonly]="isProjectNecessaryFormationsReadonly">
         </mat-chip-list>
-      </mat-form-field>
+      </mat-form-field> -->
+
+
+      <!-- <div class="form-group" *ngIf="isEditButtonToggled">
+        <form [formGroup]="formacoesArr">
+        <mat-form-field>
+          <mat-label>Formacao</mat-label>
+          <mat-select [formControl]="formacao" multiple [(value)]="project.formacoesNecessarias">
+            <mat-option *ngFor="let formacao of formacoes" [value]="formacao">{{ formacao }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        </form>
+      </div> -->
+
+      <div *ngIf="isEditButtonToggled">
+        <div class="d-flex align-items-center">
+          <h2>Formações Necessárias</h2>
+        </div>
+        <form [formGroup]="form">
+          <div>
+            <ul class="m-5 col-lg-10 list-unstyled" style="column-count: 2;">
+              <li *ngFor="let control of formacao.controls; let i = index" #checkboxesFormacoes>
+                <div>
+                  <div class="row">
+                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                      (change)="getSelectedFormacoes()">{{ formacoes[i] }}</mat-checkbox>
+
+                  </div>
+                </div>
+              </li>
+              <!-- </div> -->
+            </ul>
+          </div>
+        </form>
+      </div>
 
       <mat-list *ngIf="isEditButtonToggled">
         <div mat-subheader>Contactos</div>
@@ -250,7 +280,7 @@
       </mat-list>
 
 
-      <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs mt-3">
+      <!-- <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs mt-3">
         <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectAreasOfInterest')">
           <mat-icon>{{isProjectAreasOfInterestReadonly ? 'edit' : 'check'}}</mat-icon>
         </button>
@@ -266,7 +296,7 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
             (matChipInputTokenEnd)="addAreaOfInterest($event)" [readonly]="isProjectAreasOfInterestReadonly">
         </mat-chip-list>
-      </mat-form-field>
+      </mat-form-field> -->
       <div *ngIf="!isEditButtonToggled" class="row justify-content-center">
         <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success btn-lg"
           id="botao2" (click)="volunteer()">CANDIDATAR</button>
