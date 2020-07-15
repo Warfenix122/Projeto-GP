@@ -1,25 +1,22 @@
-<div class="rowd-flex justify-content-center">
-  <div class="col-md-5 m-auto shadow-sm p-3 mb-5 bg-white rounded">
-    <h1  class="text-center">Registar    <h3  class="text-center">Exclusivo a membros da comunidade IPS</h3>
+<div class="row d-flex justify-content-center p-10 align-items-center">
+  <img src="./assets/img/ips.jpg" style="width: 50%;" class="col">
+  <div class="col-md-5 m-auto shadow-sm p-3 mb-5 bg-white rounded align-items-center">
+    <h1 class="text-center">Registar <h4 class="text-center">Exclusivo a membros da comunidade IPS</h4>
     </h1>
 
     <form [formGroup]="formIPS" class="example-form">
       <div>
         <mat-form-field class="example-full-width">
           <mat-label for="email">Email Intitucional</mat-label>
-          <input type="email" matInput id="email" name="email" class="form-control"
-          [formControl]="email" />
+          <input type="email" matInput id="email" name="email" class="form-control" [formControl]="email" />
           <mat-error *ngIf="email.hasError('required')">O email é um campo obrigatório</mat-error>
           <mat-error *ngIf="email.hasError('email')">Este campo necessita de ser um email</mat-error>
         </mat-form-field>
       </div>
 
-      <button type="submit" mat-raised-button color="primary" style="left: 5rem;" (click)="postData()">
+      <button type="submit" mat-raised-button color="primary" style="left: 25%;" (click)="postData()">
         Enviar email com password
       </button>
-      </form>
-      </div>
+    </form>
+  </div>
 </div>
-
-
-

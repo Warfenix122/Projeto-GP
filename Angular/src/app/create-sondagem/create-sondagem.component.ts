@@ -60,24 +60,20 @@ export class CreateSondagemComponent implements OnInit {
 
   }
   createOption(numberOptions) {
+    let inputExemple = document.getElementById('exempleInput');
     let optionsDiv = document.getElementById('options');
-    optionsDiv.innerHTML = '';
+    optionsDiv.innerHTML = " <h2>Opções a incluir</h2> ";
+
     let options = numberOptions.value;
     for (let index = 0; index < options; index++) {
-      let row = document.createElement('div');
-      row.className = "row";
-      const label = document.createElement('label');
-      label.innerHTML = 'Opção';
-      label.className = "col-md-4"
-      let input = document.createElement('input');
-      input.type = 'text';
-      input.id = "opcao" + index;
-      input.name = "opcao" + index;
-      input.className = "option col-md-4 form-control";
 
-      row.appendChild(label);
-      row.appendChild(input);
-      optionsDiv.appendChild(row);
+      let newInput = document.createElement('div');
+      newInput.innerHTML = inputExemple.innerHTML;
+      newInput.hidden = false;
+      newInput.id = "opcao" + index;
+
+      // row.appendChild(label);
+      optionsDiv.appendChild(newInput);
     }
   }
 
@@ -119,18 +115,18 @@ export class CreateSondagemComponent implements OnInit {
   }
 
   pollClicked(index, event) {
-      let poll = this.sondagens[index];
-      this.sondagemService.getAnswersFromPoll(poll._id).subscribe(answers => {
-        let usersId = answers.map(answer => {
-          return answer.userId;
-        })
-        this.userService.getUsers(usersId).subscribe(users => {
-          const dialogRef = this.dialog.open(DialogSondagem, {
-            width: '1200px',
-            data: { poll: poll, answers: answers, users: users }
-          });
-        })
+    let poll = this.sondagens[index];
+    this.sondagemService.getAnswersFromPoll(poll._id).subscribe(answers => {
+      let usersId = answers.map(answer => {
+        return answer.userId;
       })
+      this.userService.getUsers(usersId).subscribe(users => {
+        const dialogRef = this.dialog.open(DialogSondagem, {
+          width: '1200px',
+          data: { poll: poll, answers: answers, users: users }
+        });
+      })
+    })
 
   }
 
