@@ -425,7 +425,8 @@ export class ProjectComponent implements OnInit {
   loadPresences(usersId) {
     if (usersId == undefined || usersId == null || usersId.length == 0)
       return;
-
+    console.log('this.fined) :>> ', this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined));
+    console.log('this.fined) :>> ', this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined));
     this.presentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined);
     this.nonPresentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined);
     this.dataSourcePresentVolunteers = new MatTableDataSource<User>(this.presentVolunteers);
@@ -435,16 +436,15 @@ export class ProjectComponent implements OnInit {
   }
 
   onPresencesFileSelected(event) {
+    console.log('event :>> ', event);
     let files = event.target.files;
     let cols = [];
     let results = [];
 
     if (files.length > 0) {
-      //this.selectedCoverPhotoFileName = files[0].name;
-
     }
-    const file = files[0]
 
+    const file = files[0]
     const inputNode: any = document.querySelector('#presencesFile');
 
     if (typeof (FileReader) !== 'undefined') {
@@ -459,13 +459,13 @@ export class ProjectComponent implements OnInit {
             cols = cells;
           } else {
             cells.forEach((cell, cellIndex) => {
-              if (cols[cellIndex] == '"Id"') {
+              if (cols[cellIndex] == 'Id') {
                 cell = cell.substring(1, cell.length - 1);
                 results.push(cell);
               }
-            })
+            });
           }
-        })
+        });
         results.pop();
         this.loadPresences(results);
       };
