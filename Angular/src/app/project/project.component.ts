@@ -116,11 +116,18 @@ export class ProjectComponent implements OnInit {
   areas: Array<string> = statics.areas;
   selectedAreas: [string];
   @ViewChild('checkboxes') checkboxes: ElementRef;
-  @ViewChild('saveAreas') saveAreas: ElementRef;
   form = this._fb.group({
     areas: '',
   });
   selectedAreasError: Boolean
+
+  formacoesNecessarias: [string];
+  formacoes: Array<String> = statics.fomação;
+  formacoesArr = this._fb.group({
+    formacao: '',
+  })
+  @ViewChild('checkboxesFormacoes') checkboxesFormacoes: ElementRef;
+
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
@@ -146,6 +153,10 @@ export class ProjectComponent implements OnInit {
       this.form = this._fb.group({
         areas: this.addAreasInteresseControls(this.project.areasInteresse),
       });
+
+      this.formacoesArr = this._fb.group({
+        formacao: this.addFormacoesNecessariasControls(this.project.formacoesNecessarias),
+      })
 
       this.getApprovedVolunteers();
       this.getCandidateVolunteers();
@@ -227,22 +238,51 @@ export class ProjectComponent implements OnInit {
     return this._fb.array(arr);
   }
 
+  addFormacoesNecessariasControls(formacoesProjeto){
+    let arr = this.formacoes.map(element=>{
+      if(formacoesProjeto.includes(element)){
+        return this._fb.control(true);
+      }else{
+        return this._fb.control(false);
+      }
+    });
+    return this._fb.array(arr);
+  }
+
   get areasArray() {
     return <FormArray>this.form.get('areas');
   }
 
+  get formacao(){
+    return <FormArray>this.formacoesArr.get('formacao');
+  }
+
   getSelectedAreas() {
     this.selectedAreas = ['']
-    this.selectedAreas.splice(0,1);
+    if(this.selectedAreas.includes('')){
+      this.selectedAreas.splice(0,1);
+    }
     this.areasArray.controls.forEach((control, i) => {
       if (control.value) {
         this.selectedAreas.push(this.areas[i]);
       }
     });
-    console.log(this.selectedAreas);
     this.updatedProject.areasInteresse = this.selectedAreas;
-    console.log(this.updatedProject.areasInteresse);
     this.selectedAreasError = this.selectedAreas.length > 0 ? false : true;
+  }
+
+  getSelectedFormacoes(){
+    this.formacoesNecessarias = [''];
+    if(this.formacoesNecessarias.includes('')){
+      this.formacoesNecessarias.splice(0,1);
+    }
+    
+    this.formacao.controls.forEach((control,i) => {
+      if(control.value){
+        this.formacoes.push(this.formacoes[i]);
+      }
+    });
+    this.updatedProject.formacoesNecessarias = this.formacoesNecessarias;
   }
 
   approveCandidate(user){
