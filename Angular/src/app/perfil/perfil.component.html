@@ -1,53 +1,57 @@
-<div class="container  ">
-  <h1>{{user.nome}}</h1>
+<div class="container">
+  <h1>{{ user.nome }}</h1>
   <div>
     <mat-tab-group>
       <mat-tab label="Detalhes">
-        <div class=" container  active m-5 " id="info">
-          <h2>Informações
+        <div class="container active m-5" id="info">
+          <h2>
+            Informações
             <button style="margin-top: -14px;" class="ml-2" mat-mini-fab color="primary"
-            [routerLink]="['/editProfile']">
-            <mat-icon>edit</mat-icon>
-          </button>
+              [routerLink]="['/editProfile']">
+              <mat-icon>edit</mat-icon>
+            </button>
           </h2>
           <div class="container p-5 m-10 d-flex justify-content-between">
-            <div class="container ">
+            <div class="container">
               <div *ngFor="let attr of userInfo">
                 <div class="row mb-2">
                   <label class="col">
-                    {{attr.key}}
+                    {{ attr.key }}
                   </label>
                   <label class="col">
-                    {{attr.value}}
+                    {{ attr.value }}
                   </label>
                 </div>
               </div>
-
-              
             </div>
             <div class="container">
               <div class="container-sm row mb-5 d-flex justify-content-center">
-                <img style="max-width:150px" #image>
+                <img style="max-width: 150px;" #image />
               </div>
 
               <form class="d-flex justify-content-center">
-                <button mat-raised-button class="mr-1" (click)="fileInput.click()">Escolher ficheiro <mat-icon>
-                    insert_photo</mat-icon></button>
-                <button class="ml-4" mat-raised-button color="warn" (click)="onDelete()">Eliminar</button>
-                <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*" id="file">
-
+                <button mat-raised-button class="mr-1" (click)="fileInput.click()">
+                  Escolher ficheiro <mat-icon> insert_photo</mat-icon>
+                </button>
+                <button class="ml-4" mat-raised-button color="warn" (click)="onDelete()">
+                  Eliminar
+                </button>
+                <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*" id="file" />
               </form>
-              <h5 class="mt-1 ml-5" [style.visibility]=" addPhotoResult ? 'visible' : 'hidden'">Ficheiro escolhido:
-                <b>{{selectedPhotoFileName}}</b></h5>
+              <h5 class="mt-1 ml-5" [style.visibility]="addPhotoResult ? 'visible' : 'hidden'">
+                Ficheiro escolhido: <b>{{ selectedPhotoFileName }}</b>
+              </h5>
             </div>
-
           </div>
-          <hr>
+          <hr />
           <div>
             <div class="d-flex align-items-center">
-              <h2>Areas de Interesse</h2> <button style="margin-top: -14px;" class="ml-2" mat-mini-fab color="primary"
+              <h2>Areas de Interesse</h2>
+              <button style="margin-top: -14px;" class="ml-2" mat-mini-fab color="primary"
                 (click)="alterAreasInteresse()">
-                <mat-icon>{{showEditAreasOfInterest ? 'edit' : 'close'}}</mat-icon>
+                <mat-icon>{{
+                  showEditAreasOfInterest ? "edit" : "close"
+                }}</mat-icon>
               </button>
             </div>
             <form [formGroup]="form">
@@ -58,7 +62,6 @@
                       <div class="row">
                         <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
                           (change)="getSelectedAreas()" id="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
-
                       </div>
                     </div>
                   </li>
@@ -66,42 +69,40 @@
                 </ul>
               </div>
 
-              <button style="display: none;" class="btn btn-success" type="submit" (click)="saveAreasInteresse()"
-                #saveAreas> Guardar
-                Alterações <i class="far fa-edit"></i></button>
+              <button *ngIf="!showEditAreasOfInterest"  mat-raised-button color="primary" type="submit"
+                (click)="saveAreasInteresse()" #saveAreas>
+                Guardar Alterações <i class="far fa-edit"></i>
+              </button>
             </form>
           </div>
         </div>
       </mat-tab>
       <mat-tab label="Projetos">
-
-        <div class=" container" id="project">
+        <div class="container" id="project">
           <div class="container">
             <div class="container active mt-5" id="fav">
               <h2>Projetos Favoritos</h2>
               <app-favorite-project></app-favorite-project>
             </div>
-            <hr>
-            <div class="container mt-5  " id="register" *ngIf="user.tipoMembro === 'Voluntario Interno'">
+            <hr />
+            <div class="container mt-5" id="register" *ngIf="user.tipoMembro === 'Voluntario Interno'">
               <h2>Projetos Inscritos</h2>
               <app-registered-projects></app-registered-projects>
             </div>
           </div>
-
         </div>
       </mat-tab>
       <mat-tab label="Sondagens">
-
-        <div class=" container p-5 m-10 " id="question">
-            <h4> As respostas às sondagens apenas estarão disponíveis para efeitos de estatísticas do site e apenas serão acedidas pelo gestor</h4>          <div class="container d-flex justify-content-between">
+        <div class="container p-5 m-10" id="question">
+          <h4>
+            As respostas às sondagens apenas estarão disponíveis para efeitos de
+            estatísticas do site e apenas serão acedidas pelo gestor
+          </h4>
+          <div class="container d-flex justify-content-between">
             <app-sondagem></app-sondagem>
           </div>
         </div>
       </mat-tab>
     </mat-tab-group>
-
-
   </div>
-
-
 </div>

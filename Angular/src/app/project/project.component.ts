@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Renderer2, Inject, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'models/projeto';
@@ -20,7 +20,7 @@ import {
   MatBottomSheet,
   MatBottomSheetRef,
 } from '@angular/material/bottom-sheet';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../services/file.service';
@@ -28,6 +28,9 @@ import { FotoService } from '../services/foto.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import statics from '../../assets/statics.json';
+import {FormBuilder,FormArray} from '@angular/forms';
+
 
 import * as fileSaver from 'file-saver';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -102,7 +105,7 @@ export class ProjectComponent implements OnInit {
   nonPresentVolunteers: Array<User> = [];
   displayedColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao', 'actions'];
   displayedPresentColumns: string[] = ['nome', 'email', 'dataNascimento', 'distrito', 'concelho', 'escola', 'formacao'];
-
+  
   dataSource: MatTableDataSource<User>;
   dataSourceCandidates: MatTableDataSource<User>;
   dataSourcePresentVolunteers: MatTableDataSource<User>;
@@ -110,21 +113,39 @@ export class ProjectComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatPaginator, {static: true}) paginatorCandidates: MatPaginator;
 
+  areas: Array<string> = statics.areas;
+  selectedAreas: [string];
+  @ViewChild('checkboxes') checkboxes: ElementRef;
+  @ViewChild('saveAreas') saveAreas: ElementRef;
+  form = this._fb.group({
+    areas: '',
+  });
+  selectedAreasError: Boolean
 
   constructor(private route: ActivatedRoute, private projectService: ProjectService, public datepipe: DatePipe, private renderer: Renderer2,
     private _userService: UserService, private _authService: AuthService, private iconRegistry: MatIconRegistry, private _snackBar: MatSnackBar,
     public dialog: MatDialog, private alertService: AlertService, private router: Router, private _bottomSheet: MatBottomSheet, private fotoService: FotoService,
-     private fileService: FileService, private _emailService: EmailSenderService) { }
+     private fileService: FileService, private _emailService: EmailSenderService,private _fb:FormBuilder) { }
 
   ngOnInit(): void {
     // - quando clica no botão eliminar, abrir um 'Dialog' para perguntar ao user se confirma a eliminação da foto ou não. E depois sim eliminar a foto. HTML Linha 213
     this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
+
+
+    for (const are of statics.areas) {
+      this.form.controls['areas'].disable();
+    }
+
     this.projectService.getProject(this.id).subscribe((project) => {
       this.project = this.deepCopy(project) as Project;
       this.updatedProject = this.deepCopy(project) as Project;
       this.updatedProject.contactos.forEach((elem, index) => this.showEditProjectContact[index] = false);
+
+      this.form = this._fb.group({
+        areas: this.addAreasInteresseControls(this.project.areasInteresse),
+      });
 
       this.getApprovedVolunteers();
       this.getCandidateVolunteers();
@@ -193,6 +214,35 @@ export class ProjectComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       fileSaver.saveAs(blob, 'participantes.json');
     });
+  }
+
+  addAreasInteresseControls(userAreas) {
+    const arr = this.areas.map(element => {
+      if (userAreas.includes(element)) {
+        return this._fb.control(true);
+      } else {
+        return this._fb.control(false);
+      }
+    });
+    return this._fb.array(arr);
+  }
+
+  get areasArray() {
+    return <FormArray>this.form.get('areas');
+  }
+
+  getSelectedAreas() {
+    this.selectedAreas = ['']
+    this.selectedAreas.splice(0,1);
+    this.areasArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedAreas.push(this.areas[i]);
+      }
+    });
+    console.log(this.selectedAreas);
+    this.updatedProject.areasInteresse = this.selectedAreas;
+    console.log(this.updatedProject.areasInteresse);
+    this.selectedAreasError = this.selectedAreas.length > 0 ? false : true;
   }
 
   approveCandidate(user){
