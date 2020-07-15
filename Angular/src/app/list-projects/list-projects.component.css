@@ -15,40 +15,12 @@ h1{
     cursor:pointer;
 }
 
-.btn-outline-secondary{
-    color: #495057!important;
-    border-color: #ced4da!important;
-}
 
-.btn-outline-secondary:hover, .btn-outline-secondary:focus, .show>.btn-outline-secondary.dropdown-toggle{
-    color: #495057 !important;
-    background: #f2f2f2 !important;
-    border-color: #ced4da !important;
-}
 
 .badge{
     margin-right: 1px;
 }
 
-.badge-success{
-    background: #336699;
-}
-
-.badge-secondary{
-    background: #6e5a97;
-}
-
-.fillFlexDiv{
-    width: 100%;
-}
-
-#applyFilterButton{
-    margin-right:5px;
-}
-
-#clearFilterButton{
-    margin-left: 5px;
-}
 
 label{
     margin-bottom: 2px;
@@ -115,7 +87,7 @@ label{
     -webkit-transform: scale(1.05, 1.05);
     transform: scale(1.05, 1.05);
   }
-  
+
   /* Fade in the pseudo-element with the bigger shadow */
   .card::after {
     content: "";

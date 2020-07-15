@@ -199,10 +199,7 @@ export class SignupComponent implements OnInit {
       this.userService.register(formbody).subscribe((res) => {
         let successMsg = "";
         if (formbody.tipoMembro === 'Voluntario Interno') {
-          this.emailService.sendConfirmationEmail(formbody.email, formbody.nome).subscribe((response) => {
-          }, (err) => {
-            this._alertService.error(err.error.msg);
-          });
+
           this.router.navigate(['login']);
           this._alertService.warning("Recebeu um email para completar o registo da sua conta. Complete o registo clicando no botão 'Completar registo' no email recebido.");
         } else {

@@ -10,13 +10,7 @@ router.post("/sendEmail", (req, res) => {
   email.sendEmail(to, subject, content);
 })
 
-router.post("/sendConfirmationEmail", (req, res) => {
-  let to = req.body.to;
-  let nome = req.body.nome;
 
-  email.sendConfirmationEmail(to, nome);
-
-})
 
 router.post("/sendRecoverPasswordEmail", (req, res) => {
   let to = req.body.to;

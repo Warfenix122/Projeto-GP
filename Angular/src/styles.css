@@ -6,7 +6,7 @@ h1,h2,h3{
    text-transform: capitalize;
 }
 *::selection{
-  background-color: #8e7dbed2;
+  background-color: #03377bac;
 }
 #myBtn {
   display: none; /* Hidden by default */
