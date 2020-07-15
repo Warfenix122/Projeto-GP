@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { User } from '../../../models/utilizadores';
 import statics from '../../assets/statics.json';
 import { AlertService } from '../services/alert.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -26,19 +27,22 @@ export class EditProfileComponent implements OnInit {
   generos: string[] = statics.generos;
   minAge: Date;
 
-  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
+  constructor(private _authService: AuthService, private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService) {
   }
   oldForm: any;
   formProfile = this._fb.group({
-    nome: new FormControl('',Validators.required),
-    genero: new FormControl('',Validators.required),
+    nome: new FormControl('', Validators.required),
+    genero: new FormControl('', Validators.required),
     dataNascimento: new FormControl(''),
-    numeroTelefone: new FormControl('',Validators.required),
-    distrito: new FormControl('',Validators.required),
-    concelho: new FormControl('',Validators.required)
+    numeroTelefone: new FormControl('', Validators.required),
+    distrito: new FormControl('', Validators.required),
+    concelho: new FormControl('', Validators.required)
   });
 
   ngOnInit(): void {
+
+    if (!this._authService.isLoggedIn())
+      this.router.navigate(['unauthorized']);
     this.filteredConcelhos = this.formProfile.get('concelho').valueChanges
       .pipe(
         startWith(''),
@@ -70,7 +74,7 @@ export class EditProfileComponent implements OnInit {
       this._alertService.error(err.error.msg);
     });
     let currentDate = new Date();
-    this.minAge = new Date(currentDate.getFullYear()-18,currentDate.getMonth()-1,currentDate.getDate());
+    this.minAge = new Date(currentDate.getFullYear() - 18, currentDate.getMonth() - 1, currentDate.getDate());
   }
 
   get numeroTelefone() {
@@ -89,11 +93,11 @@ export class EditProfileComponent implements OnInit {
     return this.formProfile.get('nome');
   }
 
-  get distrito(){
+  get distrito() {
     return this.formProfile.get('distrito');
   }
 
-  get concelho(){
+  get concelho() {
     return this.formProfile.get('concelho');
   }
 

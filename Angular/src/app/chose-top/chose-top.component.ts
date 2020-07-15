@@ -10,6 +10,7 @@ import { UserService } from '../services/user.service';
 import { environment } from 'src/environments/environment';
 import { ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-chose-top',
@@ -51,13 +52,19 @@ export class ChoseTopComponent implements OnInit {
 
   @ViewChild('todoList') topList: ElementRef;
 
-  constructor(private projectService: ProjectService, private _alertService: AlertService, private fotoService: FotoService,
+  constructor(private projectService: ProjectService, private _authService: AuthService, private _alertService: AlertService, private fotoService: FotoService,
     ngbPopoverConfig: NgbPopoverConfig, private userService: UserService,
     private router: Router) {
     ngbPopoverConfig.autoClose = 'outside';
   }
 
   ngOnInit(): void {
+    if (!this._authService.isLoggedIn())
+      this.router.navigate(['unauthorized']);
+    this._authService.getRole().subscribe(res => {
+      if (res["Role"] !== "Gestor")
+        this.router.navigate(['unauthorized']);
+    });
     statics.areas.forEach(elem => {
       this.areasOfInterest.push({ area: elem, checked: false })
     });
