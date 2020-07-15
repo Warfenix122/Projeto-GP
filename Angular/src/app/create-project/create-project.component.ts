@@ -55,6 +55,9 @@ export class CreateProjectComponent implements OnInit {
     restringido: new FormControl(false),
     formacao: new FormControl(''),
     areas: this.addAreasInteresseControls(),
+  });
+
+  formGestores = this._fb.group({
     gestoremail: new FormControl('', [Validators.email]),
   });
 
@@ -75,18 +78,16 @@ export class CreateProjectComponent implements OnInit {
       if (res["Role"] !== "Voluntario Interno") {
         this._userService.getVoluntariosExternos().subscribe(users => {
           this._userService.getGestores().subscribe((res) => {
-            console.log(res);
             this.utilizadoresExternos = users.concat(res);
-            console.log(this.utilizadoresExternos);
             this.emails = this.utilizadoresExternos.map(user => user.email);
             this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this._filterUtilizadores(value))
-          );
+              .pipe(
+                startWith(''),
+                map(value => this._filterUtilizadores(value))
+              );
           })
         });
-        
+
       } else {
         this.router.navigate(["unauthorized"]);
       }
@@ -139,20 +140,13 @@ export class CreateProjectComponent implements OnInit {
   }
 
   get gestorEmail() {
-    return this.formInfo.get("gestoremail");
+    return this.formGestores.get("gestoremail");
   }
 
   get recorrente() {
     return this.formDatas.get("recorrente");
   }
 
-  get XemXtempo1() {
-    return this.formDatas.get("XemXtempo1");
-  }
-
-  get XemXtempo2() {
-    return this.formDatas.get("XemXtempo2");
-  }
 
   get areasArray() {
     return <FormArray>this.formInfo.get('areas');
@@ -266,11 +260,11 @@ export class CreateProjectComponent implements OnInit {
     return this._fb.array(arr);
   }
 
+
   postData() {
-    if (this.formInfo.valid && this.formDatas.valid && this.dataTermino.valid && this.dataComeco.valid && this.dataFechoInscricoes.valid) {
+    if (this.formInfo.valid && this.formDatas.valid && this.formGestores.valid && this.dataTermino.valid && this.dataComeco.valid && this.dataFechoInscricoes.valid) {
       this._userService.getCurrentUserId().subscribe((res) => {
         let responsavelId = res["UserID"];
-        let XemXtempo = this.XemXtempo1.value + " em " + this.XemXtempo2.value;
         let atividades = [];
         let gestoresIds = []
         let selectedAreas = this.selectedAreas;
@@ -282,7 +276,7 @@ export class CreateProjectComponent implements OnInit {
           let data = new Date(atividadeObj.dia.getFullYear(), atividadeObj.dia.getMonth(), atividadeObj.dia.getDate(), horas, minutos);
           atividades.push({ descricao: atividadeObj.descricao, dataAcontecimento: data });
         });
-        let formBody = { ...this.formInfo.value, ...this.formDatas.value, XemXtempo, atividades, responsavelId, gestoresIds, selectedAreas }
+        let formBody = { ...this.formInfo.value, ...this.formDatas.value, atividades, responsavelId, gestoresIds, selectedAreas }
         this._projectService.addProject(formBody).subscribe((res: ProjetoResponse) => {
           this._alertService.success("Projeto criado com sucesso!");
           if (this.file) {

@@ -1,74 +1,86 @@
 <div class="mb-5">
   <h1 class="text-center">Criar Projeto</h1>
   <mat-horizontal-stepper labelPosition="bottom">
-    <mat-step label="Informações Do projeto" [stepControl]="formInfo">
-      <div class="row">
-        <div class="col-md-8">
-          <form [formGroup]="formInfo" autocomplete="off">
-            <div class="row">
-              <div>
-                <mat-form-field>
-                  <mat-label for="Nome">Nome</mat-label>
-                  <input type="text" id="nome" name="hidden" class="form-control"
-                    placeholder="Introduza o nome do projeto" formControlName="nome" matInput />
-                  <mat-error *ngIf="nome.hasError('required')">O nome é um campo obrigatorio</mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <mat-form-field>
-                <mat-label for="resumo">Resumo</mat-label>
-                <textarea id="resumo" name="resumo" class="form-control"
-                  placeholder="Introduza um pequeno resumo do projeto" formControlName="resumo" matInput></textarea>
-                <mat-error *ngIf="resumo.hasError('required')">O resumo é um campo obrigatorio.</mat-error>
-              </mat-form-field>
-            </div>
-            <div class="form-group" style="margin-left: -15px;">
-              <label for="areas">Areas de interesse no ambito do projeto:</label>
-              <ul class="col-lg-10 list-unstyled" style="column-count: 2;">
-                <li id="lista" *ngFor="let control of areasArray.controls; let i = index">
-                  <div class="row d-flex justify-content-between">
-                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
-                      (change)="getSelectedAreas()" name="{{ areas[i] }}" color="primary">{{ areas[i] }}</mat-checkbox>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="row">
-              <mat-form-field>
-                <mat-label for="nrVagas">Quantas vagas serão disponibilizadas?</mat-label>
-                <input type="number" id="nrVagas" name="nrVagas" class="form-control" matInput
-                  formControlName="nrVagas" />
-                <mat-error *ngIf="nrVagas.hasError('required')">O numero de vagas é um campo obrigatorio.</mat-error>
-                <mat-error *ngIf="nrVagas.hasError('min')">
-                  O numero de vagas tem de ser maior que 0
-                </mat-error>
-              </mat-form-field>
+    <mat-step label="Informações " [stepControl]="formInfo">
+      <div class="row justify-content-center">
 
-            </div>
+        <form [formGroup]="formInfo" autocomplete="off">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-label for="Nome">Nome</mat-label>
+              <input type="text" id="nome" name="hidden" class="form-control" placeholder="Introduza o nome do projeto"
+                formControlName="nome" matInput />
+              <mat-error *ngIf="nome.hasError('required')">O nome é um campo obrigatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row ">
+            <mat-form-field class="col">
+              <mat-label for="resumo">Resumo</mat-label>
+              <textarea id="resumo" name="resumo" class="form-control"
+                placeholder="Introduza um pequeno resumo do projeto" formControlName="resumo" matInput cols="30"
+                rows="5"></textarea>
+              <mat-error *ngIf="resumo.hasError('required')">O resumo é um campo obrigatorio.</mat-error>
+            </mat-form-field>
+          </div>
 
-            <div class="row">
+          <div class="form-group" class="mt-2">
+            <label for="areas">Areas de Interesse relacionadas com o projeto:</label>
+            <ul class="col-lg-10 list-unstyled" style="column-count: 2;">
+              <li id="lista" *ngFor="let control of areasArray.controls; let i = index">
+                <div class="row d-flex justify-content-between">
+                  <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                    (change)="getSelectedAreas()" name="{{ areas[i] }}" color="primary">{{ areas[i] }}</mat-checkbox>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="row mt-3">
+            <mat-form-field>
+              <mat-label for="nrVagas">Quantas vagas serão disponibilizadas?</mat-label>
+              <input type="number" id="nrVagas" name="nrVagas" class="form-control" matInput
+                formControlName="nrVagas" />
+              <mat-error *ngIf="nrVagas.hasError('required')">O numero de vagas é um campo obrigatorio.</mat-error>
+              <mat-error *ngIf="nrVagas.hasError('min')">
+                O numero de vagas tem de ser maior que 0
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+          <div class="row">
+            <div class="col ">
               <mat-slide-toggle formControlName="restringido" color="primary">
                 Quer escolher os voluntarios que irão participar no projeto?
               </mat-slide-toggle>
+            </div>
+            <div class="col ">
+
               <mat-slide-toggle formControlName="necessarioFormacao" color="primary">O voluntario necessita de
                 formação especifica?
               </mat-slide-toggle>
               <div class="form-group" *ngIf="this.isFormacaoNecessaria.value">
-                <div class="col-md-6 center-column">
-                  <mat-form-field>
-                    <mat-label>Formacao</mat-label>
-                    <mat-select [formControl]="formacao" multiple>
-                      <mat-option *ngFor="let formacao of formacoes" [value]="formacao">{{ formacao }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+                <mat-form-field>
+                  <mat-label>Formacao</mat-label>
+                  <mat-select [formControl]="formacao" multiple>
+                    <mat-option *ngFor="let formacao of formacoes" [value]="formacao">{{ formacao }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </div>
+          </div>
+        </form>
+      </div>
+      <button class="next-step mt-5" color="primary" mat-raised-button matStepperNext>
+        Proximo Passo
+      </button>
+    </mat-step>
+    <mat-step label="Gestores" [stepControl]="formGestores">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <form [formGroup]="formGestores" autocomplete="off">
 
-            <div class="form-group">
+            <div class="form-group ">
 
-              <mat-form-field class="big-input">
+              <mat-form-field class="big-input ">
                 <mat-label for="gestoremail">Adicionar Gestor</mat-label>
                 <input type="text" matInput placeholder="Introduza o email do sub-gestor" class="form-control"
                   id="gestoremail" name="gestoremail" [formControl]="gestorEmail" [matAutocomplete]="autoGestor" />
@@ -81,9 +93,14 @@
               width:48px !important;" matSuffix (click)="gestoresEscolhidos()">
                   <mat-icon style="font-size: 35px;">add_box</mat-icon>
                 </button>
-                <mat-error *ngIf="gestorEmail.invalid">Porfavor insira um email que está na lista</mat-error>
+                <mat-error *ngIf="gestorEmail.invalid">Por favor insira um email que está na lista</mat-error>
               </mat-form-field>
+              <button type="button" color="accent" data-toggle="modal" data-target="#exampleModal" mat-raised-button>
+                Mostrar Gestores adicionados
+              </button>
             </div>
+
+
           </form>
         </div>
       </div>
@@ -93,22 +110,7 @@
     </mat-step>
     <mat-step label="Datas e Horarios" [stepControl]="formDatas">
       <form [formGroup]="formDatas">
-        <mat-slide-toggle formControlName="recorrente" color="primary">O projeto é recorrente?</mat-slide-toggle>
-        <div class="form-group" *ngIf="this.recorrente.value">
-          <label for="XemXtempo">O projetdo devera occorrer de quanto em quanto tempo?</label>
-          <div class="row">
-            <div class="col-md-2">
-              <input type="text" id="XemXtempo1" name="XemXtempo1" class="form-control center-column"
-                formControlName="XemXtempo1" />
-            </div>
-            <div class="col-sm-1">
-              <p>em</p>
-            </div>
-            <div class="col-md-2">
-              <input type="text" id="XemXtempo2" name="XemXtempo2" class="form-control" formControlName="XemXtempo2" />
-            </div>
-          </div>
-        </div>
+
         <div class="form-group">
           <div class="row">
             <div class="col-md-5">

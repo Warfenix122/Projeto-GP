@@ -7,12 +7,18 @@
   margin-top: -50px;
   z-index: 1;
 }
-
+.example-card {
+  max-width: 400px;
+  border: none;
+  box-shadow: none;
+  text-align: center;
+}
+/*
 .card:hover .inner {
 	transform: rotateY(180deg);
   transition:  0.6s;
   transform-style: preserve-3d;
-}
+}*/
 .back{ transform: rotateY(180deg);}
 .front, .back {
   position: absolute;
