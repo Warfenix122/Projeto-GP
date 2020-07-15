@@ -74,6 +74,8 @@ export class CreateProjectComponent implements OnInit {
 
   ngOnInit(): void {
 
+    if (!this._authService.isLoggedIn())
+      this.router.navigate(['unauthorized']);
     this._authService.getRole().subscribe(res => {
       if (res["Role"] !== "Voluntario Interno") {
         this._userService.getVoluntariosExternos().subscribe(users => {

@@ -317,9 +317,10 @@
 
     </mat-tab>
     <mat-tab *ngIf=" isModerator " label="Inscritos">
-      <button mat-raised-button class="mt-3 mr-2" color="primary" (click)="writeFile()">Exportar Voluntarios</button>
-      <li class="button mat-stroked-button mb-3" color=" primary "><a href="../../assets/apk/app-debug.apk "
-          download="app.apk "> Download App</a></li>
+      <div class="text-center">
+        <button mat-raised-button class="mt-3 mr-2" color="primary" (click)="writeFile()">Exportar Voluntarios <i class="far fa-file"></i></button>
+        <button class="button mat-stroked-button mb-3" color="primary"><a href="../../assets/apk/IPS.apk"
+            download="ips.apk "> Download App</a></button></div>
       <mat-accordion>
 
         <mat-expansion-panel style="background-color: #ccffcc;">
@@ -468,8 +469,7 @@
     <mat-tab *ngIf=" isModerator " label="Presenças">
       <form class="d-flex justify-content-center mt-4 mb-2">
         <button mat-raised-button class="mr-1 mb-3" color="primary" (click)="fileInput.click()">Escolher ficheiro com as
-          presenças<mat-icon class="ml-1">
-            text_snippet</mat-icon></button>
+          presenças<i class="far fa-file"></i></button>
         <input hidden (change)="onPresencesFileSelected($event)" #fileInput type="file" accept="" id="presencesFile">
       </form>
       <mat-accordion>

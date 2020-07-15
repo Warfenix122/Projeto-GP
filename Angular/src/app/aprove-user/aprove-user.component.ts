@@ -17,14 +17,19 @@ export class AproveUserComponent implements OnInit {
   constructor(private _userService: UserService, private router: Router, private _alertService: AlertService, private _authService: AuthService) { }
 
   ngOnInit(): void {
-    this._authService.getRole().subscribe(res =>{
-      if(res["Role"] !== "Gestor")
-        this.router.navigate(['unauthorized']);
-    });
+    if (this._authService.isLoggedIn()) {
+      this._authService.getRole().subscribe(res => {
+        if (res["Role"] !== "Gestor") {
+          this.router.navigate(['unauthorized']);
+        }
+      });
+      this._userService.getDisaprovedUsers().subscribe(users => {
+        this.updateUsers(users);
+      });
+    }else{
+      this.router.navigate(['unauthorized']);
 
-    this._userService.getDisaprovedUsers().subscribe(users => {
-      this.updateUsers(users);
-    });
+    }
   }
 
   updateUsers(users) {
@@ -50,7 +55,7 @@ export class AproveUserComponent implements OnInit {
       this.removeUser(user);
       this._alertService.success("Utilizador Aprovado!");
 
-    },err=> this._alertService.warning(err["error"].msg));
+    }, err => this._alertService.warning(err["error"].msg));
   }
 
 }

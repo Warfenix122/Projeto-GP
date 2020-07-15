@@ -4,7 +4,7 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { EmailSenderService } from '../services/email-sender.service';
 import { AlertService } from '../services/alert.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-gestor',
@@ -15,7 +15,7 @@ export class CreateGestorComponent implements OnInit {
 
 
   constructor(private userService: UserService, private authService: AuthService,
-    private emailService: EmailSenderService, public _fb: FormBuilder, private _alertService: AlertService, private router:Router) {
+    private emailService: EmailSenderService, public _fb: FormBuilder, private _alertService: AlertService, private router: Router) {
   }
 
   formGestor = this._fb.group({
@@ -28,14 +28,17 @@ export class CreateGestorComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.authService.getRole().subscribe(res =>{
-      if(res["Role"] !== "Gestor")
+
+    if (!this.authService.isLoggedIn())
+      this.router.navigate(['unauthorized']);
+    this.authService.getRole().subscribe(res => {
+      if (res["Role"] !== "Gestor")
         this.router.navigate(['unauthorized']);
     });
   }
   postData() {
     if (this.formGestor.valid) {
-      let formbody = { ...this.formGestor.value, tipoMembro: 'Gestor'};
+      let formbody = { ...this.formGestor.value, tipoMembro: 'Gestor' };
       this.userService.register(formbody).subscribe((res) => {
         this._alertService.success("Conta criada com sucesso!");
         this.emailService.sendConfirmationEmail(formbody.email, formbody.nome);

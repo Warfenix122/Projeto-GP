@@ -11,6 +11,8 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 import { DialogDeleteProject } from '../project/project.component';
 import { RespostaSondagem } from 'models/respostaSondagem';
 import { User } from 'models/utilizadores';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-sondagem',
@@ -20,7 +22,7 @@ import { User } from 'models/utilizadores';
 export class CreateSondagemComponent implements OnInit {
   sondagens: Array<Sondagem>;
 
-  constructor(public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, private alertService: AlertService, public dialog: MatDialog) {
+  constructor(private router: Router, private _authService: AuthService, public _fb: FormBuilder, private userService: UserService, private sondagemService: SondagemService, private alertService: AlertService, public dialog: MatDialog) {
 
   }
 
@@ -32,11 +34,15 @@ export class CreateSondagemComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getSondagens()
-    // this.authService.getRole().subscribe(res =>{
-    //   if(res["Role"] !== "Gestor")
-    //     this.router.navigate(['unauthorized']);
-    // });
+
+    if (!this._authService.isLoggedIn())
+      this.router.navigate(['unauthorized']);
+
+    this._authService.getRole().subscribe(res => {
+      if (res["Role"] !== "Gestor") {
+        this.router.navigate(['unauthorized']);
+      } else { this.getSondagens() }
+    });
   }
 
   getSondagens() {
