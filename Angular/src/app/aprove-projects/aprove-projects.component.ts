@@ -19,40 +19,46 @@ export class AproveProjectsComponent implements OnInit {
   public projectTable: any[] = new Array();
 
   constructor(private _projectService: ProjectService, private _alertService: AlertService,
-     private _userService: UserService, private _authService: AuthService,
-      private router: Router, private _emailService: EmailSenderService) { }
+    private _userService: UserService, private _authService: AuthService,
+    private router: Router, private _emailService: EmailSenderService) { }
 
   ngOnInit(): void {
-    this._authService.getRole().subscribe(res =>{
-      if(res["Role"] !== "Gestor")
-        this.router.navigate(['unauthorized']);
-    });
-    this._projectService
-      .getToAproveProjects()
-      .subscribe((res) => {
-        this.projectsArray = res["projetos"];
-        let responsaveisId = { users: this.projectsArray.map(project => project.responsavelId) };
-        this._userService.getUsersArray(responsaveisId).subscribe(res => {
-          this.responsaveisArray = res["users"];
-          this.projectsArray.filter(project => this.responsaveisArray.filter(element => {
-            if (element._id === project.responsavelId) {
-              let nome = element.nome
-              let email = element.email
-              this.projectTable.push({ project, nome , email});
-            }
-          }));
-        });
+    if (this._authService.isLoggedIn()) {
+      this._authService.getRole().subscribe(res => {
+        if (res["Role"] !== "Gestor") {
+          this.router.navigate(['unauthorized']);
+        } else {
+
+          this._projectService.getToAproveProjects().subscribe((res) => {
+            this.projectsArray = res["projetos"];
+            let responsaveisId = { users: this.projectsArray.map(project => project.responsavelId) };
+            this._userService.getUsersArray(responsaveisId).subscribe(res => {
+              this.responsaveisArray = res["users"];
+              this.projectsArray.filter(project => this.responsaveisArray.filter(element => {
+                if (element._id === project.responsavelId) {
+                  let nome = element.nome
+                  let email = element.email
+                  this.projectTable.push({ project, nome, email });
+                }
+              }));
+            });
+          });
+        }
       });
+    }else{
+      this.router.navigate(['unauthorized']);
+    }
+
   }
 
-  avaliarProjeto(projectId, index,email ,aprovacao) {
+  avaliarProjeto(projectId, index, email, aprovacao) {
     let body = { projectId: projectId, aprovado: aprovacao };
     this._projectService.aproveProject(body).subscribe((res) => {
-      if(aprovacao==="Aprovado"){
+      if (aprovacao === "Aprovado") {
         this._emailService.sendConfirmProjectEmail(email).subscribe();        //Email here
       }
-      this.projectTable.splice(index,1);
+      this.projectTable.splice(index, 1);
       this._alertService.success(res["msg"]);
-    },err=> this._alertService.warning(err["error"].msg));
+    }, err => this._alertService.warning(err["error"].msg));
   }
 }

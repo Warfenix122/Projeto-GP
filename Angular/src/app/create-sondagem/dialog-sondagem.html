@@ -1,9 +1,9 @@
-<h1 mat-dialog-title>Sondagem</h1>
+<h1 class="text-center" mat-dialog-title>Respostas</h1>
 <h3>Número total de respostas: <b>{{totalAnswers}}</b></h3>
 <div mat-dialog-content class="container">
   <div class="row">
     <div class="col-8">
-      <canvas baseChart 
+      <canvas baseChart
         [datasets]="barChartData"
         [labels]="barChartLabels"
         [options]="barChartOptions"
@@ -28,5 +28,5 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  
+
 </div>

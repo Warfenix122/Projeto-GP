@@ -1,4 +1,8 @@
 .button-spacing{
     margin-left: 1rem;
   }
-  
+
+  #divButton{
+    padding-left: 0px;
+    padding-right: 0px;
+  }

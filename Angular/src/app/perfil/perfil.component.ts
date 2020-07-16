@@ -14,6 +14,7 @@ import * as moment from "moment";
 import { NavigationEnd } from '@angular/router';
 import { FileService } from '../services/file.service';
 import { FotoService } from '../services/foto.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-perfil',
@@ -43,40 +44,45 @@ export class PerfilComponent implements OnInit {
 
   selectedAreas: Array<String>;
   selectedAreasError: Boolean
-  constructor(private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService, private elem: ElementRef) {
+  constructor(private _authService: AuthService, private router: Router, private http: HttpClient, public _fb: FormBuilder, private fotoService: FotoService, private userService: UserService, private fileService: FileService, private _alertService: AlertService, private elem: ElementRef) {
   }
 
 
   ngOnInit() {
+    if (this._authService.isLoggedIn()) {
 
-    this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
-      this.user = res['user'];
-      this.userInfo = [];
-      this.userInfo.push({ key: 'Email', value: this.user.email });
-      const brithDate = new Date(this.user.dataNascimento);
-      const strBirth = brithDate.getDay().toString().concat("/", brithDate.getMonth().toString(), "/", brithDate.getFullYear().toString())
-      this.userInfo.push({ key: 'Data de Nascimento', value: strBirth });
-      this.userInfo.push({ key: 'Distrito', value: this.user.distrito });
-      this.userInfo.push({ key: 'Concelho', value: this.user.concelho });
-      this.userInfo.push({ key: 'Número de Telefone', value: this.user.numeroTelefone });
-      const creationDate = new Date(this.user.dataCriacao);
-      const strCreation = creationDate.getDay().toString().concat("/", creationDate.getMonth().toString(), "/", creationDate.getFullYear().toString())
-      this.userInfo.push({ key: 'Data de Criação de Conta', value: strCreation });
-      this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
+      this.userService.profile(localStorage.getItem('token')).subscribe((res) => {
+        this.user = res['user'];
+        this.userInfo = [];
+        this.userInfo.push({ key: 'Email', value: this.user.email });
+        const brithDate = new Date(this.user.dataNascimento);
+        const strBirth = brithDate.getDay().toString().concat("/", brithDate.getMonth().toString(), "/", brithDate.getFullYear().toString())
+        this.userInfo.push({ key: 'Data de Nascimento', value: strBirth });
+        this.userInfo.push({ key: 'Distrito', value: this.user.distrito });
+        this.userInfo.push({ key: 'Concelho', value: this.user.concelho });
+        this.userInfo.push({ key: 'Número de Telefone', value: this.user.numeroTelefone });
+        const creationDate = new Date(this.user.dataCriacao);
+        const strCreation = creationDate.getDay().toString().concat("/", creationDate.getMonth().toString(), "/", creationDate.getFullYear().toString())
+        this.userInfo.push({ key: 'Data de Criação de Conta', value: strCreation });
+        this.userInfo.push({ key: 'Tipo de Membro', value: this.user.tipoMembro });
 
-      this.getProfilePhoto(this.user.fotoPerfilId);
+        this.getProfilePhoto(this.user.fotoPerfilId);
 
-      this.form = this._fb.group({
-        areas: this.addAreasInteresseControls(this.user.areasInteresse),
+        this.form = this._fb.group({
+          areas: this.addAreasInteresseControls(this.user.areasInteresse),
+        });
+
+        for (const are of statics.areas) {
+          this.form.controls['areas'].disable();
+        }
       });
+    } else {
+      this.router.navigate(['unauthorized']);
 
-      for (const are of statics.areas) {
-        this.form.controls['areas'].disable();
-      }
-    });
+    }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     let element = this.elem.nativeElement.querySelector('.mat-tab-body-content');
     element.style.overflowX = 'hidden';
   }
@@ -99,7 +105,7 @@ export class PerfilComponent implements OnInit {
   onFileSelected(event) {
     let files = event.target.files;
     if (files.length > 0) {
-      this.file= files[0]
+      this.file = files[0]
       this.selectedPhotoFileName = files[0].name;
     }
 
@@ -125,7 +131,7 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  onDelete(){
+  onDelete() {
     let oldPhoto = this.user.fotoPerfilId;
     this.userService.removeProfilePhoto(this.user._id).subscribe(() => {
       this.fileService.deletePhoto(oldPhoto).subscribe(() => {
@@ -136,12 +142,10 @@ export class PerfilComponent implements OnInit {
   }
 
   alterAreasInteresse() {
-    if(this.showEditAreasOfInterest){
-      this.saveAreas.nativeElement.style.display = 'block';
+    if (this.showEditAreasOfInterest) {
       this.showEditAreasOfInterest = false;
       this.form.controls['areas'].enable();
     } else {
-      this.saveAreas.nativeElement.style.display = 'none';
       this.showEditAreasOfInterest = true;
       this.form.controls['areas'].disable();
     }

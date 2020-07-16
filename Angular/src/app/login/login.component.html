@@ -1,6 +1,7 @@
-<div class="row d-flex justify-content-center">
-  <div class="col-md-5 m-auto shadow-sm p-3 mb-5 bg-white rounded">
-
+<div class="row d-flex justify-content-center" style="margin-top: -45px;">
+  <img src="./assets/img/idk.jpg" style="width: 50%;" class="col">
+  <div class="col-md-5 m-auto shadow-sm p-3 mb-5 bg-white rounded align-items-center">
+    <h1 class="text-center">Login</h1>
     <form [formGroup]="formLogin" class="example-form">
       <div class="row form-group">
         <mat-form-field class="example-full-width">
@@ -20,7 +21,7 @@
       <div class="row form-group">
         <mat-form-field class="example-full-width">
           <mat-label>Password</mat-label>
-          <input type="password" placeholder="Password" matInput [formControl]="password"/>
+          <input type="password" placeholder="Password" matInput [formControl]="password" />
         </mat-form-field>
         <!-- <label for="password">Password</label>
         <input type="password" id="password" name="password" class="form-control" placeholder=""
@@ -30,8 +31,10 @@
         Login
       </button>
       <hr>
-      Pertence ao IPS? Registe-se <a [routerLink]="['/ips_signup']" >aqui</a>!
-      <a [routerLink]="['/recover']" >Recuperar Password</a>!
+
+      <div class="text-center">Pertence a comunidade IPS? Registe-se <a [routerLink]="['/ips_signup']">aqui</a>! <br>
+        <a [routerLink]="['/recover']">Recuperar Password</a></div>
     </form>
   </div>
+
 </div>

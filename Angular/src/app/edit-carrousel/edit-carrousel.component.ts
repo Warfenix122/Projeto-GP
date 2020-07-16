@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FileService } from '../services/file.service'
 import { AlertService } from '../services/alert.service';
 import { FotoService } from '../services/foto.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-edit-carrousel',
   templateUrl: './edit-carrousel.component.html',
@@ -14,10 +16,21 @@ export class EditCarrouselComponent implements OnInit {
   addPhotoResult: any;
   selectedPhotoFileName: string;
 
-  constructor(private fileService: FileService, private fotoService: FotoService, private _alertService: AlertService) { }
+  constructor(private router: Router, private _authService: AuthService,private fileService: FileService, private fotoService: FotoService, private _alertService: AlertService) { }
 
   ngOnInit(): void {
-    this.getAllCarrouselPhotos();
+    if (this._authService.isLoggedIn()) {
+      this._authService.getRole().subscribe(res => {
+        if (res["Role"] !== "Gestor") {
+          this.router.navigate(['unauthorized']);
+        }
+      });
+      this.getAllCarrouselPhotos();
+
+    }else{
+      this.router.navigate(['unauthorized']);
+
+    }
   }
 
   getAllCarrouselPhotos() {

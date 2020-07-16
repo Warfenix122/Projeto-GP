@@ -1,5 +1,5 @@
-<div class="example-container mt-5">
-    <h1>Top 3 de Projetos</h1>
+<div class="example-container ">
+  <h1 class="text-center">Projetos Mais Populares</h1>
     <hr>
     <h4>Organize os projetos nesta lista pela ordem que pretende apresentar.
         <p>O projeto mais à esquerda será o projeto mais popular</p>
@@ -14,7 +14,7 @@
                 <p class="card-text">{{project.resumo}}</p>
                 <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
                 <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
-                
+
             </div>
         </div>
     </div>

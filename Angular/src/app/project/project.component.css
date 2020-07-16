@@ -23,7 +23,6 @@
     white-space: nowrap;
     overflow: hidden;
 }
-
 .editActionButton {
     width: 115px !important;
 }
@@ -146,10 +145,6 @@ h4 {
 }
 
 
-/*div.col-sm{
-    padding-right: 2.5px;
-    padding-left: 2.5px;
-}*/
 
 .multi-item-carousel .carousel-inner>.item {
     -webkit-transition: 500ms ease-in-out left;

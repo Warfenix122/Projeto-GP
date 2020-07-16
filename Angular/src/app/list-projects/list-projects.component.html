@@ -1,66 +1,63 @@
 <div class="mt-4 mb-3 d-flex justify-content-between">
-    <div></div>
-    <div style="margin-left: 110px;">
-        <h1>Projetos</h1>
-    </div>
-    <div class="mt-auto mb-auto mr-2">
-        <button [style.visibility]="userRole == 'Voluntario Interno' ? 'hidden' : 'visible'" [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
-    </div>
+  <div></div>
+  <h1 class="text-center">Projetos</h1>
+
+  <div class="mt-auto mb-auto mr-2">
+    <button [style.visibility]="userRole == 'Voluntario Interno' || !userRole ? 'hidden' : 'visible'"
+      [routerLink]="'/createProject'" color="primary" mat-raised-button>Criar projeto</button>
+  </div>
 </div>
 
-<div id="divFilter" class="d-flex flex-wrap">
-    <button (mouseover)="hoverFilterButton(true)" (click)="focusFilter()" (mouseout)="hoverFilterButton(false)" id="buttonFilter" type="button" class="btn btn-secondary mr-auto">
-        <i [class]="iconFilterClass"></i> {{filterText}}
-    </button>
-    <div [@showHide]="filterState" id="filterForm" class="d-flex flex-wrap mt-1">
-        <div class="input-group-sm">
-            <label>Nome do projeto</label>
-            <input type="text" [(ngModel)]="projectNameInputValue" class="form-control">
-        </div>
-        <div class="divider"></div>
-        <div class="input-group-sm">
-            <label>Palavras-chaves (separadas por vírgulas)</label>
-            <input (keyup)="addKeywordBadge()" [(ngModel)]="keywordInputValue" type="text" class="form-control" placement="bottom" [ngbPopover]="popKeyWords">
-            <ng-template #popKeyWords>
-                <small>Palavras-chave</small><br>
-                <span *ngFor="let badgeKeyWord of keyWordsBadges" class="badge badge-secondary">
-                    {{badgeKeyWord}} <i (click)="removeKeywordBadge(badgeKeyWord)" class="fa fa-times fa-sm" aria-hidden="true"></i>
-                </span>
-            </ng-template>
-        </div>
-        <div class="divider"></div>
-        <div class="input-group-sm">
-            <label>Áreas de interesse</label>
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{areasOfInterestSelected.length}} Áreas de interesse
-                </button>
-                <div class="dropdown-menu" (click)="$event.stopPropagation()" aria-labelledby="dropdownMenuButton">
-                    <a (click)="clickAreaOfInterest(areaOfInterest.area, i)" *ngFor="let areaOfInterest of areasOfInterest; let i = index" [attr.data-index]="i" class="dropdown-item">
-                      {{areaOfInterest.area}} <i class="fas fa-check" [style.visibility]="areaOfInterest.checked ? 'visible' : 'hidden'"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="divider"></div>
-        <div class="input-group-sm">
-            <label>Duração</label>
-            <input type="text" [(ngModel)]="durationInputValue" class="form-control">
-        </div>
-        <div class="fillFlexDiv"></div>
-        <button (click)="applyFilters()" id="applyFilterButton" class="btn btn-primary mt-2 ml-auto"><i class="fa fa-search" aria-hidden="true"></i> Filtrar</button>
-        <button (click)="clearFilters()" id="clearFilterButton" class="btn btn-secondary mt-2 mr-auto"><i class="fas fa-broom" aria-hidden="true"></i> Limpar</button>
-        <div class="horizontalDivider mr-auto mt-2"></div>
+<div id="divFilter" class="d-flex flex-wrap ">
+  <button (mouseover)="hoverFilterButton(true)" (click)="focusFilter()" (mouseout)="hoverFilterButton(false)"
+    id="buttonFilter" type="button" class="btn btn-secondary mr-auto">
+    <i [class]="iconFilterClass"></i> {{filterText}}
+  </button>
+  <div [@showHide]="filterState" id="filterForm" class="d-flex flex-wrap mt-1  justify-content-center">
+
+    <div class="input-group-sm ">
+      <label>Nome do projeto</label>
+      <input type="text" [(ngModel)]="projectNameInputValue" class="form-control">
     </div>
+
+    <div class="divider"></div>
+    <div class="input-group-smr">
+      <label>Áreas de interesse</label>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{areasOfInterestSelected.length}} Áreas de interesse
+        </button>
+        <div class="dropdown-menu" (click)="$event.stopPropagation()" aria-labelledby="dropdownMenuButton">
+          <a (click)="clickAreaOfInterest(areaOfInterest.area, i)"
+            *ngFor="let areaOfInterest of areasOfInterest; let i = index" [attr.data-index]="i" class="dropdown-item">
+            {{areaOfInterest.area}} <i class="fas fa-check"
+              [style.visibility]="areaOfInterest.checked ? 'visible' : 'hidden'"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center
+    ">
+      <button mat-raised-button (click)="applyFilters()" class=" ml-2" id="applyFilterButton" color="primary"><i
+          class="fa fa-search"></i> Filtrar</button>
+      <button mat-raised-button (click)="clearFilters()" class=" ml-2" id="clearFilterButton" color="accent"><i
+          class="fas fa-broom"></i> Limpar</button>
+    </div>
+    <div class="horizontalDivider mr-auto mt-2">
+
+    </div>
+  </div>
 </div>
 <div class="d-flex mt-3 flex-wrap">
-    <div [routerLink]="'/projects/'+projects[i]._id" *ngFor="let project of filteredProjects; let i = index" [attr.data-index]="i" class="card">
-        <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
-        <div class="card-body">
-            <h2 class="card-title">{{project.nome}}</h2>
-            <p class="card-text">{{project.resumo}}</p>
-            <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
-            <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
-        </div>
+  <div [routerLink]="'/projects/'+projects[i]._id" *ngFor="let project of filteredProjects; let i = index"
+    [attr.data-index]="i" class="card">
+    <img class="card-img-top" [src]="getSrc(project.fotoCapaId)" alt="Card image cap">
+    <div class="card-body">
+      <h2 class="card-title">{{project.nome}}</h2>
+      <p class="card-text">{{project.resumo}}</p>
+      <span *ngFor="let keyword of project.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
+      <span *ngFor="let areaOfInterest of project.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
     </div>
+  </div>
 </div>

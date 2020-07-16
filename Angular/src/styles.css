@@ -1,8 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
 
-h1,
-h2,
-h3 {
-    font-family: Lato, serif;
-    text-transform: uppercase;
+* {
+    font-family: Roboto, Open-Sans, Arial;
+}
+h1,h2,h3{
+   text-transform: capitalize;
+}
+*::selection{
+  background-color: #03377bac;
+}
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 30px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #002f6c;/* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 50%; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
 }

@@ -1,6 +1,6 @@
 <div class="d-flex mt-3 flex-wrap">
     <mat-card *ngFor="let poll of this.polls; let i = index" [attr.data-index]="i" class="pollCard mb-3">
-        <mat-card-header>
+        <mat-card-header >
           <mat-card-title>{{poll.titulo != undefined ? poll.titulo : 'Sem título'}}</mat-card-title>
           <mat-card-subtitle>{{poll.descricao}}</mat-card-subtitle>
         </mat-card-header>
@@ -8,7 +8,7 @@
             <button class="mb-2" mat-raised-button color="primary" (click)="openPollDialog(poll._id)">Responder</button>
         </mat-card-actions>
     </mat-card>
-    <div *ngIf="!polls">
+    <div *ngIf="polls.length<=0 || polls===undefined">
         Não existem sondagens para responder neste momento.
     </div>
 </div>

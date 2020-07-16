@@ -16,7 +16,7 @@ import { AlertService } from '../services/alert.service';
 })
 export class AlterPasswordComponent implements OnInit {
 
-  constructor(private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService, private _emailService: EmailSenderService) { }
+  constructor(private _authService: AuthService, private userService: UserService, public _fb: FormBuilder, private router: Router, private _alertService: AlertService, private _emailService: EmailSenderService) { }
 
 
   formPassword = this._fb.group({
@@ -24,6 +24,9 @@ export class AlterPasswordComponent implements OnInit {
     confirmPassword: new FormControl('', [Validators.required]),
   });
   ngOnInit(): void {
+    if (!this._authService.isLoggedIn())
+      this.router.navigate(['unauthorized']);
+
   }
 
   alterPassword() {

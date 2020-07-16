@@ -1,34 +1,4 @@
 
-.wrapper {
-  box-shadow: 1px 1px 4px #a9b1b1;
-  background-color: #c3c7c7;
-  font-family:  Helvetica, sans-serif;
-  height:300px;
-  width:350px;
-  margin: 5px;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-
-}
-ul{
-  list-style: none;
-}
-.a1 li {
-  display: inline;
-  justify-content: space-around;
-}
-
-.logInBtn{
-  padding: 10px 150px;
-
-}
-
-
 .example-form {
   min-width: 150px;
   max-width: 500px;

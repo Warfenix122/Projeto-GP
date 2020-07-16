@@ -1,0 +1,30 @@
+.navbar{
+  background-color: #002f6c;
+}
+nav a{
+text-decoration: none;
+font-size: medium;
+color: black;
+}
+ul a{
+text-decoration: none;
+color: white;
+}
+.dropdown-menu{
+  background-color: #002f6cb3;
+
+}
+.dropdown-menu a:hover{
+  background-color: #002f6c;
+
+}
+.brand-a{
+  position: absolute;
+  left: 48%;
+  right: 50%;
+}
+.brand:hover{
+  border-radius: 50%;
+  background-color:whitesmoke;
+}
+

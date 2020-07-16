@@ -1,83 +1,85 @@
 <div id="carouselExampleIndicators" class="carousel slide mt-5" data-ride="carousel">
-    <div class="carousel-inner" id="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block" style="max-height: 300px; width: 100%;" src="assets/img/carousel/images.png" alt="First slide">
-        </div>
-        <div *ngFor="let foto of fotos" class="carousel-item ">
-            <img class="d-block" style="max-height: 300px; width: 100%;" [src]="getSrc(foto.id)">
-        </div>
+  <div class="carousel-inner" id="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block" style="max-height: 300px; width: 100%;" src="assets/img/carousel/slide1.jpg"
+        alt="First slide">
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    <div *ngFor="let foto of fotos" class="carousel-item ">
+      <img class="d-block" style="max-height: 300px; width: 100%;" [src]="getSrc(foto.id)">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
 </div>
-<div class="container mt-5 mb-5">
-    <h1>Top 3 Projetos</h1>
+<div class="container mt-5 mb-5" *ngIf="project1&&project2&&project3">
+  <h1 class="text-center"> Projetos Mais Populares</h1>
 
-    <div class="row mt-5">
-        <div class="col" *ngIf="project1">
-            <div class="card border-secondary">
-                <div class="inner ">
-                    <div class="example-box card">
-                        <img class=" card-img front" [src]="getSrc(project1.fotoCapaId)" alt="Card image cap">
-                        <div class="card-body  back text-center">
-                            <h2 class="card-title">{{project1.nome}}</h2>
-                            <p class="card-text">{{project1.resumo}}</p>
-                            <p><span *ngFor="let keyword of project1.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
-                                <span *ngFor="let areaOfInterest of project1.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span></p>
-                            <button class="btn btn-outline-dark" [routerLink]="'/projects/'+project1._id">Ver Mais</button>
+  <div class="row mt-5 p-5 d-flex justify-content-center">
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="badge d-flex">
-                <img style="height: 90px; width: 90px;" src="assets/img/first-place.png"> </div>
+    <mat-card class="col example-card " *ngIf="project1">
+      <img mat-card-lg-image style="border-radius:50%" [src]="getSrc(project1.fotoCapaId)">
+      <mat-card-header>
+        <mat-card-title>{{project1.nome}}</mat-card-title>
+        <mat-card-subtitle>{{project1.resumo}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content> <span *ngFor="let keyword of project1.palavrasChave"
+          class="badge badge-secondary">{{keyword.nome}}</span></mat-card-content>
 
-        </div>
-        <div class="col" *ngIf="project2">
-            <div class="card border-secondary">
-                <div class="inner">
-                    <div class="example-box card">
-                        <img class=" card-img front" [src]="getSrc(project2.fotoCapaId)" alt="Card image cap">
-                        <div class="card-body  back text-center">
-                            <h2 class="card-title">{{project2.nome}}</h2>
-                            <p class="card-text">{{project2.resumo}}</p>
-                            <p> <span *ngFor="let keyword of project2.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
-                                <span *ngFor="let areaOfInterest of project2.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span></p>
-                            <button class="btn btn-outline-dark" [routerLink]="'/projects/'+project2._id">Ver Mais</button>
+      <span *ngFor="let areaOfInterest of project1.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
+      <mat-card-actions class="text-center"><button mat-raised-button color="primary"
+          [routerLink]="'/projects/'+project1._id">Ver
+          Mais</button>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="badge " style="height: 90px; width: 90px;">
-                <img #secondPlaceImg style="height: 90px; width: 90px;" src="assets/img/second-place.png"> </div>
+      </mat-card-actions>
 
-        </div>
-        <div class="col" *ngIf="project3">
-            <div class="card border-secondary">
-                <div class="inner">
-                    <div class="example-box card">
-                        <img class=" card-img front" [src]="getSrc(project3.fotoCapaId)" alt="Card image cap">
-                        <div class="card-body  back text-center">
-                            <h2 class="card-title">{{project3.nome}}</h2>
-                            <p class="card-text">{{project3.resumo}}</p>
-                            <p><span *ngFor="let keyword of project3.palavrasChave" class="badge badge-secondary">{{keyword.nome}}</span>
-                                <span *ngFor="let areaOfInterest of project3.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span></p>
+    </mat-card>
 
-                            <button class="btn btn-outline-dark" [routerLink]="'/projects/'+project3._id">Ver Mais</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="badge" style="height: 90px; width: 90px;">
-                <img style="height: 90px; width: 90px;" src="assets/img/third-place.png"> </div>
-        </div>
-    </div>
+    <mat-card class="col example-card" *ngIf="project2">
+      <img mat-card-lg-image style="border-radius:50%" [src]="getSrc(project2.fotoCapaId)">
+      <mat-card-header>
+        <mat-card-title>{{project2.nome}}</mat-card-title>
+        <mat-card-subtitle>{{project2.resumo}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content> <span *ngFor="let keyword of project2.palavrasChave"
+          class="badge badge-secondary">{{keyword.nome}}</span></mat-card-content>
+
+      <span *ngFor="let areaOfInterest of project2.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
+      <mat-card-actions class="text-center"><button mat-raised-button color="primary"
+          [routerLink]="'/projects/'+project2._id">Ver
+          Mais</button>
+
+      </mat-card-actions>
+
+    </mat-card>
+
+    <mat-card class="col example-card" *ngIf="project3">
+      <img mat-card-lg-image style="border-radius:50%" [src]="getSrc(project3.fotoCapaId)">
+      <mat-card-header>
+        <mat-card-title>{{project3.nome}}</mat-card-title>
+        <mat-card-subtitle>{{project3.resumo}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content> <span *ngFor="let keyword of project3.palavrasChave"
+          class="badge badge-secondary">{{keyword.nome}}</span></mat-card-content>
+
+      <span *ngFor="let areaOfInterest of project3.areasInteresse" class="badge badge-success">{{areaOfInterest}}</span>
+      <mat-card-actions class="text-center"><button mat-raised-button color="primary"
+          [routerLink]="'/projects/'+project3._id">Ver
+          Mais</button>
+
+      </mat-card-actions>
+
+    </mat-card>
+
+
+  </div>
+</div>
+<div class="container d-flex justify-content-center"><button class="text-center" color="accent" [routerLink]="'/projects/'"
+    mat-raised-button>Ver Projetos
+    Existentes</button>
 </div>

@@ -27,23 +27,23 @@
       </div>
     </div>
     <div class="row image-body">
-      <div class="col-sm-6">
-        <div *ngIf="!isEditButtonToggled">
+      <div class="col-sm-8">
+        <div *ngIf="!isEditButtonToggled" class="mr-3">
           <h1 id="titulo">{{project.nome}}</h1>
-          <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" mat-raised-button color="primary"
-            (click)="volunteer()">CANDIDATAR</button>
+          <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" mat-raised-button
+            color="primary" (click)="volunteer()">Candidatar</button>
           <button *ngIf="candidato===true" type="button" mat-raised-button color="warn"
             (click)="cancelVolunteer()">Cancelar Candidatura</button>
-            <button mat-raised-button *ngIf="project.voluntarios.length===project.vagas && role=== 'Voluntario Interno'" color="warn">Sem vagas</button>
+          <button mat-raised-button
+            *ngIf="!candidato && (project.voluntarios.length===project.vagas && role=== 'Voluntario Interno')"
+            color="warn">Sem vagas</button>
           <button *ngIf="isAuthenticated" (click)="updateFavProject()" (mouseover)="hoverFavButton(true)"
             (mouseleave)="hoverFavButton(false)" id="fav" type="button" class="btn btn-outline-warning">
             <i [class]="isFavProject ? 'fas fa-star mr-1' : 'far fa-star mr-1'"></i> {{addRemFavButtonText}}
           </button>
         </div>
       </div>
-      <div class="col-sm-6 pl-0">
-        <mat-spinner *ngIf="coverPhoto == undefined"></mat-spinner>
-      </div>
+
     </div>
   </div>
   <mat-tab-group class="container">
@@ -63,9 +63,23 @@
         </button>
       </mat-form-field>
 
-      <h4 *ngIf="!isEditButtonToggled" id="resumo">{{project.resumo}}
-        <hr>
+      <h4 *ngIf="!isEditButtonToggled" class="row col mb-3" id="resumo">{{project.resumo}}
       </h4>
+      <hr>
+
+      <h4 id="detalhes" class="row col" *ngIf="!isEditButtonToggled"> Áreas de Interesse:
+        <div *ngFor="let a of project.areasInteresse">
+          <h5 class="  badge badge-primary row " id="areasInteresse">{{a}}</h5>
+        </div>
+      </h4>
+
+      <h4 id="detalhes" class="row col" *ngIf="!isEditButtonToggled && project.contactos.length>0">
+        Contactos:</h4>
+      <div *ngFor="let c of project.contactos">
+        <h4 class="col">{{c.contacto}} |{{c.descricao}}</h4>
+      </div>
+
+      <hr>
       <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
         <mat-label>Resumo</mat-label>
         <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectSummary')">
@@ -78,8 +92,26 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-      <h4 *ngIf="!isEditButtonToggled" id="detalhes" class="row">Inscrições até:
+      <h4 *ngIf="!isEditButtonToggled && project.restringido" id="detalhes" class=" m-5 col text-center">
+        <h4 class=" badge badge-danger"> Atenção </h4> Este projeto tem
+        inscrições
+        restirgidas! <h4 *ngIf="!isEditButtonToggled && project.restringido" id="detalhes" class=" text-center">Ao se
+          inscrever
+          neste projeto, sua inscrição ficará pendente até futura aprovação por parte
+          gestor do projeto</h4>
+      </h4>
+
+
+      <h4 *ngIf="!isEditButtonToggled" id="detalhes" class="row col">Inscrições até:
         <h4 id="lista" class="col">{{project.dataFechoInscricoes|date:'shortDate'}}</h4>
+      </h4>
+
+
+      <h4 *ngIf="!isEditButtonToggled" id="detalhes" class="row col">Data de Começo:
+        <h4 id="lista" class="col">{{project.dataComeco|date:'shortDate'}}</h4>
+      </h4>
+      <h4 *ngIf="!isEditButtonToggled" id="detalhes" class="row col">Data de Fim:
+        <h4 id="lista" class="col">{{project.dataTermino|date:'shortDate'}}</h4>
       </h4>
       <mat-form-field appearance="fill" *ngIf="isEditButtonToggled && isResponsible" class="mat-inputs">
         <mat-label>Data de fecho das inscrições</mat-label>
@@ -93,7 +125,7 @@
         <mat-datepicker #dataFechoInscricoesPicker></mat-datepicker>
       </mat-form-field>
 
-      <h4 *ngIf="!isEditButtonToggled" id="detalhes" class="row">Número de Vagas:
+      <h4 *ngIf="!isEditButtonToggled" id="detalhes" class="row col">Número de Vagas:
         <h4 id="lista" class="col">{{project.vagas}}</h4>
       </h4>
       <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
@@ -109,13 +141,34 @@
         </button>
       </mat-form-field>
 
+      <div *ngIf="isEditButtonToggled">
+        <div class="d-flex align-items-center">
+          <h2>Areas de Interesse</h2>
+        </div>
+        <form [formGroup]="form">
+          <div>
+            <ul class="m-5 col-lg-10 list-unstyled" style="column-count: 2;">
+              <li *ngFor="let control of areasArray.controls; let i = index" #checkboxes>
+                <div>
+                  <div class="row">
+                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                      (change)="getSelectedAreas()" id="{{ areas[i] }}">{{ areas[i] }}</mat-checkbox>
+
+                  </div>
+                </div>
+              </li>
+              <!-- </div> -->
+            </ul>
+          </div>
+        </form>
+      </div>
       <h4 id="detalhes" *ngIf="!isEditButtonToggled &&  project.formacoesNecessarias.length>0" class="row">Formações
         Necessárias:
         <div *ngFor="let f of project.formacoesNecessarias">
           <h4 class="col">{{f}} </h4>
         </div>
       </h4>
-      <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
+      <!-- <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs">
         <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectNecessaryFormations')">
           <mat-icon>{{isProjectNecessaryFormationsReadonly ? 'edit' : 'check'}}</mat-icon>
         </button>
@@ -130,13 +183,41 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
             (matChipInputTokenEnd)="addNecessaryFormation($event)" [readonly]="isProjectNecessaryFormationsReadonly">
         </mat-chip-list>
-      </mat-form-field>
+      </mat-form-field> -->
 
-      <h4 id="detalhes" *ngIf="!isEditButtonToggled && project.contactos.length>0">Contactos:
-        <div *ngFor="let c of project.contactos">
-          <h4 class="col">{{c.contacto}} |{{c.descricao}}</h4>
+
+      <!-- <div class="form-group" *ngIf="isEditButtonToggled">
+        <form [formGroup]="formacoesArr">
+        <mat-form-field>
+          <mat-label>Formacao</mat-label>
+          <mat-select [formControl]="formacao" multiple [(value)]="project.formacoesNecessarias">
+            <mat-option *ngFor="let formacao of formacoes" [value]="formacao">{{ formacao }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        </form>
+      </div> -->
+
+      <div *ngIf="isEditButtonToggled">
+        <div class="d-flex align-items-center">
+          <h2>Formações Necessárias</h2>
         </div>
-      </h4>
+        <form [formGroup]="formacoesArr">
+          <div>
+            <ul class="m-5 col-lg-10 list-unstyled" style="column-count: 2;">
+              <li *ngFor="let control of formacoesArray.controls; let i = index" #checkboxesFormacoes>
+                <div>
+                  <div class="row">
+                    <mat-checkbox labelPosition="after" class="col-md-5" [formControl]="control"
+                      (change)="getSelectedFormacoes()" id="{{formacoes[i]}}">{{ formacoes[i] }}</mat-checkbox>
+
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
+
       <mat-list *ngIf="isEditButtonToggled">
         <div mat-subheader>Contactos</div>
         <mat-list-item [class]="showEditProjectContact[i] ? 'editListItem' : ''"
@@ -150,15 +231,15 @@
           <div *ngIf="!showEditProjectContact[i]" mat-line> {{contacto.descricao}} </div>
           <div mat-line>
             <mat-form-field *ngIf="showEditProjectContact[i]" appearance="fill" class="contactInput">
-              <mat-label>Contacto</mat-label>
-              <input matInput placeholder="Contacto" [(ngModel)]="contacto.contacto">
+              <mat-label>Nome Contacto</mat-label>
+              <input matInput placeholder="Nome Contacto" [(ngModel)]="contacto.contacto">
               <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="contacto.contacto=''">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
             <mat-form-field *ngIf="showEditProjectContact[i]" appearance="fill" class="contactInput">
-              <mat-label>Descrição do contacto</mat-label>
-              <input matInput placeholder="Descrição do contacto" [(ngModel)]="contacto.descricao">
+              <mat-label>Email de Contacto</mat-label>
+              <input matInput placeholder="Email de Contacto" [(ngModel)]="contacto.descricao">
               <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="contacto.descricao=''">
                 <mat-icon>close</mat-icon>
               </button>
@@ -173,15 +254,15 @@
           </mat-icon>
           <div mat-line>
             <mat-form-field appearance="fill" class="contactInput">
-              <mat-label>Novo contacto</mat-label>
-              <input matInput placeholder="Novo contacto" [(ngModel)]="newContact.contacto">
+              <mat-label>Nome do Novo Contacto</mat-label>
+              <input matInput placeholder="Nome do Novo Contacto" [(ngModel)]="newContact.contacto">
               <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="newContact.contacto=''">
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
             <mat-form-field appearance="fill" class="contactInput">
-              <mat-label>Descrição do novo contacto</mat-label>
-              <input matInput placeholder="Descrição do novo contacto" [(ngModel)]="newContact.descricao">
+              <mat-label>Email do Novo Contacto</mat-label>
+              <input matInput placeholder="Email do Novo Contacto" [(ngModel)]="newContact.descricao">
               <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="newContact.descricao=''">
                 <mat-icon>close</mat-icon>
               </button>
@@ -197,13 +278,8 @@
         <mat-divider class="mat-inputs"></mat-divider>
       </mat-list>
 
-      <h4 id="detalhes" class="row" *ngIf="!isEditButtonToggled"> Áreas de Interesse:
-        <div *ngFor="let a of project.areasInteresse">
-          <h5 class="badge badge-primary row" id="areasInteresse">{{a}}</h5>
-        </div>
-      </h4>
 
-      <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs mt-3">
+      <!-- <mat-form-field appearance="fill" *ngIf="isEditButtonToggled" class="mat-inputs mt-3">
         <button mat-button matPrefix mat-icon-button (click)="readonlyInput('projectAreasOfInterest')">
           <mat-icon>{{isProjectAreasOfInterestReadonly ? 'edit' : 'check'}}</mat-icon>
         </button>
@@ -212,14 +288,14 @@
             [removable]="!isProjectAreasOfInterestReadonly" (removed)="removeAreaOfInterest(areaInteresse)">
             {{areaInteresse}}
             <mat-icon matChipRemove [style.visibility]="isProjectAreasOfInterestReadonly ? 'hidden' : 'visible'">
-              cancel
+              Cancelar
             </mat-icon>
           </mat-chip>
           <input placeholder="Áreas de Interesse" [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
             (matChipInputTokenEnd)="addAreaOfInterest($event)" [readonly]="isProjectAreasOfInterestReadonly">
         </mat-chip-list>
-      </mat-form-field>
+      </mat-form-field> -->
       <div *ngIf="!isEditButtonToggled" class="row justify-content-center">
         <button *ngIf="role === 'Voluntario Interno' && candidato===false" type="button" class="btn btn-success btn-lg"
           id="botao2" (click)="volunteer()">CANDIDATAR</button>
@@ -244,6 +320,7 @@
         </mat-card>
 
       </div><br>
+      <h1>Atividades</h1>
       <app-atividades-projeto [projectId]="id" [isEditButtonClicked]="isEditButtonToggled"
         [dataInicio]="project.dataComeco" [dataTermino]="project.dataTermino"></app-atividades-projeto>
     </mat-tab>
@@ -270,9 +347,10 @@
 
     </mat-tab>
     <mat-tab *ngIf=" isModerator " label="Inscritos">
-      <button mat-raised-button class="mt-3 mr-2" color="primary" (click)="writeFile()">Exportar Voluntarios</button>
-      <li class="button mat-stroked-button mb-3" color=" primary "><a href="../../assets/apk/app-debug.apk "
-          download="app.apk "> Download App</a></li>
+      <div class="text-center">
+        <button mat-raised-button class="mt-3 mr-2" color="primary" (click)="writeFile()">Exportar Voluntarios <i class="far fa-file"></i></button>
+        <button class="button mat-stroked-button mb-3" color="primary"><a href="../../assets/apk/IPS.apk"
+            download="ips.apk "> Download App</a></button></div>
       <mat-accordion>
 
         <mat-expansion-panel style="background-color: #ccffcc;">
@@ -421,8 +499,7 @@
     <mat-tab *ngIf=" isModerator " label="Presenças">
       <form class="d-flex justify-content-center mt-4 mb-2">
         <button mat-raised-button class="mr-1 mb-3" color="primary" (click)="fileInput.click()">Escolher ficheiro com as
-          presenças<mat-icon class="ml-1">
-            text_snippet</mat-icon></button>
+          presenças<i class="far fa-file"></i></button>
         <input hidden (change)="onPresencesFileSelected($event)" #fileInput type="file" accept="" id="presencesFile">
       </form>
       <mat-accordion>
