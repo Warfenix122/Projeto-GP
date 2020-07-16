@@ -53,7 +53,7 @@ export class AproveUserComponent implements OnInit {
   avaliarUtilizador(utilizador, avaliacao) {
     this._userService.aproveUser(utilizador, avaliacao).subscribe(user => {
       this.removeUser(user);
-      this._alertService.success("Utilizador Aprovado!");
+      this._alertService.success("Utilizador "+user.aprovado+"!");
 
     }, err => this._alertService.warning(err["error"].msg));
   }
