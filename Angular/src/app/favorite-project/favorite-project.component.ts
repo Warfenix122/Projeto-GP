@@ -15,26 +15,31 @@ import { FotoService } from '../services/foto.service';
 export class FavoriteProjectComponent implements OnInit {
   projects: Array<Project> = [];
   fotos: Array<any> = [];
-  constructor(private projectService: ProjectService, private _alertService: AlertService, private userService: UserService) { }
+  constructor(private projectService: ProjectService, private _alertService: AlertService, private userService: UserService, private fotoService: FotoService) { }
 
 
   ngOnInit(): void {
     this.userService.getCurrentUserId().subscribe((res) => {
       const user = res['UserID'];
       this.projectService.userFavoriteProjects(user).subscribe(res => {
-        const projects = res['projetos']
+        const projects = res['projetos'];
+        let photosIds = [];
+        //let fotosIds = 
         if (projects) {
           projects.forEach(element => {
 
             if (element) {
-              this.projectService.getProject(element).subscribe((elem) => {
-                if (elem) { this.projects.push(elem); }
+              this.projectService.getProjects(projects).subscribe((res) => {
+                this.projects = res;
+                let photosIds = res.map(project => {return project.fotoCapaId})
+                this.fotoService.getDecodedFotos(photosIds, 'projects').then(photos => {
+                  this.fotos = photos;
+                })
               });
             }
 
           });
         }
-
       });
     });
   }

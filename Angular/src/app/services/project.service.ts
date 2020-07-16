@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../../models/projeto';
 import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfaces';
 import { Inscricao } from 'models/inscricao';
@@ -55,6 +55,12 @@ export class ProjectService {
   }
   getProject(id) {
     return this.http.get<Project>('/api/project/getProject/' + id);
+  }
+
+  getProjects(ids) {
+    return this.http.get<Project[]>('/api/project/getProjects', {
+      params: new HttpParams({ fromObject: {ids: ids} })
+    });
   }
 
   addProject(formBody): Observable<ProjetoResponse> {

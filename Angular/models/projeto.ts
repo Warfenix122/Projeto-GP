@@ -3,7 +3,6 @@ export class Project {
   nome: string;
   resumo: string;
   responsavelId: string; //mongoose.ObjectId
-  // categorias: [{ categoriaId: string }]; //mongoose.ObjectId
   palavrasChave: [{ nome: string }];
   contactos: [{ contacto: string, descricao: string }];
   publicoAlvoId: string; //mongoose.ObjectId

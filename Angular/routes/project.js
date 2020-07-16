@@ -76,6 +76,13 @@ router.get("/getProject/:id", (req, res) => {
   });
 });
 
+router.get("/getProjects", (req, res) => {
+  let projectsId = req.query.ids;
+  Project.find({ '_id': { $in: projectsId } }, (err, project) => {}).then((p) => {
+    res.json(p);
+  })
+});
+
 //get all
 router.get("", (req, res) => {
   Project.find({}).then((projects) => {

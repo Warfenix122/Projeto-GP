@@ -81,7 +81,16 @@ export class EditCarrouselComponent implements OnInit {
         this.addPhotoResult = e.target.result;
       };
       reader.onloadend = () => {
-        this.fileService.updateCarouselPhoto(formdata);
+        this.fileService.updateCarouselPhoto(formdata).subscribe(res => {
+          let fotoId = [];
+          if(res["fotoId"] != undefined){
+            let index = this.fotos.push(undefined) - 1;
+            fotoId.push(res["fotoId"]);
+            this.fotoService.getDecodedFotos(fotoId, 'carousel').then(result => {
+              this.fotos[index] = result[0];
+            })
+          }
+        });
       };
 
       reader.readAsArrayBuffer(inputNode.files[0]);

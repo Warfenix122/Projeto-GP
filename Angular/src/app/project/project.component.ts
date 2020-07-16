@@ -326,14 +326,15 @@ export class ProjectComponent implements OnInit {
       })
   }
 
-  getApprovedVolunteers() {
-    let volunteersApproved = this.project.voluntarios.map(volunteer => {
-      if (volunteer.estado == "Aprovado")
-        return volunteer.userId;
-    });
-    if (volunteersApproved != undefined && volunteersApproved.length > 0)
-      this._userService.getUsers(volunteersApproved).subscribe(users => {
-        if (users != null)
+  getApprovedVolunteers(){
+    let volunteersApproved = [];
+    volunteersApproved = this.project.voluntarios.filter(volunteer => volunteer.estado == "Aprovado");
+    volunteersApproved = volunteersApproved.map(volunteer => {return volunteer.userId});
+    console.log(volunteersApproved);
+    if(volunteersApproved != undefined && volunteersApproved.length > 0)
+      this._userService.getUsers(volunteersApproved).subscribe(users =>{
+        console.log(users);
+        if(users != null)
           this.volunteers = users;
         else
           this.volunteers = [];
@@ -425,8 +426,6 @@ export class ProjectComponent implements OnInit {
   loadPresences(usersId) {
     if (usersId == undefined || usersId == null || usersId.length == 0)
       return;
-    console.log('this.fined) :>> ', this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined));
-    console.log('this.fined) :>> ', this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined));
     this.presentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined);
     this.nonPresentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined);
     this.dataSourcePresentVolunteers = new MatTableDataSource<User>(this.presentVolunteers);
