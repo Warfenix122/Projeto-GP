@@ -237,12 +237,13 @@ export class ProjectComponent implements OnInit {
   }
 
   getApprovedVolunteers(){
-    let volunteersApproved = this.project.voluntarios.map(volunteer => {
-      if(volunteer.estado == "Aprovado")
-        return volunteer.userId;
-    });
+    let volunteersApproved = [];
+    volunteersApproved = this.project.voluntarios.filter(volunteer => volunteer.estado == "Aprovado");
+    volunteersApproved = volunteersApproved.map(volunteer => {return volunteer.userId});
+    console.log(volunteersApproved);
     if(volunteersApproved != undefined && volunteersApproved.length > 0)
       this._userService.getUsers(volunteersApproved).subscribe(users =>{
+        console.log(users);
         if(users != null)
           this.volunteers = users;
         else
@@ -333,7 +334,7 @@ export class ProjectComponent implements OnInit {
   loadPresences(usersId){
     if(usersId == undefined || usersId == null || usersId.length == 0)
       return;
-
+    console.log(this.volunteers);
     this.presentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined);
     this.nonPresentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined);
     this.dataSourcePresentVolunteers = new MatTableDataSource<User>(this.presentVolunteers);
@@ -367,7 +368,7 @@ export class ProjectComponent implements OnInit {
             cols = cells;
           } else {
             cells.forEach((cell, cellIndex) => {
-              if(cols[cellIndex] == '"Id"'){
+              if(cols[cellIndex] == 'Id'){
                 cell = cell.substring(1, cell.length-1);
                 results.push(cell);
               }
