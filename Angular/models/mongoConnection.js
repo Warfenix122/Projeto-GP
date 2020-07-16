@@ -62,6 +62,7 @@ var ProjetoSchema = new Schema({
     voluntarios: [{ userId: mongoose.ObjectId, estado: { type: String, enum: ["Recusado", "Em Espera", "Aprovado"] } }],
     fotoCapaId: mongoose.ObjectId,
     restringido: Boolean,
+    presentes: [String]
 });
 
 var SondagemSchema = new Schema({

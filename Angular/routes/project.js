@@ -78,7 +78,7 @@ router.get("/getProject/:id", (req, res) => {
 
 router.get("/getProjects", (req, res) => {
   let projectsId = req.query.ids;
-  Project.find({ '_id': { $in: projectsId } }, (err, project) => {}).then((p) => {
+  Project.find({ '_id': { $in: projectsId } }, (err, project) => { }).then((p) => {
     res.json(p);
   })
 });
@@ -411,12 +411,28 @@ router.post("/atividades/:id", (req, res) => {
 });
 router.get("/deleteCover/:id", (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
-  Project.findOneAndUpdate({ _id: projectId }, { fotoCapaId:null }).then(project => {
+  Project.findOneAndUpdate({ _id: projectId }, { fotoCapaId: null }).then(project => {
     res.status(200).json({ success: true, msg: "Foto apagada" });
   }).catch(err => {
     res.status(404).json({ success: false, msg: err });
   });
 });
+
+router.post("/presencas/:id", (req, res) => {
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  let userArr = req.body.usersIds;
+  Project.findOne({ _id: projectId }).then(project => {
+    project.presentes = userArr;
+
+    console.log('project :>> ', project);
+    project.save().then(() => {
+      res.status(200).json({ success: true, msg: "Presencas atualizadas" });
+    })
+  }).catch(err => {
+    res.status(404).json({ success: false, msg: err });
+  });
+});
+
 
 async function processArray(array) {
   var data = [];

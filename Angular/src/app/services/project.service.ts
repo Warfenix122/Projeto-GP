@@ -5,7 +5,7 @@ import { ProjetoResponse, ImageResponse } from '../../../models/responseInterfac
 import { Inscricao } from 'models/inscricao';
 import { Observable, from } from 'rxjs';
 import { User } from '../../../models/utilizadores';
-import {Atividade} from '../../../models/atividade';
+import { Atividade } from '../../../models/atividade';
 
 
 @Injectable({
@@ -59,7 +59,7 @@ export class ProjectService {
 
   getProjects(ids) {
     return this.http.get<Project[]>('/api/project/getProjects', {
-      params: new HttpParams({ fromObject: {ids: ids} })
+      params: new HttpParams({ fromObject: { ids: ids } })
     });
   }
 
@@ -110,27 +110,34 @@ export class ProjectService {
     return this.http.get<JSON>('/api/project/writeFile/' + projectId);
   }
 
-  markAsTop(id, position){
-    return this.http.get<Project>('/api/project/markTop/' + id+"/"+position);
+  markAsTop(id, position) {
+    return this.http.get<Project>('/api/project/markTop/' + id + "/" + position);
   }
-  dismarkAsTop(id){
+  dismarkAsTop(id) {
     return this.http.get<Project>('/api/project/dismarkTop/' + id);
   }
 
-  getAtividades(id){
-    return this.http.get<Atividade[]>('/api/project/atividades/'+id);
+  getAtividades(id) {
+    return this.http.get<Atividade[]>('/api/project/atividades/' + id);
   }
 
-  removerAtividades(id,atividadeId){
-    let atId = {atividadeId:atividadeId};
-    return this.http.put<ImageResponse>('/api/project/atividades/remover/'+id,atId);
+  removerAtividades(id, atividadeId) {
+    let atId = { atividadeId: atividadeId };
+    return this.http.put<ImageResponse>('/api/project/atividades/remover/' + id, atId);
   }
 
-  addAtividade(id,atividade){
-    return this.http.post('/api/project/atividades/'+id,atividade);
+  addAtividade(id, atividade) {
+    return this.http.post('/api/project/atividades/' + id, atividade);
   }
 
-  editAtividade(id,atividade){
-    return this.http.put('/api/project/atividades/'+id,atividade);
+  editAtividade(id, atividade) {
+    return this.http.put('/api/project/atividades/' + id, atividade);
   }
+
+  addPresencas(id, userArrId) {
+    let aux = { usersIds: userArrId }
+    return this.http.post('/api/project/presencas/' + id, aux);
+
+  }
+
 }

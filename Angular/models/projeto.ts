@@ -29,4 +29,5 @@ export class Project {
   fotoCapaId: string;
   voluntarios: {userId: string, estado: string}[];
   restringido: boolean;
+  presentes: [String]
 }

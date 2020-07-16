@@ -127,6 +127,8 @@ export class EditProfileComponent implements OnInit {
       formbody['email'] = this.user.email;
       this.userService.editUser(formbody).subscribe((res) => {
         this._alertService.success("Alterações Guardadas!");
+        this.router.navigate(["profile"]);
+
       }, (err) => {
         this._alertService.error(err["error"].msg);
       }, () => {

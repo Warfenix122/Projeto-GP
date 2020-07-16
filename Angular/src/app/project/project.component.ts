@@ -174,10 +174,10 @@ export class ProjectComponent implements OnInit {
       });
 
       this.projectService.getProjectGestores(this.id).subscribe((res) => {
-        console.log('res :>> ', res);
         this.gestores = res['gestores'];
         if (this._authService.isLoggedIn()) this.isAuthenticated = true;
         else this.isAuthenticated = false;
+        this.loadPresences()
         this._userService.getCurrentUserId().subscribe((res) => {
           this.currentUserId = res['UserID'];
           this.isResponsible = this.project.responsavelId == this.currentUserId;
@@ -326,15 +326,13 @@ export class ProjectComponent implements OnInit {
       })
   }
 
-  getApprovedVolunteers(){
+  getApprovedVolunteers() {
     let volunteersApproved = [];
     volunteersApproved = this.project.voluntarios.filter(volunteer => volunteer.estado == "Aprovado");
-    volunteersApproved = volunteersApproved.map(volunteer => {return volunteer.userId});
-    console.log(volunteersApproved);
-    if(volunteersApproved != undefined && volunteersApproved.length > 0)
-      this._userService.getUsers(volunteersApproved).subscribe(users =>{
-        console.log(users);
-        if(users != null)
+    volunteersApproved = volunteersApproved.map(volunteer => { return volunteer.userId });
+    if (volunteersApproved != undefined && volunteersApproved.length > 0)
+      this._userService.getUsers(volunteersApproved).subscribe(users => {
+        if (users != null)
           this.volunteers = users;
         else
           this.volunteers = [];
@@ -423,11 +421,11 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  loadPresences(usersId) {
-    if (usersId == undefined || usersId == null || usersId.length == 0)
+  loadPresences() {
+    if (this.project.presentes == undefined)
       return;
-    this.presentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) != undefined);
-    this.nonPresentVolunteers = this.volunteers.filter(volunteer => usersId.find(id => id == volunteer._id) == undefined);
+    this.presentVolunteers = this.volunteers.filter(volunteer => this.project.presentes.find(id => id == volunteer._id) != undefined);
+    this.nonPresentVolunteers = this.volunteers.filter(volunteer => this.project.presentes.find(id => id == volunteer._id) == undefined);
     this.dataSourcePresentVolunteers = new MatTableDataSource<User>(this.presentVolunteers);
     this.dataSourceNonPresentVolunteers = new MatTableDataSource<User>(this.nonPresentVolunteers);
     this.dataSourcePresentVolunteers._updateChangeSubscription();
@@ -435,10 +433,8 @@ export class ProjectComponent implements OnInit {
   }
 
   onPresencesFileSelected(event) {
-    console.log('event :>> ', event);
     let files = event.target.files;
     let cols = [];
-    let results = [];
 
     if (files.length > 0) {
     }
@@ -452,6 +448,8 @@ export class ProjectComponent implements OnInit {
       reader.onload = () => {
         let result = reader.result.toString();
         let rows = result.split('\n');
+        let results = [];
+
         rows.forEach((row, index) => {
           let cells = row.split(',');
           if (index == 0) {
@@ -461,12 +459,17 @@ export class ProjectComponent implements OnInit {
               if (cols[cellIndex] == 'Id') {
                 cell = cell.substring(1, cell.length - 1);
                 results.push(cell);
+                console.log('results :>> ', results);
               }
+
             });
           }
         });
-        results.pop();
-        this.loadPresences(results);
+        results.pop()
+        this.projectService.addPresencas(this.id, results).subscribe((res) => {
+          if (res) this.loadPresences();
+
+        });
       };
 
       reader.readAsBinaryString(inputNode.files[0]);
