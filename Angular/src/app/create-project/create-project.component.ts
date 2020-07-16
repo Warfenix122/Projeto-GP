@@ -82,7 +82,7 @@ export class CreateProjectComponent implements OnInit {
           this._userService.getGestores().subscribe((res) => {
             this.utilizadoresExternos = users.concat(res);
             this.emails = this.utilizadoresExternos.map(user => user.email);
-            this.filteredEmails = this.formInfo.get('gestoremail').valueChanges
+            this.filteredEmails = this.formGestores.get('gestoremail').valueChanges
               .pipe(
                 startWith(''),
                 map(value => this._filterUtilizadores(value))
