@@ -385,7 +385,6 @@ router.put("/atividades/:id", (req, res) => {
 router.put("/atividades/remover/:id", (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
   let atividadeId = req.body.atividadeId;
-  console.log(req.body);
   Project.findByIdAndUpdate({ _id: projectId }, { $pull: { atividades: { _id: atividadeId } } }).
     then(projeto => {
       res.status(200).json({ success: true, msg: "Atividade Apagada com sucesso" })
@@ -397,9 +396,16 @@ router.put("/atividades/remover/:id", (req, res) => {
 router.post("/atividades/:id", (req, res) => {
   let projectId = mongoose.Types.ObjectId(req.params.id);
   let atividade = { descricao: req.body.descricao, dataAcontecimento: req.body.dataAcontecimento };
-  console.log(req.body)
   Project.findOneAndUpdate({ _id: projectId }, { $push: { atividades: atividade } }).then(project => {
     res.status(200).json({ success: true, msg: "Atividade adicionada com sucesso" });
+  }).catch(err => {
+    res.status(404).json({ success: false, msg: err });
+  });
+});
+router.get("/deleteCover/:id", (req, res) => {
+  let projectId = mongoose.Types.ObjectId(req.params.id);
+  Project.findOneAndUpdate({ _id: projectId }, { fotoCapaId:null }).then(project => {
+    res.status(200).json({ success: true, msg: "Foto apagada" });
   }).catch(err => {
     res.status(404).json({ success: false, msg: err });
   });

@@ -539,29 +539,17 @@ export class ProjectComponent implements OnInit {
   }
 
   deleteCoverPhoto(coverId) {
-    if (coverId)
-      this.projectService
-        .removeCoverPhoto(this.project._id)
-        .subscribe((proj) => {
-          this.fileService.deletePhoto(coverId).subscribe((res) => {
-            this.project.fotoCapaId = null;
-            this.coverPhoto = '';
-          });
+    if (coverId) {
+      this.projectService.deleteCover(this.project._id).subscribe((proj) => {
+        this.fileService.deletePhoto(coverId).subscribe((res) => {
+          this.project.fotoCapaId = null;
+          this.coverPhoto = '';
         });
+      });
+    }
+
   }
 
-  deletePhoto(fotoId) {
-    if (fotoId) {
-      let index = this.projectPhotos.findIndex(elem => elem == fotoId);
-      this.projectPhotos.splice(index, 1);
-      this.project.fotosId.splice(index, 1);
-      this.projectService
-        .updateProjectPhotos(this.project._id, this.project.fotosId)
-        .subscribe((proj) => {
-          this.fileService.deletePhoto(fotoId).subscribe();
-        });
-    }
-  }
 
   openAddManagerDialog() {
     let dialogRef = this.dialog.open(DialogAddManager, {

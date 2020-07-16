@@ -41,13 +41,6 @@ export class ProjectService {
     return this.http.get<Project[]>('/api/project/registerProject/' + userId);
   }
 
-  removeCoverPhoto(id) {
-    return this.http.put<Project>('/api/project/' + id, { fotoCapaId: null });
-  }
-
-  updateProjectPhotos(id, photos) {
-    return this.http.put<Project>('/api/project/' + id, { fotosId: photos });
-  }
 
   editProject(id, obj) {
     return this.http.put<Project>('/api/project/edit/' + id, obj);
@@ -57,6 +50,9 @@ export class ProjectService {
     return this.http.delete<Project>('/api/project/getProject/' + id);
   }
 
+  deleteCover(id) {
+    return this.http.get<Project>('/api/project/deleteCover/' + id);
+  }
   getProject(id) {
     return this.http.get<Project>('/api/project/getProject/' + id);
   }
